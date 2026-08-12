@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seelenwende · Zurück zu dir</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --papier:#FAF6F4;
+    --sand:#F3ECE9;
+    --rose:#B5808F;
+    --beere:#8C5A69;
+    --pflaume:#5C3A46;
+    --gedaempft:#8E7079;
+    --linie:#E4D8D8;
+    --mikro:#C3AEB2;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    background:var(--papier);
+    color:var(--pflaume);
+    font-family:"Jost",sans-serif;
+    font-weight:300;
+    line-height:1.75;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    padding:44px 22px 36px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .page{width:100%;max-width:430px;text-align:center;}
+
+  /* --- Kopf --- */
+  .butterfly{
+    width:58px;height:58px;margin:0 auto 18px;display:block;
+    opacity:0;animation:rise .9s ease .05s forwards;
+  }
+  .butterfly path,.butterfly ellipse{
+    fill:none;stroke:var(--rose);stroke-width:1.5;
+    stroke-linecap:round;stroke-linejoin:round;
+  }
+  .butterfly .dot{fill:var(--rose);stroke:none;}
+  .butterfly .body{fill:var(--rose);stroke:none;}
+
+  .wordmark{
+    font-family:"Playfair Display",serif;
+    font-weight:500;
+    font-size:31px;
+    letter-spacing:.02em;
+    color:var(--pflaume);
+    opacity:0;animation:rise .9s ease .18s forwards;
+  }
+  .handle{
+    font-family:"Playfair Display",serif;
+    font-size:11px;
+    letter-spacing:.36em;
+    text-transform:uppercase;
+    color:var(--rose);
+    margin-top:9px;
+    opacity:0;animation:rise .9s ease .3s forwards;
+  }
+
+  .tagline{
+    font-family:"Playfair Display",serif;
+    font-style:italic;
+    font-size:23px;
+    line-height:1.4;
+    color:var(--pflaume);
+    margin-top:26px;
+    opacity:0;animation:rise .9s ease .42s forwards;
+  }
+  .subline{
+    font-size:15px;
+    color:var(--gedaempft);
+    margin-top:12px;
+    max-width:34ch;
+    margin-left:auto;margin-right:auto;
+    opacity:0;animation:rise .9s ease .54s forwards;
+  }
+
+  /* --- Rubriken --- */
+  .eyebrow{
+    display:flex;align-items:center;gap:14px;
+    margin:34px 0 16px;
+    opacity:0;animation:rise .8s ease forwards;
+  }
+  .eyebrow::before,.eyebrow::after{
+    content:"";flex:1;height:1px;background:var(--linie);
+  }
+  .eyebrow span{
+    font-family:"Playfair Display",serif;
+    font-size:10.5px;
+    letter-spacing:.4em;
+    text-transform:uppercase;
+    color:var(--rose);
+    white-space:nowrap;
+  }
+
+  /* --- Links --- */
+  .link{
+    display:block;
+    text-decoration:none;
+    border-radius:16px;
+    padding:16px 20px;
+    margin-bottom:13px;
+    text-align:center;
+    transition:transform .25s ease, box-shadow .25s ease, background-color .25s ease;
+    opacity:0;animation:rise .8s ease forwards;
+  }
+  .link .title{
+    font-family:"Playfair Display",serif;
+    font-size:17px;
+    font-weight:500;
+    letter-spacing:.01em;
+    display:block;
+  }
+  .link .meta{
+    font-family:"Jost",sans-serif;
+    font-weight:300;
+    font-size:12.5px;
+    letter-spacing:.02em;
+    display:block;
+    margin-top:3px;
+  }
+
+  /* Hero – der kostenlose erste Schritt */
+  .link--hero{
+    background:var(--beere);
+  }
+  .link--hero .title{color:var(--papier);}
+  .link--hero .meta{color:#EBD9DD;}
+
+  /* Herzstück – das Bundle */
+  .link--flagship{
+    background:var(--pflaume);
+    position:relative;
+  }
+  .link--flagship .title{color:var(--papier);}
+  .link--flagship .meta{color:#D9C4CB;}
+  .tag{
+    position:absolute;top:-9px;left:50%;transform:translateX(-50%);
+    background:var(--rose);color:var(--papier);
+    font-family:"Playfair Display",serif;
+    font-size:9px;letter-spacing:.26em;text-transform:uppercase;
+    padding:3px 11px;border-radius:20px;white-space:nowrap;
+  }
+
+  /* Ruhige Zweit-Links */
+  .link--soft{
+    background:var(--papier);
+    border:1px solid var(--linie);
+  }
+  .link--soft .title{color:var(--pflaume);}
+  .link--soft .meta{color:var(--gedaempft);}
+
+  @media (hover:hover){
+    .link:hover{transform:translateY(-2px);box-shadow:0 10px 26px -14px rgba(92,58,70,.5);}
+    .link--soft:hover{background:var(--sand);}
+  }
+  .link:focus-visible{outline:2px solid var(--rose);outline-offset:3px;}
+
+  /* --- Fuß --- */
+  .note{
+    font-size:12px;
+    color:var(--gedaempft);
+    margin-top:30px;
+    line-height:1.65;
+    max-width:32ch;margin-left:auto;margin-right:auto;
+    opacity:0;animation:rise .8s ease forwards;
+  }
+  .footer{
+    font-family:"Playfair Display",serif;
+    font-size:9px;
+    letter-spacing:.42em;
+    text-transform:uppercase;
+    color:var(--mikro);
+    margin-top:24px;
+    opacity:0;animation:rise .8s ease forwards;
+  }
+
+  @keyframes rise{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none !important;}
+    .butterfly,.wordmark,.handle,.tagline,.subline,.eyebrow,.link,.note,.footer{opacity:1 !important;}
+  }
+</style>
+</head>
+<body>
+  <main class="page">
+
+    <!-- Schmetterling · vier runde Flügel, feine Fühler mit Punkten -->
+    <svg class="butterfly" viewBox="0 0 100 100" aria-hidden="true">
+      <ellipse cx="38" cy="40" rx="13" ry="18" transform="rotate(-35 38 40)"/>
+      <ellipse cx="62" cy="40" rx="13" ry="18" transform="rotate(35 62 40)"/>
+      <ellipse cx="41" cy="61" rx="9" ry="13" transform="rotate(-20 41 61)"/>
+      <ellipse cx="59" cy="61" rx="9" ry="13" transform="rotate(20 59 61)"/>
+      <ellipse class="body" cx="50" cy="50" rx="1.5" ry="16"/>
+      <path d="M50 36 C47 30 45 27 43 24"/>
+      <path d="M50 36 C53 30 55 27 57 24"/>
+      <circle class="dot" cx="43" cy="23.5" r="1.5"/>
+      <circle class="dot" cx="57" cy="23.5" r="1.5"/>
+    </svg>
+
+    <div class="wordmark">Seelenwende</div>
+    <div class="handle">@_seelenwende</div>
+
+    <p class="tagline">Zurück zu dir.</p>
+    <p class="subline">Ein ruhiger Ort für die, die schon wissen, dass sie gehen.</p>
+
+    <!-- ERSTER SCHRITT -->
+    <div class="eyebrow" style="animation-delay:.62s"><span>Dein erster Schritt</span></div>
+
+    <!-- Self Care Journal · Tentary -->
+    <a class="link link--hero" href="https://seelenwende.mytentary.com/p/niaKY4" target="_blank" rel="noopener" style="animation-delay:.68s">
+      <span class="title">Self Care Journal</span>
+      <span class="meta">Kostenlos · dein sanfter Anfang</span>
+    </a>
+
+    <!-- BEGLEITUNG -->
+    <div class="eyebrow" style="animation-delay:.76s"><span>Begleitung</span></div>
+
+    <!-- Das Bundle · Tentary -->
+    <a class="link link--flagship" href="https://seelenwende.mytentary.com/p/Mi6HH3" target="_blank" rel="noopener" style="animation-delay:.82s">
+      <span class="tag">Herzstück</span>
+      <span class="title">Das Bundle – Zurück zu dir</span>
+      <span class="meta">E-Book · Vision Board · Journal — 49 €</span>
+    </a>
+
+    <!-- Du bist genug E-Book · Tentary (gleiche Seite wie Bundle) -->
+    <a class="link link--soft" href="https://seelenwende.mytentary.com/p/Mi6HH3" target="_blank" rel="noopener" style="animation-delay:.9s">
+      <span class="title">Du bist genug E-Book</span>
+      <span class="meta">Impulsbuch in acht Schritten — 29 €</span>
+    </a>
+
+    <!-- Tentary-Shop · alle Produkte -->
+    <a class="link link--soft" href="https://seelenwende.mytentary.com/" target="_blank" rel="noopener" style="animation-delay:.98s">
+      <span class="title">Alle Angebote ansehen</span>
+      <span class="meta">Journals, Karten, Audios &amp; mehr</span>
+    </a>
+
+    <!-- MEHR -->
+    <div class="eyebrow" style="animation-delay:1.06s"><span>Mehr</span></div>
+
+    <!-- Mini-Guide · Tentary -->
+    <a class="link link--soft" href="https://seelenwende.mytentary.com/p/WPedba" target="_blank" rel="noopener" style="animation-delay:1.12s">
+      <span class="title">Der Weg nach draußen</span>
+      <span class="meta">Kostenloser Mini-Guide</span>
+    </a>
+
+    <!-- „Mehr über Seelenwende" vorerst ausgeblendet (Website/Domain folgt) -->
+
+    <p class="note" style="animation-delay:1.28s">
+      Seelenwende ist Selbsthilfe und ersetzt keine Therapie.
+    </p>
+    <div class="footer" style="animation-delay:1.34s">@_seelenwende</div>
+
+  </main>
+</body>
+</html>
