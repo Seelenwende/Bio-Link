@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Freigabe</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fraunces:opsz,wght@9..144,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FBFAF8; --surface:#FFFFFF; --surface-2:#F4F2EE;
+    --ink:#14100D; --ink-2:#4A423B; --ink-3:#7A7069;
+    --line:#E4DFD7; --accent:#1F5C4A; --accent-ink:#FBFAF8; --accent-soft:#E8F0EC;
+    --warn:#8A5A1E; --warn-soft:#FBF1E3;
+    --shadow:0 1px 2px rgba(20,16,13,.04), 0 12px 28px -18px rgba(20,16,13,.22);
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --bg:#121110; --surface:#1A1917; --surface-2:#222120;
+      --ink:#F5F2EE; --ink-2:#C3BCB4; --ink-3:#8E867E;
+      --line:#2E2C29; --accent:#6FBFA1; --accent-ink:#101413; --accent-soft:#1D2A25;
+      --warn:#E0B071; --warn-soft:#2A2218;
+      --shadow:0 1px 2px rgba(0,0,0,.3), 0 12px 28px -18px rgba(0,0,0,.7);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#121110; --surface:#1A1917; --surface-2:#222120;
+    --ink:#F5F2EE; --ink-2:#C3BCB4; --ink-3:#8E867E;
+    --line:#2E2C29; --accent:#6FBFA1; --accent-ink:#101413; --accent-soft:#1D2A25;
+    --warn:#E0B071; --warn-soft:#2A2218;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 12px 28px -18px rgba(0,0,0,.7);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    background:var(--bg);color:var(--ink);
+    font-family:"Inter",system-ui,-apple-system,sans-serif;
+    line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+    padding-bottom:40px;
+  }
+  .wrap{max-width:720px;margin:0 auto;padding:0 16px;}
+  h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:600;line-height:1.2;letter-spacing:-.01em;}
+  h1{font-size:clamp(25px,5vw,34px);}
+  h2{font-size:17px;}
+
+  /* Kopf */
+  header{padding:34px 0 22px;}
+  .kicker{
+    font-size:11.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--accent);margin-bottom:10px;
+  }
+  .deadline{
+    margin-top:18px;background:var(--warn-soft);border:1px solid var(--line);
+    border-left:3px solid var(--warn);border-radius:0 10px 10px 0;padding:14px 16px;
+  }
+  .deadline strong{color:var(--warn);}
+  .deadline p{font-size:14px;color:var(--ink-2);}
+  .howto{font-size:14.5px;color:var(--ink-2);margin-top:18px;}
+  .howto b{color:var(--ink);font-weight:600;}
+
+  /* Fortschritt */
+  .bar{
+    position:sticky;top:0;z-index:10;background:var(--bg);
+    border-bottom:1px solid var(--line);padding:11px 0;margin-bottom:8px;
+  }
+  .bar .inner{display:flex;align-items:center;gap:14px;}
+  .track{flex:1;height:5px;background:var(--surface-2);border-radius:5px;overflow:hidden;}
+  .fill{height:100%;width:0;background:var(--accent);transition:width .3s ease;}
+  .count{font-size:13px;color:var(--ink-3);white-space:nowrap;font-variant-numeric:tabular-nums;}
+
+  /* Folge */
+  .folge{margin-top:34px;}
+  .folge-head{
+    display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;
+    padding-bottom:10px;border-bottom:1px solid var(--line);
+  }
+  .folge-head .meta{font-size:13px;color:var(--ink-3);}
+
+  /* Item */
+  .item{
+    background:var(--surface);border:1px solid var(--line);border-radius:14px;
+    padding:20px;margin-top:14px;box-shadow:var(--shadow);
+    transition:border-color .2s ease;
+  }
+  .item[data-status="ok"]{border-color:var(--accent);}
+  .item[data-status="change"]{border-color:var(--warn);}
+  .item-head{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:14px;}
+  .chip{
+    font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;
+    padding:3px 9px;border-radius:20px;background:var(--surface-2);color:var(--ink-2);
+  }
+  .chip--kanal{background:var(--accent-soft);color:var(--accent);}
+  .when{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .src{font-size:12.5px;color:var(--ink-3);margin-bottom:12px;}
+
+  .text{
+    white-space:pre-wrap;font-size:15.5px;color:var(--ink);
+    background:var(--surface-2);border-radius:10px;padding:16px;
+  }
+  .tags{font-size:13px;color:var(--ink-3);margin-top:10px;}
+  .note{font-size:13px;color:var(--ink-3);font-style:italic;margin-top:10px;}
+
+  /* Auswahl */
+  .choices{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px;}
+  button{
+    font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;
+    padding:10px 16px;border-radius:9px;border:1px solid var(--line);
+    background:var(--surface);color:var(--ink);transition:all .18s ease;
+  }
+  @media (hover:hover){button:hover{border-color:var(--ink-3);}}
+  button:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  button[aria-pressed="true"].ok{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);}
+  button[aria-pressed="true"].change{background:var(--warn);color:var(--bg);border-color:var(--warn);}
+
+  textarea{
+    width:100%;margin-top:12px;font-family:inherit;font-size:14.5px;line-height:1.55;
+    padding:12px 14px;border-radius:10px;border:1px solid var(--line);
+    background:var(--bg);color:var(--ink);resize:vertical;min-height:76px;
+  }
+  textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px;}
+  .hidden{display:none;}
+
+  /* Mehrfachauswahl (Betreff, Clips) */
+  .pick{display:grid;gap:8px;margin-top:6px;}
+  .pick label{
+    display:flex;gap:11px;align-items:flex-start;font-size:14.5px;color:var(--ink-2);
+    background:var(--surface-2);padding:11px 14px;border-radius:9px;cursor:pointer;
+    border:1px solid transparent;transition:border-color .18s ease;
+  }
+  .pick label:has(input:checked){border-color:var(--accent);color:var(--ink);}
+  .pick input{margin-top:4px;accent-color:var(--accent);flex-shrink:0;}
+  .pick .tc{font-variant-numeric:tabular-nums;color:var(--ink-3);font-size:13px;}
+
+  /* Abschluss */
+  .finish{
+    margin-top:44px;background:var(--accent-soft);border:1px solid var(--line);
+    border-radius:16px;padding:clamp(22px,4vw,32px);
+  }
+  .finish h2{font-size:21px;}
+  .finish p{font-size:14.5px;color:var(--ink-2);margin-top:8px;}
+  .finish .choices{margin-top:18px;}
+  .primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);}
+  #ausgabe{margin-top:16px;min-height:170px;font-family:ui-monospace,monospace;font-size:13px;}
+  #status{font-size:13.5px;color:var(--accent);margin-top:10px;min-height:20px;font-weight:600;}
+
+  footer{margin-top:40px;padding-top:20px;border-top:1px solid var(--line);}
+  footer p{font-size:12.5px;color:var(--ink-3);}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <p class="kicker">Freigabe</p>
+    <h1 id="titel">—</h1>
+    <div class="deadline">
+      <p><strong>Rückmeldung bitte bis <span id="frist">—</span>.</strong>
+      Was nicht kommentiert ist, gilt als freigegeben und wird wie geplant eingeplant.</p>
+    </div>
+    <p class="howto">
+      Du musst nichts umformulieren. <b>Passt so</b> bei allem, was in Ordnung ist —
+      <b>Änderung</b> bei allem anderen, mit zwei Worten dazu, was nicht stimmt.
+      Am Ende erzeugt der Knopf deine Rückmeldung zum Kopieren. Deine Eingaben
+      bleiben in diesem Browser erhalten, wenn du zwischendurch schließt.
+    </p>
+  </header>
+</div>
+
+<div class="bar">
+  <div class="wrap inner">
+    <div class="track"><div class="fill" id="fill"></div></div>
+    <span class="count" id="count">—</span>
+  </div>
+</div>
+
+<div class="wrap">
+  <main id="liste"></main>
+
+  <section class="finish">
+    <h2>Fertig?</h2>
+    <p>Der Knopf erzeugt eine Zusammenfassung deiner Rückmeldung. Kopieren und
+       per Mail zurückschicken — oder direkt über den zweiten Knopf.</p>
+    <div class="choices">
+      <button class="primary" id="btn-erzeugen">Rückmeldung erzeugen</button>
+      <button id="btn-kopieren">Kopieren</button>
+      <button id="btn-mail">Als Mail öffnen</button>
+    </div>
+    <p id="status" role="status" aria-live="polite"></p>
+    <textarea id="ausgabe" class="hidden" readonly aria-label="Erzeugte Rückmeldung"></textarea>
+  </section>
+
+  <footer>
+    <p id="fuss">—</p>
+  </footer>
+</div>
+
+<script>
+/* ════════════════════════════════════════════════════════════════════
+   HIER ANPASSEN — alles darunter bleibt, wie es ist.
+   Die Inhalte unten sind ein BEISPIEL und müssen ersetzt werden.
+   ════════════════════════════════════════════════════════════════════ */
+
+const KUNDE   = "Beispiel GmbH";
+const MONAT   = "März 2026";
+const FRIST   = "Freitag, 27.02.2026";
+const ABSENDER= "[DEIN NAME]";
+const MAIL_AN = "[DEINE-MAIL]";
+
+const FOLGEN = [
+  {
+    titel: "Warum Rückstellungen keine Rücklagen sind",
+    nummer: 47,
+    erschienen: "18.02.2026",
+    items: [
+      {
+        id: "f47-p1",
+        typ: "post",
+        kanal: "LinkedIn",
+        datum: "Mo 02.03.",
+        quelle: "Minute 12:40–14:05",
+        text: "Ein Mandant hat letztes Jahr 40.000 Euro zurückgestellt und war überzeugt, damit Geld zur Seite gelegt zu haben.\n\nWar es nicht. Eine Rückstellung ist eine Verpflichtung, die schon entstanden ist — nur noch nicht bezahlt. Das Geld ist weg, es hat den Weg nur noch nicht gefunden.\n\nEine Rücklage ist das Gegenteil: Gewinn, den man im Unternehmen lässt.\n\nDer Unterschied klingt nach Buchhaltungsdetail. Er entscheidet darüber, ob die Zahl unter dem Strich etwas bedeutet oder nicht.",
+        tags: "#Rechnungswesen #Mittelstand #Jahresabschluss"
+      },
+      {
+        id: "f47-p2",
+        typ: "post",
+        kanal: "Instagram",
+        datum: "Mi 04.03.",
+        quelle: "Minute 12:40–14:05",
+        hinweis: "Gleiche Aussage, kürzere Fassung für Instagram.",
+        text: "Rückstellung ≠ Rücklage.\n\nRückstellung: Eine Rechnung, die kommt. Das Geld ist schon vergeben.\nRücklage: Gewinn, der im Unternehmen bleibt.\n\nWer das verwechselt, hält eine Verpflichtung für ein Polster.",
+        tags: "#Steuerwissen #Selbstständig"
+      },
+      {
+        id: "f47-nl",
+        typ: "newsletter",
+        kanal: "Newsletter",
+        datum: "Do 05.03.",
+        quelle: "Folge 47, gesamte erste Hälfte",
+        betreff: [
+          "40.000 Euro, die nie da waren",
+          "Der Unterschied, der die Bilanz kippt",
+          "Zwei Wörter, ständig verwechselt",
+          "Was in Ihrer Bilanz kein Polster ist"
+        ],
+        vorschau: "Warum eine Rückstellung nichts mit Sparen zu tun hat",
+        text: "[Newslettertext, 300–400 Wörter — hier einsetzen]"
+      },
+      {
+        id: "f47-clips",
+        typ: "clips",
+        kanal: "Clips",
+        datum: "nach Freigabe",
+        quelle: "Folge 47",
+        hinweis: "Bitte ankreuzen, welche geschnitten werden sollen. Enthalten sind 8 Clips pro Monat.",
+        clips: [
+          { tc: "12:40–13:15", erste: "Ein Mandant hat mir letztes Jahr gesagt …", titel: "Rückstellung ist kein Sparen" },
+          { tc: "21:05–21:48", erste: "Und dann kommt die Frage, die immer kommt …", titel: "Die Frage vor jedem Abschluss" },
+          { tc: "33:12–33:52", erste: "Das Finanzamt sieht das anders als Sie …", titel: "Zwei Sichten, eine Zahl" }
+        ]
+      }
+    ]
+  }
+];
+
+/* ════════════════════════════════════════════════════════════════════
+   Ab hier nichts mehr ändern.
+   ════════════════════════════════════════════════════════════════════ */
+
+const SPEICHER = "freigabe:" + KUNDE + ":" + MONAT;
+let state = {};
+
+try { state = JSON.parse(localStorage.getItem(SPEICHER)) || {}; } catch (e) { state = {}; }
+
+function sichern(){
+  try { localStorage.setItem(SPEICHER, JSON.stringify(state)); } catch (e) { /* privates Fenster */ }
+}
+function eintrag(id){
+  if (!state[id]) state[id] = { status:"", note:"", picks:[] };
+  return state[id];
+}
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
+
+const ALLE = FOLGEN.flatMap(f => f.items);
+const ZUPRUEFEN = ALLE.filter(i => i.typ !== "clips");
+
+document.getElementById("titel").textContent = KUNDE + " · " + MONAT;
+document.getElementById("frist").textContent = FRIST;
+document.getElementById("fuss").textContent =
+  "Zusammengestellt von " + ABSENDER + " · " + ALLE.length + " Positionen · Frist " + FRIST;
+
+function zeichne(){
+  const liste = document.getElementById("liste");
+  liste.innerHTML = "";
+
+  FOLGEN.forEach(folge => {
+    const sec = document.createElement("section");
+    sec.className = "folge";
+    sec.innerHTML =
+      '<div class="folge-head"><h2>Folge ' + folge.nummer + ' · „' + esc(folge.titel) + '"</h2>' +
+      '<span class="meta">erschienen ' + esc(folge.erschienen) + '</span></div>';
+
+    folge.items.forEach(item => {
+      const e = eintrag(item.id);
+      const el = document.createElement("article");
+      el.className = "item";
+      if (e.status) el.dataset.status = e.status;
+
+      let inhalt = "";
+
+      if (item.typ === "clips") {
+        inhalt = '<div class="pick">' + item.clips.map((c, n) =>
+          '<label><input type="checkbox" data-pick="' + item.id + '" value="' + n + '"' +
+          (e.picks.includes(String(n)) ? " checked" : "") + '>' +
+          '<span><span class="tc">' + esc(c.tc) + '</span> · „' + esc(c.erste) + '"<br>' +
+          'Titel: ' + esc(c.titel) + '</span></label>'
+        ).join("") + '</div>';
+      } else {
+        if (item.betreff) {
+          inhalt += '<p class="src">Betreffzeile — bitte eine auswählen:</p><div class="pick">' +
+            item.betreff.map((b, n) =>
+              '<label><input type="radio" name="betreff-' + item.id + '" data-pick="' + item.id +
+              '" value="' + n + '"' + (e.picks.includes(String(n)) ? " checked" : "") + '>' +
+              '<span>' + esc(b) + '</span></label>'
+            ).join("") + '</div>' +
+            '<p class="note">Vorschautext: ' + esc(item.vorschau) + '</p>';
+        }
+        inhalt += '<div class="text">' + esc(item.text) + '</div>';
+        if (item.tags) inhalt += '<p class="tags">' + esc(item.tags) + '</p>';
+      }
+
+      el.innerHTML =
+        '<div class="item-head">' +
+          '<span class="chip chip--kanal">' + esc(item.kanal) + '</span>' +
+          '<span class="when">geplant ' + esc(item.datum) + '</span>' +
+        '</div>' +
+        '<p class="src">Quelle: ' + esc(item.quelle) + '</p>' +
+        (item.hinweis ? '<p class="note">' + esc(item.hinweis) + '</p>' : "") +
+        inhalt +
+        (item.typ === "clips" ? "" :
+          '<div class="choices">' +
+            '<button class="ok" data-set="ok" data-id="' + item.id + '" aria-pressed="' +
+              (e.status === "ok") + '">Passt so</button>' +
+            '<button class="change" data-set="change" data-id="' + item.id + '" aria-pressed="' +
+              (e.status === "change") + '">Änderung</button>' +
+          '</div>' +
+          '<textarea data-note="' + item.id + '" class="' + (e.status === "change" ? "" : "hidden") +
+            '" placeholder="Was stimmt nicht? Zwei Worte reichen.">' + esc(e.note) + '</textarea>');
+
+      sec.appendChild(el);
+    });
+
+    liste.appendChild(sec);
+  });
+
+  fortschritt();
+}
+
+function fortschritt(){
+  const fertig = ZUPRUEFEN.filter(i => eintrag(i.id).status).length;
+  const anteil = ZUPRUEFEN.length ? (fertig / ZUPRUEFEN.length) * 100 : 0;
+  document.getElementById("fill").style.width = anteil + "%";
+  document.getElementById("count").textContent = fertig + " von " + ZUPRUEFEN.length + " geprüft";
+}
+
+document.addEventListener("click", ev => {
+  const b = ev.target.closest("button[data-set]");
+  if (!b) return;
+  const e = eintrag(b.dataset.id);
+  e.status = (e.status === b.dataset.set) ? "" : b.dataset.set;
+  sichern();
+
+  const item = b.closest(".item");
+  item.querySelectorAll("button[data-set]").forEach(x =>
+    x.setAttribute("aria-pressed", String(x.dataset.set === e.status)));
+  if (e.status) { item.dataset.status = e.status; } else { delete item.dataset.status; }
+  item.querySelector("textarea[data-note]").classList.toggle("hidden", e.status !== "change");
+  fortschritt();
+});
+
+document.addEventListener("input", ev => {
+  const t = ev.target;
+  if (t.dataset.note) { eintrag(t.dataset.note).note = t.value; sichern(); }
+  if (t.dataset.pick) {
+    const e = eintrag(t.dataset.pick);
+    if (t.type === "radio") {
+      e.picks = [t.value];
+    } else {
+      e.picks = e.picks.filter(v => v !== t.value);
+      if (t.checked) e.picks.push(t.value);
+    }
+    sichern();
+  }
+});
+
+function rueckmeldung(){
+  const zeilen = ["Freigabe " + KUNDE + " · " + MONAT, ""];
+  const offen = [], geaendert = [];
+
+  FOLGEN.forEach(folge => folge.items.forEach(item => {
+    const e = eintrag(item.id);
+
+    if (item.typ === "clips") {
+      const gewaehlt = e.picks.map(n => item.clips[n]).filter(Boolean);
+      zeilen.push("CLIPS (Folge " + folge.nummer + "): " +
+        (gewaehlt.length ? gewaehlt.map(c => c.tc + " „" + c.titel + "\"").join(" | ")
+                         : "noch nicht ausgewählt"));
+      return;
+    }
+
+    const kopf = item.kanal + " " + item.datum + " (Folge " + folge.nummer + ")";
+    if (e.status === "change") {
+      geaendert.push("– " + kopf + ": " + (e.note.trim() || "(Anmerkung fehlt noch)"));
+    } else if (!e.status) {
+      offen.push("– " + kopf);
+    }
+    if (item.betreff) {
+      const w = item.betreff[e.picks[0]];
+      zeilen.push("BETREFF Newsletter: " + (w ? "„" + w + "\"" : "noch nicht ausgewählt"));
+    }
+  }));
+
+  zeilen.push("");
+  if (geaendert.length) {
+    zeilen.push("ÄNDERUNGEN (" + geaendert.length + "):", ...geaendert, "");
+  } else {
+    zeilen.push("Keine Änderungswünsche.", "");
+  }
+  if (offen.length) {
+    zeilen.push("NOCH NICHT GEPRÜFT (" + offen.length + ") — gilt als freigegeben:", ...offen, "");
+  }
+  const freigegeben = ZUPRUEFEN.length - geaendert.length;
+  zeilen.push("Freigegeben: " + freigegeben + " von " + ZUPRUEFEN.length + ".");
+  return zeilen.join("\n");
+}
+
+const ausgabe = document.getElementById("ausgabe");
+const status = document.getElementById("status");
+
+document.getElementById("btn-erzeugen").addEventListener("click", () => {
+  ausgabe.value = rueckmeldung();
+  ausgabe.classList.remove("hidden");
+  status.textContent = "Fertig — unten nachlesen, dann kopieren.";
+  ausgabe.scrollIntoView({ behavior:"smooth", block:"center" });
+});
+
+document.getElementById("btn-kopieren").addEventListener("click", async () => {
+  if (!ausgabe.value) ausgabe.value = rueckmeldung();
+  ausgabe.classList.remove("hidden");
+  try {
+    await navigator.clipboard.writeText(ausgabe.value);
+    status.textContent = "In die Zwischenablage kopiert.";
+  } catch (e) {
+    ausgabe.select();
+    status.textContent = "Text ist markiert — bitte mit Strg+C bzw. Cmd+C kopieren.";
+  }
+});
+
+document.getElementById("btn-mail").addEventListener("click", () => {
+  const text = ausgabe.value || rueckmeldung();
+  ausgabe.value = text;
+  ausgabe.classList.remove("hidden");
+  const betreff = "Freigabe " + KUNDE + " " + MONAT;
+  window.location.href = "mailto:" + MAIL_AN +
+    "?subject=" + encodeURIComponent(betreff) +
+    "&body=" + encodeURIComponent(text);
+  status.textContent = "Mailprogramm geöffnet. Kommt nichts an, bitte den Text unten kopieren.";
+});
+
+zeichne();
+</script>
+</body>
+</html>

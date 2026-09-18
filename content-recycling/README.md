@@ -12,8 +12,24 @@ wiederkehrend.
 | `index.html` | Angebotsseite mit Festpreisen. Platzhalter in Großbuchstaben ersetzen, dann online. |
 | `lieferung/checkliste.md` | Der Ablauf pro Kunde und Monat, mit Zeitzielen |
 | `lieferung/prompts.md` | Sechs Prompts: Stimmprofil, Kernaussagen, Posts, Newsletter, Clips, Redaktionsprüfung |
+| `lieferung/freigabe.html` | Freigabedokument für den Kunden. Eine Datei, kein Konto nötig — er klickt durch und erzeugt seine Rückmeldung zum Kopieren. |
+| `lieferung/freigabe-vorlage.md` | Dieselbe Struktur zum Einfügen in Google Docs oder Notion, plus Begleitmail |
 | `akquise/nachrichten.md` | Zielkundenfilter, drei Nachrichtenvorlagen, Gesprächsleitfaden, Einwände |
 | `akquise/kundenliste.csv` | Tabelle zum Mitschreiben der Pipeline |
+
+## Freigabedokument befüllen
+
+In `lieferung/freigabe.html` stehen oben im Skript fünf Konstanten (`KUNDE`, `MONAT`,
+`FRIST`, `ABSENDER`, `MAIL_AN`) und darunter das Array `FOLGEN`. Beides ersetzen, Datei
+speichern, dem Kunden schicken — als Anhang oder unter einer eigenen URL. Es braucht
+keinen Server und kein Konto beim Kunden; seine Eingaben liegen in seinem Browser, bis
+er auf „Rückmeldung erzeugen" drückt. Die Inhalte im Auslieferungszustand sind ein
+Beispiel und müssen raus.
+
+Ein Punkt, der in der Praxis zählt: Der Kunde bekommt pro Position nur **eine** Fassung
+zu sehen, nie drei zur Auswahl. Varianten anzubieten heißt „entscheide du" — und das
+ist die Arbeit, die er gerade ausgelagert hat. Ausnahme sind die Betreffzeilen: eine
+Entscheidung, die er treffen darf, senkt den Widerstand gegen alles andere.
 
 ## Die Rechnung
 
