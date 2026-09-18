@@ -1,0 +1,15 @@
+{
+  "name": "content-recycling-tool",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Macht aus einem Podcast-Transkript Posts, Newsletter, Clip-Timecodes und ein fertiges Freigabedokument.",
+  "bin": { "recycle": "./recycle.mjs" },
+  "scripts": {
+    "recycle": "node recycle.mjs"
+  },
+  "engines": { "node": ">=20" },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.127.0"
+  }
+}

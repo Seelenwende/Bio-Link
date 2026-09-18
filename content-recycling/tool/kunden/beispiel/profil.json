@@ -1,0 +1,24 @@
+{
+  "kunde": "Beispiel GmbH",
+  "absender": "[DEIN NAME]",
+  "mailAn": "[DEINE-MAIL]",
+  "postsProFolge": 4,
+  "planung": "Buffer",
+  "kanaele": [
+    {
+      "name": "LinkedIn",
+      "woerter": "120–180",
+      "hinweis": "Fachpublikum, ganze Sätze, keine Emojis, Absätze von höchstens drei Zeilen"
+    },
+    {
+      "name": "Instagram",
+      "woerter": "60–110",
+      "hinweis": "kürzere Fassung derselben Aussage, direkter, erste Zeile trägt allein"
+    }
+  ],
+  "tabu": [
+    "Keine Nennung von Mandanten oder Kunden, auch nicht anonymisiert mit Branche und Ort zusammen",
+    "Keine konkrete Steuer- oder Rechtsempfehlung, immer nur allgemeine Einordnung",
+    "Keine Wettbewerber namentlich"
+  ]
+}

@@ -16,6 +16,28 @@ wiederkehrend.
 | `lieferung/freigabe-vorlage.md` | Dieselbe Struktur zum Einfügen in Google Docs oder Notion, plus Begleitmail |
 | `akquise/nachrichten.md` | Zielkundenfilter, drei Nachrichtenvorlagen, Gesprächsleitfaden, Einwände |
 | `akquise/kundenliste.csv` | Tabelle zum Mitschreiben der Pipeline |
+| `tool/` | CLI, das den Lieferprozess ausführt: Transkript rein, Freigabedokument raus. Eigenes README im Ordner. |
+
+## Das Tool
+
+`tool/` führt den Ablauf aus `lieferung/checkliste.md` aus: Transkript rein, und
+heraus kommen Kernaussagen, Posts je Kanal, Newsletter, Clip-Timecodes, eine
+Redaktionsprüfung und ein gefülltes Freigabedokument.
+
+```bash
+cd tool && npm install && export ANTHROPIC_API_KEY=sk-ant-...
+node recycle.mjs profil --kunde meiereiag folge12.vtt folge13.vtt folge14.vtt
+node recycle.mjs folge --kunde meiereiag --nummer 47 --titel "…" \
+  --datum 18.02.2026 --monat "März 2026" --frist "27.02.2026" folge47.vtt
+```
+
+Kosten je Folge etwa USD 1 bis 2; das Tool zeigt nach jedem Durchlauf die
+tatsächlichen Zahlen. Vier Folgen gegen 950 CHF Umsatz — die Modellkosten sind bei
+diesem Geschäftsmodell nicht die Grösse, über die du nachdenken musst.
+
+Was das Tool nicht tut, ist der Redaktionsdurchgang. Es liefert Entwürfe plus eine
+Prüfliste; die Entscheidung, was rausfliegt, bleibt bei dir. Genau die verkaufst du.
+Details in `tool/README.md`.
 
 ## Freigabedokument befüllen
 
@@ -45,6 +67,9 @@ realistische Ziel für Monat 4 bis 6, nicht für Monat 1.
 Der Aufwand sinkt mit der Zeit, weil das Stimmprofil pro Kunde besser wird.
 Monat 1 dauert regelmässig das Doppelte der Angabe oben — das ist eingeplant und
 kein Zeichen, dass es nicht funktioniert.
+
+Die Stundenangaben setzen voraus, dass du `tool/` benutzt. Von Hand, mit Prompts im
+Chatfenster, liegt derselbe Umfang bei zwei bis drei Mal so viel Zeit.
 
 ## Warum diese Preise
 

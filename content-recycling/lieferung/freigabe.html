@@ -197,7 +197,9 @@
 /* ════════════════════════════════════════════════════════════════════
    HIER ANPASSEN — alles darunter bleibt, wie es ist.
    Die Inhalte unten sind ein BEISPIEL und müssen ersetzt werden.
+   Das Tool in ../tool ersetzt alles zwischen den beiden Marken.
    ════════════════════════════════════════════════════════════════════ */
+// <<<DATEN-ANFANG>>>
 
 const KUNDE   = "Beispiel GmbH";
 const MONAT   = "März 2026";
@@ -262,6 +264,7 @@ const FOLGEN = [
   }
 ];
 
+// <<<DATEN-ENDE>>>
 /* ════════════════════════════════════════════════════════════════════
    Ab hier nichts mehr ändern.
    ════════════════════════════════════════════════════════════════════ */
@@ -331,7 +334,7 @@ function zeichne(){
       el.innerHTML =
         '<div class="item-head">' +
           '<span class="chip chip--kanal">' + esc(item.kanal) + '</span>' +
-          '<span class="when">geplant ' + esc(item.datum) + '</span>' +
+          (item.datum ? '<span class="when">geplant ' + esc(item.datum) + '</span>' : "") +
         '</div>' +
         '<p class="src">Quelle: ' + esc(item.quelle) + '</p>' +
         (item.hinweis ? '<p class="note">' + esc(item.hinweis) + '</p>' : "") +
@@ -407,7 +410,7 @@ function rueckmeldung(){
       return;
     }
 
-    const kopf = item.kanal + " " + item.datum + " (Folge " + folge.nummer + ")";
+    const kopf = (item.kanal + " " + (item.datum || "")).trim() + " (Folge " + folge.nummer + ")";
     if (e.status === "change") {
       geaendert.push("– " + kopf + ": " + (e.note.trim() || "(Anmerkung fehlt noch)"));
     } else if (!e.status) {
