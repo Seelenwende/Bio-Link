@@ -95,7 +95,7 @@ FOLGE 48 · ...
 3. **Betreffzeilen zur Auswahl stellen, nicht festlegen.** Eine Entscheidung, die der
    Kunde treffen darf, senkt den Widerstand gegen alles andere im Dokument.
 4. **Keine Alternativfassungen zeigen.** Du hast drei Varianten erzeugt — liefere
-   eine. Drei Varianten heißen: „Entscheide du", und das ist genau die Arbeit,
+   eine. Drei Varianten heissen: „Entscheide du", und das ist genau die Arbeit,
    die er ausgelagert hat.
 5. **Nichts kommentiert = freigegeben.** Steht oben im Dokument und in der Mail.
    Ohne diese Klausel wartest du auf Bestätigungen, die nie kommen.

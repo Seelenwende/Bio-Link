@@ -1,7 +1,7 @@
 # Content Recycling — Startpaket
 
 Nebenverdienst-Modell: Unternehmen mit Podcast, Webinaren oder YouTube-Kanal
-produzieren regelmäßig Material, das nach der Veröffentlichung ungenutzt liegen
+produzieren regelmässig Material, das nach der Veröffentlichung ungenutzt liegen
 bleibt. Du übersetzt es in Posts, Newsletter und Clips — zum Festpreis, monatlich
 wiederkehrend.
 
@@ -9,7 +9,7 @@ wiederkehrend.
 
 | Datei | Zweck |
 |---|---|
-| `index.html` | Angebotsseite mit Festpreisen. Platzhalter in Großbuchstaben ersetzen, dann online. |
+| `index.html` | Angebotsseite mit Festpreisen. Platzhalter in Grossbuchstaben ersetzen, dann online. |
 | `lieferung/checkliste.md` | Der Ablauf pro Kunde und Monat, mit Zeitzielen |
 | `lieferung/prompts.md` | Sechs Prompts: Stimmprofil, Kernaussagen, Posts, Newsletter, Clips, Redaktionsprüfung |
 | `lieferung/freigabe.html` | Freigabedokument für den Kunden. Eine Datei, kein Konto nötig — er klickt durch und erzeugt seine Rückmeldung zum Kopieren. |
@@ -27,7 +27,7 @@ er auf „Rückmeldung erzeugen" drückt. Die Inhalte im Auslieferungszustand si
 Beispiel und müssen raus.
 
 Ein Punkt, der in der Praxis zählt: Der Kunde bekommt pro Position nur **eine** Fassung
-zu sehen, nie drei zur Auswahl. Varianten anzubieten heißt „entscheide du" — und das
+zu sehen, nie drei zur Auswahl. Varianten anzubieten heisst „entscheide du" — und das
 ist die Arbeit, die er gerade ausgelagert hat. Ausnahme sind die Betreffzeilen: eine
 Entscheidung, die er treffen darf, senkt den Widerstand gegen alles andere.
 
@@ -35,32 +35,37 @@ Entscheidung, die er treffen darf, senkt den Widerstand gegen alles andere.
 
 | Paket | Preis | Aufwand/Monat | Stundensatz |
 |---|---|---|---|
-| Basis | 390 € | ~3 h | 130 € |
-| Standard | 690 € | ~6 h | 115 € |
-| Komplett | 1.190 € | ~12 h | 99 € |
+| Basis | 550 CHF | ~3 h | 183 CHF |
+| Standard | 950 CHF | ~6 h | 158 CHF |
+| Komplett | 1’650 CHF | ~12 h | 138 CHF |
 
-Drei Standard-Kunden: **2.070 € im Monat bei etwa 18 Stunden.** Das ist das
+Drei Standard-Kunden: **2’850 CHF im Monat bei etwa 18 Stunden.** Das ist das
 realistische Ziel für Monat 4 bis 6, nicht für Monat 1.
 
 Der Aufwand sinkt mit der Zeit, weil das Stimmprofil pro Kunde besser wird.
-Monat 1 dauert regelmäßig das Doppelte der Angabe oben — das ist eingeplant und
+Monat 1 dauert regelmässig das Doppelte der Angabe oben — das ist eingeplant und
 kein Zeichen, dass es nicht funktioniert.
 
 ## Warum diese Preise
 
-Unter 350 € rechnet es sich nach Redaktionsaufwand nicht. Über 1.500 € vergleicht
+Unter 500 CHF rechnet es sich nach Redaktionsaufwand nicht. Über 2’000 CHF vergleicht
 der Kunde dich mit einer Agentur, die Strategie, Design und Mediaplanung mitbringt
 — diesen Vergleich verlierst du. Der Bereich dazwischen ist unbesetzt: zu klein für
 Agenturen, zu strukturiert für Freelancer, die pro Post abrechnen.
 
-Die Probefolge zu 149 € ist keine Einnahmequelle, sondern ein Filter. Wer 149 €
-zahlt, zahlt auch 690 €. Wer bei 149 € zögert, hätte dich drei Monate Zeit gekostet.
+Die Preise liegen deutlich über dem, was in Deutschland für dieselbe Leistung bezahlt
+wird. Das ist richtig so: Schweizer Tagesansätze für Freelancer liegen bei 800 bis
+1’500 CHF, und ein Kunde, der 950 CHF im Monat zahlt, vergleicht dich mit diesen
+Zahlen, nicht mit deutschen. Rechne deutsche Preise nicht um, wenn du hier verkaufst.
+
+Die Probefolge zu 220 CHF ist keine Einnahmequelle, sondern ein Filter. Wer 220 CHF
+zahlt, zahlt auch 950 CHF. Wer bei 220 CHF zögert, hätte dich drei Monate Zeit gekostet.
 
 ## Die ersten 21 Tage
 
 **Tag 1–2** — Platzhalter in `index.html` ersetzen (`[DEIN NAME]`, `[DEINE-MAIL]`,
-`[DEIN-KALENDER-LINK]`), Impressum und Datenschutzerklärung ergänzen, Seite
-veröffentlichen. Bei Netlify reicht Drag-and-drop dieses Ordners.
+`[DEIN-KALENDER-LINK]`), Kontaktseite mit Anbieterangaben und Datenschutzerklärung
+ergänzen, Seite veröffentlichen. Bei Netlify reicht Drag-and-drop dieses Ordners.
 
 **Tag 3–7** — 30 Betriebe nach den vier Signalen in `akquise/nachrichten.md`
 recherchieren, in `kundenliste.csv` eintragen. Noch keine Nachricht schreiben.
@@ -77,15 +82,61 @@ Nachricht B ohne Anlage. Der Vergleich zeigt dir, wie viel die Probearbeit bring
 Lieferung terminieren. Danach einmal nachfassen bei allen, die nicht geantwortet
 haben — genau einmal.
 
-## Formales (Deutschland, kurz)
+## Formales (Schweiz, kurz)
 
-Nebengewerbe beim Gewerbeamt anmelden, 20–60 €. Kleinunternehmerregelung nach
-§ 19 UStG solange der Jahresumsatz unter 25.000 € liegt — dann weist du keine
-Umsatzsteuer aus. Wenn du angestellt bist: Arbeitsvertrag prüfen, viele verlangen
-eine Anzeige der Nebentätigkeit. Bei Kundenzugängen zu Planungstools nur
-Einladungsfunktionen nutzen, keine Passwörter, und einen AV-Vertrag anbieten,
-sobald du personenbezogene Daten verarbeitest (Newsletter-Listen). Das ist keine
-Rechts- oder Steuerberatung, aber es sind die vier Punkte, an denen es sonst hakt.
+**Keine Gewerbeanmeldung.** Anders als in Deutschland gibt es keinen Gang zum
+Gewerbeamt. Der eigentliche Schritt ist die Anmeldung als selbstständig erwerbend bei
+der **AHV-Ausgleichskasse deines Kantons**. Darauf zahlst du AHV/IV/EO — grob rund
+10 % des Einkommens, mit sinkender Skala und einem Mindestbeitrag bei kleinen
+Einkommen. Bei Nebenerwerb neben einer Anstellung kommt das zu den Abzügen aus dem
+Lohn hinzu.
+
+**Handelsregister** erst ab 100’000 CHF Jahresumsatz Pflicht. Darunter freiwillig.
+Eine Einzelfirma muss deinen Familiennamen im Firmennamen tragen — „Content
+Recycling" allein geht nicht, „Content Recycling Muster" schon.
+
+**MWST** erst ab 100’000 CHF Umsatz Pflicht, Normalsatz 8,1 %. Darunter bist du
+befreit und weist keine MWST aus; eine freiwillige Unterstellung lohnt sich bei
+diesem Geschäftsmodell selten, weil du kaum Vorsteuern hast. Die Angebotsseite sagt
+darum „exkl. MWST sofern ausgewiesen".
+
+**Steuern:** kein separates Konstrukt. Das Einkommen aus selbstständiger Tätigkeit
+kommt in die normale Steuererklärung, mit dem Hilfsblatt deines Kantons. Keine
+Gewerbesteuer. Führe von Anfang an eine einfache Einnahmen-Ausgaben-Rechnung und lege
+Belege ab — das ist kantonal die einzige Anforderung unterhalb der
+Buchführungspflicht.
+
+**Säule 3a:** Hier lohnt eine genaue Abklärung. Bist du angestellt und in einer
+Pensionskasse, gilt für dich der kleine 3a-Betrag, unabhängig vom Nebenerwerb.
+Erst wenn die Selbstständigkeit die Anstellung ersetzt und keine Pensionskasse mehr
+besteht, greift der grosse Abzug von bis zu 20 % des Nettoeinkommens. Die konkreten
+Höchstbeträge ändern jährlich — vor der Einzahlung prüfen.
+
+**Nebentätigkeit neben einer Anstellung:** Art. 321a Abs. 3 OR verbietet
+Konkurrenztätigkeit während des Arbeitsverhältnisses; viele Arbeitsverträge verlangen
+zusätzlich eine Meldung oder Zustimmung. Vertrag lesen, bevor du die Seite
+veröffentlichst — nicht danach.
+
+**Datenschutz:** Es gilt das revidierte DSG (seit September 2023), nicht die DSGVO.
+Sobald du für einen Kunden Personendaten bearbeitest — Newsletter-Empfänger sind
+Personendaten — brauchst du einen Auftragsbearbeitungsvertrag. Bei Kunden in der EU
+kommt die DSGVO zusätzlich dazu. Zugänge zu Kundentools nur über
+Einladungsfunktionen, keine Passwörter.
+
+**Website:** Es gibt keine Impressumspflicht wie in Deutschland, aber Art. 3 Abs. 1
+lit. s UWG verlangt bei kommerziellen Online-Angeboten klare Angaben zu Identität
+und Kontaktadresse. Eine Kontaktseite mit vollem Namen, Adresse und E-Mail erfüllt
+das.
+
+**Kunden im Ausland:** Bei Firmenkunden in Deutschland oder Österreich gilt das
+Empfängerortsprinzip — du fakturierst ohne schweizerische MWST, der Kunde versteuert
+die Leistung selbst. Das vergrössert deinen Markt erheblich. Dann aber in EUR
+anbieten und die Preise anpassen, nicht umrechnen.
+
+Das ist keine Rechts- oder Steuerberatung, und einige Beträge und Sätze ändern
+jährlich. Es sind die Punkte, an denen es sonst hakt — die aktuellen Zahlen holst du
+bei deiner kantonalen Ausgleichskasse und dem Steueramt, beide geben dazu kostenlos
+Auskunft.
 
 ## Wo es schiefgeht
 

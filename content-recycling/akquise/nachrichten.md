@@ -9,17 +9,30 @@ Ziel der ersten drei Wochen: **ein zahlender Kunde.** Nicht zehn Gespräche, nic
 
 Suche nach Unternehmen, bei denen **alle vier** zutreffen:
 
-1. **Regelmäßiger Podcast, YouTube-Kanal oder Webinar** — mindestens 10 Folgen, letzte
+1. **Regelmässiger Podcast, YouTube-Kanal oder Webinar** — mindestens 10 Folgen, letzte
    Folge nicht älter als 6 Wochen. Zeigt: sie halten durch und geben Geld dafür aus.
 2. **Tote Social-Kanäle.** Letzter LinkedIn-Post älter als 2 Wochen, oder nur
    Folgen-Ankündigungen. Das ist die Lücke, die du füllst.
 3. **B2B oder erklärungsbedürftige Leistung.** Agentur, Software, Beratung, Kanzlei,
    Steuerbüro, Handwerk mit Nische, Coaching mit Firmenkunden.
-4. **5 bis 50 Mitarbeitende.** Kleiner: kein Budget. Größer: Einkaufsprozess und Agentur.
+4. **5 bis 50 Mitarbeitende.** Kleiner: kein Budget. Grösser: Einkaufsprozess und Agentur.
 
-Wo du suchst: LinkedIn-Suche nach „Podcast" plus Branche · Spotify-Charts der
-Nischenkategorien · Apple Podcasts nach Kategorie · YouTube nach „Webinar" plus Branche ·
-Podcast-Verzeichnisse wie fyyd.de nach Region.
+Wo du suchst: LinkedIn-Suche nach „Podcast" plus Branche, Standort Schweiz · Spotify-
+und Apple-Charts der Nischenkategorien mit Länderfilter CH · YouTube nach „Webinar"
+plus Branche · Branchenverbände und Gewerbevereine deiner Region, die Mitgliederlisten
+veröffentlichen.
+
+Grösse prüfen ohne Rätselraten: **zefix.ch** ist das offizielle Handelsregister-
+Verzeichnis. Rechtsform, Gründungsjahr und Zeichnungsberechtigte stehen dort kostenlos —
+damit weisst du vor dem ersten Kontakt, wen du ansprechen musst und ob die Firma
+überhaupt in deine Grössenklasse fällt.
+
+**Auch Deutschland und Österreich sind dein Markt.** Der Schweizer Markt ist klein; du
+arbeitest ohnehin aus der Ferne. Bei Firmenkunden im Ausland gilt das
+Empfängerortsprinzip: Deine Leistung ist dort nicht mit schweizerischer MWST zu
+fakturieren, der Kunde versteuert sie selbst. Dann aber in EUR anbieten und die
+Preise nicht einfach umrechnen — deutsche Kunden zahlen für dieselbe Leistung
+regelmässig weniger.
 
 **Nicht ansprechen:** reine Medienhäuser (haben Redaktion), Ein-Personen-Coaches ohne
 Firmenkunden (kein Budget), alles mit einer Agentur in der Kanalbeschreibung.
@@ -57,7 +70,7 @@ zwei besten Posts redigieren, mitschicken. Fertig, nicht als Vorschlag.
 > Ankündigung. In jeder Folge stecken aber 8 bis 15 solcher Aussagen.
 >
 > Genau das mache ich: aus einer Folge wird ein Monat Social Media. Feste Preise,
-> ab 390 € im Monat. Wenn es interessant ist, schicke ich dir die Übersicht — wenn
+> ab 550 CHF im Monat. Wenn es interessant ist, schicke ich dir die Übersicht — wenn
 > nicht, behalte die Posts einfach.
 >
 > [Dein Name]
@@ -82,7 +95,7 @@ zwei besten Posts redigieren, mitschicken. Fertig, nicht als Vorschlag.
 >
 > Falls es gerade nicht passt, ist das völlig in Ordnung — ich melde mich nicht erneut.
 >
-> Freundliche Grüße
+> Freundliche Grüsse
 > [Dein Name]
 
 Der letzte Satz erhöht die Antwortquote messbar. Und du hältst dich daran.
@@ -99,7 +112,7 @@ Der letzte Satz erhöht die Antwortquote messbar. Und du hältst dich daran.
 >
 > Ich baue gerade genau daraus ein Angebot auf und suche zwei Betriebe, mit denen
 > ich anfange. Wenn du zu denen gehören willst, mache ich dir den ersten Monat für
-> 390 € statt 690 €. Wenn nicht: die Posts sind trotzdem deine.
+> 550 CHF statt 950 CHF. Wenn nicht: die Posts sind trotzdem deine.
 
 Nur für die ersten zwei bis drei Kunden. Danach nie wieder Rabatt gegen Referenz —
 sonst bleibt dein Preis für immer dort stehen.
@@ -139,8 +152,8 @@ nicht sofort einen Rabatt hinterherschieben. Die Pause ist unangenehm und gehör
 
 | Einwand | Antwort |
 |---|---|
-| „Zu teuer." | „Verstehe. Was kostet Sie eine Folge in der Produktion? … Dann geht es hier darum, ob dieses Budget einmal oder zwölfmal wirkt. Fangen Sie mit der Probefolge für 149 € an, dann sehen Sie es an Ihrem eigenen Material." |
-| „Das kann KI doch selbst." | „Ja, die Entwürfe. Das ist der Grund, warum es 690 € kostet und nicht 2.500. Was Sie bezahlen, ist die Auswahl: welche fünf von fünfzehn Aussagen funktionieren, und was rausfliegt." |
+| „Zu teuer." | „Verstehe. Was kostet Sie eine Folge in der Produktion? … Dann geht es hier darum, ob dieses Budget einmal oder zwölfmal wirkt. Fangen Sie mit der Probefolge für 220 CHF an, dann sehen Sie es an Ihrem eigenen Material." |
+| „Das kann KI doch selbst." | „Ja, die Entwürfe. Das ist der Grund, warum es 950 CHF kostet und nicht 3’500. Was Sie bezahlen, ist die Auswahl: welche fünf von fünfzehn Aussagen funktionieren, und was rausfliegt." |
 | „Wir machen das intern." | „Gut. Wie viele Posts sind im letzten Monat rausgegangen?" — Fast immer weniger als geplant. Dann: „Genau da setze ich an, ohne dass jemand bei Ihnen Kapazität abgeben muss." |
 | „Schicken Sie Unterlagen." | „Mache ich. Eine Frage noch, damit es passt: Wie viele Folgen im Monat?" — Unterlagen ohne diese Antwort sind verlorene Zeit. |
 | „Wir melden uns." | „Gern. Ich rufe am [konkreter Tag] kurz an, dann müssen Sie nicht daran denken." Termin nennen, keine offene Schleife. |
@@ -158,5 +171,5 @@ nicht sofort einen Rabatt hinterherschieben. Die Pause ist unangenehm und gehör
 | Laufendes Paket daraus | 1 |
 
 Ein Kunde aus 30 Kontakten ist ein normales Ergebnis, kein schlechtes. Bei
-1 von 30 und 690 € im Monat ist jeder Kontakt rund 23 € Umsatz im ersten Monat
+1 von 30 und 950 CHF im Monat ist jeder Kontakt rund 32 CHF Umsatz im ersten Monat
 wert — und der Kunde bleibt im Schnitt länger als ein Jahr.

@@ -49,7 +49,7 @@ Pro Aussage:
 - WIDERSPRUCH: Wem würde diese Aussage widersprechen? Leer lassen, wenn niemandem.
 
 Sortiere nach EIGNUNG. Erfinde keine Aussage, die nicht im Transkript steht.
-Reine Übergänge, Begrüßungen und Werbeblöcke lässt du weg.
+Reine Übergänge, Begrüssungen und Werbeblöcke lässt du weg.
 Aussagen ohne Widerspruch sind meist belanglos — markiere sie.
 ```
 
@@ -77,11 +77,11 @@ C) beginnt mit einer Frage, die der Leser sich selbst stellt
 
 Für alle drei gilt:
 - Erste Zeile muss allein stehen können, sie ist in der Vorschau alles was man sieht
-- Keine Emojis, außer das Stimmprofil weist sie ausdrücklich nach
+- Keine Emojis, ausser das Stimmprofil weist sie ausdrücklich nach
 - Verboten: "Lass mich dir verraten", "Spoiler", "Das ändert alles", "Viele denken,
   dass ...", "Und dann passierte etwas Verrücktes", jede Aufzählung mit Pfeilen
 - Nur Zahlen und Namen aus dem BELEG, keine zusätzlichen
-- Kein Aufruf zum Kommentieren am Ende, außer es passt inhaltlich
+- Kein Aufruf zum Kommentieren am Ende, ausser es passt inhaltlich
 - Keine Hashtags im Text; drei Vorschläge separat darunter
 ```
 
@@ -99,7 +99,7 @@ Schreibe einen Newsletter, 300–400 Wörter:
 - Vorschautext, 60–90 Zeichen, der die Betreffzeile ergänzt und nicht wiederholt
 - Einstieg: eine konkrete Situation, kein "in der neuen Folge sprechen wir über"
 - Hauptteil: die stärkste Aussage ausführen, mit dem Beleg
-- Ein Link zur Folge, an der Stelle wo die Neugier am größten ist — nicht am Ende
+- Ein Link zur Folge, an der Stelle wo die Neugier am grössten ist — nicht am Ende
 - Schluss: ein Satz, der auch ohne Klick etwas wert ist
 
 Die Mail muss für sich funktionieren. Wer nicht klickt, soll trotzdem etwas gelernt haben.

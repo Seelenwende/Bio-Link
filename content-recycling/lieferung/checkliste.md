@@ -55,7 +55,7 @@ liegt es fast immer an Schritt 5 — dann ist das Stimmprofil zu dünn.
 1. **Nie Rohausgabe ausliefern.** Der Kunde zahlt für Urteilsvermögen, nicht für Textmenge.
 2. **Nie eine Zahl übernehmen, die du nicht im Transkript gesehen hast.**
 3. **Keine Meinung zu Politik, Religion, Gesundheit oder Wettbewerbern** ohne ausdrückliche
-   Freigabe — auch wenn der Kunde sie im Podcast äußert. Im Post fehlt der Kontext.
+   Freigabe — auch wenn der Kunde sie im Podcast äussert. Im Post fehlt der Kontext.
 4. **Freigabe vor Veröffentlichung, immer.** Auch bei Kunden, die sagen, es sei nicht nötig.
 5. **Ab Kunde 3 delegierst du Schritt „Transkript" und „Posts erzeugen".**
    Redaktion und Stimmprofil bleiben bei dir. Das ist die Grenze zwischen Auftrag und Betrieb.
