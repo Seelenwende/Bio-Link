@@ -45,6 +45,42 @@ export async function getProfile() {
 }
 
 /**
+ * Ermittelt zu einem Access Token das zugehörige Instagram-Konto (User-ID + Name),
+ * damit man in der App nur das Token einfügen muss.
+ */
+export async function lookupAccount(token, host = "graph.instagram.com") {
+  const version = process.env.IG_API_VERSION || "v23.0";
+  const get = async (pathname, fields) => {
+    const res = await fetch(`https://${host}/${version}/${pathname}?${new URLSearchParams({ fields, access_token: token })}`);
+    const json = await res.json().catch(() => ({}));
+    if (!res.ok || json.error) throw new Error(`Instagram API: ${json.error?.message || `HTTP ${res.status}`}`);
+    return json;
+  };
+  if (host === "graph.facebook.com") {
+    // Facebook Login: Instagram-Konto hängt an einer Facebook-Seite
+    const { data = [] } = await get("me/accounts", "instagram_business_account{id,username}");
+    const ig = data.map((p) => p.instagram_business_account).find(Boolean);
+    if (!ig) throw new Error("Kein mit einer Facebook-Seite verknüpftes Instagram-Business-Konto gefunden.");
+    return { userId: ig.id, username: ig.username };
+  }
+  const me = await get("me", "user_id,username,account_type");
+  if (me.account_type && !["BUSINESS", "MEDIA_CREATOR", "CREATOR"].includes(me.account_type)) {
+    throw new Error("Dein Konto ist kein Business- oder Creator-Konto. Bitte in der Instagram-App umstellen.");
+  }
+  return { userId: String(me.user_id || me.id), username: me.username };
+}
+
+/** Verlängert ein langlebiges Instagram-Token (nur Instagram Login). */
+export async function refreshToken(token) {
+  const res = await fetch(
+    `https://graph.instagram.com/refresh_access_token?${new URLSearchParams({ grant_type: "ig_refresh_token", access_token: token })}`,
+  );
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok || !json.access_token) throw new Error(`Token-Verlängerung fehlgeschlagen: ${json.error?.message || `HTTP ${res.status}`}`);
+  return { token: json.access_token, expiresIn: json.expires_in };
+}
+
+/**
  * Veröffentlicht ein Reel.
  * @param {object} opts
  * @param {string} opts.file        lokaler Pfad zum MP4

@@ -1,59 +1,59 @@
 # 🎬 Reel-Agent · Seelenwende
 
-Dein virtueller Instagram-Reel-Agent. Du beschreibst, **worum es im Reel gehen soll** – der Agent erledigt den Rest:
+Dein virtueller Instagram-Reel-Agent – **alles in einem Werkzeug**. Du sagst ihm im Chat in deinen eigenen Worten, was du willst, und er erledigt den Rest:
 
-1. **Drehbuch** – Claude schreibt Hook, Szenen-Texte, Caption und Hashtags in deiner Markenstimme und wählt Musikstimmung und Farben.
-2. **Bearbeiten** – du kannst alles anpassen: Texte, Szenenlänge, Reihenfolge, Farben, Musik, eigene Fotos.
-3. **Rendern** – der Agent erstellt ein fertiges Reel (1080×1920, MP4/H.264, 30 fps) mit sanften Übergängen, Ken-Burns-Zoom und **eigens generierter, lizenzfreier Musik**. Alternativ lädst du einen eigenen Musiktitel hoch.
-4. **Veröffentlichen** – ein Klick, eine Bestätigung, dann ist das Reel auf deinem Kanal (offizielle Instagram Graph API).
+- **Drehbuch schreiben** – Hook, Szenen-Texte, Caption und Hashtags in deiner Markenstimme
+- **Überarbeiten** – „Mach den Hook neugieriger“, „kürzer“, „energischere Musik“ – oder selbst im Editor ändern
+- **Video mit Musik erstellen** – 1080×1920, sanfte Übergänge, **eigens komponierte, lizenzfreie Musik**; optional deine Fotos und eigene Musik
+- **Posten oder einplanen** – „Poste es jetzt“ oder „Plane es für Freitag 18 Uhr ein“ – immer erst nach deinem Klick auf *Bestätigen*
+- **Einrichten** – Claude-Key, Marke und Instagram-Verbindung direkt in der App unter ⚙️ Einstellungen
 
 ---
 
-## Schnellstart
+## Starten – per Doppelklick
 
-Voraussetzung: [Node.js](https://nodejs.org) ab Version 20. ffmpeg und die Schriften sind bereits enthalten.
+Einmalig [Node.js](https://nodejs.org) (LTS-Version) installieren. Danach im Ordner `reel-agent`:
+
+- **Windows:** `Reel-Agent starten.bat` doppelklicken
+- **Mac:** `Reel-Agent starten.command` doppelklicken (beim ersten Mal: Rechtsklick → *Öffnen*)
+
+Beim ersten Start werden die Bausteine automatisch installiert, dann öffnet sich der Agent im Browser (http://localhost:3000). Das schwarze Fenster offen lassen – solange es läuft, werden auch geplante Posts veröffentlicht.
+
+<details><summary>Alternativ im Terminal</summary>
 
 ```bash
 cd reel-agent
 npm install
-cp .env.example .env      # dann .env ausfüllen (siehe unten)
 npm start
 ```
+</details>
 
-Dann im Browser **http://localhost:3000** öffnen.
+## Einrichten – in der App unter ⚙️ Einstellungen
 
-> Ohne Claude-API-Key läuft der Agent im **Offline-Modus**: Dein Text wird dann nur in Sätze/Szenen aufgeteilt. Ohne Instagram-Zugang kannst du Reels erstellen und herunterladen, aber nicht direkt posten.
+Beim ersten Start öffnen sich die Einstellungen automatisch. Alles wird nur lokal auf deinem Rechner gespeichert (`data/settings.json`).
 
-## 1. Claude verbinden (Drehbücher)
+**1 · Claude** (schreibt die Drehbücher und führt den Chat): API-Key auf [console.anthropic.com](https://console.anthropic.com/settings/keys) erstellen und einfügen.
 
-1. Auf [console.anthropic.com](https://console.anthropic.com/) einen API-Key erstellen.
-2. In `.env` eintragen: `ANTHROPIC_API_KEY=sk-ant-...`
+**2 · Marke:** Name, Instagram-Handle und Markenstimme – der Agent schreibt dann in deinem Ton.
 
-Optional passt du in `.env` deine Marke an: `BRAND_NAME`, `BRAND_HANDLE`, `BRAND_VOICE`.
+**3 · Instagram verbinden** (zum Posten). Instagram erlaubt das nur für **Business- oder Creator-Konten**. Einmalig ca. 10 Minuten:
 
-## 2. Instagram verbinden (Veröffentlichen)
+1. In der Instagram-App: Einstellungen → *Kontoart und Tools* → *Professionelles Konto* (Creator oder Business).
+2. Auf [developers.facebook.com/apps](https://developers.facebook.com/apps) → *App erstellen* → Anwendungsfall **„Nachrichten und Inhalte auf Instagram verwalten“**.
+3. Unter *API-Einrichtung mit Instagram-Login* die Berechtigung `instagram_business_content_publish` hinzufügen, dein Konto verknüpfen und **Token generieren**.
+4. Token in der App einfügen → **Verbinden**. Konto-ID und Name ermittelt der Agent selbst, und er **verlängert das Token automatisch**, damit die Verbindung nicht nach 60 Tagen abreißt.
 
-Instagram erlaubt das Posten per API nur für **Business- oder Creator-Konten**. Einmalige Einrichtung (ca. 15 Minuten):
+> Da du die Meta-App nur für dein eigenes Konto nutzt, reicht der **Entwicklungsmodus** – ein App-Review ist nicht nötig, solange dein Konto in der App eingetragen ist.
 
-1. **Konto umstellen:** In der Instagram-App → Einstellungen → *Kontoart und Tools* → auf *Professionelles Konto* (Creator oder Business) wechseln.
-2. **Meta-App anlegen:** Auf [developers.facebook.com/apps](https://developers.facebook.com/apps) → *App erstellen* → Anwendungsfall **„Nachrichten und Inhalte auf Instagram verwalten“** (Instagram API) wählen.
-3. **Berechtigungen:** Im Bereich *Instagram → API-Einrichtung mit Instagram-Login* die Berechtigungen `instagram_business_basic` und `instagram_business_content_publish` hinzufügen.
-4. **Konto verknüpfen & Token erzeugen:** Unter *Zugriffstoken generieren* dein Instagram-Konto hinzufügen und anmelden. Du erhältst ein **Access Token** (langlebig, 60 Tage gültig) und siehst deine **Instagram-User-ID**.
-5. In `.env` eintragen:
-   ```
-   IG_ACCESS_TOKEN=IGAA...
-   IG_USER_ID=1784...
-   ```
-6. Agent neu starten. Oben erscheint „Instagram: @dein_name“ ✅
+Ohne Claude-Key kannst du im Bereich „Drehbuch & Material“ trotzdem Reels erstellen (der Text wird dann nur in Szenen aufgeteilt); ohne Instagram-Verbindung kannst du Reels herunterladen.
 
-> Da du die App nur für dein eigenes Konto nutzt, reicht der **Entwicklungsmodus** der Meta-App – ein App-Review ist nicht nötig, solange dein Konto als Tester/Rolle in der App eingetragen ist.
+## Beispiele für den Chat
 
-**Token verlängern:** Langlebige Tokens laufen nach 60 Tagen ab. Vorher erneuern mit:
-```
-https://graph.instagram.com/refresh_access_token?grant_type=ig_refresh_token&access_token=DEIN_TOKEN
-```
-
-**Facebook-Login statt Instagram-Login?** Dann `IG_GRAPH_HOST=graph.facebook.com` setzen und ein Page-Token mit `instagram_basic` + `instagram_content_publish` verwenden.
+- „Mach mir ein 20-Sekunden-Reel über 3 sanfte Morgenrituale für Frauen, die sich im Alltag verlieren.“
+- „Der Hook soll eine Frage sein. Und nimm verträumte Musik.“
+- „Erstelle das Video mit meinen hochgeladenen Fotos.“
+- „Poste es morgen um 18 Uhr.“ → Bestätigen-Karte erscheint → Klick → eingeplant
+- „Was ist gerade geplant?“ / „Storniere den Post am Freitag.“
 
 ## So entsteht ein Reel
 
@@ -63,9 +63,9 @@ https://graph.instagram.com/refresh_access_token?grant_type=ig_refresh_token&acc
 | Drehbuch | 3–10 Szenen: Hook → Inhalt → Call-to-Action, Dauer nach Lesezeit |
 | Musik | 5 Stimmungen (ruhig, verträumt, aufbauend, energiegeladen, melancholisch) – jede Musik wird neu komponiert, passend zur Reel-Länge, mit Ein- und Ausblendung |
 | Design | Markenfarben & Schriften der Seelenwende-Seite (Playfair Display, Jost), Schmetterlings-Signet, Handle-Einblendung; optional eigene Fotos als Hintergrund |
-| Veröffentlichen | Upload → Instagram verarbeitet → Reel ist online, Link wird angezeigt |
+| Veröffentlichen | sofort oder geplant: Upload → Instagram verarbeitet → Reel ist online, Link wird angezeigt |
 
-Alle Reels werden unter `output/` gespeichert und erscheinen in „Meine Reels“.
+Alle Reels werden unter `output/` gespeichert und erscheinen in „Meine Reels“. Geplante Posts stehen rechts unter „Geplante Posts“ und werden veröffentlicht, solange der Agent läuft (ist er zum geplanten Zeitpunkt aus, wird der Post beim nächsten Start nachgeholt).
 
 ## Musik – wichtig zu wissen
 
@@ -73,15 +73,14 @@ Alle Reels werden unter `output/` gespeichert und erscheinen in „Meine Reels�
 - Über die API lassen sich **keine Titel aus der Instagram-Musikbibliothek** anhängen – das geht nur in der App. Wenn du einen Trend-Sound willst: Reel hier erstellen, herunterladen und in der Instagram-App mit Musik versehen.
 - Bei **eigenen Musikdateien** nur Titel verwenden, für die du die Rechte hast (z. B. lizenzfreie Musik), sonst kann Instagram den Ton stummschalten.
 
-## Einstellungen (`.env`)
+## Erweiterte Einstellungen (`.env`, optional)
+
+Für die normale Nutzung nicht nötig – alles Wichtige geht über ⚙️ in der App. Für Sonderfälle kannst du `.env.example` nach `.env` kopieren:
 
 | Variable | Bedeutung |
 |---|---|
-| `ANTHROPIC_API_KEY` | Claude-API-Key für die Drehbücher |
 | `ANTHROPIC_MODEL` | optional, Standard `claude-opus-5` |
-| `BRAND_NAME`, `BRAND_HANDLE`, `BRAND_VOICE` | Markenangaben für Texte und Einblendung |
-| `IG_ACCESS_TOKEN`, `IG_USER_ID` | Instagram-Zugang |
-| `IG_GRAPH_HOST` | `graph.instagram.com` (Standard) oder `graph.facebook.com` |
+| `TZ_NAME` | Zeitzone für geplante Posts, Standard `Europe/Berlin` |
 | `IG_UPLOAD_MODE` | `resumable` (Datei direkt hochladen, Standard) oder `url` (Instagram lädt über `PUBLIC_BASE_URL`) |
 | `PORT`, `HOST` | Server-Adresse. Standard nur lokal (`127.0.0.1`) |
 | `APP_PASSWORD` | Passwortschutz (Benutzer `reel`), **Pflicht**, wenn der Agent im Netzwerk/Internet erreichbar ist |
@@ -89,14 +88,18 @@ Alle Reels werden unter `output/` gespeichert und erscheinen in „Meine Reels�
 ## Entwicklung
 
 ```bash
-npm test        # Tests (Musik, Drehbuch, Instagram-Ablauf mit simulierter API)
+npm test        # Tests (Musik, Drehbuch, Zeitplanung, Instagram-Ablauf mit simulierter API)
 npm run dev     # Server mit Auto-Neustart
 ```
 
 Aufbau:
 
 ```
-src/server.js     Web-Server & API (Planen, Rendern, Veröffentlichen, Verlauf)
+src/server.js     Web-Server & API
+src/agent.js      Chat-Agent (Claude mit Werkzeugen: Drehbuch, Rendern, Posten, Planen)
+src/reels.js      Reels speichern, veröffentlichen, Zeitplanung, Token-Verlängerung
+src/settings.js   Einstellungen aus der App (data/settings.json)
+src/jobs.js       Hintergrund-Aufträge mit Fortschritt
 src/planner.js    Drehbuch mit Claude (strukturierte JSON-Ausgabe) + Offline-Modus
 src/music.js      Musik-Synthesizer (Akkorde, Pad, Arpeggio, Bass, Beat, Hall)
 src/render.js     Szenenbilder (SVG → PNG) + Videoschnitt mit ffmpeg

@@ -4,9 +4,9 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { MOODS } from "./music.js";
 
-const MODEL = process.env.ANTHROPIC_MODEL || "claude-opus-5";
+export const model = () => process.env.ANTHROPIC_MODEL || "claude-opus-5";
 
-const PLAN_SCHEMA = {
+export const PLAN_SCHEMA = {
   type: "object",
   additionalProperties: false,
   required: ["title", "scenes", "music", "palette", "caption", "hashtags"],
@@ -53,13 +53,11 @@ const PLAN_SCHEMA = {
   },
 };
 
-const SYSTEM = `Du bist ein erfahrener Social-Media-Creator und schreibst Drehbücher für Instagram-Reels im Text-on-Screen-Stil.
-
-Marke: ${process.env.BRAND_NAME || "Seelenwende"} (${process.env.BRAND_HANDLE || "@_seelenwende"}).
+export const brandContext = () => `Marke: ${process.env.BRAND_NAME || "Seelenwende"} (${process.env.BRAND_HANDLE || "@_seelenwende"}).
 Markenstimme: ${process.env.BRAND_VOICE || "warm, achtsam, ermutigend, nahbar – Themen rund um Selbstfindung, innere Ruhe und persönliche Wandlung. Sprich die Zuschauer mit 'du' an."}
-Markenfarben (wenn nichts anderes gewünscht): Papier #FAF6F4, Sand #F3ECE9, Rosé #B5808F, Beere #8C5A69, Pflaume #5C3A46.
+Markenfarben (wenn nichts anderes gewünscht): Papier #FAF6F4, Sand #F3ECE9, Rosé #B5808F, Beere #8C5A69, Pflaume #5C3A46.`;
 
-Regeln für gute Reels:
+export const REEL_RULES = `Regeln für gute Reels:
 - Szene 1 ist ein starker Hook, der in unter 2 Sekunden neugierig macht.
 - Kurze, gut lesbare Texte – eine Aussage pro Szene. Kein Fließtext. Keine Emojis im Bildschirmtext (in der Caption sind sie erlaubt).
 - Die Dauer jeder Szene richtet sich nach der Lesezeit (ca. 3 Wörter pro Sekunde + 1 Sekunde).
@@ -68,8 +66,14 @@ Regeln für gute Reels:
 - Die Caption vertieft den Inhalt, beginnt mit einer fesselnden ersten Zeile und endet mit einer Frage oder einem CTA.
 - Schreibe in der Sprache der Vorgabe (Standard: Deutsch).`;
 
-let client;
-const getClient = () => (client ??= new Anthropic());
+const system = () => `Du bist ein erfahrener Social-Media-Creator und schreibst Drehbücher für Instagram-Reels im Text-on-Screen-Stil.
+
+${brandContext()}
+
+${REEL_RULES}`;
+
+// Neuer Client pro Aufruf, damit ein in der App geänderter API-Key sofort greift
+export const getClient = () => new Anthropic();
 
 export const hasClaude = () => Boolean(process.env.ANTHROPIC_API_KEY || process.env.ANTHROPIC_AUTH_TOKEN);
 
@@ -94,13 +98,13 @@ export async function planReel({ brief, duration = 20, mood = "auto", style = ""
     .join("\n\n");
 
   const response = await getClient().beta.messages.create({
-    model: MODEL,
+    model: model(),
     max_tokens: 16000,
     betas: ["server-side-fallback-2026-07-01"],
     fallbacks: "default",
     thinking: { type: "adaptive" },
     output_config: { effort: "medium", format: { type: "json_schema", schema: PLAN_SCHEMA } },
-    system: SYSTEM,
+    system: system(),
     messages: [{ role: "user", content: userPrompt }],
   });
 

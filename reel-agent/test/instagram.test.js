@@ -42,3 +42,19 @@ test("Veröffentlichung: Container → Upload → Status → Publish", async () 
     globalThis.setTimeout = realTimeout;
   }
 });
+
+test("Verbinden: Token → User-ID und Name werden automatisch ermittelt", async () => {
+  const { lookupAccount } = await import("../src/instagram.js");
+  const realFetch = globalThis.fetch;
+  globalThis.fetch = async (url) => {
+    assert.match(String(url), /graph\.instagram\.com\/v\d+\.\d+\/me\?/);
+    return new Response(JSON.stringify({ user_id: "1784", username: "_seelenwende", account_type: "MEDIA_CREATOR" }));
+  };
+  try {
+    assert.deepEqual(await lookupAccount("tok"), { userId: "1784", username: "_seelenwende" });
+    globalThis.fetch = async () => new Response(JSON.stringify({ user_id: "1", username: "x", account_type: "PERSONAL" }));
+    await assert.rejects(lookupAccount("tok"), /Business- oder Creator/);
+  } finally {
+    globalThis.fetch = realFetch;
+  }
+});

@@ -1,28 +1,33 @@
 import "dotenv/config";
+import { loadSettings, saveSettings, publicSettings } from "./settings.js";
+await loadSettings();
+
 import express from "express";
 import multer from "multer";
-import { randomUUID, timingSafeEqual } from "node:crypto";
-import { mkdir, readdir, readFile, writeFile, rm } from "node:fs/promises";
-import { existsSync } from "node:fs";
+import { timingSafeEqual } from "node:crypto";
+import { mkdir, rm } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
-import { planReel, normalizePlan, hasClaude } from "./planner.js";
-import { renderReel, totalDuration } from "./render.js";
-import { publishReel, isInstagramConfigured, getProfile } from "./instagram.js";
+import { planReel, hasClaude } from "./planner.js";
+import { totalDuration } from "./render.js";
+import { isInstagramConfigured, getProfile, lookupAccount } from "./instagram.js";
 import { MOODS } from "./music.js";
+import { startJob, getJob } from "./jobs.js";
+import {
+  OUTPUT, TZ, storeAsset, createReel, listReels, deleteReel, publishNow,
+  addSchedule, listSchedule, cancelSchedule, startScheduler,
+} from "./reels.js";
+import { getSession, chat, confirmPending } from "./agent.js";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
-const OUTPUT = path.join(ROOT, "output");
 const UPLOADS = path.join(ROOT, "uploads");
-await mkdir(OUTPUT, { recursive: true });
 await mkdir(UPLOADS, { recursive: true });
 
 const PORT = Number(process.env.PORT || 3000);
 const HOST = process.env.HOST || "127.0.0.1";
-const HANDLE = process.env.BRAND_HANDLE || "@_seelenwende";
 
 const app = express();
-app.use(express.json({ limit: "1mb" }));
+app.use(express.json({ limit: "2mb" }));
 
 // Optionaler Passwortschutz, falls der Agent öffentlich erreichbar ist
 if (process.env.APP_PASSWORD) {
@@ -41,164 +46,157 @@ app.use("/reels", express.static(OUTPUT, { index: false }));
 
 const upload = multer({
   dest: UPLOADS,
-  limits: { fileSize: 50 * 1024 * 1024, files: 13 },
+  limits: { fileSize: 50 * 1024 * 1024, files: 1 },
   fileFilter: (req, file, cb) => {
-    const ok =
-      file.fieldname === "images" ? /^image\/(jpeg|png|webp)$/.test(file.mimetype) : /^audio\//.test(file.mimetype);
+    const ok = /^image\/(jpeg|png|webp)$/.test(file.mimetype) || /^audio\//.test(file.mimetype);
     cb(ok ? null : new Error(`Dateityp nicht unterstützt: ${file.originalname}`), ok);
   },
 });
 
-// Laufende Render-/Veröffentlichungsaufträge (im Speicher)
-const jobs = new Map();
-const newJob = (type) => {
-  const job = { id: randomUUID(), type, status: "running", step: "Startet …", result: null, error: null };
-  jobs.set(job.id, job);
-  return job;
-};
-const runJob = (job, fn) =>
-  fn(job)
-    .then((result) => Object.assign(job, { status: "done", result }))
-    .catch((err) => {
-      console.error(`[${job.type}]`, err);
-      Object.assign(job, { status: "error", error: err.message });
-    });
-
-const reelDir = (id) => {
-  if (!/^[0-9a-f-]{36}$/.test(id)) throw new Error("Ungültige Reel-ID");
-  return path.join(OUTPUT, id);
+const wrap = (fn) => async (req, res) => {
+  try {
+    res.json(await fn(req, res));
+  } catch (e) {
+    console.error(`[${req.method} ${req.path}]`, e.message);
+    res.status(400).json({ error: e.message });
+  }
 };
 
-app.get("/api/status", async (req, res) => {
-  let instagram = { configured: isInstagramConfigured() };
-  if (instagram.configured) {
+// ---------- Status & Einstellungen ----------
+
+app.get("/api/status", wrap(async () => {
+  const instagram = { configured: isInstagramConfigured(), username: process.env.IG_USERNAME || null };
+  if (instagram.configured && !instagram.username) {
     try {
       instagram.username = (await getProfile()).username;
     } catch (e) {
       instagram.error = e.message;
     }
   }
-  res.json({ claude: hasClaude(), instagram, handle: HANDLE, moods: Object.fromEntries(Object.entries(MOODS).map(([k, v]) => [k, v.label])) });
-});
+  return {
+    claude: hasClaude(),
+    instagram,
+    handle: process.env.BRAND_HANDLE || "@_seelenwende",
+    timezone: TZ,
+    moods: Object.fromEntries(Object.entries(MOODS).map(([k, v]) => [k, v.label])),
+  };
+}));
 
-app.post("/api/plan", async (req, res) => {
+app.get("/api/settings", wrap(async () => publicSettings()));
+
+app.post("/api/settings", wrap(async (req) => {
+  const { ANTHROPIC_API_KEY, BRAND_NAME, BRAND_HANDLE, BRAND_VOICE } = req.body ?? {};
+  await saveSettings({ ANTHROPIC_API_KEY, BRAND_NAME, BRAND_HANDLE, BRAND_VOICE });
+  return publicSettings();
+}));
+
+app.post("/api/instagram/connect", wrap(async (req) => {
+  const token = String(req.body?.token ?? "").trim();
+  const host = req.body?.host === "graph.facebook.com" ? "graph.facebook.com" : "graph.instagram.com";
+  if (!token) throw new Error("Bitte füge dein Instagram-Access-Token ein.");
+  const account = await lookupAccount(token, host);
+  await saveSettings({
+    IG_ACCESS_TOKEN: token,
+    IG_USER_ID: account.userId,
+    IG_USERNAME: account.username,
+    IG_GRAPH_HOST: host,
+    IG_TOKEN_REFRESHED_AT: new Date().toISOString(),
+  });
+  return account;
+}));
+
+app.post("/api/instagram/disconnect", wrap(async () => {
+  await saveSettings({ IG_ACCESS_TOKEN: "", IG_USER_ID: "", IG_USERNAME: "", IG_TOKEN_REFRESHED_AT: "" });
+  return { ok: true };
+}));
+
+// ---------- Drehbuch, Dateien, Rendern ----------
+
+app.post("/api/plan", wrap(async (req) => {
+  const { brief, duration, mood, style } = req.body ?? {};
+  const plan = await planReel({ brief, duration: Math.min(90, Math.max(5, Number(duration) || 20)), mood, style });
+  return { plan, duration: totalDuration(plan), ai: hasClaude() };
+}));
+
+app.post("/api/assets", upload.single("file"), async (req, res) => {
   try {
-    const { brief, duration, mood, style } = req.body ?? {};
-    const plan = await planReel({ brief, duration: Math.min(90, Math.max(5, Number(duration) || 20)), mood, style });
-    res.json({ plan, duration: totalDuration(plan), ai: hasClaude() });
+    if (!req.file) throw new Error("Keine Datei empfangen");
+    res.json(await storeAsset(req.file));
   } catch (e) {
-    console.error("[plan]", e);
+    if (req.file) await rm(req.file.path, { force: true });
     res.status(400).json({ error: e.message });
   }
 });
 
-app.post(
-  "/api/render",
-  upload.fields([{ name: "images", maxCount: 12 }, { name: "music", maxCount: 1 }]),
-  async (req, res) => {
-    const files = [...(req.files?.images ?? []), ...(req.files?.music ?? [])];
-    let plan;
+app.post("/api/render", wrap(async (req) => {
+  const { plan, imageIds, musicId, showHandle } = req.body ?? {};
+  const job = startJob("render", (j) => createReel({ plan, imageIds, musicId, showHandle: showHandle !== false }, (s) => (j.step = s)));
+  return { jobId: job.id };
+}));
+
+app.get("/api/reels", wrap(() => listReels()));
+app.delete("/api/reels/:id", wrap(async (req) => {
+  await deleteReel(req.params.id);
+  return { ok: true };
+}));
+
+// ---------- Veröffentlichen & Planen ----------
+
+app.post("/api/publish/:id", wrap(async (req) => {
+  if (!isInstagramConfigured()) throw new Error("Instagram ist noch nicht verbunden (⚙️ Einstellungen).");
+  const { caption, shareToFeed } = req.body ?? {};
+  const job = startJob("publish", (j) => publishNow(req.params.id, { caption, shareToFeed: shareToFeed !== false }, (s) => (j.step = s)));
+  return { jobId: job.id };
+}));
+
+app.get("/api/schedule", wrap(() => listSchedule()));
+app.post("/api/schedule", wrap(async (req) => {
+  if (!isInstagramConfigured()) throw new Error("Instagram ist noch nicht verbunden (⚙️ Einstellungen).");
+  const { reelId, caption, at, shareToFeed } = req.body ?? {};
+  return addSchedule({ reelId, caption, at, shareToFeed: shareToFeed !== false });
+}));
+app.delete("/api/schedule/:id", wrap(async (req) => {
+  await cancelSchedule(req.params.id);
+  return { ok: true };
+}));
+
+// ---------- Chat-Agent ----------
+
+app.post("/api/agent/chat", wrap(async (req) => {
+  const { sessionId, message, context } = req.body ?? {};
+  const session = getSession(sessionId);
+  if (session.busy) throw new Error("Der Agent arbeitet noch an deiner letzten Nachricht.");
+  session.busy = true;
+  const job = startJob("agent", async (j) => {
     try {
-      plan = normalizePlan(JSON.parse(req.body.plan || "{}"));
-      if (totalDuration(plan) > 90) throw new Error("Reels dürfen über die API maximal 90 Sekunden lang sein.");
-    } catch (e) {
-      await Promise.all(files.map((f) => rm(f.path, { force: true })));
-      return res.status(400).json({ error: e.message });
+      return await chat(session, message, context, (s) => (j.step = s));
+    } finally {
+      session.busy = false;
     }
-
-    const job = newJob("render");
-    const id = randomUUID();
-    runJob(job, async (j) => {
-      const dir = reelDir(id);
-      await mkdir(dir, { recursive: true });
-      try {
-        j.step = "Szenen & Musik werden erstellt …";
-        const { duration } = await renderReel(plan, {
-          outFile: path.join(dir, "reel.mp4"),
-          workDir: path.join(dir, "work"),
-          images: (req.files?.images ?? []).map((f) => f.path),
-          musicFile: req.files?.music?.[0]?.path,
-          handle: req.body.showHandle === "false" ? "" : HANDLE,
-        });
-        const meta = { id, createdAt: new Date().toISOString(), duration, plan, published: null };
-        await writeFile(path.join(dir, "meta.json"), JSON.stringify(meta, null, 2));
-        return { ...meta, video: `/reels/${id}/reel.mp4`, thumb: `/reels/${id}/reel.jpg` };
-      } catch (e) {
-        await rm(dir, { recursive: true, force: true });
-        throw e;
-      } finally {
-        await Promise.all(files.map((f) => rm(f.path, { force: true })));
-      }
-    });
-    res.status(202).json({ jobId: job.id });
-  },
-);
-
-app.post("/api/publish/:id", async (req, res) => {
-  let dir;
-  try {
-    dir = reelDir(req.params.id);
-    if (!existsSync(path.join(dir, "reel.mp4"))) throw new Error("Reel nicht gefunden");
-  } catch (e) {
-    return res.status(404).json({ error: e.message });
-  }
-  if (!isInstagramConfigured()) return res.status(400).json({ error: "Instagram ist noch nicht verbunden (siehe README)." });
-
-  const caption = String(req.body?.caption ?? "").trim();
-  const job = newJob("publish");
-  runJob(job, async (j) => {
-    const base = process.env.PUBLIC_BASE_URL?.replace(/\/$/, "");
-    const result = await publishReel({
-      file: path.join(dir, "reel.mp4"),
-      publicUrl: base ? `${base}/reels/${req.params.id}/reel.mp4` : undefined,
-      caption,
-      shareToFeed: req.body?.shareToFeed !== false,
-      thumbOffsetMs: 1000,
-      onProgress: (s) => (j.step = s),
-    });
-    const metaPath = path.join(dir, "meta.json");
-    const meta = JSON.parse(await readFile(metaPath, "utf8"));
-    meta.published = { ...result, at: new Date().toISOString(), caption };
-    await writeFile(metaPath, JSON.stringify(meta, null, 2));
-    return result;
   });
-  res.status(202).json({ jobId: job.id });
-});
+  return { jobId: job.id, sessionId: session.id };
+}));
+
+app.post("/api/agent/confirm", wrap(async (req) => {
+  const session = getSession(req.body?.sessionId);
+  const approve = req.body?.approve === true;
+  const job = startJob("confirm", (j) => confirmPending(session, approve, (s) => (j.step = s)));
+  return { jobId: job.id };
+}));
 
 app.get("/api/jobs/:id", (req, res) => {
-  const job = jobs.get(req.params.id);
+  const job = getJob(req.params.id);
   if (!job) return res.status(404).json({ error: "Auftrag nicht gefunden" });
   res.json(job);
-});
-
-app.get("/api/reels", async (req, res) => {
-  const reels = [];
-  for (const id of await readdir(OUTPUT)) {
-    try {
-      const meta = JSON.parse(await readFile(path.join(OUTPUT, id, "meta.json"), "utf8"));
-      reels.push({ ...meta, video: `/reels/${id}/reel.mp4`, thumb: `/reels/${id}/reel.jpg` });
-    } catch {
-      // unvollständige Ordner überspringen
-    }
-  }
-  reels.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
-  res.json(reels);
-});
-
-app.delete("/api/reels/:id", async (req, res) => {
-  try {
-    await rm(reelDir(req.params.id), { recursive: true, force: true });
-    res.json({ ok: true });
-  } catch (e) {
-    res.status(400).json({ error: e.message });
-  }
 });
 
 app.use((err, req, res, next) => {
   res.status(400).json({ error: err.message });
 });
 
+startScheduler();
 app.listen(PORT, HOST, () => {
   console.log(`🎬 Reel-Agent läuft auf http://${HOST === "0.0.0.0" ? "localhost" : HOST}:${PORT}`);
-  console.log(`   Claude: ${hasClaude() ? "aktiv" : "nicht konfiguriert (Offline-Modus)"} · Instagram: ${isInstagramConfigured() ? "verbunden" : "nicht verbunden"}`);
+  console.log(`   Claude: ${hasClaude() ? "aktiv" : "nicht eingerichtet"} · Instagram: ${isInstagramConfigured() ? "verbunden" : "nicht verbunden"}`);
+  console.log("   Einstellungen findest du in der App unter ⚙️.");
 });

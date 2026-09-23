@@ -10,38 +10,68 @@
 <style>
   :root{
     --papier:#FAF6F4; --sand:#F3ECE9; --rose:#B5808F; --beere:#8C5A69;
-    --pflaume:#5C3A46; --gedaempft:#8E7079; --linie:#E4D8D8; --weiss:#FFFDFC;
+    --pflaume:#5C3A46; --gedaempft:#8E7079; --linie:#E4D8D8; --weiss:#FFFDFC; --mikro:#C3AEB2;
     --ok:#5E8C6A; --fehler:#B04A4A;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{background:var(--papier);color:var(--pflaume);font-family:"Jost",sans-serif;font-weight:300;line-height:1.6;-webkit-font-smoothing:antialiased}
-  .wrap{max-width:1100px;margin:0 auto;padding:32px 16px 64px}
-  header{text-align:center;margin-bottom:28px}
-  header svg{width:48px;height:48px}
+  .wrap{max-width:1180px;margin:0 auto;padding:24px 16px 64px}
+  header{display:flex;align-items:center;gap:14px;margin-bottom:22px;flex-wrap:wrap}
+  header svg{width:44px;height:44px;flex:none}
   header svg *{fill:none;stroke:var(--rose);stroke-width:1.5;stroke-linecap:round}
   header svg .f{fill:var(--rose);stroke:none}
-  h1{font-family:"Playfair Display",serif;font-weight:500;font-size:30px;margin-top:6px}
-  .handle{font-family:"Playfair Display",serif;font-size:11px;letter-spacing:.36em;text-transform:uppercase;color:var(--rose)}
-  .status{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px;font-size:13px}
-  .pill{border:1px solid var(--linie);border-radius:99px;padding:3px 12px;background:var(--weiss)}
-  .pill.on::before{content:"● ";color:var(--ok)} .pill.off::before{content:"● ";color:var(--mikro,#C3AEB2)}
-  .grid{display:grid;grid-template-columns:1fr 380px;gap:24px;align-items:start}
-  @media (max-width:900px){.grid{grid-template-columns:1fr}}
-  .card{background:var(--weiss);border:1px solid var(--linie);border-radius:18px;padding:22px;margin-bottom:20px}
-  h2{font-family:"Playfair Display",serif;font-weight:500;font-size:20px;margin-bottom:4px;display:flex;align-items:center;gap:10px}
-  h2 .n{font-family:"Jost";font-size:12px;width:24px;height:24px;border-radius:50%;background:var(--rose);color:#fff;display:inline-grid;place-items:center}
-  .hint{font-size:13.5px;color:var(--gedaempft);margin-bottom:14px}
+  .brand{flex:1;min-width:180px}
+  h1{font-family:"Playfair Display",serif;font-weight:500;font-size:26px;line-height:1.1}
+  .handle{font-family:"Playfair Display",serif;font-size:10.5px;letter-spacing:.36em;text-transform:uppercase;color:var(--rose)}
+  .status{display:flex;gap:8px;flex-wrap:wrap;font-size:13px;align-items:center}
+  .pill{border:1px solid var(--linie);border-radius:99px;padding:3px 12px;background:var(--weiss);white-space:nowrap}
+  .pill.on::before{content:"● ";color:var(--ok)} .pill.off::before{content:"● ";color:var(--mikro)}
+  .grid{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:22px;align-items:start}
+  @media (max-width:920px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--weiss);border:1px solid var(--linie);border-radius:18px;padding:20px;margin-bottom:20px}
+  h2{font-family:"Playfair Display",serif;font-weight:500;font-size:19px;margin-bottom:4px}
+  .hint{font-size:13.5px;color:var(--gedaempft);margin-bottom:12px}
   label{display:block;font-size:13px;font-weight:400;color:var(--beere);margin:12px 0 5px}
-  textarea,input[type=text],input[type=number],select{width:100%;font:inherit;font-size:15px;color:var(--pflaume);background:var(--papier);border:1px solid var(--linie);border-radius:12px;padding:10px 12px;outline:none}
+  textarea,input[type=text],input[type=password],input[type=number],input[type=datetime-local],select{width:100%;font:inherit;font-size:15px;color:var(--pflaume);background:var(--papier);border:1px solid var(--linie);border-radius:12px;padding:10px 12px;outline:none}
   textarea:focus,input:focus,select:focus{border-color:var(--rose)}
-  textarea{resize:vertical;min-height:90px}
+  textarea{resize:vertical;min-height:80px}
   .row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
-  button{font:inherit;font-size:15px;font-weight:400;cursor:pointer;border:none;border-radius:99px;padding:11px 22px;background:var(--pflaume);color:#fff;transition:.2s}
+  button{font:inherit;font-size:15px;font-weight:400;cursor:pointer;border:none;border-radius:99px;padding:10px 20px;background:var(--pflaume);color:#fff;transition:.2s}
   button:hover{background:var(--beere)} button:disabled{opacity:.5;cursor:wait}
   button.ghost{background:transparent;color:var(--beere);border:1px solid var(--linie)} button.ghost:hover{border-color:var(--rose)}
   button.small{padding:5px 12px;font-size:13px}
   button.insta{background:linear-gradient(45deg,#f09433,#dc2743,#bc1888)}
-  .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;align-items:center}
+  button.icon{background:var(--weiss);color:var(--pflaume);border:1px solid var(--linie);padding:6px 12px;font-size:14px}
+  .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;align-items:center}
+  .hidden{display:none!important}
+  .meta{font-size:13px;color:var(--gedaempft)}
+  .msg{padding:10px 14px;border-radius:12px;font-size:14px;margin-top:12px}
+  .msg.err{background:#F7E4E4;color:var(--fehler)} .msg.ok{background:#E6F0E8;color:var(--ok)}
+  .msg a{color:inherit;font-weight:500}
+  .progress{font-size:14px;color:var(--beere);min-height:22px}
+  .spinner{display:inline-block;width:14px;height:14px;border:2px solid var(--linie);border-top-color:var(--rose);border-radius:50%;animation:spin 1s linear infinite;vertical-align:-2px;margin-right:6px}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* Chat */
+  .chat{display:flex;flex-direction:column;height:min(62vh,620px);min-height:380px;padding:0;overflow:hidden}
+  .chat-head{padding:16px 20px 10px;border-bottom:1px solid var(--linie)}
+  .log{flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:10px}
+  .bubble{max-width:85%;padding:10px 14px;border-radius:16px;font-size:15px;white-space:pre-wrap;word-wrap:break-word}
+  .bubble.user{align-self:flex-end;background:var(--pflaume);color:#fff;border-bottom-right-radius:4px}
+  .bubble.agent{align-self:flex-start;background:var(--sand);border-bottom-left-radius:4px}
+  .bubble.system{align-self:center;background:transparent;color:var(--gedaempft);font-size:13px;text-align:center}
+  .bubble a{color:inherit;font-weight:500}
+  .confirm-card{align-self:stretch;border:1px solid var(--rose);background:#FBF1F3;border-radius:16px;padding:14px}
+  .confirm-card pre{white-space:pre-wrap;font-family:inherit;font-size:13px;background:var(--weiss);border-radius:10px;padding:8px 10px;max-height:140px;overflow:auto;margin:8px 0}
+  .composer{display:flex;gap:8px;padding:12px;border-top:1px solid var(--linie);align-items:flex-end}
+  .composer textarea{min-height:46px;max-height:160px;resize:none;border-radius:22px;padding:11px 16px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;padding:0 20px 10px}
+  .chip{font-size:12.5px;border:1px solid var(--linie);border-radius:99px;padding:3px 10px;background:var(--papier);cursor:pointer}
+  .chip:hover{border-color:var(--rose)}
+
+  /* Editor */
+  details.card>summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center}
+  details.card>summary::after{content:"＋";color:var(--rose)} details.card[open]>summary::after{content:"－"}
   .scene{border:1px solid var(--linie);border-radius:14px;padding:12px;margin-bottom:10px;background:var(--papier)}
   .scene-head{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--gedaempft);text-transform:uppercase;letter-spacing:.12em;margin-bottom:6px}
   .scene-head .btns{display:flex;gap:4px}
@@ -50,27 +80,31 @@
   .colors{display:flex;gap:14px;flex-wrap:wrap}
   .colors label{display:flex;align-items:center;gap:6px;margin:0}
   input[type=color]{width:34px;height:34px;border:1px solid var(--linie);border-radius:50%;padding:0;background:none;cursor:pointer}
+  .files{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+  .file{display:flex;align-items:center;gap:6px;font-size:12.5px;border:1px solid var(--linie);border-radius:10px;padding:3px 4px 3px 8px;background:var(--papier)}
+  .file img{width:26px;height:26px;object-fit:cover;border-radius:6px}
+  .file button{padding:0 7px;font-size:12px;background:none;color:var(--gedaempft)}
+  .chk{display:flex;align-items:center;gap:8px;font-size:14px;margin-top:10px;color:var(--pflaume)}
+
+  /* Vorschau */
+  aside{position:sticky;top:16px}
   .phone{aspect-ratio:9/16;width:100%;background:var(--sand);border-radius:22px;overflow:hidden;display:grid;place-items:center;border:1px solid var(--linie)}
   .phone video{width:100%;height:100%;object-fit:cover;display:block}
   .phone .empty{color:var(--gedaempft);font-size:14px;text-align:center;padding:20px}
-  .progress{font-size:14px;color:var(--beere);margin-top:10px;min-height:22px}
-  .spinner{display:inline-block;width:14px;height:14px;border:2px solid var(--linie);border-top-color:var(--rose);border-radius:50%;animation:spin 1s linear infinite;vertical-align:-2px;margin-right:6px}
-  @keyframes spin{to{transform:rotate(360deg)}}
-  .msg{padding:10px 14px;border-radius:12px;font-size:14px;margin-top:12px}
-  .msg.err{background:#F7E4E4;color:var(--fehler)} .msg.ok{background:#E6F0E8;color:var(--ok)}
-  .msg a{color:inherit;font-weight:500}
-  .hidden{display:none!important}
-  .history{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:12px}
+  .sched{font-size:13.5px;border-top:1px solid var(--linie);padding:8px 0;display:flex;justify-content:space-between;gap:8px;align-items:center}
+  .history{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:12px}
   .history .item{cursor:pointer;border-radius:12px;overflow:hidden;border:1px solid var(--linie);background:var(--sand);position:relative}
   .history img{width:100%;aspect-ratio:9/16;object-fit:cover;display:block}
   .history .badge{position:absolute;top:6px;left:6px;background:rgba(255,255,255,.9);border-radius:99px;font-size:11px;padding:1px 8px}
   .history .t{font-size:12px;padding:6px 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .meta{font-size:13px;color:var(--gedaempft)}
-  .chk{display:flex;align-items:center;gap:8px;font-size:14px;margin-top:10px;color:var(--pflaume)}
-  dialog{border:none;border-radius:18px;padding:24px;max-width:420px;width:calc(100% - 32px);color:var(--pflaume);background:var(--weiss)}
+
+  dialog{margin:auto;border:none;border-radius:18px;padding:24px;max-width:560px;width:calc(100% - 32px);color:var(--pflaume);background:var(--weiss);max-height:90vh}
   dialog::backdrop{background:rgba(92,58,70,.35)}
-  dialog h3{font-family:"Playfair Display",serif;font-weight:500;margin-bottom:8px}
+  dialog h3{font-family:"Playfair Display",serif;font-weight:500;font-size:22px;margin-bottom:4px}
+  dialog h4{font-family:"Playfair Display",serif;font-weight:500;font-size:17px;margin:18px 0 2px;padding-top:14px;border-top:1px solid var(--linie)}
+  dialog ol{font-size:13.5px;color:var(--gedaempft);padding-left:20px;margin:6px 0}
   dialog pre{white-space:pre-wrap;font-family:inherit;font-size:13px;background:var(--papier);border-radius:10px;padding:10px;max-height:200px;overflow:auto;margin:10px 0}
+  dialog a{color:var(--beere)}
 </style>
 </head>
 <body>
@@ -81,101 +115,180 @@
       <ellipse cx="41" cy="61" rx="9" ry="13" transform="rotate(-20 41 61)"/><ellipse cx="59" cy="61" rx="9" ry="13" transform="rotate(20 59 61)"/>
       <ellipse class="f" cx="50" cy="50" rx="1.5" ry="16"/><path d="M50 36 C47 30 45 27 43 24"/><path d="M50 36 C53 30 55 27 57 24"/>
     </svg>
-    <h1>Reel-Agent</h1>
-    <div class="handle" id="handle">@_seelenwende</div>
-    <div class="status"><span class="pill off" id="st-claude">Claude</span><span class="pill off" id="st-ig">Instagram</span></div>
+    <div class="brand"><h1>Reel-Agent</h1><div class="handle" id="handle">@_seelenwende</div></div>
+    <div class="status">
+      <span class="pill off" id="st-claude">Claude</span>
+      <span class="pill off" id="st-ig">Instagram</span>
+      <button class="icon" id="btn-settings" title="Einstellungen">⚙️ Einstellungen</button>
+    </div>
   </header>
 
   <div class="grid">
     <main>
-      <!-- 1. Idee -->
-      <section class="card">
-        <h2><span class="n">1</span>Worum geht es?</h2>
-        <p class="hint">Beschreib den Inhalt deines Reels – Thema, Botschaft, Zielgruppe. Der Agent schreibt daraus Hook, Szenen, Caption & Hashtags und wählt passende Musik.</p>
-        <textarea id="brief" rows="4" placeholder="z. B. 3 sanfte Rituale für einen ruhigen Morgen – für Frauen, die sich im Alltag selbst verlieren. Botschaft: Du darfst langsam anfangen."></textarea>
-        <div class="row">
-          <div><label for="duration">Länge</label>
-            <select id="duration"><option value="15">ca. 15 Sek.</option><option value="20" selected>ca. 20 Sek.</option><option value="30">ca. 30 Sek.</option><option value="45">ca. 45 Sek.</option><option value="60">ca. 60 Sek.</option></select></div>
-          <div><label for="mood">Musik</label><select id="mood"><option value="auto">Automatisch passend</option></select></div>
+      <!-- Chat mit dem Agenten -->
+      <section class="card chat">
+        <div class="chat-head">
+          <h2>Dein Agent</h2>
+          <p class="meta">Sag einfach, was du brauchst – Reel erstellen, ändern, rendern, posten oder einplanen.</p>
         </div>
-        <label for="style">Stilwünsche (optional)</label>
-        <input type="text" id="style" placeholder="z. B. poetisch, mit Frage als Hook, dunkle Farben">
-        <div class="actions"><button id="btn-plan">✨ Drehbuch erstellen</button><span class="progress" id="plan-progress"></span></div>
-        <div id="plan-msg"></div>
+        <div class="log" id="log"></div>
+        <div class="chips" id="chips">
+          <span class="chip">Mach mir ein Reel über 3 sanfte Morgenrituale</span>
+          <span class="chip">Mach den Hook neugieriger</span>
+          <span class="chip">Erstelle das Video</span>
+          <span class="chip">Poste es morgen um 18 Uhr</span>
+        </div>
+        <div class="composer">
+          <textarea id="chat-input" rows="1" placeholder="z. B. Mach ein ruhiges 20-Sekunden-Reel darüber, dass Pausen kein Luxus sind …"></textarea>
+          <button id="chat-send">Senden</button>
+        </div>
       </section>
 
-      <!-- 2. Drehbuch -->
-      <section class="card hidden" id="editor">
-        <h2><span class="n">2</span>Drehbuch anpassen</h2>
-        <p class="hint">Alles ist editierbar. Gesamtlänge: <b id="total">0</b> Sek.</p>
-        <div id="scenes"></div>
-        <button class="ghost small" id="btn-add">+ Szene hinzufügen</button>
-
-        <label>Farben</label>
-        <div class="colors">
-          <label><input type="color" data-pal="background"> Hintergrund</label>
-          <label><input type="color" data-pal="backgroundAlt"> Verlauf</label>
-          <label><input type="color" data-pal="text"> Text</label>
-          <label><input type="color" data-pal="accent"> Akzent</label>
+      <!-- Drehbuch-Editor -->
+      <details class="card" id="editor-card">
+        <summary><h2>Drehbuch & Material <span class="meta" id="editor-sub"></span></h2></summary>
+        <div id="no-plan" class="hint" style="margin-top:10px">
+          Noch kein Drehbuch. Bitte den Agenten im Chat darum – oder starte hier ohne Chat:
+          <textarea id="brief" rows="3" placeholder="Worum geht es im Reel?" style="margin-top:8px"></textarea>
+          <div class="row">
+            <div><label for="duration">Länge</label>
+              <select id="duration"><option value="15">ca. 15 Sek.</option><option value="20" selected>ca. 20 Sek.</option><option value="30">ca. 30 Sek.</option><option value="45">ca. 45 Sek.</option><option value="60">ca. 60 Sek.</option></select></div>
+            <div><label for="mood">Musik</label><select id="mood"><option value="auto">Automatisch passend</option></select></div>
+          </div>
+          <div class="actions"><button class="ghost" id="btn-plan">Drehbuch erstellen</button><span class="progress" id="plan-progress"></span></div>
+          <div id="plan-msg"></div>
         </div>
 
-        <div class="row">
-          <div><label for="music-mood">Musikstimmung</label><select id="music-mood"></select></div>
-          <div><label for="music-bpm">Tempo (BPM)</label><input type="number" id="music-bpm" min="55" max="140"></div>
+        <div id="plan-editor" class="hidden" style="margin-top:12px">
+          <p class="hint">Alles ist editierbar – der Agent sieht deine Änderungen. Gesamtlänge: <b id="total">0</b> Sek.</p>
+          <div id="scenes"></div>
+          <button class="ghost small" id="btn-add">+ Szene hinzufügen</button>
+          <label>Farben</label>
+          <div class="colors">
+            <label><input type="color" data-pal="background"> Hintergrund</label>
+            <label><input type="color" data-pal="backgroundAlt"> Verlauf</label>
+            <label><input type="color" data-pal="text"> Text</label>
+            <label><input type="color" data-pal="accent"> Akzent</label>
+          </div>
+          <div class="row">
+            <div><label for="music-mood">Musikstimmung</label><select id="music-mood"></select></div>
+            <div><label for="music-bpm">Tempo (BPM)</label><input type="number" id="music-bpm" min="55" max="140"></div>
+          </div>
+          <label for="caption">Caption</label>
+          <textarea id="caption" rows="5"></textarea>
+          <label for="hashtags">Hashtags (durch Leerzeichen getrennt)</label>
+          <input type="text" id="hashtags">
         </div>
 
         <label for="images">Eigene Hintergrundbilder (optional, werden reihum verwendet)</label>
         <input type="file" id="images" accept="image/jpeg,image/png,image/webp" multiple>
-        <label for="music-file">Eigene Musik (optional – statt generierter Musik; nur lizenzfreie Titel verwenden!)</label>
+        <div class="files" id="image-list"></div>
+        <label for="music-file">Eigene Musik (optional, statt generierter Musik – nur Titel mit Nutzungsrechten)</label>
         <input type="file" id="music-file" accept="audio/*">
+        <div class="files" id="music-list"></div>
         <label class="chk"><input type="checkbox" id="show-handle" checked> Handle im Video einblenden</label>
 
-        <label for="caption">Caption</label>
-        <textarea id="caption" rows="6"></textarea>
-        <label for="hashtags">Hashtags (durch Leerzeichen getrennt)</label>
-        <input type="text" id="hashtags">
-
-        <div class="actions"><button id="btn-render">🎬 Reel erstellen</button><span class="progress" id="render-progress"></span></div>
+        <div class="actions"><button id="btn-render" disabled>🎬 Video erstellen</button><span class="progress" id="render-progress"></span></div>
         <div id="render-msg"></div>
-      </section>
+      </details>
 
       <section class="card">
         <h2>Meine Reels</h2>
-        <p class="hint">Zuletzt erstellte Reels – antippen zum Ansehen oder Veröffentlichen.</p>
+        <p class="hint">Antippen zum Ansehen, Bearbeiten oder Veröffentlichen.</p>
         <div class="history" id="history"><span class="meta">Noch keine Reels.</span></div>
       </section>
     </main>
 
-    <!-- 3. Vorschau & Veröffentlichen -->
-    <aside class="card" style="position:sticky;top:16px">
-      <h2><span class="n">3</span>Vorschau</h2>
-      <div class="phone" id="phone"><div class="empty">Hier erscheint dein fertiges Reel.</div></div>
-      <div id="preview-actions" class="hidden">
-        <p class="meta" id="preview-meta" style="margin-top:10px"></p>
-        <div class="actions">
-          <button class="insta" id="btn-publish">Auf Instagram posten</button>
-          <a id="btn-download" download><button class="ghost">⬇ Download</button></a>
+    <aside>
+      <section class="card">
+        <h2>Vorschau</h2>
+        <div class="phone" id="phone"><div class="empty">Hier erscheint dein fertiges Reel.</div></div>
+        <div id="preview-actions" class="hidden">
+          <p class="meta" id="preview-meta" style="margin-top:10px"></p>
+          <div class="actions">
+            <button class="insta" id="btn-publish">Jetzt posten</button>
+            <a id="btn-download" download><button class="ghost">⬇ Download</button></a>
+          </div>
+          <label for="schedule-at">Oder einplanen</label>
+          <div style="display:flex;gap:8px"><input type="datetime-local" id="schedule-at"><button class="ghost" id="btn-schedule">Planen</button></div>
+          <label class="chk"><input type="checkbox" id="share-feed" checked> Auch im Profil-Raster zeigen</label>
+          <span class="progress" id="publish-progress"></span>
+          <div id="publish-msg"></div>
         </div>
-        <label class="chk"><input type="checkbox" id="share-feed" checked> Auch im Profil-Raster (Feed) zeigen</label>
-        <span class="progress" id="publish-progress"></span>
-        <div id="publish-msg"></div>
-      </div>
+      </section>
+      <section class="card" id="schedule-card">
+        <h2>Geplante Posts</h2>
+        <p class="meta">Werden automatisch veröffentlicht, solange der Reel-Agent läuft.</p>
+        <div id="schedule-list"><p class="meta" style="margin-top:8px">Nichts geplant.</p></div>
+      </section>
     </aside>
   </div>
 </div>
 
+<!-- Einstellungen -->
+<dialog id="settings">
+  <h3>Einstellungen</h3>
+  <p class="meta">Alles wird nur lokal auf deinem Rechner gespeichert.</p>
+
+  <h4>1 · Claude (schreibt Drehbücher & führt den Chat)</h4>
+  <label for="set-key">API-Key <span class="meta" id="key-state"></span></label>
+  <input type="password" id="set-key" placeholder="sk-ant-…" autocomplete="off">
+  <p class="meta">Einen Key bekommst du auf <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener">console.anthropic.com</a>.</p>
+
+  <h4>2 · Marke</h4>
+  <div class="row">
+    <div><label for="set-name">Name</label><input type="text" id="set-name" placeholder="Seelenwende"></div>
+    <div><label for="set-handle">Instagram-Handle</label><input type="text" id="set-handle" placeholder="@_seelenwende"></div>
+  </div>
+  <label for="set-voice">Markenstimme & Themen</label>
+  <textarea id="set-voice" rows="2" placeholder="warm, achtsam, ermutigend – Selbstfindung, innere Ruhe, Wandlung"></textarea>
+  <div class="actions"><button id="set-save">Speichern</button><span class="progress" id="set-progress"></span></div>
+  <div id="set-msg"></div>
+
+  <h4>3 · Instagram verbinden (zum Posten)</h4>
+  <div id="ig-connected" class="hidden">
+    <p>Verbunden mit <b id="ig-name"></b> ✅ <span class="meta">– das Token wird automatisch verlängert.</span></p>
+    <div class="actions"><button class="ghost small" id="ig-disconnect">Verbindung trennen</button></div>
+  </div>
+  <div id="ig-connect">
+    <ol>
+      <li>Instagram-Konto in der App auf <b>Business</b> oder <b>Creator</b> umstellen.</li>
+      <li>Auf <a href="https://developers.facebook.com/apps" target="_blank" rel="noopener">developers.facebook.com/apps</a> eine App erstellen → Anwendungsfall <i>„Nachrichten und Inhalte auf Instagram verwalten“</i>.</li>
+      <li>Unter <i>API-Einrichtung mit Instagram-Login</i> dein Konto hinzufügen und <b>Token generieren</b> (Berechtigung <i>instagram_business_content_publish</i>).</li>
+      <li>Token hier einfügen – den Rest erledigt der Agent.</li>
+    </ol>
+    <label for="ig-token">Access Token</label>
+    <input type="password" id="ig-token" placeholder="IGAA…" autocomplete="off">
+    <details style="margin-top:8px"><summary class="meta" style="cursor:pointer">Erweitert</summary>
+      <label for="ig-host">Login-Art</label>
+      <select id="ig-host"><option value="graph.instagram.com">Instagram-Login (empfohlen)</option><option value="graph.facebook.com">Facebook-Login (Seite)</option></select>
+    </details>
+    <div class="actions"><button class="insta" id="ig-connect-btn">Verbinden</button><span class="progress" id="ig-progress"></span></div>
+  </div>
+  <div id="ig-msg"></div>
+
+  <div class="actions" style="justify-content:flex-end;margin-top:20px"><button class="ghost" id="set-close">Schließen</button></div>
+</dialog>
+
+<!-- Bestätigung für Buttons in der Vorschau -->
 <dialog id="confirm">
-  <h3>Jetzt veröffentlichen?</h3>
-  <p class="meta">Das Reel wird sofort öffentlich auf <b id="confirm-account"></b> gepostet.</p>
+  <h3 id="confirm-title">Jetzt veröffentlichen?</h3>
+  <p class="meta" id="confirm-text"></p>
   <pre id="confirm-caption"></pre>
-  <div class="actions"><button class="insta" id="confirm-yes">Ja, posten</button><button class="ghost" id="confirm-no">Abbrechen</button></div>
+  <div class="actions"><button class="insta" id="confirm-yes">Ja</button><button class="ghost" id="confirm-no">Abbrechen</button></div>
 </dialog>
 
 <script>
 const $ = (s) => document.querySelector(s);
 let plan = null, current = null, status = {};
+let imageAssets = [], musicAsset = null;
+let sessionId = null;
+try { sessionId = localStorage.getItem("reel-session"); } catch {}
 
 const api = async (url, opts = {}) => {
+  if (opts.json !== undefined) {
+    opts = { ...opts, method: opts.method || "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(opts.json) };
+  }
   const res = await fetch(url, opts);
   const data = await res.json().catch(() => ({}));
   if (!res.ok) throw new Error(data.error || `Fehler ${res.status}`);
@@ -183,35 +296,173 @@ const api = async (url, opts = {}) => {
 };
 const msg = (el, text, type = "err") => { $(el).innerHTML = text ? `<div class="msg ${type}">${text}</div>` : ""; };
 const busy = (el, text) => { $(el).innerHTML = text ? `<span class="spinner"></span>${text}` : ""; };
-const escapeHtml = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+const fmt = (d, opts = { dateStyle: "full", timeStyle: "short" }) => new Date(d).toLocaleString("de-DE", { ...opts, timeZone: status.timezone || "Europe/Berlin" });
+const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+const linkify = (s) => esc(s).replace(/https?:\/\/[^\s<]+/g, (u) => `<a href="${u}" target="_blank" rel="noopener">${u}</a>`).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>");
 
-async function pollJob(id, progressEl) {
+async function pollJob(id, onStep) {
   for (;;) {
     const job = await api(`/api/jobs/${id}`);
     if (job.status === "done") return job.result;
     if (job.status === "error") throw new Error(job.error);
-    busy(progressEl, job.step);
-    await new Promise((r) => setTimeout(r, 1500));
+    onStep?.(job.step);
+    await new Promise((r) => setTimeout(r, 1200));
   }
 }
 
+// ---------- Status & Einstellungen ----------
 async function loadStatus() {
   status = await api("/api/status");
   $("#handle").textContent = status.handle;
   $("#st-claude").className = `pill ${status.claude ? "on" : "off"}`;
-  $("#st-claude").textContent = status.claude ? "Claude aktiv" : "Claude nicht verbunden (Offline-Modus)";
+  $("#st-claude").textContent = status.claude ? "Claude aktiv" : "Claude einrichten";
   const ig = status.instagram;
-  $("#st-ig").className = `pill ${ig.username ? "on" : "off"}`;
-  $("#st-ig").textContent = ig.username ? `Instagram: @${ig.username}` : ig.configured ? "Instagram: Token ungültig" : "Instagram nicht verbunden";
+  $("#st-ig").className = `pill ${ig.configured && !ig.error ? "on" : "off"}`;
+  $("#st-ig").textContent = ig.configured ? (ig.error ? "Instagram: Token prüfen" : `@${ig.username || "verbunden"}`) : "Instagram verbinden";
   if (ig.error) $("#st-ig").title = ig.error;
+  return status;
+}
+function fillMoods() {
   for (const sel of ["#mood", "#music-mood"]) {
     for (const [k, v] of Object.entries(status.moods)) $(sel).insertAdjacentHTML("beforeend", `<option value="${k}">${v}</option>`);
   }
 }
+async function openSettings() {
+  const s = await api("/api/settings");
+  $("#key-state").textContent = s.ANTHROPIC_API_KEY.set ? `(gespeichert: ${s.ANTHROPIC_API_KEY.preview})` : "(noch nicht eingetragen)";
+  $("#set-key").value = "";
+  $("#set-name").value = s.BRAND_NAME;
+  $("#set-handle").value = s.BRAND_HANDLE;
+  $("#set-voice").value = s.BRAND_VOICE;
+  const connected = s.IG_ACCESS_TOKEN.set && s.IG_USER_ID;
+  $("#ig-connected").classList.toggle("hidden", !connected);
+  $("#ig-connect").classList.toggle("hidden", !!connected);
+  $("#ig-name").textContent = s.IG_USERNAME ? `@${s.IG_USERNAME}` : `Konto ${s.IG_USER_ID}`;
+  msg("#set-msg", ""); msg("#ig-msg", "");
+  $("#settings").showModal();
+}
+$("#btn-settings").onclick = openSettings;
+$("#st-claude").onclick = openSettings; $("#st-ig").onclick = openSettings;
+$("#set-close").onclick = () => $("#settings").close();
+$("#set-save").onclick = async () => {
+  busy("#set-progress", "Speichert …");
+  try {
+    const body = { BRAND_NAME: $("#set-name").value, BRAND_HANDLE: $("#set-handle").value, BRAND_VOICE: $("#set-voice").value };
+    if ($("#set-key").value.trim()) body.ANTHROPIC_API_KEY = $("#set-key").value.trim();
+    const s = await api("/api/settings", { json: body });
+    $("#key-state").textContent = s.ANTHROPIC_API_KEY.set ? `(gespeichert: ${s.ANTHROPIC_API_KEY.preview})` : "(noch nicht eingetragen)";
+    $("#set-key").value = "";
+    msg("#set-msg", "Gespeichert ✓", "ok");
+    loadStatus();
+  } catch (e) { msg("#set-msg", e.message); }
+  finally { busy("#set-progress", ""); }
+};
+$("#ig-connect-btn").onclick = async () => {
+  busy("#ig-progress", "Verbinde mit Instagram …");
+  msg("#ig-msg", "");
+  try {
+    const acc = await api("/api/instagram/connect", { json: { token: $("#ig-token").value, host: $("#ig-host").value } });
+    $("#ig-token").value = "";
+    msg("#ig-msg", `Verbunden mit @${esc(acc.username)} 🎉`, "ok");
+    $("#ig-name").textContent = `@${acc.username}`;
+    $("#ig-connected").classList.remove("hidden"); $("#ig-connect").classList.add("hidden");
+    loadStatus();
+  } catch (e) { msg("#ig-msg", e.message); }
+  finally { busy("#ig-progress", ""); }
+};
+$("#ig-disconnect").onclick = async () => {
+  await api("/api/instagram/disconnect", { method: "POST" });
+  $("#ig-connected").classList.add("hidden"); $("#ig-connect").classList.remove("hidden");
+  msg("#ig-msg", "Verbindung getrennt.", "ok");
+  loadStatus();
+};
+
+// ---------- Chat ----------
+function bubble(role, html) {
+  const el = document.createElement("div");
+  el.className = `bubble ${role}`;
+  el.innerHTML = html;
+  $("#log").appendChild(el);
+  $("#log").scrollTop = $("#log").scrollHeight;
+  return el;
+}
+function greet() {
+  if (!status.claude) {
+    bubble("agent", `Hallo! 🦋 Ich bin dein Reel-Agent. Damit ich für dich schreiben und arbeiten kann, trag bitte einmal deinen Claude-API-Key ein: <a href="#" onclick="openSettings();return false">⚙️ Einstellungen öffnen</a>. Bis dahin kannst du unten im Bereich „Drehbuch & Material“ auch ohne Chat Reels erstellen.`);
+  } else {
+    bubble("agent", `Hallo! 🦋 Worüber soll dein nächstes Reel sein? Erzähl mir Thema und Botschaft – ich schreibe das Drehbuch, komponiere die Musik, erstelle das Video und poste es auf Wunsch direkt${status.instagram.configured ? "" : " (dafür verbindest du vorher unter ⚙️ Einstellungen dein Instagram-Konto)"}.`);
+  }
+}
+
+async function sendChat(text) {
+  text = text.trim();
+  if (!text) return;
+  $("#chat-input").value = "";
+  autosize();
+  bubble("user", esc(text));
+  const thinking = bubble("agent", `<span class="spinner"></span><span class="step">Denkt nach …</span>`);
+  $("#chat-send").disabled = true;
+  try {
+    const context = { plan: plan ? collectPlan() : null, imageIds: imageAssets.map((a) => a.id), musicId: musicAsset?.id ?? null, reelId: current?.id ?? null, showHandle: $("#show-handle").checked };
+    const start = await api("/api/agent/chat", { json: { sessionId, message: text, context } });
+    sessionId = start.sessionId;
+    try { localStorage.setItem("reel-session", sessionId); } catch {}
+    const res = await pollJob(start.jobId, (s) => (thinking.querySelector(".step").textContent = s));
+    thinking.innerHTML = linkify(res.reply);
+    if (res.plan) { plan = res.plan; renderEditor(); }
+    if (res.reel && res.reel.id !== current?.id) { showReel(res.reel); loadHistory(); }
+    if (res.pending) showPending(res.pending);
+  } catch (e) {
+    thinking.remove();
+    bubble("system", `⚠️ ${esc(e.message)}`);
+  } finally {
+    $("#chat-send").disabled = false;
+    $("#chat-input").focus();
+  }
+}
+
+function showPending(p) {
+  const el = document.createElement("div");
+  el.className = "confirm-card";
+  el.innerHTML = `<b>${p.type === "schedule" ? `📅 Einplanen für ${esc(p.atLabel)}?` : "📲 Jetzt auf Instagram veröffentlichen?"}</b>
+    <div class="meta">${esc(p.title)} · @${esc(status.instagram.username || "dein Konto")}</div>
+    <pre>${esc(p.caption)}</pre>
+    <div class="actions" style="margin-top:6px"><button class="insta small" data-a="yes">Bestätigen</button><button class="ghost small" data-a="no">Abbrechen</button></div>`;
+  el.onclick = async (e) => {
+    const a = e.target.dataset.a;
+    if (!a) return;
+    el.querySelectorAll("button").forEach((b) => (b.disabled = true));
+    const info = bubble("system", `<span class="spinner"></span><span class="step">${a === "yes" ? "Wird ausgeführt …" : ""}</span>`);
+    try {
+      const { jobId } = await api("/api/agent/confirm", { json: { sessionId, approve: a === "yes" } });
+      const r = await pollJob(jobId, (s) => (info.querySelector(".step").textContent = s));
+      el.remove();
+      if (r.cancelled) info.textContent = "Abgebrochen – nichts wurde veröffentlicht.";
+      else if (r.scheduled) info.innerHTML = `📅 Eingeplant für ${esc(fmt(r.scheduled.at))}.`;
+      else info.innerHTML = `🎉 Dein Reel ist online!${r.published.permalink ? ` <a href="${r.published.permalink}" target="_blank" rel="noopener">Ansehen</a>` : ""}`;
+      if (r.reel) showReel(r.reel);
+      loadSchedule(); loadHistory();
+    } catch (err) {
+      info.innerHTML = `⚠️ ${esc(err.message)}`;
+      el.remove();
+    }
+  };
+  $("#log").appendChild(el);
+  $("#log").scrollTop = $("#log").scrollHeight;
+}
+
+const autosize = () => { const t = $("#chat-input"); t.style.height = "auto"; t.style.height = Math.min(160, t.scrollHeight) + "px"; };
+$("#chat-input").addEventListener("input", autosize);
+$("#chat-input").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendChat($("#chat-input").value); } });
+$("#chat-send").onclick = () => sendChat($("#chat-input").value);
+$("#chips").onclick = (e) => { if (e.target.classList.contains("chip")) sendChat(e.target.textContent); };
 
 // ---------- Drehbuch-Editor ----------
 function renderEditor() {
-  $("#editor").classList.remove("hidden");
+  $("#no-plan").classList.add("hidden");
+  $("#plan-editor").classList.remove("hidden");
+  $("#btn-render").disabled = false;
+  $("#editor-sub").textContent = `· ${plan.title}`;
   const box = $("#scenes");
   box.innerHTML = "";
   const roles = { hook: "Hook", body: "Szene", cta: "Call-to-Action" };
@@ -221,9 +472,9 @@ function renderEditor() {
     el.innerHTML = `
       <div class="scene-head"><span>${i + 1} · ${roles[s.role] || "Szene"}</span>
         <span class="btns"><button class="ghost small" data-act="up" title="nach oben">↑</button><button class="ghost small" data-act="down" title="nach unten">↓</button><button class="ghost small" data-act="del" title="löschen">✕</button></span></div>
-      <div class="row"><textarea data-f="text" placeholder="Text auf dem Bildschirm">${escapeHtml(s.text)}</textarea>
+      <div class="row"><textarea data-f="text" placeholder="Text auf dem Bildschirm">${esc(s.text)}</textarea>
         <div><input type="number" data-f="duration" min="1.5" max="10" step="0.5" value="${s.duration}" title="Dauer in Sekunden"><span class="meta">Sekunden</span></div></div>
-      <input type="text" data-f="subtext" placeholder="kleine Zeile darunter (optional)" value="${escapeHtml(s.subtext)}" style="margin-top:6px">`;
+      <input type="text" data-f="subtext" placeholder="kleine Zeile darunter (optional)" value="${esc(s.subtext)}" style="margin-top:6px">`;
     el.addEventListener("input", (e) => {
       const f = e.target.dataset.f;
       if (f) s[f] = f === "duration" ? Number(e.target.value) : e.target.value;
@@ -271,78 +522,138 @@ $("#btn-plan").onclick = async () => {
   if (!brief) return msg("#plan-msg", "Bitte beschreib zuerst den Inhalt deines Reels.");
   $("#btn-plan").disabled = true;
   msg("#plan-msg", "");
-  busy("#plan-progress", status.claude ? "Claude schreibt dein Drehbuch …" : "Drehbuch wird erstellt …");
+  busy("#plan-progress", "Drehbuch wird erstellt …");
   try {
-    const data = await api("/api/plan", {
-      method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ brief, duration: $("#duration").value, mood: $("#mood").value, style: $("#style").value }),
-    });
+    const data = await api("/api/plan", { json: { brief, duration: $("#duration").value, mood: $("#mood").value } });
     plan = data.plan;
     renderEditor();
-    if (!data.ai) msg("#plan-msg", "Offline-Modus: Ohne ANTHROPIC_API_KEY wird der Text nur in Szenen aufgeteilt. Für KI-Drehbücher den Key in .env eintragen.", "ok");
-    $("#editor").scrollIntoView({ behavior: "smooth" });
+    if (!data.ai) msg("#render-msg", "Ohne Claude-Key wurde dein Text nur in Szenen aufgeteilt. Für KI-Drehbücher den Key unter ⚙️ Einstellungen eintragen.", "ok");
   } catch (e) { msg("#plan-msg", e.message); }
   finally { $("#btn-plan").disabled = false; busy("#plan-progress", ""); }
 };
 
-$("#btn-render").onclick = async () => {
-  collectPlan();
+// Dateien sofort hochladen, damit sie auch der Agent verwenden kann
+async function uploadFile(file) {
   const fd = new FormData();
-  fd.append("plan", JSON.stringify(plan));
-  fd.append("showHandle", String($("#show-handle").checked));
-  for (const f of $("#images").files) fd.append("images", f);
-  if ($("#music-file").files[0]) fd.append("music", $("#music-file").files[0]);
+  fd.append("file", file);
+  return api("/api/assets", { method: "POST", body: fd });
+}
+function renderFiles() {
+  $("#image-list").innerHTML = imageAssets.map((a, i) => `<span class="file"><img src="${a.preview}" alt="">${esc(a.name)}<button data-i="${i}" title="entfernen">✕</button></span>`).join("");
+  $("#music-list").innerHTML = musicAsset ? `<span class="file">🎵 ${esc(musicAsset.name)}<button title="entfernen">✕</button></span>` : "";
+}
+$("#image-list").onclick = (e) => { if (e.target.dataset.i) { imageAssets.splice(Number(e.target.dataset.i), 1); renderFiles(); } };
+$("#music-list").onclick = (e) => { if (e.target.tagName === "BUTTON") { musicAsset = null; renderFiles(); } };
+$("#images").onchange = async (e) => {
+  busy("#render-progress", "Bilder werden hochgeladen …");
+  try {
+    for (const f of e.target.files) imageAssets.push({ ...(await uploadFile(f)), preview: URL.createObjectURL(f) });
+  } catch (err) { msg("#render-msg", err.message); }
+  e.target.value = "";
+  busy("#render-progress", "");
+  renderFiles();
+};
+$("#music-file").onchange = async (e) => {
+  const f = e.target.files[0];
+  if (!f) return;
+  busy("#render-progress", "Musik wird hochgeladen …");
+  try { musicAsset = await uploadFile(f); } catch (err) { msg("#render-msg", err.message); }
+  e.target.value = "";
+  busy("#render-progress", "");
+  renderFiles();
+};
+
+$("#btn-render").onclick = async () => {
+  if (!plan) return;
   $("#btn-render").disabled = true;
   msg("#render-msg", "");
   busy("#render-progress", "Wird vorbereitet …");
   try {
-    const { jobId } = await api("/api/render", { method: "POST", body: fd });
-    const reel = await pollJob(jobId, "#render-progress");
+    const { jobId } = await api("/api/render", { json: { plan: collectPlan(), imageIds: imageAssets.map((a) => a.id), musicId: musicAsset?.id, showHandle: $("#show-handle").checked } });
+    const reel = await pollJob(jobId, (s) => busy("#render-progress", s));
     showReel(reel);
     loadHistory();
   } catch (e) { msg("#render-msg", e.message); }
   finally { $("#btn-render").disabled = false; busy("#render-progress", ""); }
 };
 
-// ---------- Vorschau & Veröffentlichen ----------
+// ---------- Vorschau, Posten, Planen ----------
 function showReel(reel) {
   current = reel;
-  $("#phone").innerHTML = `<video src="${reel.video}?t=${Date.now()}" poster="${reel.thumb}" controls playsinline loop autoplay></video>`;
+  $("#phone").innerHTML = `<video src="${reel.video}?t=${Date.now()}" poster="${reel.thumb}" controls playsinline loop></video>`;
   $("#preview-actions").classList.remove("hidden");
   $("#btn-download").href = reel.video;
   $("#btn-download").download = `reel-${reel.id.slice(0, 8)}.mp4`;
   $("#preview-meta").textContent = `${reel.plan.title} · ${reel.duration.toFixed(1)} Sek.`;
-  msg("#publish-msg", "");
-  if (reel.published) {
-    msg("#publish-msg", `Bereits veröffentlicht am ${new Date(reel.published.at).toLocaleString("de-DE")}${reel.published.permalink ? ` – <a href="${reel.published.permalink}" target="_blank" rel="noopener">ansehen</a>` : ""}`, "ok");
-  }
-  // Wenn das Reel aus dem aktuellen Drehbuch stammt, dessen (evtl. bearbeitete) Caption verwenden
-  if (!plan) { plan = structuredClone(reel.plan); renderEditor(); }
+  msg("#publish-msg", reel.published
+    ? `Veröffentlicht am ${fmt(reel.published.at)}${reel.published.permalink ? ` – <a href="${reel.published.permalink}" target="_blank" rel="noopener">ansehen</a>` : ""}`
+    : "", "ok");
 }
 
-$("#btn-publish").onclick = () => {
-  if (!current) return;
-  if (!status.instagram?.configured) return msg("#publish-msg", "Instagram ist noch nicht verbunden. Trag IG_ACCESS_TOKEN und IG_USER_ID in die .env ein (siehe README) und starte den Agenten neu.");
-  $("#confirm-account").textContent = status.instagram.username ? `@${status.instagram.username}` : "deinem Instagram-Konto";
-  $("#confirm-caption").textContent = fullCaption(collectPlan());
+let confirmAction = null;
+function askConfirm(title, text, caption, action) {
+  $("#confirm-title").textContent = title;
+  $("#confirm-text").innerHTML = text;
+  $("#confirm-caption").textContent = caption;
+  confirmAction = action;
   $("#confirm").showModal();
-};
+}
 $("#confirm-no").onclick = () => $("#confirm").close();
-$("#confirm-yes").onclick = async () => {
-  $("#confirm").close();
-  $("#btn-publish").disabled = true;
-  msg("#publish-msg", "");
-  busy("#publish-progress", "Wird gesendet …");
-  try {
-    const { jobId } = await api(`/api/publish/${current.id}`, {
-      method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ caption: fullCaption(collectPlan()), shareToFeed: $("#share-feed").checked }),
-    });
-    const res = await pollJob(jobId, "#publish-progress");
-    msg("#publish-msg", `🎉 Dein Reel ist online!${res.permalink ? ` <a href="${res.permalink}" target="_blank" rel="noopener">Auf Instagram ansehen</a>` : ""}`, "ok");
-    loadHistory();
-  } catch (e) { msg("#publish-msg", e.message); }
-  finally { $("#btn-publish").disabled = false; busy("#publish-progress", ""); }
+$("#confirm-yes").onclick = () => { $("#confirm").close(); confirmAction?.(); };
+
+const needInstagram = () => {
+  if (status.instagram?.configured) return false;
+  msg("#publish-msg", "Instagram ist noch nicht verbunden – öffne ⚙️ Einstellungen und füge dein Token ein.");
+  return true;
+};
+const captionForCurrent = () => (plan && current && plan.title === current.plan.title ? fullCaption(collectPlan()) : fullCaption(current.plan));
+
+$("#btn-publish").onclick = () => {
+  if (!current || needInstagram()) return;
+  const caption = captionForCurrent();
+  askConfirm("Jetzt veröffentlichen?", `Das Reel wird sofort öffentlich auf <b>@${esc(status.instagram.username || "deinem Konto")}</b> gepostet.`, caption, async () => {
+    $("#btn-publish").disabled = true;
+    msg("#publish-msg", "");
+    busy("#publish-progress", "Wird gesendet …");
+    try {
+      const { jobId } = await api(`/api/publish/${current.id}`, { json: { caption, shareToFeed: $("#share-feed").checked } });
+      const res = await pollJob(jobId, (s) => busy("#publish-progress", s));
+      msg("#publish-msg", `🎉 Dein Reel ist online!${res.permalink ? ` <a href="${res.permalink}" target="_blank" rel="noopener">Ansehen</a>` : ""}`, "ok");
+      loadHistory();
+    } catch (e) { msg("#publish-msg", e.message); }
+    finally { $("#btn-publish").disabled = false; busy("#publish-progress", ""); }
+  });
+};
+
+$("#btn-schedule").onclick = () => {
+  if (!current || needInstagram()) return;
+  const v = $("#schedule-at").value;
+  if (!v) return msg("#publish-msg", "Bitte wähle Datum und Uhrzeit.");
+  const caption = captionForCurrent();
+  const [d, t] = v.split("T");
+  askConfirm("Einplanen?", `Wird am <b>${d.split("-").reverse().join(".")} um ${t} Uhr</b> automatisch gepostet.`, caption, async () => {
+    try {
+      // Ortszeit wird vom Agenten in seiner Zeitzone (Standard Europe/Berlin) ausgewertet
+      await api("/api/schedule", { json: { reelId: current.id, caption, at: v, shareToFeed: $("#share-feed").checked } });
+      msg("#publish-msg", "📅 Eingeplant!", "ok");
+      loadSchedule();
+    } catch (e) { msg("#publish-msg", e.message); }
+  });
+};
+
+async function loadSchedule() {
+  const list = await api("/api/schedule");
+  const box = $("#schedule-list");
+  const visible = list.filter((e) => e.status !== "veröffentlicht" || Date.now() - Date.parse(e.at) < 7 * 864e5);
+  if (!visible.length) return (box.innerHTML = `<p class="meta" style="margin-top:8px">Nichts geplant.</p>`);
+  box.innerHTML = visible.map((e) => `<div class="sched"><span><b>${fmt(e.at, { weekday: "short", day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })}</b> · ${esc(e.title)}
+    <br><span class="meta">${esc(e.status)}${e.error ? ` – ${esc(e.error)}` : ""}${e.result?.permalink ? ` · <a href="${e.result.permalink}" target="_blank" rel="noopener">ansehen</a>` : ""}</span></span>
+    ${e.status === "geplant" ? `<button class="ghost small" data-id="${e.id}">Stornieren</button>` : ""}</div>`).join("");
+}
+$("#schedule-list").onclick = async (e) => {
+  if (!e.target.dataset.id) return;
+  await api(`/api/schedule/${e.target.dataset.id}`, { method: "DELETE" });
+  loadSchedule();
 };
 
 async function loadHistory() {
@@ -353,14 +664,23 @@ async function loadHistory() {
   for (const r of reels) {
     const el = document.createElement("div");
     el.className = "item";
-    el.innerHTML = `<img src="${r.thumb}" alt="" loading="lazy">${r.published ? '<span class="badge">✓ online</span>' : ""}<div class="t">${escapeHtml(r.plan.title)}</div>`;
-    el.onclick = () => { plan = structuredClone(r.plan); renderEditor(); showReel(r); };
+    el.innerHTML = `<img src="${r.thumb}" alt="" loading="lazy">${r.published ? '<span class="badge">✓ online</span>' : ""}<div class="t">${esc(r.plan.title)}</div>`;
+    el.onclick = () => { plan = structuredClone(r.plan); renderEditor(); showReel(r); window.scrollTo({ top: 0, behavior: "smooth" }); };
     box.appendChild(el);
   }
 }
 
-loadStatus().catch((e) => console.error(e));
-loadHistory().catch((e) => console.error(e));
+(async () => {
+  try {
+    await loadStatus();
+    fillMoods();
+    greet();
+    if (!status.claude && !status.instagram.configured) openSettings();
+  } catch (e) { console.error(e); }
+  loadHistory().catch(console.error);
+  loadSchedule().catch(console.error);
+  setInterval(() => loadSchedule().catch(() => {}), 60_000);
+})();
 </script>
 </body>
 </html>
