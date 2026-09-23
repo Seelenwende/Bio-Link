@@ -1,0 +1,25 @@
+{
+  "name": "reel-agent",
+  "version": "1.0.0",
+  "description": "Virtueller Instagram-Reel-Agent: plant Reels mit Claude, rendert Video inkl. Musik und veröffentlicht direkt auf Instagram.",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "node --test"
+  },
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.128.0",
+    "@resvg/resvg-js": "^2.6.2",
+    "dotenv": "^18.0.3",
+    "express": "^5.2.1",
+    "ffmpeg-static": "^5.3.0",
+    "multer": "^2.4.0"
+  },
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  }
+}
