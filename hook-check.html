@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Seelenwende · Hook-Check</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --papier:#FAF6F4;
+    --sand:#F3ECE9;
+    --rose:#B5808F;
+    --beere:#8C5A69;
+    --pflaume:#5C3A46;
+    --gedaempft:#8E7079;
+    --linie:#E4D8D8;
+    --mikro:#C3AEB2;
+    --gut:#6F8F74;
+    --mittel:#C28A3E;
+    --schwach:#B0413E;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    background:var(--papier);color:var(--pflaume);
+    font-family:"Jost",sans-serif;font-weight:300;line-height:1.7;
+    min-height:100vh;display:flex;justify-content:center;
+    padding:44px 18px 60px;-webkit-font-smoothing:antialiased;
+  }
+  .page{width:100%;max-width:600px;}
+
+  header{text-align:center;}
+  .butterfly{width:52px;height:52px;margin:0 auto 14px;display:block;}
+  .butterfly path,.butterfly ellipse{fill:none;stroke:var(--rose);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+  .butterfly .dot,.butterfly .body{fill:var(--rose);stroke:none;}
+  .handle{font-family:"Playfair Display",serif;font-size:11px;letter-spacing:.36em;text-transform:uppercase;color:var(--rose);}
+  h1{font-family:"Playfair Display",serif;font-weight:500;font-size:32px;line-height:1.2;margin-top:10px;}
+  .intro{font-size:15px;color:var(--gedaempft);max-width:46ch;margin:14px auto 0;}
+  .nav{margin-top:14px;font-size:13.5px;}
+  .nav a{color:var(--beere);}
+
+  .section{margin-top:34px;}
+  .eyebrow{display:flex;align-items:center;gap:14px;margin-bottom:6px;}
+  .eyebrow::before,.eyebrow::after{content:"";flex:1;height:1px;background:var(--linie);}
+  .eyebrow span{font-family:"Playfair Display",serif;font-size:10.5px;letter-spacing:.4em;text-transform:uppercase;color:var(--rose);white-space:nowrap;}
+  .section h2{font-family:"Playfair Display",serif;font-weight:500;font-size:21px;text-align:center;}
+  .why{font-size:13.5px;color:var(--gedaempft);text-align:center;margin:4px auto 14px;max-width:46ch;}
+
+  .card{background:#fff;border:1px solid var(--linie);border-radius:16px;padding:16px 18px;margin-bottom:12px;}
+  .field + .field{margin-top:14px;}
+  label{font-size:13.5px;color:var(--gedaempft);display:block;margin-bottom:6px;}
+  input,textarea,select{
+    width:100%;font:inherit;font-size:15px;color:var(--pflaume);
+    background:var(--papier);border:1px solid var(--linie);border-radius:12px;padding:10px 12px;
+  }
+  textarea{min-height:92px;resize:vertical;line-height:1.5;}
+  input:focus,textarea:focus,select:focus{outline:2px solid var(--rose);outline-offset:1px;}
+  .count{font-size:12px;color:var(--gedaempft);text-align:right;margin-top:4px;}
+  .count.over{color:var(--schwach);font-weight:400;}
+
+  .post__head{display:flex;gap:10px;align-items:center;margin-bottom:8px;}
+  .post__head select{width:auto;padding:6px 10px;font-size:13.5px;}
+  .post__head .num{font-family:"Playfair Display",serif;color:var(--rose);font-size:14px;}
+  .post__head .rm{margin-left:auto;background:none;border:none;color:var(--mikro);font-size:22px;line-height:1;cursor:pointer;padding:0 4px;}
+  .post__head .rm:hover{color:var(--beere);}
+
+  .actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:18px;}
+  .btn{
+    font-family:"Playfair Display",serif;font-size:16px;font-weight:500;
+    border:none;border-radius:16px;padding:14px 22px;cursor:pointer;
+    background:var(--beere);color:var(--papier);
+    transition:transform .2s ease,box-shadow .2s ease;
+  }
+  .btn--soft{background:var(--papier);color:var(--pflaume);border:1px solid var(--linie);}
+  .btn--small{font-size:13px;padding:6px 12px;border-radius:10px;}
+  .btn:focus-visible{outline:2px solid var(--rose);outline-offset:3px;}
+  @media (hover:hover){.btn:hover{transform:translateY(-2px);box-shadow:0 10px 26px -14px rgba(92,58,70,.5);}}
+
+  /* Ergebnis */
+  #result{display:none;margin-top:44px;scroll-margin-top:20px;}
+  #result.show{display:block;}
+  .score{text-align:center;background:var(--pflaume);color:var(--papier);border-radius:20px;padding:24px 20px;}
+  .score__num{font-family:"Playfair Display",serif;font-size:54px;line-height:1;}
+  .score__label{font-family:"Playfair Display",serif;font-style:italic;font-size:20px;margin-top:8px;}
+  .score__text{font-size:14px;color:#E3CFD5;margin-top:8px;}
+
+  .overview{background:var(--pflaume);border-radius:18px;padding:16px;margin-top:16px;}
+  .overview__title{font-family:"Playfair Display",serif;font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:#D9C4CB;margin-bottom:10px;}
+  .row{
+    display:flex;align-items:center;gap:12px;
+    background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+    border-radius:12px;padding:10px 12px;margin-bottom:8px;color:var(--papier);font-size:14px;
+  }
+  .row:last-child{margin-bottom:0;}
+  .row .s{font-family:"Playfair Display",serif;font-size:20px;min-width:34px;}
+  .row .t{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .row .c{font-size:11px;letter-spacing:.08em;color:#D9C4CB;white-space:nowrap;}
+  .s--low{color:#F08A86;} .s--mid{color:#F2C27B;} .s--high{color:#9FD3A6;}
+
+  .detail{background:#fff;border:1px solid var(--linie);border-radius:16px;padding:16px 18px;margin-top:14px;}
+  .detail__top{display:flex;gap:12px;align-items:baseline;}
+  .detail__score{font-family:"Playfair Display",serif;font-size:28px;line-height:1;}
+  .detail__hook{font-family:"Playfair Display",serif;font-size:17px;line-height:1.4;}
+  .detail__type{font-size:12px;color:var(--gedaempft);letter-spacing:.04em;}
+  .detail h4{font-family:"Playfair Display",serif;font-weight:500;font-size:14px;color:var(--beere);margin:12px 0 4px;}
+  .detail ul{padding-left:18px;font-size:14px;line-height:1.55;}
+  .detail li{margin-bottom:3px;}
+  .detail .plus{color:var(--gut);}
+  .rewrite{display:flex;gap:8px;align-items:flex-start;background:var(--sand);border-radius:10px;padding:8px 10px;margin-top:6px;font-size:14.5px;line-height:1.5;}
+  .rewrite span{flex:1;}
+  .s-low{color:var(--schwach);} .s-mid{color:var(--mittel);} .s-high{color:var(--gut);}
+
+  .ai{background:var(--sand);border-radius:16px;padding:18px;margin-top:30px;}
+  .ai h3{font-family:"Playfair Display",serif;font-weight:500;font-size:19px;text-align:center;}
+  .ai p{font-size:13.5px;color:var(--gedaempft);text-align:center;margin:4px auto 12px;max-width:46ch;}
+  .ai input{background:#fff;}
+  .ai .actions{margin-top:14px;}
+  .status{font-size:14px;text-align:center;margin-top:12px;min-height:1.5em;}
+  .status.err{color:var(--schwach);}
+  .spinner{display:inline-block;width:14px;height:14px;border:2px solid var(--mikro);border-top-color:var(--beere);border-radius:50%;animation:spin 1s linear infinite;vertical-align:-2px;margin-right:8px;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  @media (prefers-reduced-motion:reduce){.spinner{animation:none;}}
+  .btn[disabled]{opacity:.6;cursor:wait;transform:none;box-shadow:none;}
+  .prios{background:#fff;border:1px solid var(--linie);border-radius:16px;padding:16px 18px;margin-top:16px;}
+  .prios h4{font-family:"Playfair Display",serif;font-weight:500;font-size:16px;color:var(--beere);margin-bottom:6px;}
+  .prios ol{padding-left:20px;font-size:14.5px;line-height:1.55;}
+  .prios li{margin-bottom:4px;}
+  .note{font-size:12.5px;color:var(--gedaempft);text-align:center;margin-top:26px;max-width:48ch;margin-left:auto;margin-right:auto;}
+  .footer{font-family:"Playfair Display",serif;font-size:9px;letter-spacing:.42em;text-transform:uppercase;color:var(--mikro);text-align:center;margin-top:30px;}
+
+  @media print{.actions,.btn--small,#inputs{display:none;} #result{display:block;} .detail{break-inside:avoid;}}
+</style>
+</head>
+<body>
+<main class="page">
+
+  <header>
+    <svg class="butterfly" viewBox="0 0 100 100" aria-hidden="true">
+      <ellipse cx="38" cy="40" rx="13" ry="18" transform="rotate(-35 38 40)"/>
+      <ellipse cx="62" cy="40" rx="13" ry="18" transform="rotate(35 62 40)"/>
+      <ellipse cx="41" cy="61" rx="9" ry="13" transform="rotate(-20 41 61)"/>
+      <ellipse cx="59" cy="61" rx="9" ry="13" transform="rotate(20 59 61)"/>
+      <ellipse class="body" cx="50" cy="50" rx="1.5" ry="16"/>
+      <path d="M50 36 C47 30 45 27 43 24"/>
+      <path d="M50 36 C53 30 55 27 57 24"/>
+      <circle class="dot" cx="43" cy="23.5" r="1.5"/>
+      <circle class="dot" cx="57" cy="23.5" r="1.5"/>
+    </svg>
+    <div class="handle">@_seelenwende</div>
+    <h1>Bio- &amp; Hook-Check</h1>
+    <p class="intro">Füge deine Bio und deine letzten Posts ein. Du bekommst einen Score von 0–100 pro Hook, die schwächsten zuerst, konkrete Schwächen und Umschreib-Vorschläge zum Kopieren.</p>
+    <p class="nav"><a href="profil-check.html">Zum ausführlichen Profil-Check →</a></p>
+  </header>
+
+  <div id="inputs">
+    <section class="section">
+      <div class="eyebrow"><span>Schritt 1</span></div>
+      <h2>Dein Thema</h2>
+      <p class="why">Damit die Umschreib-Vorschläge zu dir passen.</p>
+      <div class="card">
+        <div class="field">
+          <label for="topic">Worum geht es bei dir? (ein, zwei Worte)</label>
+          <input id="topic" placeholder="z. B. Selbstwert, Loslassen, Selbstliebe">
+        </div>
+        <div class="field">
+          <label for="audience">Für wen? (kurz)</label>
+          <input id="audience" placeholder="z. B. Frauen, die sich selbst verloren haben">
+        </div>
+        <div class="field">
+          <label for="pillars">Deine 3–4 Content-Säulen (mit Komma getrennt)</label>
+          <input id="pillars" placeholder="z. B. Selbstwert, Loslassen, Selbstfürsorge, Einblicke">
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="eyebrow"><span>Schritt 2</span></div>
+      <h2>Profil</h2>
+      <p class="why">Kopiere die Texte genau so, wie sie in deinem Profil stehen.</p>
+      <div class="card">
+        <div class="field">
+          <label for="nameField">Namensfeld (der fett gedruckte Name, max. 64 Zeichen)</label>
+          <input id="nameField" placeholder="Seelenwende">
+          <div class="count" id="nameCount">0 / 64</div>
+        </div>
+        <div class="field">
+          <label for="bioField">Bio (max. 150 Zeichen)</label>
+          <textarea id="bioField"></textarea>
+          <div class="count" id="bioCount">0 / 150</div>
+        </div>
+        <div class="field">
+          <label for="linkField">Link in Bio</label>
+          <input id="linkField" placeholder="https://…">
+        </div>
+        <div class="field">
+          <label for="linkType">Wohin führt der Link zuerst?</label>
+          <select id="linkType">
+            <option value="">Bitte wählen</option>
+            <option value="freebie">Direkt zu einem kostenlosen Angebot (Freebie / Lead-Magnet)</option>
+            <option value="linkpage">Linkseite – Freebie steht ganz oben</option>
+            <option value="linkpage-mixed">Linkseite – Freebie nicht oben / keins vorhanden</option>
+            <option value="offer">Direkt zum bezahlten Angebot / Shop</option>
+            <option value="other">Etwas anderes (Website-Startseite, Podcast …)</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="eyebrow"><span>Schritt 3</span></div>
+      <h2>Deine letzten Posts</h2>
+      <p class="why">Am besten deine letzten 6–10 Posts, neueste zuerst. Pro Post die komplette Caption einfügen – die erste Zeile gilt als Hook. Bei Reels: den Text-Hook aus dem Video als erste Zeile davorschreiben.</p>
+      <div id="posts"></div>
+      <div class="actions" style="margin-top:6px">
+        <button class="btn btn--soft btn--small" type="button" id="addPost">+ Weiteren Post hinzufügen</button>
+      </div>
+    </section>
+
+    <div class="ai">
+      <h3>KI-Analyse</h3>
+      <p>Die KI liest Bio, Hooks und CTAs wie in einem echten Profil-Roast und schreibt dir alles fertig um. Dauert meist 1–2 Minuten.</p>
+      <label for="accessCode">Zugangscode</label>
+      <input id="accessCode" type="password" autocomplete="current-password" placeholder="Dein Zugangscode">
+      <div class="actions">
+        <button class="btn" type="button" id="aiBtn">KI-Analyse starten</button>
+      </div>
+      <div class="status" id="aiStatus" role="status"></div>
+    </div>
+
+    <div class="actions" style="margin-top:18px">
+      <button class="btn btn--soft" type="button" id="evalBtn">Schnell-Check ohne KI</button>
+      <button class="btn btn--soft" type="button" id="resetBtn">Alles leeren</button>
+    </div>
+  </div>
+
+  <section id="result" aria-live="polite">
+    <div class="score">
+      <div class="score__num" id="scoreNum"></div>
+      <div class="score__label" id="scoreLabel"></div>
+      <p class="score__text" id="scoreText"></p>
+    </div>
+
+    <div class="prios" id="prios" hidden></div>
+
+    <div class="overview">
+      <div class="overview__title">Post für Post · schwächste Hooks zuerst</div>
+      <div id="overview"></div>
+    </div>
+
+    <div id="bioDetail"></div>
+    <div id="postDetails"></div>
+
+    <div class="actions">
+      <button class="btn btn--soft" type="button" onclick="window.print()">Drucken / als PDF speichern</button>
+      <button class="btn btn--soft" type="button" id="backBtn">Texte bearbeiten</button>
+    </div>
+    <p class="note" id="resultNote">Die Bewertung läuft nach festen Regeln direkt in deinem Browser – nichts wird verschickt. Sie ersetzt kein Bauchgefühl: Nimm die Vorschläge als Startpunkt und schreib sie in deiner Sprache um.</p>
+  </section>
+
+  <div class="footer">Seelenwende · Hook-Check</div>
+</main>
+
+<script>
+/* ---------- Speicher ---------- */
+const STORE_KEY = "seelenwende-hookcheck-v1";
+function load(){ try{ return JSON.parse(localStorage.getItem(STORE_KEY)) || {}; }catch(e){ return {}; } }
+function save(){ try{ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }catch(e){} }
+let state = Object.assign({topic:"", audience:"", pillars:"", name:"", bio:"", link:"", linkType:"", posts:[]}, load());
+if(!state.posts.length) state.posts = [1,2,3].map(() => ({type:"Post", text:""}));
+
+const $ = id => document.getElementById(id);
+const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const len = s => [...s].length;
+
+/* ---------- Eingaben ---------- */
+const simple = {topic:"topic", audience:"audience", pillars:"pillars", nameField:"name", bioField:"bio", linkField:"link", linkType:"linkType"};
+Object.entries(simple).forEach(([id, key]) => {
+  $(id).value = state[key];
+  $(id).addEventListener("input", () => { state[key] = $(id).value; save(); counters(); if(key === "pillars") renderPosts(); });
+});
+function counters(){
+  [["nameField","nameCount",64],["bioField","bioCount",150]].forEach(([f,c,m]) => {
+    const n = len($(f).value); $(c).textContent = `${n} / ${m}`; $(c).classList.toggle("over", n > m);
+  });
+}
+
+function pillarList(){ return state.pillars.split(",").map(x => x.trim()).filter(Boolean); }
+function renderPosts(){
+  const pl = pillarList();
+  $("posts").innerHTML = state.posts.map((p, i) => `
+    <div class="card">
+      <div class="post__head">
+        <span class="num">Post ${i+1}</span>
+        <select data-i="${i}" data-k="type" aria-label="Format von Post ${i+1}">
+          ${["Post","Karussell","Reel"].map(t => `<option ${p.type===t?"selected":""}>${t}</option>`).join("")}
+        </select>
+        ${pl.length ? `<select data-i="${i}" data-k="pillar" aria-label="Content-Säule von Post ${i+1}">
+          <option value="">Säule?</option>
+          ${[...pl, "Passt zu keiner"].map(t => `<option ${p.pillar===t?"selected":""}>${esc(t)}</option>`).join("")}
+        </select>` : ""}
+        ${state.posts.length > 1 ? `<button class="rm" type="button" data-rm="${i}" aria-label="Post ${i+1} entfernen">×</button>` : ""}
+      </div>
+      <textarea data-i="${i}" data-k="text" aria-label="Caption von Post ${i+1}" placeholder="Erste Zeile = Hook&#10;&#10;Rest der Caption …">${esc(p.text)}</textarea>
+    </div>`).join("");
+}
+$("posts").addEventListener("input", e => {
+  const i = e.target.dataset.i; if(i === undefined) return;
+  state.posts[i][e.target.dataset.k] = e.target.value; save();
+});
+$("posts").addEventListener("change", e => {
+  const i = e.target.dataset.i; if(i === undefined) return;
+  state.posts[i][e.target.dataset.k] = e.target.value; save();
+});
+$("posts").addEventListener("click", e => {
+  if(e.target.dataset.rm === undefined) return;
+  state.posts.splice(+e.target.dataset.rm, 1); save(); renderPosts();
+});
+$("addPost").addEventListener("click", () => {
+  state.posts.push({type:"Post", text:""}); save(); renderPosts();
+  const all = $("posts").querySelectorAll("textarea"); all[all.length-1].focus();
+});
+
+/* ---------- Regeln: Hook ---------- */
+const RX = {
+  du: /\b(du|dich|dir|dein|deine|deinen|deinem|deiner|ihr|euch|euer)\b/i,
+  ichStart: /^\s*(ich|mein|meine|wir|unser)\b/i,
+  generisch: /^\s*(hallo|hi|hey|huhu|guten (morgen|abend|tag)|schön,? dich|schönen|happy|ihr lieben|neuer? (post|beitrag|video|reel)|heute (gibt|zeige|mal)|kleine erinnerung|wochenende|update|throwback|tbt)\b/i,
+  vage: /\b(bestes?|ever|gold wert|mega|krass|toll|super|einfach nur|so schön|genial|wow|hammer)\b/i
+};
+
+/* Die fünf Spezifitäts-Hebel: Was macht einen Hook unverwechselbar? */
+const LEVERS = [
+  {key:"zahl", label:"Zahl",
+   rx:/\d|\b(zwei|drei|vier|fünf|sechs|sieben|acht|neun|zehn|elf|zwölf|hundert|tausend|halbe?n?|doppelt)\b/i,
+   tip:"Eine Zahl macht es greifbar (z. B. „3 Sätze“, „nach 7 Jahren“)."},
+  {key:"zeit", label:"Zeitrahmen",
+   rx:/\b(jahre?n?|monate?n?|wochen?|tage?n?|stunden?|minuten?|nächte?|morgens|abends|seit|damals|früher|gestern|letzte[nrs]?|mit \d+|vor \d+)\b/i,
+   tip:"Ein Zeitrahmen verankert die Geschichte („Vor 4 Jahren …“, „seit 3 Wochen …“)."},
+  {key:"erfahrung", label:"Echte Erfahrung",
+   rx:/\b(ich (habe|hab|war|bin|wollte|dachte|konnte|musste|hätte|durfte)|mir (hat|wurde|fiel)|mich (hat|hätte)|meine[mnr]? (klientin|kundin|mutter|ex|tochter|freundin|therapeutin)|als ich)\b/i,
+   tip:"Ein echtes Erlebnis unterscheidet dich von jedem anderen Account („Als ich meinen Ring abgenommen habe …“)."},
+  {key:"gefuehl", label:"Konkretes Gefühl/Problem",
+   rx:/\b(angst|schuld|allein|einsam|verloren|leer|müde|erschöpft|genug|wert|selbstwert|zweifel|loslassen|trennung|schmerz|weinen|geweint|überfordert|kraft|scham|gefangen|festhalten|bleiben|gehen|vermissen|verletzt|mut|mutig|wut|traurig|kleingemacht|funktioniert)\w*/i,
+   tip:"Benenne das Gefühl, das deine Leserin gerade hat – in ihren Worten."},
+  {key:"neugier", label:"Neugier-Lücke",
+   rx:/\?|\b(warum|wieso|niemand|keiner|fehler|hör auf|stopp|nie|niemals|wahrheit|geheimnis|eigentlich|statt|trotzdem|endlich|passiert|merkst|zeichen|bevor du|der grund|unbequem|ehrlich|was .* nicht)\b/i,
+   tip:"Öffne eine Frage, die erst die Caption beantwortet („Der Grund war nicht, was du denkst.“)."}
+];
+
+/* CTA-Typen – mehr als ein Typ = verwässert */
+const CTA_TYPES = [
+  {label:"speichern", rx:/\b(speicher|merk dir|merke dir)/i},
+  {label:"kommentieren", rx:/\b(kommentier|schreib(e)? (mir |es |einfach )?(in die kommentare|unten|„|"|\w+ in die))/i},
+  {label:"teilen", rx:/\b(teilt?\b|teile\b|teil (das|den|es|ihn)|schick (das|den|es|ihn) )/i},
+  {label:"folgen", rx:/\b(folg(e|t)? (mir|uns|für))/i},
+  {label:"Link in Bio", rx:/\b(link in (der |meiner )?bio|hol dir|trag dich|sichere? dir|klick)/i},
+  {label:"DM", rx:/\b(dm\b|schreib mir (eine )?nachricht|direktnachricht|melde dich)/i}
+];
+const RX_DM_TRIGGER = /([Kk]ommentier\w*|[Ss]chreib\w*)[^.\n]{0,40}(„|"|')?[A-ZÄÖÜ]{2,}(“|"|')?[^.\n]{0,60}(schick|sende|bekommst|kriegst)\w*[^.\n]{0,20}(dir|du)/;
+const RX_CTA_SCHWACH = /(was meint ihr|was sagt ihr|lasst (ein|mal)|\blike\b|daumen hoch|❤️ wenn|doppeltipp)/i;
+
+function firstLine(t){ return (t.split(/\n/).find(l => l.trim()) || "").trim(); }
+
+function rateCta(text){
+  const types = CTA_TYPES.filter(c => c.rx.test(text)).map(c => c.label);
+  const dm = RX_DM_TRIGGER.test(text);
+  if(dm) return {cta:"ok", types, dm, note:"Kommentar-zu-DM-Trigger mit Stichwort – stark, weil Kommentare und Gespräche entstehen."};
+  if(types.length === 1) return {cta:"ok", types, dm, note:`Eine klare Aufforderung (${types[0]}).`};
+  if(types.length > 1) return {cta:"weak", types, dm, note:`Verwässert: ${types.length} Aufforderungen gleichzeitig (${types.join(", ")}). Entscheide dich für eine.`};
+  if(RX_CTA_SCHWACH.test(text)) return {cta:"weak", types, dm, note:"Nur schwache Aufforderung (Like / „Was meint ihr?“) – gib eine konkrete Handlung vor."};
+  return {cta:"none", types, dm, note:"Kein Call-to-Action – die Caption endet einfach."};
+}
+
+function scoreHook(p){
+  const hook = firstLine(p.text);
+  const plus = [], minus = [], missing = [];
+  let s = 30;
+  const L = len(hook);
+
+  /* Spezifitäts-Hebel: je 11 Punkte */
+  const hit = LEVERS.filter(l => l.rx.test(hook));
+  s += hit.length * 11;
+  if(hit.length) plus.push(`Spezifitäts-Hebel: ${hit.map(l => l.label).join(", ")} (${hit.length}/5).`);
+  LEVERS.filter(l => !hit.includes(l)).forEach(l => missing.push(l.key));
+  if(hit.length <= 1) minus.push(`Nur ${hit.length}/5 Spezifitäts-Hebeln – könnte von jedem anderen Account stammen.`);
+
+  if(L < 15){ s -= 10; minus.push("Sehr kurz – zu wenig Inhalt, um neugierig zu machen."); }
+  else if(L <= 70){ s += 8; plus.push("Kurz genug, um beim Scrollen ganz gelesen zu werden."); }
+  else if(L <= 110){ minus.push(`Etwas lang (${L} Zeichen) – ideal sind unter 70.`); }
+  else { s -= 12; minus.push(`Zu lang (${L} Zeichen) – die Kernaussage geht beim Scrollen verloren.`); }
+
+  if(RX.generisch.test(hook)){ s -= 22; minus.push("Allgemeiner Einstieg (Begrüßung/Ankündigung) – sagt nicht, warum man bleiben soll."); }
+  if(RX.du.test(hook)){ s += 7; plus.push("Spricht die Leserin direkt an."); }
+  else if(RX.ichStart.test(hook) && !hit.some(l => l.key === "erfahrung")){ s -= 5; minus.push("Beginnt bei dir (Ich/Mein …), ohne ein konkretes Erlebnis zu erzählen."); }
+  if(RX.vage.test(hook)){ s -= 9; minus.push("Vage Superlative („bestes“, „Gold wert“) – sag lieber, was genau passiert ist."); }
+  if(/^\p{Extended_Pictographic}/u.test(hook)){ s -= 3; minus.push("Beginnt mit Emoji – die ersten Wörter sind die wertvollsten."); }
+  if((hook.match(/!/g) || []).length >= 3){ s -= 4; minus.push("Viele Ausrufezeichen wirken laut statt stark."); }
+  if(/#\w/.test(hook)){ s -= 6; minus.push("Hashtags im Hook lenken ab – ab ans Ende damit."); }
+
+  const c = rateCta(p.text);
+  if(c.cta === "ok"){ s += c.dm ? 6 : 3; plus.push(c.note); }
+  else { s -= c.cta === "none" ? 5 : 2; minus.push(c.note); }
+
+  s = Math.max(0, Math.min(100, Math.round(s)));
+  const levTips = LEVERS.filter(l => !hit.includes(l)).slice(0, 2).map(l => l.tip);
+  return {hook, score:s, plus, minus, missing, levTips, cta:c.cta, ctaInfo:c};
+}
+
+/* ---------- Umschreib-Vorlagen ---------- */
+function rewrites(r){
+  const T = (state.topic || "Selbstwert").trim();
+  const A = (state.audience || "").trim();
+  const m = k => r.missing.includes(k);
+  const pool = [];
+  if(m("zeit") && m("erfahrung")) pool.push(`Vor [X] Jahren habe ich [konkretes Erlebnis] – heute weiß ich, warum.`);
+  if(m("zahl")) pool.push(`3 Sätze, die ich mir beim Thema ${T} jeden Tag sage`);
+  if(m("neugier")) pool.push(`Niemand sagt dir das über ${T}: …`);
+  if(m("gefuehl")) pool.push(`Wenn du dich leer fühlst, obwohl „alles gut“ ist – lies das.`);
+  if(m("erfahrung")) pool.push(`Als ich [Moment] erlebt habe, wurde mir klar: …`);
+  if(A) pool.push(`Für ${A}: [ein Satz, den sie gerade braucht].`);
+  pool.push(`Nach [X] Wochen ohne [Gewohnheit] ist mir [konkrete Veränderung] passiert.`);
+  pool.push(`Der eine Satz, der mein Verhältnis zu ${T} verändert hat:`);
+  return [...new Set(pool)].slice(0, 3);
+}
+const CTA_TPL = [
+  "Kommentiere „JOURNAL“ und ich schick dir mein kostenloses Self Care Journal per DM. 🦋",
+  "Speicher dir das für den Moment, in dem du es brauchst.",
+  "Dein nächster Schritt: das kostenlose Self Care Journal – Link in Bio."
+];
+
+/* ---------- Regeln: Profil ---------- */
+function checkProfile(){
+  const name = state.name.trim(), bio = state.bio.trim(), link = state.link.trim();
+  const plus = [], minus = []; let s = 30;
+  const lines = bio.split(/\n/).filter(l => l.trim());
+
+  if(!name) minus.push("Namensfeld ist leer.");
+  else if(/[|·•–\-,&]/.test(name) || name.split(/\s+/).length >= 3){ s += 15; plus.push("Namensfeld enthält mehr als nur den Namen – gut für die Suche."); }
+  else minus.push("Namensfeld enthält nur den Namen – ergänze einen Suchbegriff (z. B. „Seelenwende | " + (state.topic || "Selbstwert") + "“).");
+  if(len(name) > 64) { s -= 5; minus.push("Namensfeld ist länger als 64 Zeichen."); }
+
+  if(!bio) minus.push("Bio ist leer.");
+  else{
+    if(len(bio) > 150){ s -= 8; minus.push(`Bio ist ${len(bio)} Zeichen lang – Instagram erlaubt nur 150.`); }
+    if(/\b(für|hilft|helfe|begleite|zeige|unterstütze)\b/i.test(lines[0] || "")){ s += 15; plus.push("Erste Zeile sagt, für wen/wobei du da bist."); }
+    else minus.push("Erste Zeile sagt nicht, für wen du da bist – starte mit „Für …, die …“.");
+    if(RX.du.test(bio)){ s += 8; plus.push("Spricht die Besucherin direkt an."); }
+    else minus.push("Keine direkte Ansprache („du/dich/dir“).");
+    if(/[↓👇⬇]|\b(link|hol dir|kostenlos|gratis|freebie|hier)\b/i.test(lines[lines.length-1] || "")){ s += 15; plus.push("Endet mit einem Hinweis auf den Link."); }
+    else minus.push("Letzte Zeile ist kein Call-to-Action zum Link (z. B. „↓ Dein kostenloses Journal“).");
+    if(lines.length >= 2 && lines.length <= 5){ s += 5; plus.push("Übersichtlich in Zeilen gegliedert."); }
+    else if(lines.length === 1) minus.push("Alles in einer Zeile – Zeilenumbrüche machen die Bio leichter lesbar.");
+    if(/#\w/.test(bio)){ s -= 6; minus.push("Hashtags in der Bio kosten Platz und lenken ab."); }
+    const emo = (bio.match(/\p{Extended_Pictographic}/gu) || []).length;
+    if(emo > 5){ s -= 4; minus.push(`${emo} Emojis – weniger wirkt ruhiger.`); }
+  }
+
+  if(!link){ s -= 10; minus.push("Kein Link in der Bio – dein wichtigster Weg zum Angebot fehlt."); }
+  else{
+    s += 10; plus.push("Link ist vorhanden.");
+    if(len(link) > 45 || /[?&]utm_|\bbit\.ly\b/.test(link)) minus.push("Link wirkt lang/technisch – eine kurze eigene Domain oder Linkseite sieht vertrauenswürdiger aus.");
+  }
+  const LT = {
+    freebie:[10, true, "Link führt direkt zu einem kostenlosen ersten Schritt – ideal für neue Besucherinnen."],
+    linkpage:[8, true, "Linkseite mit dem Freebie ganz oben – der leichteste Schritt steht zuerst."],
+    "linkpage-mixed":[-2, false, "Auf der Linkseite steht das Freebie nicht oben (oder fehlt) – neue Besucherinnen sind noch nicht bereit zu kaufen."],
+    offer:[-6, false, "Link führt direkt zum bezahlten Angebot – für Fremde ein zu großer Schritt. Stell ein kostenloses Angebot davor."],
+    other:[-3, false, "Link führt nicht zu einem klaren nächsten Schritt – besser: Freebie oder Linkseite mit Freebie oben."]
+  }[state.linkType];
+  if(LT){ s += LT[0]; (LT[1] ? plus : minus).push(LT[2]); }
+  else if(link) minus.push("Wähle oben aus, wohin der Link führt – dann kann auch das Link-Ziel bewertet werden.");
+  s = Math.max(0, Math.min(100, s));
+
+  const T = state.topic || "Selbstwert";
+  const A = state.audience || "Frauen, die sich selbst verloren haben";
+  const tpl = [
+    `Namensfeld: ${name && !/[|·]/.test(name) ? name : "Seelenwende"} | ${T}`,
+    `Für ${A} 🦋\nIch begleite dich zurück zu dir – sanft & ehrlich\n↓ Dein kostenloser erster Schritt`
+  ];
+  return {score:s, plus, minus, tpl};
+}
+
+/* ---------- Grid-Konsistenz ---------- */
+function checkGrid(posts){
+  const pl = pillarList();
+  if(!pl.length || posts.length < 3) return null;
+  const tagged = posts.filter(p => p.pillar);
+  if(tagged.length < posts.length) return {score:null, minus:[`Ordne jedem Post eine Säule zu (${tagged.length}/${posts.length} zugeordnet), dann wird die Grid-Konsistenz bewertet.`], plus:[]};
+  const off = tagged.filter(p => p.pillar === "Passt zu keiner").length;
+  const used = new Set(tagged.map(p => p.pillar).filter(x => x !== "Passt zu keiner"));
+  const share = (tagged.length - off) / tagged.length;
+  const plus = [], minus = [];
+  let s = Math.round(share * 85);
+  if(used.size >= 2 && used.size <= 4){ s += 15; plus.push(`${used.size} Säulen sichtbar – abwechslungsreich, aber klar positioniert.`); }
+  else if(used.size === 1){ s += 5; minus.push("Alle Posts aus einer Säule – zeig ruhig 2–4 Facetten deines Themas."); }
+  if(off) minus.push(`${off} von ${tagged.length} Posts passen zu keiner Säule – für neue Besucherinnen wirkt das wie mehrere Themen nebeneinander.`);
+  else plus.push("Jeder Post zahlt auf deine Positionierung ein.");
+  const unused = pl.filter(x => !used.has(x));
+  if(unused.length && unused.length < pl.length) minus.push(`Zuletzt nicht vertreten: ${unused.join(", ")}.`);
+  return {score:Math.max(0, Math.min(100, s)), plus, minus};
+}
+
+/* ---------- Auswertung ---------- */
+const cls = s => s < 40 ? "low" : s < 65 ? "mid" : "high";
+const CTA_LABEL = {ok:"CTA ✓", weak:"CTA ⚠", none:"CTA ✗"};
+function ctaLabel(r){ return r.ctaInfo.dm ? "CTA ✓ DM" : CTA_LABEL[r.cta]; }
+const ICON = {Post:"📷", Karussell:"🗂️", Reel:"🎬"};
+
+function copyBtn(text){ return `<button class="btn btn--soft btn--small" type="button" data-copy="${esc(text)}">Kopieren</button>`; }
+
+const RULE_NOTE = "Die Bewertung läuft nach festen Regeln direkt in deinem Browser – nichts wird verschickt. Sie ersetzt kein Bauchgefühl: Nimm die Vorschläge als Startpunkt und schreib sie in deiner Sprache um.";
+function evaluate(){
+  $("prios").hidden = true;
+  $("resultNote").textContent = RULE_NOTE;
+  const posts = state.posts.filter(p => p.text.trim());
+  if(!posts.length && !state.bio.trim()){ alert("Füge mindestens deine Bio oder einen Post ein."); return; }
+
+  const results = posts.map(p => Object.assign({type:p.type}, scoreHook(p))).sort((a,b) => a.score - b.score);
+  const prof = checkProfile();
+  const grid = checkGrid(posts);
+  const all = [prof.score, ...results.map(r => r.score)];
+  if(grid && grid.score !== null) all.push(grid.score);
+  const avg = Math.round(all.reduce((a,b) => a+b, 0) / all.length);
+
+  $("scoreNum").textContent = avg;
+  const lvl = avg >= 75 ? ["Stark.", "Deine Texte holen Leserinnen ab. Feile an den schwächsten Hooks unten."]
+            : avg >= 55 ? ["Solide Basis.", "Ein paar Sätze kosten dich gerade Aufmerksamkeit – fang oben bei den roten an."]
+            : ["Hier liegt viel Potenzial.", "Deine Inhalte sind vermutlich besser als ihr erster Satz. Genau da setzen die Vorschläge an."];
+  $("scoreLabel").textContent = lvl[0];
+  $("scoreText").textContent = `Durchschnitt aus Profil, ${results.length} Hook(s)${grid && grid.score !== null ? " und Grid" : ""}. ${lvl[1]}`;
+
+  $("overview").innerHTML =
+    `<div class="row"><span class="s s--${cls(prof.score)}">${prof.score}</span><span class="t">👤 Bio, Namensfeld &amp; Link</span></div>` +
+    (grid && grid.score !== null ? `<div class="row"><span class="s s--${cls(grid.score)}">${grid.score}</span><span class="t">🧩 Grid-Konsistenz</span></div>` : "") +
+    results.map(r => `<div class="row"><span class="s s--${cls(r.score)}">${r.score}</span>
+      <span class="t">${ICON[r.type] || ""} ${esc(r.hook || "(kein Text)")}</span><span class="c">${ctaLabel(r)}</span></div>`).join("");
+
+  $("bioDetail").innerHTML = `
+    <section class="section"><div class="eyebrow"><span>Profil</span></div></section>
+    <div class="detail">
+      <div class="detail__top"><span class="detail__score s-${cls(prof.score)}">${prof.score}</span>
+        <div><div class="detail__hook">Bio, Namensfeld &amp; Link</div></div></div>
+      ${prof.minus.length ? `<h4>Schwächen</h4><ul>${prof.minus.map(m => `<li>${esc(m)}</li>`).join("")}</ul>` : ""}
+      ${prof.plus.length ? `<h4>Das passt schon</h4><ul class="plus">${prof.plus.map(m => `<li>${esc(m)}</li>`).join("")}</ul>` : ""}
+      <h4>Vorlage zum Anpassen</h4>
+      ${prof.tpl.map(t => `<div class="rewrite"><span>${esc(t).replace(/\n/g,"<br>")}</span>${copyBtn(t)}</div>`).join("")}
+    </div>` + (grid ? `
+    <div class="detail">
+      <div class="detail__top">${grid.score !== null ? `<span class="detail__score s-${cls(grid.score)}">${grid.score}</span>` : ""}
+        <div><div class="detail__hook">Grid-Konsistenz</div></div></div>
+      ${grid.minus.length ? `<h4>Schwächen</h4><ul>${grid.minus.map(m => `<li>${esc(m)}</li>`).join("")}</ul>` : ""}
+      ${grid.plus.length ? `<h4>Das passt schon</h4><ul class="plus">${grid.plus.map(m => `<li>${esc(m)}</li>`).join("")}</ul>` : ""}
+    </div>` : "");
+
+  $("postDetails").innerHTML = results.length ? `<section class="section"><div class="eyebrow"><span>Hooks</span></div></section>` +
+    results.map(r => `
+    <div class="detail">
+      <div class="detail__top"><span class="detail__score s-${cls(r.score)}">${r.score}</span>
+        <div><div class="detail__type">${esc(r.type)} · ${ctaLabel(r)}</div><div class="detail__hook">${esc(r.hook)}</div></div></div>
+      ${r.minus.length ? `<h4>Schwächen</h4><ul>${r.minus.map(m => `<li>${esc(m)}</li>`).join("")}</ul>` : ""}
+      ${r.plus.length ? `<h4>Das funktioniert</h4><ul class="plus">${r.plus.map(m => `<li>${esc(m)}</li>`).join("")}</ul>` : ""}
+      ${r.levTips.length && r.score < 80 ? `<h4>So wird er spezifischer</h4><ul>${r.levTips.map(t => `<li>${esc(t)}</li>`).join("")}</ul>` : ""}
+      ${r.score < 80 ? `<h4>Umschreib-Ideen für den Hook</h4>${rewrites(r).map(t => `<div class="rewrite"><span>${esc(t)}</span>${copyBtn(t)}</div>`).join("")}` : ""}
+      ${r.cta !== "ok" ? `<h4>CTA zum Anhängen</h4>${CTA_TPL.map(t => `<div class="rewrite"><span>${esc(t)}</span>${copyBtn(t)}</div>`).join("")}` : ""}
+    </div>`).join("") : "";
+
+  $("result").classList.add("show");
+  $("result").scrollIntoView({behavior:"smooth"});
+}
+
+document.addEventListener("click", async e => {
+  const t = e.target.dataset && e.target.dataset.copy;
+  if(t === undefined) return;
+  try{ await navigator.clipboard.writeText(t); }
+  catch(err){
+    const ta = document.createElement("textarea"); ta.value = t; document.body.appendChild(ta);
+    ta.select(); try{ document.execCommand("copy"); }catch(_){} ta.remove();
+  }
+  const old = e.target.textContent; e.target.textContent = "Kopiert ✓";
+  setTimeout(() => e.target.textContent = old, 1400);
+});
+
+/* ---------- KI-Analyse ---------- */
+const AI_KEY = "seelenwende-hookcheck-ai-v1";
+try{ $("accessCode").value = localStorage.getItem(AI_KEY + "-code") || ""; }catch(e){}
+
+function aiStatus(text, kind){
+  $("aiStatus").className = "status" + (kind === "err" ? " err" : "");
+  $("aiStatus").innerHTML = (kind === "busy" ? '<span class="spinner" aria-hidden="true"></span>' : "") + esc(text);
+}
+
+async function aiCheck(){
+  const code = $("accessCode").value.trim();
+  if(!code){ aiStatus("Bitte gib deinen Zugangscode ein.", "err"); $("accessCode").focus(); return; }
+  const posts = state.posts.filter(p => p.text.trim()).slice(0, 15);
+  if(!posts.length && !state.bio.trim()){ aiStatus("Füge mindestens deine Bio oder einen Post ein.", "err"); return; }
+  try{ localStorage.setItem(AI_KEY + "-code", code); }catch(e){}
+
+  const input = {topic:state.topic, audience:state.audience, pillars:state.pillars, name:state.name,
+    bio:state.bio, link:state.link, linkType:state.linkType,
+    posts: posts.map(p => ({type:p.type || "Post", pillar:p.pillar || undefined, text:p.text}))};
+
+  $("aiBtn").disabled = true;
+  aiStatus("Analyse wird gestartet …", "busy");
+  try{
+    const res = await fetch("/api/hook-check/start", {method:"POST", headers:{"content-type":"application/json"},
+      body: JSON.stringify({accessCode: code, input})});
+    const data = await res.json().catch(() => ({}));
+    if(!res.ok) throw new Error(data.error || `Start fehlgeschlagen (${res.status}).`);
+
+    const msgs = ["Die KI liest deine Bio …", "Hooks werden geprüft …", "CTAs werden bewertet …", "Umschreibungen entstehen …", "Fast fertig …"];
+    const started = Date.now();
+    while(true){
+      await new Promise(r => setTimeout(r, 4000));
+      const secs = Math.round((Date.now() - started) / 1000);
+      if(secs > 600) throw new Error("Die Analyse dauert ungewöhnlich lange. Bitte später noch einmal versuchen.");
+      aiStatus(`${msgs[Math.min(msgs.length - 1, Math.floor(secs / 20))]} (${secs} s)`, "busy");
+      const st = await fetch(`/api/hook-check/status?id=${data.id}`).then(r => r.json()).catch(() => ({status:"pending"}));
+      if(st.status === "error") throw new Error(st.error || "Die Analyse ist fehlgeschlagen.");
+      if(st.status === "done"){
+        const saved = {result: st.result, posts: input.posts, at: Date.now()};
+        try{ localStorage.setItem(AI_KEY, JSON.stringify(saved)); }catch(e){}
+        aiStatus("Fertig ✓");
+        renderAi(saved);
+        return;
+      }
+    }
+  }catch(err){
+    aiStatus(err.message || "Etwas ist schiefgelaufen.", "err");
+  }finally{
+    $("aiBtn").disabled = false;
+  }
+}
+
+const AI_CTA = {gut:"CTA ✓", schwach:"CTA ⚠", fehlt:"CTA ✗"};
+const list = (title, items, cl) => items && items.length ? `<h4>${title}</h4><ul${cl ? ` class="${cl}"` : ""}>${items.map(m => `<li>${esc(m)}</li>`).join("")}</ul>` : "";
+const rw = t => t ? `<div class="rewrite"><span>${esc(t).replace(/\n/g,"<br>")}</span>${copyBtn(t)}</div>` : "";
+const clamp = n => Math.max(0, Math.min(100, Math.round(+n || 0)));
+
+function renderAi({result: r, posts}){
+  const P = r.profile, G = r.grid;
+  $("scoreNum").textContent = clamp(r.overall_score);
+  $("scoreLabel").textContent = r.headline;
+  $("scoreText").textContent = r.summary;
+
+  $("prios").hidden = !r.top_priorities.length;
+  $("prios").innerHTML = `<h4>Deine wichtigsten nächsten Schritte</h4><ol>${r.top_priorities.map(t => `<li>${esc(t)}</li>`).join("")}</ol>`;
+
+  const sorted = [...r.posts].sort((a, b) => a.score - b.score);
+  const icon = p => ICON[(posts[p.post_number - 1] || {}).type] || "📷";
+  $("overview").innerHTML =
+    `<div class="row"><span class="s s--${cls(clamp(P.score))}">${clamp(P.score)}</span><span class="t">👤 Bio, Namensfeld &amp; Link</span></div>` +
+    `<div class="row"><span class="s s--${cls(clamp(G.score))}">${clamp(G.score)}</span><span class="t">🧩 Grid-Konsistenz</span></div>` +
+    sorted.map(p => `<div class="row"><span class="s s--${cls(clamp(p.score))}">${clamp(p.score)}</span>
+      <span class="t">${icon(p)} ${esc(p.hook || "(kein Text)")}</span><span class="c">${p.uses_comment_to_dm ? "CTA ✓ DM" : AI_CTA[p.cta_rating]}</span></div>`).join("");
+
+  $("bioDetail").innerHTML = `
+    <section class="section"><div class="eyebrow"><span>Profil</span></div></section>
+    <div class="detail">
+      <div class="detail__top"><span class="detail__score s-${cls(clamp(P.score))}">${clamp(P.score)}</span>
+        <div><div class="detail__hook">Bio, Namensfeld &amp; Link</div></div></div>
+      ${list("Schwächen", P.weaknesses)}
+      ${list("Das passt schon", P.strengths, "plus")}
+      <h4>Link</h4><p style="font-size:14px">${esc(P.link_assessment)}</p>
+      <h4>Neues Namensfeld</h4>${rw(P.rewrite_name)}
+      <h4>Neue Bio</h4>${rw(P.rewrite_bio)}
+    </div>
+    <div class="detail">
+      <div class="detail__top"><span class="detail__score s-${cls(clamp(G.score))}">${clamp(G.score)}</span>
+        <div><div class="detail__hook">Grid-Konsistenz</div></div></div>
+      <p style="font-size:14px;margin-top:8px">${esc(G.assessment)}</p>
+      ${G.off_topic_posts.length ? `<p style="font-size:13px;color:var(--gedaempft);margin-top:6px">Passt nicht zur Positionierung: Post ${G.off_topic_posts.join(", ")}</p>` : ""}
+    </div>`;
+
+  $("postDetails").innerHTML = sorted.length ? `<section class="section"><div class="eyebrow"><span>Hooks</span></div></section>` +
+    sorted.map(p => `
+    <div class="detail">
+      <div class="detail__top"><span class="detail__score s-${cls(clamp(p.score))}">${clamp(p.score)}</span>
+        <div><div class="detail__type">Post ${p.post_number} · ${esc((posts[p.post_number - 1] || {}).type || "Post")} · ${p.uses_comment_to_dm ? "CTA ✓ DM" : AI_CTA[p.cta_rating]}</div>
+        <div class="detail__hook">${esc(p.hook)}</div></div></div>
+      ${p.levers_used.length ? `<p style="font-size:12.5px;color:var(--gedaempft);margin-top:6px">Spezifitäts-Hebel: ${p.levers_used.map(esc).join(", ")} (${p.levers_used.length}/5)</p>` : ""}
+      ${list("Schwächen", p.weaknesses)}
+      ${list("Das funktioniert", p.strengths, "plus")}
+      <h4>CTA</h4><p style="font-size:14px">${esc(p.cta_comment)}</p>
+      <h4>Neuer Hook</h4>${rw(p.rewrite_hook)}
+      <h4>Neuer CTA</h4>${rw(p.rewrite_cta)}
+    </div>`).join("") : "";
+
+  $("resultNote").textContent = "Analyse durch KI (Claude). Prüfe jeden Vorschlag und ersetze Platzhalter in [eckigen Klammern] durch deine echten Details.";
+  $("result").classList.add("show");
+  $("result").scrollIntoView({behavior:"smooth"});
+}
+
+$("aiBtn").addEventListener("click", aiCheck);
+$("evalBtn").addEventListener("click", evaluate);
+$("backBtn").addEventListener("click", () => window.scrollTo({top:0, behavior:"smooth"}));
+$("resetBtn").addEventListener("click", () => {
+  if(!confirm("Alle eingegebenen Texte löschen?")) return;
+  state = {topic:"", audience:"", pillars:"", name:"", bio:"", link:"", linkType:"", posts:[1,2,3].map(() => ({type:"Post", text:""}))};
+  save();
+  Object.keys(simple).forEach(id => $(id).value = "");
+  renderPosts(); counters(); $("result").classList.remove("show");
+});
+
+renderPosts();
+counters();
+</script>
+</body>
+</html>
