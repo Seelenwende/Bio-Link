@@ -19,8 +19,11 @@ const EDITABLE = [
   "IG_USERNAME",
   "IG_GRAPH_HOST",
   "IG_TOKEN_REFRESHED_AT",
+  "FB_PAGE_ID",
+  "FB_PAGE_NAME",
+  "FB_PAGE_TOKEN",
 ];
-const SECRET = new Set(["ANTHROPIC_API_KEY", "IG_ACCESS_TOKEN"]);
+const SECRET = new Set(["ANTHROPIC_API_KEY", "IG_ACCESS_TOKEN", "FB_PAGE_TOKEN"]);
 
 let stored = {};
 

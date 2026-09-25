@@ -8,14 +8,15 @@ import { timingSafeEqual } from "node:crypto";
 import { mkdir, rm } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
-import { planReel, hasClaude } from "./planner.js";
+import { planContent, hasClaude, FORMATS, GOALS } from "./planner.js";
 import { totalDuration } from "./render.js";
 import { isInstagramConfigured, getProfile, lookupAccount } from "./instagram.js";
+import { isFacebookConfigured, lookupPage } from "./facebook.js";
 import { MOODS } from "./music.js";
 import { startJob, getJob } from "./jobs.js";
 import {
   OUTPUT, TZ, storeAsset, createReel, listReels, deleteReel, publishNow,
-  addSchedule, listSchedule, cancelSchedule, startScheduler,
+  addSchedule, listSchedule, cancelSchedule, startScheduler, connectedChannels, CHANNELS,
 } from "./reels.js";
 import { getSession, chat, confirmPending } from "./agent.js";
 
@@ -76,6 +77,11 @@ app.get("/api/status", wrap(async () => {
   return {
     claude: hasClaude(),
     instagram,
+    facebook: { configured: isFacebookConfigured(), pageName: process.env.FB_PAGE_NAME || null },
+    channels: connectedChannels(),
+    channelNames: CHANNELS,
+    formats: FORMATS,
+    goals: GOALS,
     handle: process.env.BRAND_HANDLE || "@_seelenwende",
     timezone: TZ,
     moods: Object.fromEntries(Object.entries(MOODS).map(([k, v]) => [k, v.label])),
@@ -110,11 +116,24 @@ app.post("/api/instagram/disconnect", wrap(async () => {
   return { ok: true };
 }));
 
+app.post("/api/facebook/connect", wrap(async (req) => {
+  const { token, pageName, appId, appSecret } = req.body ?? {};
+  if (!String(token ?? "").trim()) throw new Error("Bitte füge dein Facebook-Access-Token ein.");
+  const page = await lookupPage({ token: String(token), pageName, appId, appSecret });
+  await saveSettings({ FB_PAGE_ID: page.pageId, FB_PAGE_NAME: page.pageName, FB_PAGE_TOKEN: page.token });
+  return { pageName: page.pageName, others: page.others };
+}));
+
+app.post("/api/facebook/disconnect", wrap(async () => {
+  await saveSettings({ FB_PAGE_ID: "", FB_PAGE_NAME: "", FB_PAGE_TOKEN: "" });
+  return { ok: true };
+}));
+
 // ---------- Drehbuch, Dateien, Rendern ----------
 
 app.post("/api/plan", wrap(async (req) => {
-  const { brief, duration, mood, style } = req.body ?? {};
-  const plan = await planReel({ brief, duration: Math.min(90, Math.max(5, Number(duration) || 20)), mood, style });
+  const { brief, format, duration, mood, goal, style } = req.body ?? {};
+  const plan = await planContent({ brief, format, duration: Math.min(90, Math.max(5, Number(duration) || 20)), mood, goal, style });
   return { plan, duration: totalDuration(plan), ai: hasClaude() };
 }));
 
@@ -143,17 +162,19 @@ app.delete("/api/reels/:id", wrap(async (req) => {
 // ---------- Veröffentlichen & Planen ----------
 
 app.post("/api/publish/:id", wrap(async (req) => {
-  if (!isInstagramConfigured()) throw new Error("Instagram ist noch nicht verbunden (⚙️ Einstellungen).");
-  const { caption, shareToFeed } = req.body ?? {};
-  const job = startJob("publish", (j) => publishNow(req.params.id, { caption, shareToFeed: shareToFeed !== false }, (s) => (j.step = s)));
+  if (!connectedChannels().length) throw new Error("Noch kein Kanal verbunden (⚙️ Einstellungen).");
+  const { caption, facebookText, channels, shareToFeed } = req.body ?? {};
+  const job = startJob("publish", (j) =>
+    publishNow(req.params.id, { caption, facebookText, channels, shareToFeed: shareToFeed !== false }, (s) => (j.step = s)),
+  );
   return { jobId: job.id };
 }));
 
 app.get("/api/schedule", wrap(() => listSchedule()));
 app.post("/api/schedule", wrap(async (req) => {
-  if (!isInstagramConfigured()) throw new Error("Instagram ist noch nicht verbunden (⚙️ Einstellungen).");
-  const { reelId, caption, at, shareToFeed } = req.body ?? {};
-  return addSchedule({ reelId, caption, at, shareToFeed: shareToFeed !== false });
+  if (!connectedChannels().length) throw new Error("Noch kein Kanal verbunden (⚙️ Einstellungen).");
+  const { reelId, caption, facebookText, channels, at, shareToFeed } = req.body ?? {};
+  return addSchedule({ reelId, caption, facebookText, channels, at, shareToFeed: shareToFeed !== false });
 }));
 app.delete("/api/schedule/:id", wrap(async (req) => {
   await cancelSchedule(req.params.id);
@@ -197,6 +218,8 @@ app.use((err, req, res, next) => {
 startScheduler();
 app.listen(PORT, HOST, () => {
   console.log(`🎬 Reel-Agent läuft auf http://${HOST === "0.0.0.0" ? "localhost" : HOST}:${PORT}`);
-  console.log(`   Claude: ${hasClaude() ? "aktiv" : "nicht eingerichtet"} · Instagram: ${isInstagramConfigured() ? "verbunden" : "nicht verbunden"}`);
+  console.log(
+    `   Claude: ${hasClaude() ? "aktiv" : "nicht eingerichtet"} · Instagram: ${isInstagramConfigured() ? "verbunden" : "nicht verbunden"} · Facebook: ${isFacebookConfigured() ? "verbunden" : "nicht verbunden"}`,
+  );
   console.log("   Einstellungen findest du in der App unter ⚙️.");
 });

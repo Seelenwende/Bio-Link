@@ -1,15 +1,14 @@
 // Chat-Agent: Du sagst in eigenen Worten, was du willst – der Agent plant, ändert,
-// rendert, veröffentlicht oder plant Reels über Werkzeuge. Veröffentlichen passiert
+// erstellt, veröffentlicht oder plant Beiträge (Reel, Bild, Karussell) für Instagram und Facebook. Veröffentlichen passiert
 // nie ohne deine Bestätigung in der Oberfläche.
 
 import { randomUUID } from "node:crypto";
-import { getClient, model, brandContext, REEL_RULES, PLAN_SCHEMA, planReel, normalizePlan, hasClaude } from "./planner.js";
+import { getClient, model, brandContext, REEL_RULES, PLAN_SCHEMA, planContent, normalizePlan, hasClaude, FORMATS, GOALS } from "./planner.js";
 import { MOODS } from "./music.js";
 import { totalDuration } from "./render.js";
-import { isInstagramConfigured } from "./instagram.js";
 import {
   createReel, getReel, listReels, publishNow, addSchedule, listSchedule, cancelSchedule,
-  captionFor, parseLocalTime, formatLocal, TZ,
+  captionFor, facebookTextFor, parseLocalTime, formatLocal, TZ, connectedChannels, CHANNELS,
 } from "./reels.js";
 
 const MAX_STEPS = 12;
@@ -18,15 +17,17 @@ const TOOLS = [
   {
     name: "create_script",
     description:
-      "Erstellt ein neues Reel-Drehbuch (Szenen, Caption, Hashtags, Musik, Farben) aus einer inhaltlichen Vorgabe. " +
-      "Nutze es, wenn der Nutzer ein neues Reel möchte. Das Ergebnis ersetzt das aktuelle Drehbuch und erscheint im Editor.",
+      "Erstellt ein neues Drehbuch für einen Beitrag – Reel (Video), Bildbeitrag oder Karussell – mit Hook, Inhalt, CTA, " +
+      "Instagram-Caption, Hashtags und eigenem Facebook-Text. Das Ergebnis ersetzt das aktuelle Drehbuch und erscheint im Editor.",
     input_schema: {
       type: "object",
       additionalProperties: false,
       required: ["brief"],
       properties: {
-        brief: { type: "string", description: "Inhalt, Botschaft, Zielgruppe – so ausführlich wie möglich" },
-        duration: { type: "number", description: "Ziel-Länge in Sekunden (5–90), Standard 20" },
+        brief: { type: "string", description: "Inhalt, Botschaft, Zielgruppe, ggf. gewählter Hook – so ausführlich wie möglich" },
+        format: { type: "string", enum: Object.keys(FORMATS), description: "reel (Standard), image oder carousel" },
+        goal: { type: "string", enum: Object.keys(GOALS), description: "Ziel des Call-to-Action" },
+        duration: { type: "number", description: "Nur Reel: Ziel-Länge in Sekunden (5–90), Standard 20" },
         mood: { type: "string", enum: ["auto", ...Object.keys(MOODS)] },
         style: { type: "string", description: "Stilwünsche, z. B. poetisch, Frage als Hook" },
       },
@@ -36,7 +37,7 @@ const TOOLS = [
     name: "update_script",
     description:
       "Ersetzt das aktuelle Drehbuch durch eine überarbeitete Fassung. Nutze es für Änderungswünsche " +
-      "(Texte, Reihenfolge, Länge, Musikstimmung, Tempo, Farben, Caption, Hashtags). Übergib immer das vollständige Drehbuch.",
+      "(Texte, Reihenfolge, Länge, Format, Musik, Farben, Caption, Hashtags, Facebook-Text). Übergib immer das vollständige Drehbuch.",
     input_schema: {
       type: "object",
       additionalProperties: false,
@@ -47,14 +48,14 @@ const TOOLS = [
   {
     name: "render_reel",
     description:
-      "Erstellt aus dem aktuellen Drehbuch das fertige Video inkl. Musik (dauert ca. 1–2 Minuten). " +
-      "Vom Nutzer hochgeladene Bilder und Musik werden automatisch verwendet. Danach sieht der Nutzer die Vorschau.",
+      "Erstellt aus dem aktuellen Drehbuch den fertigen Beitrag: beim Reel das Video inkl. Musik (ca. 1–2 Minuten), " +
+      "bei Bild/Karussell die gestalteten Bilder (wenige Sekunden). Hochgeladene Fotos/Musik werden automatisch verwendet.",
     input_schema: { type: "object", additionalProperties: false, properties: {} },
   },
   {
     name: "request_publish",
     description:
-      "Bereitet das Veröffentlichen eines fertigen Reels auf Instagram vor – sofort oder zu einem geplanten Zeitpunkt. " +
+      "Bereitet das Veröffentlichen eines fertigen Beitrags auf Instagram und/oder Facebook vor – sofort oder geplant. " +
       "Der Nutzer bekommt einen Bestätigen-Button; erst dann wird gepostet bzw. eingeplant. Behaupte nie, dass etwas " +
       "veröffentlicht wurde, bevor der Nutzer bestätigt hat.",
     input_schema: {
@@ -62,7 +63,13 @@ const TOOLS = [
       additionalProperties: false,
       properties: {
         reel_id: { type: "string", description: "ID des Reels; leer = zuletzt erstelltes/angezeigtes Reel" },
-        caption: { type: "string", description: "Vollständige Caption inkl. Hashtags; leer = aus dem Drehbuch" },
+        caption: { type: "string", description: "Vollständige Instagram-Caption inkl. Hashtags; leer = aus dem Drehbuch" },
+        facebook_text: { type: "string", description: "Facebook-Text; leer = aus dem Drehbuch" },
+        channels: {
+          type: "array",
+          items: { type: "string", enum: Object.keys(CHANNELS) },
+          description: "Kanäle; leer = alle verbundenen",
+        },
         schedule_at: {
           type: "string",
           description: `Geplanter Zeitpunkt als Ortszeit ${TZ} im Format JJJJ-MM-TTTHH:MM (z. B. 2026-09-24T18:00). Leer = sofort.`,
@@ -72,7 +79,7 @@ const TOOLS = [
   },
   {
     name: "list_reels",
-    description: "Listet die gespeicherten Reels (ID, Titel, Länge, ob veröffentlicht).",
+    description: "Listet die gespeicherten Beiträge (ID, Format, Titel, ob veröffentlicht).",
     input_schema: { type: "object", additionalProperties: false, properties: {} },
   },
   {
@@ -92,20 +99,21 @@ const TOOLS = [
   },
 ];
 
-const system = () => `Du bist der persönliche Reel-Agent der Marke – ein warmherziger, kompetenter Social-Media-Assistent.
-Du erledigst alles rund um Instagram-Reels in diesem einen Werkzeug: Ideen entwickeln, Drehbücher schreiben und
-überarbeiten, Videos mit Musik rendern, veröffentlichen und Posts einplanen.
+const system = () => `Du bist der persönliche Social-Media-Agent der Marke – ein warmherziger, kompetenter Assistent.
+Du erledigst alles für Instagram und Facebook in diesem einen Werkzeug: Ideen entwickeln, Hooks und CTAs formulieren,
+Reels, Bildbeiträge und Karussells erstellen und überarbeiten, veröffentlichen und einplanen.
 
 ${brandContext()}
 
 ${REEL_RULES}
 
 So arbeitest du:
-- Wenn der Nutzer ein Reel möchte, lege direkt los (create_script) statt viele Rückfragen zu stellen. Frag nur nach, wenn das Thema völlig unklar ist.
+- Wenn der Nutzer einen Beitrag möchte, lege direkt los (create_script) statt viele Rückfragen zu stellen. Ohne Formatwunsch: Reel. Tipps/Schritte/Listen eignen sich besonders als Karussell, einzelne Zitate oder Impulse als Bildbeitrag.
+- Wenn der Nutzer nach Ideen fragt, schlag 5–10 konkrete Beitragsideen mit passendem Format vor (ohne Werkzeug). Wenn er Hook-Varianten möchte, schlag 3 unterschiedliche vor (Frage, provokant, persönlich) und nutze den gewählten.
 - Fasse ein neues oder geändertes Drehbuch kurz zusammen (Hook, Anzahl Szenen, Länge, Musik) und frag, ob du das Video erstellen sollst – es sei denn, der Nutzer hat schon gesagt, dass du direkt rendern sollst.
 - Nach Änderungswünschen am Drehbuch ein bereits gerendertes Video nur neu rendern, wenn der Nutzer das möchte oder ohnehin veröffentlichen will.
 - Veröffentlichen/Einplanen immer über request_publish. Danach sagen, dass der Nutzer bitte auf „Bestätigen“ klickt.
-- Ist Instagram nicht verbunden, erkläre, dass der Nutzer oben unter ⚙️ Einstellungen das Konto verbindet.
+- Ist kein Kanal verbunden, erkläre, dass der Nutzer oben unter ⚙️ Einstellungen Instagram und/oder Facebook verbindet.
 - Titel aus der Instagram-Musikbibliothek kannst du nicht hinzufügen; du komponierst eigene, lizenzfreie Musik (Stimmungen: ${Object.entries(MOODS).map(([k, v]) => `${k} = ${v.label}`).join(", ")}). Eigene Musikdateien kann der Nutzer im Editor hochladen.
 - Antworte kurz, freundlich und auf Deutsch (du-Form). Keine langen Listen, keine Technik-Details.`;
 
@@ -122,27 +130,34 @@ export function getSession(id) {
 
 const summarizeReel = (r) => ({
   reel_id: r.id,
+  format: FORMATS[r.format],
   titel: r.plan.title,
-  laenge_sek: Number(r.duration.toFixed(1)),
+  ...(r.format === "reel" ? { laenge_sek: Number(r.duration.toFixed(1)) } : { bilder: r.slides.length }),
   erstellt: formatLocal(r.createdAt),
-  veroeffentlicht: r.published ? { am: formatLocal(r.published.at), link: r.published.permalink } : false,
+  veroeffentlicht: r.publications
+    ? Object.fromEntries(Object.entries(r.publications).map(([c, p]) => [c, { am: formatLocal(p.at), link: p.permalink }]))
+    : r.published
+      ? { am: formatLocal(r.published.at), link: r.published.permalink }
+      : false,
 });
 
 async function runTool(session, name, input, onStep) {
   switch (name) {
     case "create_script": {
       onStep("Schreibe das Drehbuch …");
-      session.plan = await planReel({
+      session.plan = await planContent({
         brief: input.brief,
+        format: input.format || "reel",
+        goal: input.goal || "",
         duration: Math.min(90, Math.max(5, Number(input.duration) || 20)),
         mood: input.mood || "auto",
         style: input.style || "",
       });
-      return { ok: true, drehbuch: session.plan, gesamtlaenge_sek: totalDuration(session.plan) };
+      return { ok: true, drehbuch: session.plan, ...(session.plan.format === "reel" ? { gesamtlaenge_sek: totalDuration(session.plan) } : {}) };
     }
     case "update_script": {
       session.plan = normalizePlan(input.plan);
-      return { ok: true, drehbuch: session.plan, gesamtlaenge_sek: totalDuration(session.plan) };
+      return { ok: true, drehbuch: session.plan, ...(session.plan.format === "reel" ? { gesamtlaenge_sek: totalDuration(session.plan) } : {}) };
     }
     case "render_reel": {
       if (!session.plan) return { ok: false, fehler: "Es gibt noch kein Drehbuch. Erstelle zuerst eins." };
@@ -154,9 +169,13 @@ async function runTool(session, name, input, onStep) {
       return { ok: true, ...summarizeReel(reel), hinweis: "Die Vorschau wird dem Nutzer jetzt angezeigt." };
     }
     case "request_publish": {
-      if (!isInstagramConfigured()) return { ok: false, fehler: "Instagram ist nicht verbunden (Einstellungen)." };
+      const connected = connectedChannels();
+      if (!connected.length) return { ok: false, fehler: "Kein Kanal verbunden (⚙️ Einstellungen)." };
+      const channels = input.channels?.length ? input.channels : connected;
+      const missing = channels.filter((c) => !connected.includes(c));
+      if (missing.length) return { ok: false, fehler: `Nicht verbunden: ${missing.map((c) => CHANNELS[c]).join(", ")}` };
       const reelId = input.reel_id || session.reelId;
-      if (!reelId) return { ok: false, fehler: "Es gibt noch kein fertiges Video. Rendere zuerst das Reel." };
+      if (!reelId) return { ok: false, fehler: "Es gibt noch keinen fertigen Beitrag. Erstelle ihn zuerst (render_reel)." };
       const reel = await getReel(reelId);
       let at = null;
       if (input.schedule_at) {
@@ -167,7 +186,10 @@ async function runTool(session, name, input, onStep) {
         type: at ? "schedule" : "publish",
         reelId,
         title: reel.plan.title,
+        format: reel.format,
+        channels,
         caption: input.caption?.trim() || captionFor(reel.plan),
+        facebookText: input.facebook_text?.trim() || facebookTextFor(reel.plan),
         at: at?.toISOString() ?? null,
         atLabel: at ? formatLocal(at) : null,
       };
@@ -214,10 +236,10 @@ export async function chat(session, message, context = {}, onStep = () => {}) {
   if (context.showHandle !== undefined) session.showHandle = context.showHandle !== false;
   if (context.reelId && context.reelId !== session.reelId) {
     session.reelId = context.reelId;
-    info.push(`Der Nutzer hat das Reel ${context.reelId} in der Vorschau geöffnet.`);
+    info.push(`Der Nutzer hat den Beitrag ${context.reelId} in der Vorschau geöffnet.`);
   }
   info.push(
-    `Jetzt: ${formatLocal(new Date())} (${TZ}). Instagram verbunden: ${isInstagramConfigured() ? `ja${process.env.IG_USERNAME ? ` (@${process.env.IG_USERNAME})` : ""}` : "nein"}. ` +
+    `Jetzt: ${formatLocal(new Date())} (${TZ}). Verbundene Kanäle: ${connectedChannels().map((c) => CHANNELS[c]).join(", ") || "keine"}. ` +
       `Hochgeladene Bilder: ${session.imageIds.length}. Eigene Musik: ${session.musicId ? "ja" : "nein"}.`,
   );
 
@@ -286,12 +308,16 @@ export async function confirmPending(session, approve, onStep = () => {}) {
   }
   try {
     if (p.type === "schedule") {
-      const entry = await addSchedule({ reelId: p.reelId, caption: p.caption, at: p.at });
-      session.notes.push(`Der Nutzer hat bestätigt: Reel ${p.reelId} ist für ${formatLocal(entry.at)} eingeplant (schedule_id ${entry.id}).`);
+      const entry = await addSchedule({ reelId: p.reelId, caption: p.caption, facebookText: p.facebookText, channels: p.channels, at: p.at });
+      session.notes.push(`Der Nutzer hat bestätigt: Beitrag ${p.reelId} ist für ${formatLocal(entry.at)} eingeplant (schedule_id ${entry.id}).`);
       return { scheduled: entry };
     }
-    const result = await publishNow(p.reelId, { caption: p.caption }, onStep);
-    session.notes.push(`Der Nutzer hat bestätigt: Reel ${p.reelId} wurde veröffentlicht (${result.permalink || "ohne Link"}).`);
+    const result = await publishNow(p.reelId, { caption: p.caption, facebookText: p.facebookText, channels: p.channels }, onStep);
+    const errs = Object.entries(result.errors ?? {}).map(([c, m]) => `${CHANNELS[c]} fehlgeschlagen: ${m}`);
+    session.notes.push(
+      `Der Nutzer hat bestätigt: Beitrag ${p.reelId} wurde veröffentlicht auf ${Object.keys(result.results).map((c) => CHANNELS[c]).join(", ")}.` +
+        (errs.length ? ` ${errs.join("; ")}` : ""),
+    );
     return { published: result, reel: await getReel(p.reelId) };
   } catch (e) {
     session.notes.push(`Die bestätigte Veröffentlichung ist fehlgeschlagen: ${e.message}`);

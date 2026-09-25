@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Reel-Agent · Seelenwende</title>
+<title>Social-Agent · Seelenwende</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
@@ -85,6 +85,15 @@
   .file img{width:26px;height:26px;object-fit:cover;border-radius:6px}
   .file button{padding:0 7px;font-size:12px;background:none;color:var(--gedaempft)}
   .chk{display:flex;align-items:center;gap:8px;font-size:14px;margin-top:10px;color:var(--pflaume)}
+  .channels{display:flex;gap:18px;flex-wrap:wrap}
+  .phone.feed{aspect-ratio:4/5}
+  .phone .slide{width:100%;height:100%;object-fit:cover;display:block}
+  .slider{position:relative;width:100%;height:100%}
+  .slider button{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,253,252,.85);color:var(--pflaume);padding:4px 12px;font-size:18px}
+  .slider .prev{left:8px} .slider .next{right:8px}
+  .slider .dots{position:absolute;top:10px;left:12px;font-size:12px;color:var(--pflaume);background:rgba(255,253,252,.85);border-radius:99px;padding:1px 8px}
+  .slider .dots:empty{display:none}
+  body.fmt-feed .reel-only{display:none!important}
 
   /* Vorschau */
   aside{position:sticky;top:16px}
@@ -115,10 +124,11 @@
       <ellipse cx="41" cy="61" rx="9" ry="13" transform="rotate(-20 41 61)"/><ellipse cx="59" cy="61" rx="9" ry="13" transform="rotate(20 59 61)"/>
       <ellipse class="f" cx="50" cy="50" rx="1.5" ry="16"/><path d="M50 36 C47 30 45 27 43 24"/><path d="M50 36 C53 30 55 27 57 24"/>
     </svg>
-    <div class="brand"><h1>Reel-Agent</h1><div class="handle" id="handle">@_seelenwende</div></div>
+    <div class="brand"><h1>Social-Agent</h1><div class="handle" id="handle">@_seelenwende</div></div>
     <div class="status">
       <span class="pill off" id="st-claude">Claude</span>
       <span class="pill off" id="st-ig">Instagram</span>
+      <span class="pill off" id="st-fb">Facebook</span>
       <button class="icon" id="btn-settings" title="Einstellungen">⚙️ Einstellungen</button>
     </div>
   </header>
@@ -129,17 +139,19 @@
       <section class="card chat">
         <div class="chat-head">
           <h2>Dein Agent</h2>
-          <p class="meta">Sag einfach, was du brauchst – Reel erstellen, ändern, rendern, posten oder einplanen.</p>
+          <p class="meta">Sag einfach, was du brauchst – Ideen, Reels, Bildbeiträge, Karussells, posten oder einplanen.</p>
         </div>
         <div class="log" id="log"></div>
         <div class="chips" id="chips">
+          <span class="chip">Gib mir 10 Ideen zum Thema Selbstliebe</span>
+          <span class="chip">Mach ein Karussell mit 5 Tipps für mehr innere Ruhe</span>
           <span class="chip">Mach mir ein Reel über 3 sanfte Morgenrituale</span>
-          <span class="chip">Mach den Hook neugieriger</span>
-          <span class="chip">Erstelle das Video</span>
-          <span class="chip">Poste es morgen um 18 Uhr</span>
+          <span class="chip">Schlag mir 3 Hooks vor</span>
+          <span class="chip">Erstelle den Beitrag</span>
+          <span class="chip">Poste es morgen um 18 Uhr auf Instagram und Facebook</span>
         </div>
         <div class="composer">
-          <textarea id="chat-input" rows="1" placeholder="z. B. Mach ein ruhiges 20-Sekunden-Reel darüber, dass Pausen kein Luxus sind …"></textarea>
+          <textarea id="chat-input" rows="1" placeholder="z. B. Mach ein Karussell darüber, dass Pausen kein Luxus sind – Ziel: Speichern …"></textarea>
           <button id="chat-send">Senden</button>
         </div>
       </section>
@@ -149,8 +161,12 @@
         <summary><h2>Drehbuch & Material <span class="meta" id="editor-sub"></span></h2></summary>
         <div id="no-plan" class="hint" style="margin-top:10px">
           Noch kein Drehbuch. Bitte den Agenten im Chat darum – oder starte hier ohne Chat:
-          <textarea id="brief" rows="3" placeholder="Worum geht es im Reel?" style="margin-top:8px"></textarea>
+          <textarea id="brief" rows="3" placeholder="Worum geht es im Beitrag?" style="margin-top:8px"></textarea>
           <div class="row">
+            <div><label for="format">Format</label><select id="format"></select></div>
+            <div><label for="goal">Ziel des CTA</label><select id="goal"><option value="">Automatisch</option></select></div>
+          </div>
+          <div class="row reel-only">
             <div><label for="duration">Länge</label>
               <select id="duration"><option value="15">ca. 15 Sek.</option><option value="20" selected>ca. 20 Sek.</option><option value="30">ca. 30 Sek.</option><option value="45">ca. 45 Sek.</option><option value="60">ca. 60 Sek.</option></select></div>
             <div><label for="mood">Musik</label><select id="mood"><option value="auto">Automatisch passend</option></select></div>
@@ -160,7 +176,10 @@
         </div>
 
         <div id="plan-editor" class="hidden" style="margin-top:12px">
-          <p class="hint">Alles ist editierbar – der Agent sieht deine Änderungen. Gesamtlänge: <b id="total">0</b> Sek.</p>
+          <div class="row">
+            <div><label for="plan-format">Format</label><select id="plan-format"></select></div>
+          </div>
+          <p class="hint" style="margin-top:10px">Alles ist editierbar – der Agent sieht deine Änderungen. <span class="reel-only">Gesamtlänge: <b id="total">0</b> Sek.</span></p>
           <div id="scenes"></div>
           <button class="ghost small" id="btn-add">+ Szene hinzufügen</button>
           <label>Farben</label>
@@ -170,55 +189,64 @@
             <label><input type="color" data-pal="text"> Text</label>
             <label><input type="color" data-pal="accent"> Akzent</label>
           </div>
-          <div class="row">
+          <div class="row reel-only">
             <div><label for="music-mood">Musikstimmung</label><select id="music-mood"></select></div>
             <div><label for="music-bpm">Tempo (BPM)</label><input type="number" id="music-bpm" min="55" max="140"></div>
           </div>
-          <label for="caption">Caption</label>
+          <label for="caption">Instagram-Caption</label>
           <textarea id="caption" rows="5"></textarea>
           <label for="hashtags">Hashtags (durch Leerzeichen getrennt)</label>
           <input type="text" id="hashtags">
+          <label for="fb-text">Facebook-Text <span class="meta">(leer = Caption mit bis zu 3 Hashtags)</span></label>
+          <textarea id="fb-text" rows="4"></textarea>
         </div>
 
         <label for="images">Eigene Hintergrundbilder (optional, werden reihum verwendet)</label>
         <input type="file" id="images" accept="image/jpeg,image/png,image/webp" multiple>
         <div class="files" id="image-list"></div>
-        <label for="music-file">Eigene Musik (optional, statt generierter Musik – nur Titel mit Nutzungsrechten)</label>
-        <input type="file" id="music-file" accept="audio/*">
-        <div class="files" id="music-list"></div>
-        <label class="chk"><input type="checkbox" id="show-handle" checked> Handle im Video einblenden</label>
+        <div class="reel-only">
+          <label for="music-file">Eigene Musik (optional, statt generierter Musik – nur Titel mit Nutzungsrechten)</label>
+          <input type="file" id="music-file" accept="audio/*">
+          <div class="files" id="music-list"></div>
+        </div>
+        <label class="chk"><input type="checkbox" id="show-handle" checked> Handle einblenden</label>
 
-        <div class="actions"><button id="btn-render" disabled>🎬 Video erstellen</button><span class="progress" id="render-progress"></span></div>
+        <div class="actions"><button id="btn-render" disabled>🎬 Beitrag erstellen</button><span class="progress" id="render-progress"></span></div>
         <div id="render-msg"></div>
       </details>
 
       <section class="card">
-        <h2>Meine Reels</h2>
+        <h2>Meine Beiträge</h2>
         <p class="hint">Antippen zum Ansehen, Bearbeiten oder Veröffentlichen.</p>
-        <div class="history" id="history"><span class="meta">Noch keine Reels.</span></div>
+        <div class="history" id="history"><span class="meta">Noch keine Beiträge.</span></div>
       </section>
     </main>
 
     <aside>
       <section class="card">
         <h2>Vorschau</h2>
-        <div class="phone" id="phone"><div class="empty">Hier erscheint dein fertiges Reel.</div></div>
+        <div class="phone" id="phone"><div class="empty">Hier erscheint dein fertiger Beitrag.</div></div>
         <div id="preview-actions" class="hidden">
           <p class="meta" id="preview-meta" style="margin-top:10px"></p>
+          <label>Veröffentlichen auf</label>
+          <div class="channels">
+            <label class="chk" style="margin:0"><input type="checkbox" id="ch-instagram"> Instagram</label>
+            <label class="chk" style="margin:0"><input type="checkbox" id="ch-facebook"> Facebook</label>
+          </div>
           <div class="actions">
             <button class="insta" id="btn-publish">Jetzt posten</button>
             <a id="btn-download" download><button class="ghost">⬇ Download</button></a>
           </div>
           <label for="schedule-at">Oder einplanen</label>
           <div style="display:flex;gap:8px"><input type="datetime-local" id="schedule-at"><button class="ghost" id="btn-schedule">Planen</button></div>
-          <label class="chk"><input type="checkbox" id="share-feed" checked> Auch im Profil-Raster zeigen</label>
+          <label class="chk reel-only-preview"><input type="checkbox" id="share-feed" checked> Reel auch im Instagram-Profilraster zeigen</label>
           <span class="progress" id="publish-progress"></span>
           <div id="publish-msg"></div>
         </div>
       </section>
       <section class="card" id="schedule-card">
-        <h2>Geplante Posts</h2>
-        <p class="meta">Werden automatisch veröffentlicht, solange der Reel-Agent läuft.</p>
+        <h2>Geplante Beiträge</h2>
+        <p class="meta">Werden automatisch veröffentlicht, solange der Agent läuft.</p>
         <div id="schedule-list"><p class="meta" style="margin-top:8px">Nichts geplant.</p></div>
       </section>
     </aside>
@@ -266,6 +294,33 @@
     <div class="actions"><button class="insta" id="ig-connect-btn">Verbinden</button><span class="progress" id="ig-progress"></span></div>
   </div>
   <div id="ig-msg"></div>
+
+  <h4>4 · Facebook-Seite verbinden</h4>
+  <div id="fb-connected" class="hidden">
+    <p>Verbunden mit der Seite <b id="fb-name"></b> ✅</p>
+    <div class="actions"><button class="ghost small" id="fb-disconnect">Verbindung trennen</button></div>
+  </div>
+  <div id="fb-connect">
+    <p class="meta">Wird für Facebook-Beiträge gebraucht – und damit Bild- und Karussellbeiträge auch auf Instagram klappen, solange der Agent nur auf deinem Rechner läuft.</p>
+    <ol>
+      <li>In deiner Meta-App (siehe oben) unter <i>Anwendungsfälle</i> <b>„Seite verwalten“</b> hinzufügen.</li>
+      <li>Im <a href="https://developers.facebook.com/tools/explorer/" target="_blank" rel="noopener">Graph API Explorer</a> deine App wählen, die Berechtigungen <i>pages_show_list, pages_read_engagement, pages_manage_posts</i> anhaken und <b>Token generieren</b>.</li>
+      <li>Token hier einfügen – die Seite findet der Agent selbst.</li>
+    </ol>
+    <label for="fb-token">Access Token</label>
+    <input type="password" id="fb-token" placeholder="EAA…" autocomplete="off">
+    <details style="margin-top:8px"><summary class="meta" style="cursor:pointer">Erweitert: bestimmte Seite, dauerhaftes Token</summary>
+      <label for="fb-page">Name der Seite (falls du mehrere verwaltest)</label>
+      <input type="text" id="fb-page" placeholder="Seelenwende">
+      <p class="meta" style="margin-top:8px">Empfohlen: Mit App-ID und App-Geheimnis (App-Einstellungen → Allgemein) wird ein Seiten-Token erzeugt, das nicht abläuft. Ohne gilt das Token nur etwa 1–2 Stunden.</p>
+      <div class="row">
+        <div><label for="fb-app-id">App-ID</label><input type="text" id="fb-app-id"></div>
+        <div><label for="fb-app-secret">App-Geheimnis</label><input type="password" id="fb-app-secret" autocomplete="off"></div>
+      </div>
+    </details>
+    <div class="actions"><button class="insta" id="fb-connect-btn" style="background:#1877F2">Verbinden</button><span class="progress" id="fb-progress"></span></div>
+  </div>
+  <div id="fb-msg"></div>
 
   <div class="actions" style="justify-content:flex-end;margin-top:20px"><button class="ghost" id="set-close">Schließen</button></div>
 </dialog>
@@ -320,13 +375,41 @@ async function loadStatus() {
   $("#st-ig").className = `pill ${ig.configured && !ig.error ? "on" : "off"}`;
   $("#st-ig").textContent = ig.configured ? (ig.error ? "Instagram: Token prüfen" : `@${ig.username || "verbunden"}`) : "Instagram verbinden";
   if (ig.error) $("#st-ig").title = ig.error;
+  const fb = status.facebook;
+  $("#st-fb").className = `pill ${fb.configured ? "on" : "off"}`;
+  $("#st-fb").textContent = fb.configured ? `FB: ${fb.pageName || "verbunden"}` : "Facebook verbinden";
+  updateChannelBoxes();
   return status;
 }
+function updateChannelBoxes() {
+  for (const c of ["instagram", "facebook"]) {
+    const box = $(`#ch-${c}`);
+    const on = status.channels?.includes(c);
+    box.disabled = !on;
+    box.checked = on;
+    box.parentElement.title = on ? "" : "Noch nicht verbunden – ⚙️ Einstellungen";
+    box.parentElement.style.opacity = on ? 1 : 0.5;
+  }
+}
+const selectedChannels = () => ["instagram", "facebook"].filter((c) => $(`#ch-${c}`).checked);
+const channelLabel = (list) => list.map((c) => status.channelNames?.[c] || c).join(" + ");
 function fillMoods() {
   for (const sel of ["#mood", "#music-mood"]) {
     for (const [k, v] of Object.entries(status.moods)) $(sel).insertAdjacentHTML("beforeend", `<option value="${k}">${v}</option>`);
   }
+  for (const sel of ["#format", "#plan-format"]) {
+    for (const [k, v] of Object.entries(status.formats)) $(sel).insertAdjacentHTML("beforeend", `<option value="${k}">${v}</option>`);
+  }
+  for (const [k, v] of Object.entries(status.goals)) $("#goal").insertAdjacentHTML("beforeend", `<option value="${k}">${v}</option>`);
 }
+// Reel-spezifische Felder (Dauer, Musik) nur beim Format Reel zeigen
+const applyFormat = (f) => document.body.classList.toggle("fmt-feed", f !== "reel");
+$("#format").onchange = () => applyFormat($("#format").value);
+$("#plan-format").onchange = () => {
+  plan.format = $("#plan-format").value;
+  if (plan.format === "image") plan.scenes = plan.scenes.slice(0, 1);
+  renderEditor();
+};
 async function openSettings() {
   const s = await api("/api/settings");
   $("#key-state").textContent = s.ANTHROPIC_API_KEY.set ? `(gespeichert: ${s.ANTHROPIC_API_KEY.preview})` : "(noch nicht eingetragen)";
@@ -338,11 +421,15 @@ async function openSettings() {
   $("#ig-connected").classList.toggle("hidden", !connected);
   $("#ig-connect").classList.toggle("hidden", !!connected);
   $("#ig-name").textContent = s.IG_USERNAME ? `@${s.IG_USERNAME}` : `Konto ${s.IG_USER_ID}`;
-  msg("#set-msg", ""); msg("#ig-msg", "");
+  const fbOn = s.FB_PAGE_TOKEN.set && s.FB_PAGE_ID;
+  $("#fb-connected").classList.toggle("hidden", !fbOn);
+  $("#fb-connect").classList.toggle("hidden", !!fbOn);
+  $("#fb-name").textContent = s.FB_PAGE_NAME || s.FB_PAGE_ID;
+  msg("#set-msg", ""); msg("#ig-msg", ""); msg("#fb-msg", "");
   $("#settings").showModal();
 }
 $("#btn-settings").onclick = openSettings;
-$("#st-claude").onclick = openSettings; $("#st-ig").onclick = openSettings;
+$("#st-claude").onclick = openSettings; $("#st-ig").onclick = openSettings; $("#st-fb").onclick = openSettings;
 $("#set-close").onclick = () => $("#settings").close();
 $("#set-save").onclick = async () => {
   busy("#set-progress", "Speichert …");
@@ -370,6 +457,25 @@ $("#ig-connect-btn").onclick = async () => {
   } catch (e) { msg("#ig-msg", e.message); }
   finally { busy("#ig-progress", ""); }
 };
+$("#fb-connect-btn").onclick = async () => {
+  busy("#fb-progress", "Verbinde mit Facebook …");
+  msg("#fb-msg", "");
+  try {
+    const r = await api("/api/facebook/connect", { json: { token: $("#fb-token").value, pageName: $("#fb-page").value, appId: $("#fb-app-id").value, appSecret: $("#fb-app-secret").value } });
+    $("#fb-token").value = ""; $("#fb-app-secret").value = "";
+    msg("#fb-msg", `Seite „${esc(r.pageName)}“ verbunden 🎉${r.others.length ? `<br>Weitere Seiten: ${esc(r.others.join(", "))} – unter „Erweitert“ auswählbar.` : ""}`, "ok");
+    $("#fb-name").textContent = r.pageName;
+    $("#fb-connected").classList.remove("hidden"); $("#fb-connect").classList.add("hidden");
+    loadStatus();
+  } catch (e) { msg("#fb-msg", e.message); }
+  finally { busy("#fb-progress", ""); }
+};
+$("#fb-disconnect").onclick = async () => {
+  await api("/api/facebook/disconnect", { method: "POST" });
+  $("#fb-connected").classList.add("hidden"); $("#fb-connect").classList.remove("hidden");
+  msg("#fb-msg", "Verbindung getrennt.", "ok");
+  loadStatus();
+};
 $("#ig-disconnect").onclick = async () => {
   await api("/api/instagram/disconnect", { method: "POST" });
   $("#ig-connected").classList.add("hidden"); $("#ig-connect").classList.remove("hidden");
@@ -388,9 +494,9 @@ function bubble(role, html) {
 }
 function greet() {
   if (!status.claude) {
-    bubble("agent", `Hallo! 🦋 Ich bin dein Reel-Agent. Damit ich für dich schreiben und arbeiten kann, trag bitte einmal deinen Claude-API-Key ein: <a href="#" onclick="openSettings();return false">⚙️ Einstellungen öffnen</a>. Bis dahin kannst du unten im Bereich „Drehbuch & Material“ auch ohne Chat Reels erstellen.`);
+    bubble("agent", `Hallo! 🦋 Ich bin dein Social-Media-Agent. Damit ich für dich schreiben und arbeiten kann, trag bitte einmal deinen Claude-API-Key ein: <a href="#" onclick="openSettings();return false">⚙️ Einstellungen öffnen</a>. Bis dahin kannst du unten im Bereich „Drehbuch & Material“ auch ohne Chat Beiträge erstellen.`);
   } else {
-    bubble("agent", `Hallo! 🦋 Worüber soll dein nächstes Reel sein? Erzähl mir Thema und Botschaft – ich schreibe das Drehbuch, komponiere die Musik, erstelle das Video und poste es auf Wunsch direkt${status.instagram.configured ? "" : " (dafür verbindest du vorher unter ⚙️ Einstellungen dein Instagram-Konto)"}.`);
+    bubble("agent", `Hallo! 🦋 Was darf's heute sein – ein Reel, ein Bildbeitrag oder ein Karussell? Erzähl mir Thema und Ziel, oder frag mich nach Ideen. Ich schreibe Hook, Inhalt und CTA, gestalte alles im Seelenwende-Look und poste es auf Wunsch auf Instagram und Facebook${status.channels?.length ? "" : " (dafür verbindest du vorher unter ⚙️ Einstellungen deine Kanäle)"}.`);
   }
 }
 
@@ -424,9 +530,12 @@ async function sendChat(text) {
 function showPending(p) {
   const el = document.createElement("div");
   el.className = "confirm-card";
-  el.innerHTML = `<b>${p.type === "schedule" ? `📅 Einplanen für ${esc(p.atLabel)}?` : "📲 Jetzt auf Instagram veröffentlichen?"}</b>
-    <div class="meta">${esc(p.title)} · @${esc(status.instagram.username || "dein Konto")}</div>
-    <pre>${esc(p.caption)}</pre>
+  const ch = p.channels ?? ["instagram"];
+  el.innerHTML = `<b>${p.type === "schedule" ? `📅 Einplanen für ${esc(p.atLabel)} auf ${esc(channelLabel(ch))}?` : `📲 Jetzt auf ${esc(channelLabel(ch))} veröffentlichen?`}</b>
+    <div class="meta">${esc(status.formats?.[p.format] || "")} · ${esc(p.title)}</div>
+    ${ch.includes("instagram") ? `<div class="meta" style="margin-top:6px">Instagram</div><pre>${esc(p.caption)}</pre>` : ""}
+    ${ch.includes("facebook") ? `<div class="meta">Facebook</div><pre>${esc(p.facebookText || p.caption)}</pre>` : ""}`;
+  el.innerHTML += `
     <div class="actions" style="margin-top:6px"><button class="insta small" data-a="yes">Bestätigen</button><button class="ghost small" data-a="no">Abbrechen</button></div>`;
   el.onclick = async (e) => {
     const a = e.target.dataset.a;
@@ -439,7 +548,7 @@ function showPending(p) {
       el.remove();
       if (r.cancelled) info.textContent = "Abgebrochen – nichts wurde veröffentlicht.";
       else if (r.scheduled) info.innerHTML = `📅 Eingeplant für ${esc(fmt(r.scheduled.at))}.`;
-      else info.innerHTML = `🎉 Dein Reel ist online!${r.published.permalink ? ` <a href="${r.published.permalink}" target="_blank" rel="noopener">Ansehen</a>` : ""}`;
+      else info.innerHTML = publishSummary(r.published);
       if (r.reel) showReel(r.reel);
       loadSchedule(); loadHistory();
     } catch (err) {
@@ -449,6 +558,12 @@ function showPending(p) {
   };
   $("#log").appendChild(el);
   $("#log").scrollTop = $("#log").scrollHeight;
+}
+
+function publishSummary(res) {
+  const ok = Object.entries(res.results || {}).map(([c, x]) => `✅ ${esc(status.channelNames?.[c] || c)}${x.permalink ? ` <a href="${x.permalink}" target="_blank" rel="noopener">ansehen</a>` : ""}`);
+  const bad = Object.entries(res.errors || {}).map(([c, m]) => `⚠️ ${esc(status.channelNames?.[c] || c)}: ${esc(m)}`);
+  return `🎉 Veröffentlicht!<br>${[...ok, ...bad].join("<br>")}`;
 }
 
 const autosize = () => { const t = $("#chat-input"); t.style.height = "auto"; t.style.height = Math.min(160, t.scrollHeight) + "px"; };
@@ -462,19 +577,26 @@ function renderEditor() {
   $("#no-plan").classList.add("hidden");
   $("#plan-editor").classList.remove("hidden");
   $("#btn-render").disabled = false;
-  $("#editor-sub").textContent = `· ${plan.title}`;
+  $("#editor-sub").textContent = `· ${status.formats?.[plan.format] || ""}: ${plan.title}`;
+  $("#plan-format").value = plan.format;
+  applyFormat(plan.format);
+  const feed = plan.format !== "reel";
+  $("#btn-add").textContent = feed ? "+ Folie hinzufügen" : "+ Szene hinzufügen";
+  $("#btn-add").classList.toggle("hidden", plan.format === "image" || (plan.format === "carousel" && plan.scenes.length >= 10));
   const box = $("#scenes");
   box.innerHTML = "";
-  const roles = { hook: "Hook", body: "Szene", cta: "Call-to-Action" };
+  const roles = { hook: "Hook", body: feed ? "Folie" : "Szene", cta: "Call-to-Action" };
   plan.scenes.forEach((s, i) => {
     const el = document.createElement("div");
     el.className = "scene";
     el.innerHTML = `
       <div class="scene-head"><span>${i + 1} · ${roles[s.role] || "Szene"}</span>
         <span class="btns"><button class="ghost small" data-act="up" title="nach oben">↑</button><button class="ghost small" data-act="down" title="nach unten">↓</button><button class="ghost small" data-act="del" title="löschen">✕</button></span></div>
-      <div class="row"><textarea data-f="text" placeholder="Text auf dem Bildschirm">${esc(s.text)}</textarea>
-        <div><input type="number" data-f="duration" min="1.5" max="10" step="0.5" value="${s.duration}" title="Dauer in Sekunden"><span class="meta">Sekunden</span></div></div>
-      <input type="text" data-f="subtext" placeholder="kleine Zeile darunter (optional)" value="${esc(s.subtext)}" style="margin-top:6px">`;
+      <div class="row" ${feed ? 'style="grid-template-columns:1fr"' : ""}><textarea data-f="text" placeholder="${feed ? "Überschrift" : "Text auf dem Bildschirm"}">${esc(s.text)}</textarea>
+        ${feed ? "" : `<div><input type="number" data-f="duration" min="1.5" max="10" step="0.5" value="${s.duration}" title="Dauer in Sekunden"><span class="meta">Sekunden</span></div>`}</div>
+      ${feed
+        ? `<textarea data-f="subtext" rows="2" placeholder="Erklärender Text (optional, max. ca. 40 Wörter)" style="margin-top:6px;min-height:60px">${esc(s.subtext)}</textarea>`
+        : `<input type="text" data-f="subtext" placeholder="kleine Zeile darunter (optional)" value="${esc(s.subtext)}" style="margin-top:6px">`}`;
     el.addEventListener("input", (e) => {
       const f = e.target.dataset.f;
       if (f) s[f] = f === "duration" ? Number(e.target.value) : e.target.value;
@@ -495,6 +617,7 @@ function renderEditor() {
   $("#music-bpm").value = plan.music.bpm;
   $("#caption").value = plan.caption;
   $("#hashtags").value = plan.hashtags.map((h) => `#${h}`).join(" ");
+  $("#fb-text").value = plan.facebook_text || "";
   updateTotal();
 }
 const updateTotal = () => {
@@ -507,24 +630,25 @@ function collectPlan() {
   plan.music.bpm = Number($("#music-bpm").value);
   plan.caption = $("#caption").value;
   plan.hashtags = $("#hashtags").value.split(/[\s,]+/).map((h) => h.replace(/^#/, "")).filter(Boolean);
+  plan.facebook_text = $("#fb-text").value;
   return plan;
 }
 const fullCaption = (p) => [p.caption.trim(), p.hashtags.map((h) => `#${h}`).join(" ")].filter(Boolean).join("\n\n");
 
 $("#btn-add").onclick = () => {
   const cta = plan.scenes.at(-1)?.role === "cta";
-  plan.scenes.splice(cta ? plan.scenes.length - 1 : plan.scenes.length, 0, { text: "Neuer Text", subtext: "", duration: 3, role: "body" });
+  plan.scenes.splice(cta ? plan.scenes.length - 1 : plan.scenes.length, 0, { text: "Neue Überschrift", subtext: "", duration: 3, role: "body" });
   renderEditor();
 };
 
 $("#btn-plan").onclick = async () => {
   const brief = $("#brief").value.trim();
-  if (!brief) return msg("#plan-msg", "Bitte beschreib zuerst den Inhalt deines Reels.");
+  if (!brief) return msg("#plan-msg", "Bitte beschreib zuerst den Inhalt deines Beitrags.");
   $("#btn-plan").disabled = true;
   msg("#plan-msg", "");
   busy("#plan-progress", "Drehbuch wird erstellt …");
   try {
-    const data = await api("/api/plan", { json: { brief, duration: $("#duration").value, mood: $("#mood").value } });
+    const data = await api("/api/plan", { json: { brief, format: $("#format").value, goal: $("#goal").value, duration: $("#duration").value, mood: $("#mood").value } });
     plan = data.plan;
     renderEditor();
     if (!data.ai) msg("#render-msg", "Ohne Claude-Key wurde dein Text nur in Szenen aufgeteilt. Für KI-Drehbücher den Key unter ⚙️ Einstellungen eintragen.", "ok");
@@ -580,14 +704,38 @@ $("#btn-render").onclick = async () => {
 // ---------- Vorschau, Posten, Planen ----------
 function showReel(reel) {
   current = reel;
-  $("#phone").innerHTML = `<video src="${reel.video}?t=${Date.now()}" poster="${reel.thumb}" controls playsinline loop></video>`;
+  const phone = $("#phone");
+  const isReel = reel.format === "reel";
+  phone.classList.toggle("feed", !isReel);
+  if (isReel) {
+    phone.innerHTML = `<video src="${reel.video}?t=${Date.now()}" poster="${reel.thumb}" controls playsinline loop></video>`;
+    $("#btn-download").href = reel.video;
+    $("#btn-download").download = `reel-${reel.id.slice(0, 8)}.mp4`;
+  } else {
+    let i = 0;
+    const n = reel.slides.length;
+    phone.innerHTML = `<div class="slider"><img class="slide" alt="">${n > 1 ? '<button class="prev">‹</button><button class="next">›</button>' : ""}<div class="dots"></div></div>`;
+    const show = () => {
+      phone.querySelector(".slide").src = reel.slides[i];
+      phone.querySelector(".dots").textContent = n > 1 ? `${i + 1} / ${n}` : "";
+      $("#btn-download").href = reel.slides[i];
+      $("#btn-download").download = `beitrag-${reel.id.slice(0, 8)}-${i + 1}.jpg`;
+    };
+    phone.onclick = (e) => {
+      if (e.target.classList.contains("prev")) i = (i - 1 + n) % n;
+      else if (e.target.classList.contains("next")) i = (i + 1) % n;
+      else return;
+      show();
+    };
+    show();
+  }
+  $(".reel-only-preview").classList.toggle("hidden", !isReel);
   $("#preview-actions").classList.remove("hidden");
-  $("#btn-download").href = reel.video;
-  $("#btn-download").download = `reel-${reel.id.slice(0, 8)}.mp4`;
-  $("#preview-meta").textContent = `${reel.plan.title} · ${reel.duration.toFixed(1)} Sek.`;
-  msg("#publish-msg", reel.published
-    ? `Veröffentlicht am ${fmt(reel.published.at)}${reel.published.permalink ? ` – <a href="${reel.published.permalink}" target="_blank" rel="noopener">ansehen</a>` : ""}`
-    : "", "ok");
+  $("#preview-meta").textContent = `${status.formats?.[reel.format] || ""} · ${reel.plan.title} · ${isReel ? `${reel.duration.toFixed(1)} Sek.` : `${reel.slides.length} Bild${reel.slides.length > 1 ? "er" : ""}`}`;
+  const pubs = Object.entries(reel.publications || {});
+  msg("#publish-msg", pubs.length
+    ? pubs.map(([c, p]) => `${esc(status.channelNames?.[c] || c)}: veröffentlicht am ${fmt(p.at)}${p.permalink ? ` – <a href="${p.permalink}" target="_blank" rel="noopener">ansehen</a>` : ""}`).join("<br>")
+    : reel.published ? `Veröffentlicht am ${fmt(reel.published.at)}` : "", "ok");
 }
 
 let confirmAction = null;
@@ -601,24 +749,39 @@ function askConfirm(title, text, caption, action) {
 $("#confirm-no").onclick = () => $("#confirm").close();
 $("#confirm-yes").onclick = () => { $("#confirm").close(); confirmAction?.(); };
 
-const needInstagram = () => {
-  if (status.instagram?.configured) return false;
-  msg("#publish-msg", "Instagram ist noch nicht verbunden – öffne ⚙️ Einstellungen und füge dein Token ein.");
-  return true;
+const needChannel = () => {
+  if (!status.channels?.length) {
+    msg("#publish-msg", "Noch kein Kanal verbunden – öffne ⚙️ Einstellungen und verbinde Instagram und/oder Facebook.");
+    return true;
+  }
+  if (!selectedChannels().length) {
+    msg("#publish-msg", "Bitte wähle mindestens einen Kanal.");
+    return true;
+  }
+  return false;
 };
-const captionForCurrent = () => (plan && current && plan.title === current.plan.title ? fullCaption(collectPlan()) : fullCaption(current.plan));
+// Texte aus dem Editor verwenden, wenn dort das Drehbuch dieses Beitrags offen ist
+const textsForCurrent = () => {
+  const p = plan && current && plan.title === current.plan.title ? collectPlan() : current.plan;
+  return { caption: fullCaption(p), facebookText: p.facebook_text?.trim() || "" };
+};
+const previewTexts = ({ caption, facebookText }, channels) =>
+  [channels.includes("instagram") ? `Instagram:\n${caption}` : "", channels.includes("facebook") ? `Facebook:\n${facebookText || "(aus der Caption, max. 3 Hashtags)"}` : ""]
+    .filter(Boolean)
+    .join("\n\n");
 
 $("#btn-publish").onclick = () => {
-  if (!current || needInstagram()) return;
-  const caption = captionForCurrent();
-  askConfirm("Jetzt veröffentlichen?", `Das Reel wird sofort öffentlich auf <b>@${esc(status.instagram.username || "deinem Konto")}</b> gepostet.`, caption, async () => {
+  if (!current || needChannel()) return;
+  const texts = textsForCurrent();
+  const channels = selectedChannels();
+  askConfirm("Jetzt veröffentlichen?", `Der Beitrag wird sofort öffentlich auf <b>${esc(channelLabel(channels))}</b> gepostet.`, previewTexts(texts, channels), async () => {
     $("#btn-publish").disabled = true;
     msg("#publish-msg", "");
     busy("#publish-progress", "Wird gesendet …");
     try {
-      const { jobId } = await api(`/api/publish/${current.id}`, { json: { caption, shareToFeed: $("#share-feed").checked } });
+      const { jobId } = await api(`/api/publish/${current.id}`, { json: { ...texts, channels, shareToFeed: $("#share-feed").checked } });
       const res = await pollJob(jobId, (s) => busy("#publish-progress", s));
-      msg("#publish-msg", `🎉 Dein Reel ist online!${res.permalink ? ` <a href="${res.permalink}" target="_blank" rel="noopener">Ansehen</a>` : ""}`, "ok");
+      msg("#publish-msg", publishSummary(res), Object.keys(res.errors || {}).length ? "err" : "ok");
       loadHistory();
     } catch (e) { msg("#publish-msg", e.message); }
     finally { $("#btn-publish").disabled = false; busy("#publish-progress", ""); }
@@ -626,15 +789,16 @@ $("#btn-publish").onclick = () => {
 };
 
 $("#btn-schedule").onclick = () => {
-  if (!current || needInstagram()) return;
+  if (!current || needChannel()) return;
   const v = $("#schedule-at").value;
   if (!v) return msg("#publish-msg", "Bitte wähle Datum und Uhrzeit.");
-  const caption = captionForCurrent();
+  const texts = textsForCurrent();
+  const channels = selectedChannels();
   const [d, t] = v.split("T");
-  askConfirm("Einplanen?", `Wird am <b>${d.split("-").reverse().join(".")} um ${t} Uhr</b> automatisch gepostet.`, caption, async () => {
+  askConfirm("Einplanen?", `Wird am <b>${d.split("-").reverse().join(".")} um ${t} Uhr</b> automatisch auf <b>${esc(channelLabel(channels))}</b> gepostet.`, previewTexts(texts, channels), async () => {
     try {
       // Ortszeit wird vom Agenten in seiner Zeitzone (Standard Europe/Berlin) ausgewertet
-      await api("/api/schedule", { json: { reelId: current.id, caption, at: v, shareToFeed: $("#share-feed").checked } });
+      await api("/api/schedule", { json: { reelId: current.id, ...texts, channels, at: v, shareToFeed: $("#share-feed").checked } });
       msg("#publish-msg", "📅 Eingeplant!", "ok");
       loadSchedule();
     } catch (e) { msg("#publish-msg", e.message); }
@@ -644,9 +808,9 @@ $("#btn-schedule").onclick = () => {
 async function loadSchedule() {
   const list = await api("/api/schedule");
   const box = $("#schedule-list");
-  const visible = list.filter((e) => e.status !== "veröffentlicht" || Date.now() - Date.parse(e.at) < 7 * 864e5);
+  const visible = list.filter((e) => !e.status.includes("veröffentlicht") || Date.now() - Date.parse(e.at) < 7 * 864e5);
   if (!visible.length) return (box.innerHTML = `<p class="meta" style="margin-top:8px">Nichts geplant.</p>`);
-  box.innerHTML = visible.map((e) => `<div class="sched"><span><b>${fmt(e.at, { weekday: "short", day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })}</b> · ${esc(e.title)}
+  box.innerHTML = visible.map((e) => `<div class="sched"><span><b>${fmt(e.at, { weekday: "short", day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })}</b> · ${esc(e.title)} <span class="meta">(${esc(channelLabel(e.channels ?? ["instagram"]))})</span>
     <br><span class="meta">${esc(e.status)}${e.error ? ` – ${esc(e.error)}` : ""}${e.result?.permalink ? ` · <a href="${e.result.permalink}" target="_blank" rel="noopener">ansehen</a>` : ""}</span></span>
     ${e.status === "geplant" ? `<button class="ghost small" data-id="${e.id}">Stornieren</button>` : ""}</div>`).join("");
 }
@@ -659,12 +823,13 @@ $("#schedule-list").onclick = async (e) => {
 async function loadHistory() {
   const reels = await api("/api/reels");
   const box = $("#history");
-  if (!reels.length) return (box.innerHTML = `<span class="meta">Noch keine Reels.</span>`);
+  if (!reels.length) return (box.innerHTML = `<span class="meta">Noch keine Beiträge.</span>`);
   box.innerHTML = "";
   for (const r of reels) {
     const el = document.createElement("div");
     el.className = "item";
-    el.innerHTML = `<img src="${r.thumb}" alt="" loading="lazy">${r.published ? '<span class="badge">✓ online</span>' : ""}<div class="t">${esc(r.plan.title)}</div>`;
+    const icon = { reel: "🎬", image: "🖼", carousel: "🗂" }[r.format] || "";
+    el.innerHTML = `<img src="${r.thumb}" alt="" loading="lazy">${r.published ? '<span class="badge">✓ online</span>' : ""}<div class="t">${icon} ${esc(r.plan.title)}</div>`;
     el.onclick = () => { plan = structuredClone(r.plan); renderEditor(); showReel(r); window.scrollTo({ top: 0, behavior: "smooth" }); };
     box.appendChild(el);
   }
@@ -675,7 +840,8 @@ async function loadHistory() {
     await loadStatus();
     fillMoods();
     greet();
-    if (!status.claude && !status.instagram.configured) openSettings();
+    applyFormat($("#format").value);
+    if (!status.claude && !status.channels.length) openSettings();
   } catch (e) { console.error(e); }
   loadHistory().catch(console.error);
   loadSchedule().catch(console.error);

@@ -9,8 +9,10 @@ import ffmpegPath from "ffmpeg-static";
 import { Resvg } from "@resvg/resvg-js";
 import { writeMusic } from "./music.js";
 
-const W = 1080;
-const H = 1920;
+const REEL_W = 1080;
+const REEL_H = 1920;
+export const FEED_W = 1080;
+export const FEED_H = 1350; // 4:5 – bestes Format für Instagram- und Facebook-Feed
 const FPS = 30;
 const TRANSITION = 0.5; // Sekunden Überblendung zwischen Szenen
 
@@ -80,7 +82,7 @@ const BUTTERFLY = (color, x, y, scale) => `
   </g>`;
 
 /** Hintergrund einer Szene: Farbverlauf mit weichen Formen oder ein Foto mit Farbschleier. */
-export function backgroundSvg(plan, index, image) {
+export function backgroundSvg(plan, index, image, { W = REEL_W, H = REEL_H } = {}) {
   const { palette } = plan;
   if (image) {
     return `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${W}" height="${H}">
@@ -116,7 +118,7 @@ export function backgroundSvg(plan, index, image) {
 }
 
 /** Textebene einer Szene (transparent), wird im Video eingeblendet. */
-export function textSvg(plan, index, { onImage = false, handle = "" } = {}) {
+export function textSvg(plan, index, { onImage = false, handle = "", W = REEL_W, H = REEL_H, feed = false, slideLabel = "", swipeHint = false } = {}) {
   const scene = plan.scenes[index];
   const { palette } = plan;
   const light = onImage || luminance(palette.background) < 0.25;
@@ -127,10 +129,10 @@ export function textSvg(plan, index, { onImage = false, handle = "" } = {}) {
   const sub = cleanText(scene.subtext || "");
   const isHook = scene.role === "hook";
   const isCta = scene.role === "cta";
-  const base = isHook ? 104 : isCta ? 84 : 88;
-  const { size, lines } = fitText(text, base, W - 220, isHook ? 5 : 6, 0.5);
+  const base = feed ? (isHook ? 92 : isCta ? 74 : 76) : isHook ? 104 : isCta ? 84 : 88;
+  const { size, lines } = fitText(text, base, W - 220, feed ? 4 : isHook ? 5 : 6, 0.5);
   const lineH = size * 1.22;
-  const subFit = sub ? fitText(sub, 46, W - 260, 3, 0.52) : { size: 0, lines: [] };
+  const subFit = sub ? fitText(sub, feed ? 42 : 46, W - 260, feed ? 8 : 3, 0.52) : { size: 0, lines: [] };
   const subLineH = subFit.size * 1.45;
 
   const subGap = size * 0.45 + subFit.size * 1.2;
@@ -148,22 +150,24 @@ export function textSvg(plan, index, { onImage = false, handle = "" } = {}) {
         font-size="${subFit.size}" font-weight="300" fill="${color}" fill-opacity="0.85" ${shadow}>${esc(l)}</text>`)
     .join("\n");
 
-  const topY = H / 2 - blockH / 2 - 190;
+  const topY = H / 2 - blockH / 2 - (feed ? 170 : 190);
+  const minTop = feed ? 70 : 240;
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}">
     <defs><filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
       <feDropShadow dx="0" dy="3" stdDeviation="8" flood-color="#000" flood-opacity="0.35"/></filter></defs>
-    ${BUTTERFLY(accent, W / 2 - 65, Math.max(240, topY - 40), 1.3)}
-    <line x1="${W / 2 - 50}" y1="${Math.max(380, topY + 110)}" x2="${W / 2 + 50}" y2="${Math.max(380, topY + 110)}" stroke="${accent}" stroke-width="2" stroke-opacity="0.7"/>
+    ${BUTTERFLY(accent, W / 2 - 65, Math.max(minTop, topY - 40), feed ? 1.1 : 1.3)}
+    <line x1="${W / 2 - 50}" y1="${Math.max(minTop + 140, topY + 110)}" x2="${W / 2 + 50}" y2="${Math.max(minTop + 140, topY + 110)}" stroke="${accent}" stroke-width="2" stroke-opacity="0.7"/>
     ${mainLines}
     ${subLines}
-    ${handle ? `<text x="${W / 2}" y="${H - 440}" text-anchor="middle" font-family="Playfair Display" font-size="30"
+    ${slideLabel ? `<text x="${W - 80}" y="110" text-anchor="end" font-family="Jost" font-size="30" fill="${accent}" ${shadow}>${esc(slideLabel)}</text>` : ""}
+    ${swipeHint ? `<text x="${W - 80}" y="${H - 100}" text-anchor="end" font-family="Jost" font-size="30" fill="${accent}" ${shadow}>Wischen →</text>` : ""}
+    ${handle ? `<text x="${W / 2}" y="${feed ? H - 100 : H - 440}" text-anchor="middle" font-family="Playfair Display" font-size="30"
         letter-spacing="10" fill="${accent}" ${shadow}>${esc(handle.toUpperCase())}</text>` : ""}
   </svg>`;
 }
 
 export function svgToPng(svg) {
   const resvg = new Resvg(svg, {
-    fitTo: { mode: "width", value: W },
     font: { fontFiles: FONT_FILES, loadSystemFonts: false, defaultFontFamily: "Jost" },
   });
   return resvg.render().asPng();
@@ -211,6 +215,8 @@ export const totalDuration = (plan) =>
  * @param {string} [opts.handle]    Instagram-Handle für die Einblendung
  */
 export async function renderReel(plan, { outFile, workDir, images = [], musicFile, handle = "" }) {
+  const W = REEL_W;
+  const H = REEL_H;
   await mkdir(workDir, { recursive: true });
   const n = plan.scenes.length;
   const duration = totalDuration(plan);
@@ -287,4 +293,40 @@ export async function renderReel(plan, { outFile, workDir, images = [], musicFil
   await runFfmpeg(["-ss", "1", "-i", outFile, "-frames:v", "1", "-q:v", "3", outFile.replace(/\.mp4$/, ".jpg")]);
   await rm(workDir, { recursive: true, force: true });
   return { file: outFile, duration };
+}
+
+/**
+ * Rendert Bildbeitrag (1 Folie) oder Karussell (mehrere Folien) als JPEG im 4:5-Format.
+ * @returns {Promise<string[]>} Dateinamen der Folien (relativ zu outDir)
+ */
+export async function renderSlides(plan, { outDir, images = [], handle = "" }) {
+  const W = FEED_W;
+  const H = FEED_H;
+  await mkdir(outDir, { recursive: true });
+  const dataUrls = await Promise.all(images.map(imageToDataUrl));
+  const n = plan.scenes.length;
+  const files = [];
+  for (let i = 0; i < n; i++) {
+    const img = dataUrls.length ? dataUrls[i % dataUrls.length] : null;
+    const bg = backgroundSvg(plan, i, img, { W, H });
+    const txt = textSvg(plan, i, {
+      onImage: Boolean(img),
+      handle,
+      W,
+      H,
+      feed: true,
+      slideLabel: n > 1 ? `${i + 1}/${n}` : "",
+      swipeHint: n > 1 && i === 0,
+    });
+    // Hintergrund und Text als verschachtelte SVGs zu einem Bild zusammensetzen
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}">${bg}${txt}</svg>`;
+    const png = path.join(outDir, `slide_${i + 1}.png`);
+    const jpg = `slide_${i + 1}.jpg`;
+    await writeFile(png, svgToPng(svg));
+    // Instagram akzeptiert für Bildbeiträge nur JPEG
+    await runFfmpeg(["-i", png, "-q:v", "2", path.join(outDir, jpg)]);
+    await rm(png, { force: true });
+    files.push(jpg);
+  }
+  return files;
 }

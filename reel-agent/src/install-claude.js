@@ -1,4 +1,4 @@
-// Trägt den Reel-Agenten als MCP-Server in Claude Desktop ein.
+// Trägt den Social-Media-Agenten als MCP-Server in Claude Desktop ein.
 // Aufruf: node src/install-claude.js   (oder Doppelklick auf „Mit Claude verbinden“)
 
 import { readFile, writeFile, mkdir, copyFile } from "node:fs/promises";
@@ -28,15 +28,17 @@ try {
 }
 
 config.mcpServers ??= {};
+// Eintrag unter altem Namen ersetzen
+if (config.mcpServers["reel-agent"]?.args?.[0] === serverFile) delete config.mcpServers["reel-agent"];
 // Absoluter Node-Pfad, damit Claude Desktop Node auch ohne PATH-Einstellungen findet
-config.mcpServers["reel-agent"] = { command: process.execPath, args: [serverFile] };
+config.mcpServers["seelenwende-agent"] = { command: process.execPath, args: [serverFile] };
 
 await mkdir(configDir, { recursive: true });
 await writeFile(configFile, JSON.stringify(config, null, 2));
 
-console.log(`✅ Reel-Agent in Claude Desktop eingetragen:\n   ${configFile}\n`);
+console.log(`✅ Social-Media-Agent in Claude Desktop eingetragen:\n   ${configFile}\n`);
 console.log("Nächste Schritte:");
 console.log("  1. Claude Desktop komplett beenden und neu starten.");
-console.log("  2. In einem neuen Chat schreiben: „Mach mir ein Reel über …“");
-console.log("     (oder über das ➕-Menü die Vorlage „Neues Reel“ wählen).");
-console.log("  3. Zum Posten einmalig sagen: „Verbinde Instagram mit diesem Token: …“");
+console.log("  2. In einem neuen Chat schreiben: „Mach mir ein Karussell über …“ oder „… ein Reel über …“");
+console.log("     (oder über das ➕-Menü die Vorlage „Neuer Beitrag“ wählen).");
+console.log("  3. Zum Posten einmalig sagen: „Verbinde Instagram mit diesem Token: …“ bzw. „Verbinde meine Facebook-Seite: …“");

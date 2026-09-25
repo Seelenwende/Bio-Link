@@ -124,24 +124,60 @@ export async function publishReel({ file, publicUrl, caption, shareToFeed = true
   }
 
   onProgress("Instagram verarbeitet das Video …");
-  const deadline = Date.now() + 10 * 60 * 1000;
+  await waitForContainer(container.id);
+  onProgress("Reel wird veröffentlicht …");
+  return publishContainer(container.id);
+}
+
+/** Wartet, bis Instagram einen Medien-Container verarbeitet hat. */
+async function waitForContainer(id, timeoutMs = 10 * 60 * 1000) {
+  const deadline = Date.now() + timeoutMs;
   for (;;) {
-    const s = await graph("GET", container.id, { fields: "status_code,status" });
-    if (s.status_code === "FINISHED") break;
+    const s = await graph("GET", id, { fields: "status_code,status" });
+    if (s.status_code === "FINISHED" || s.status_code === "PUBLISHED") return;
     if (s.status_code === "ERROR" || s.status_code === "EXPIRED") {
-      throw new Error(`Instagram konnte das Video nicht verarbeiten: ${s.status || s.status_code}`);
+      throw new Error(`Instagram konnte die Datei nicht verarbeiten: ${s.status || s.status_code}`);
     }
     if (Date.now() > deadline) throw new Error("Zeitüberschreitung bei der Verarbeitung durch Instagram.");
-    await sleep(5000);
+    await sleep(3000);
   }
+}
 
-  onProgress("Reel wird veröffentlicht …");
-  const published = await graph("POST", `${c.userId}/media_publish`, { creation_id: container.id });
+async function publishContainer(id) {
+  const published = await graph("POST", `${cfg().userId}/media_publish`, { creation_id: id });
   let permalink = null;
   try {
     ({ permalink } = await graph("GET", published.id, { fields: "permalink" }));
   } catch {
-    // Permalink ist optional – das Reel ist trotzdem online
+    // Permalink ist optional – der Beitrag ist trotzdem online
   }
   return { id: published.id, permalink };
+}
+
+/**
+ * Veröffentlicht einen Bildbeitrag (1 URL) oder ein Karussell (2–10 URLs).
+ * Instagram lädt die Bilder selbst von den öffentlichen URLs (JPEG).
+ */
+export async function publishImages({ imageUrls, caption, onProgress = () => {} }) {
+  if (!isInstagramConfigured()) throw new Error("Instagram ist nicht konfiguriert.");
+  const { userId } = cfg();
+  const text = caption.slice(0, 2200);
+  let containerId;
+  if (imageUrls.length === 1) {
+    onProgress("Instagram: Bild wird übertragen …");
+    containerId = (await graph("POST", `${userId}/media`, { image_url: imageUrls[0], caption: text })).id;
+  } else {
+    const children = [];
+    for (const [i, url] of imageUrls.slice(0, 10).entries()) {
+      onProgress(`Instagram: Folie ${i + 1}/${Math.min(10, imageUrls.length)} wird übertragen …`);
+      const child = await graph("POST", `${userId}/media`, { image_url: url, is_carousel_item: "true" });
+      await waitForContainer(child.id);
+      children.push(child.id);
+    }
+    onProgress("Instagram: Karussell wird zusammengestellt …");
+    containerId = (await graph("POST", `${userId}/media`, { media_type: "CAROUSEL", children: children.join(","), caption: text })).id;
+  }
+  await waitForContainer(containerId);
+  onProgress("Instagram: Beitrag wird veröffentlicht …");
+  return publishContainer(containerId);
 }

@@ -1,5 +1,6 @@
-// Gemeinsame Logik für Oberfläche und Chat-Agent:
-// Dateien (Bilder/Musik), Reels rendern, veröffentlichen, planen, Token pflegen.
+// Gemeinsame Logik für Oberfläche, Chat-Agent und MCP-Server:
+// Dateien (Bilder/Musik), Beiträge (Reel, Bild, Karussell) erstellen, auf Instagram und
+// Facebook veröffentlichen, planen, Token pflegen.
 
 import { randomUUID } from "node:crypto";
 import { mkdir, readdir, readFile, writeFile, rm, rename, copyFile, open, stat } from "node:fs/promises";
@@ -7,8 +8,9 @@ import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 import { normalizePlan } from "./planner.js";
-import { renderReel, totalDuration } from "./render.js";
-import { publishReel, refreshToken } from "./instagram.js";
+import { renderReel, renderSlides, totalDuration } from "./render.js";
+import { publishReel, publishImages, refreshToken, isInstagramConfigured } from "./instagram.js";
+import { isFacebookConfigured, publishPhotos, publishVideoReel, hostImage } from "./facebook.js";
 import { DATA_DIR, saveSettings } from "./settings.js";
 
 export const OUTPUT = fileURLToPath(new URL("../output/", import.meta.url));
@@ -63,33 +65,43 @@ async function localFile(p, exts) {
   return full;
 }
 
-// ---------- Reels ----------
+// ---------- Beiträge (Reel, Bild, Karussell) ----------
 
-const withUrls = (meta) => ({ ...meta, video: `/reels/${meta.id}/reel.mp4`, thumb: `/reels/${meta.id}/reel.jpg` });
+const withUrls = (meta) => {
+  const format = meta.plan?.format || "reel";
+  if (format === "reel") {
+    return { ...meta, format, video: `/reels/${meta.id}/reel.mp4`, thumb: `/reels/${meta.id}/reel.jpg`, slides: [] };
+  }
+  const slides = (meta.files ?? []).map((f) => `/reels/${meta.id}/${f}`);
+  return { ...meta, format, video: null, thumb: slides[0], slides };
+};
 
-/** Rendert ein Drehbuch zu einem Reel und speichert es. */
+/** Erstellt aus einem Drehbuch einen fertigen Beitrag (Video oder Bild/Folien) und speichert ihn. */
 export async function createReel(
   { plan, imageIds = [], musicId, imagePaths = [], musicPath, showHandle = true },
   onStep = () => {},
 ) {
   plan = normalizePlan(plan);
-  if (totalDuration(plan) > 90) throw new Error("Reels dürfen über die API maximal 90 Sekunden lang sein.");
+  if (plan.format === "reel" && totalDuration(plan) > 90) throw new Error("Reels dürfen über die API maximal 90 Sekunden lang sein.");
+  if (plan.format === "carousel" && plan.scenes.length < 2) throw new Error("Ein Karussell braucht mindestens 2 Folien.");
   const images = [...imageIds.map(assetPath), ...(await Promise.all(imagePaths.map((p) => localFile(p, IMAGE_EXT))))];
   const musicFile = musicId ? assetPath(musicId) : musicPath ? await localFile(musicPath, AUDIO_EXT) : undefined;
+  const handle = showHandle ? process.env.BRAND_HANDLE || "@_seelenwende" : "";
 
   const id = randomUUID();
   const dir = reelDir(id);
   await mkdir(dir, { recursive: true });
   try {
-    onStep("Szenen & Musik werden erstellt …");
-    const { duration } = await renderReel(plan, {
-      outFile: path.join(dir, "reel.mp4"),
-      workDir: path.join(dir, "work"),
-      images,
-      musicFile,
-      handle: showHandle ? process.env.BRAND_HANDLE || "@_seelenwende" : "",
-    });
-    const meta = { id, createdAt: new Date().toISOString(), duration, plan, published: null };
+    let meta;
+    if (plan.format === "reel") {
+      onStep("Szenen & Musik werden erstellt …");
+      const { duration } = await renderReel(plan, { outFile: path.join(dir, "reel.mp4"), workDir: path.join(dir, "work"), images, musicFile, handle });
+      meta = { id, createdAt: new Date().toISOString(), duration, plan, published: null };
+    } else {
+      onStep(plan.format === "carousel" ? "Karussell-Folien werden gestaltet …" : "Bild wird gestaltet …");
+      const files = await renderSlides(plan, { outDir: dir, images, handle });
+      meta = { id, createdAt: new Date().toISOString(), duration: 0, files, plan, published: null };
+    }
     await writeFile(path.join(dir, "meta.json"), JSON.stringify(meta, null, 2));
     return withUrls(meta);
   } catch (e) {
@@ -100,7 +112,7 @@ export async function createReel(
 
 export async function getReel(id) {
   const meta = JSON.parse(await readFile(path.join(reelDir(id), "meta.json"), "utf8").catch(() => {
-    throw new Error("Reel nicht gefunden");
+    throw new Error("Beitrag nicht gefunden");
   }));
   return withUrls(meta);
 }
@@ -120,28 +132,101 @@ export async function listReels() {
 
 export const deleteReel = (id) => rm(reelDir(id), { recursive: true, force: true });
 
-/** Standard-Caption eines Reels: Text + Hashtags. */
+/** Lokale Dateipfade eines Beitrags (Video bzw. Folien). */
+export const mediaFiles = (item) =>
+  item.format === "reel" ? [path.join(reelDir(item.id), "reel.mp4")] : (item.files ?? []).map((f) => path.join(reelDir(item.id), f));
+
+/** Instagram-Caption: Text + Hashtags. */
 export const captionFor = (plan) =>
   [plan.caption?.trim(), (plan.hashtags ?? []).map((h) => `#${h}`).join(" ")].filter(Boolean).join("\n\n");
 
-/** Veröffentlicht ein gespeichertes Reel sofort auf Instagram. */
-export async function publishNow(id, { caption, shareToFeed = true } = {}, onStep = () => {}) {
-  const reel = await getReel(id);
-  const text = caption?.trim() || captionFor(reel.plan);
+/** Facebook-Text: eigener Text oder Caption mit höchstens 3 Hashtags. */
+export const facebookTextFor = (plan) =>
+  plan.facebook_text?.trim() ||
+  [plan.caption?.trim(), (plan.hashtags ?? []).slice(0, 3).map((h) => `#${h}`).join(" ")].filter(Boolean).join("\n\n");
+
+export const CHANNELS = { instagram: "Instagram", facebook: "Facebook" };
+export const connectedChannels = () =>
+  Object.keys(CHANNELS).filter((c) => (c === "instagram" ? isInstagramConfigured() : isFacebookConfigured()));
+
+/** Öffentliche Bild-URLs für Instagram: eigener Server (PUBLIC_BASE_URL) oder Zwischenablage auf der Facebook-Seite. */
+async function publicImageUrls(item, files) {
   const base = process.env.PUBLIC_BASE_URL?.replace(/\/$/, "");
-  const result = await publishReel({
-    file: path.join(reelDir(id), "reel.mp4"),
-    publicUrl: base ? `${base}/reels/${id}/reel.mp4` : undefined,
-    caption: text,
-    shareToFeed,
-    thumbOffsetMs: 1000,
-    onProgress: onStep,
-  });
+  if (base) return item.files.map((f) => `${base}/reels/${item.id}/${f}`);
+  if (isFacebookConfigured()) return Promise.all(files.map(hostImage));
+  throw new Error(
+    "Für Bild- und Karussellbeiträge holt Instagram die Bilder von einer öffentlichen Adresse ab. " +
+      "Verbinde dafür zusätzlich deine Facebook-Seite (⚙️ Einstellungen) oder betreibe den Agenten online mit PUBLIC_BASE_URL.",
+  );
+}
+
+/**
+ * Veröffentlicht einen gespeicherten Beitrag sofort auf den gewählten Kanälen.
+ * Schlägt ein Kanal fehl, werden die anderen trotzdem versucht.
+ */
+export async function publishNow(id, { caption, facebookText, channels, shareToFeed = true } = {}, onStep = () => {}) {
+  const item = await getReel(id);
+  const targets = (channels?.length ? channels : connectedChannels()).filter((c) => CHANNELS[c]);
+  if (!targets.length) throw new Error("Kein Kanal verbunden – bitte Instagram und/oder Facebook unter ⚙️ Einstellungen verbinden.");
+  for (const c of targets) {
+    if (!connectedChannels().includes(c)) {
+      throw new Error(`${CHANNELS[c]} ist nicht verbunden (Web-App: ⚙️ Einstellungen · Claude: connect_${c}).`);
+    }
+  }
+  const igText = caption?.trim() || captionFor(item.plan);
+  const fbText = facebookText?.trim() || facebookTextFor(item.plan);
+  const files = mediaFiles(item);
+  const results = {};
+  const errors = {};
+
+  for (const channel of targets) {
+    try {
+      if (channel === "instagram") {
+        if (item.format === "reel") {
+          const base = process.env.PUBLIC_BASE_URL?.replace(/\/$/, "");
+          results.instagram = await publishReel({
+            file: files[0],
+            publicUrl: base ? `${base}/reels/${id}/reel.mp4` : undefined,
+            caption: igText,
+            shareToFeed,
+            thumbOffsetMs: 1000,
+            onProgress: onStep,
+          });
+        } else {
+          onStep("Instagram: Bilder werden bereitgestellt …");
+          results.instagram = await publishImages({ imageUrls: await publicImageUrls(item, files), caption: igText, onProgress: onStep });
+        }
+      } else if (channel === "facebook") {
+        results.facebook =
+          item.format === "reel"
+            ? await publishVideoReel({ file: files[0], description: fbText, onProgress: onStep })
+            : await publishPhotos({ files, message: fbText, onProgress: onStep });
+      }
+    } catch (e) {
+      errors[channel] = e.message;
+    }
+  }
+
   const metaPath = path.join(reelDir(id), "meta.json");
   const meta = JSON.parse(await readFile(metaPath, "utf8"));
-  meta.published = { ...result, at: new Date().toISOString(), caption: text };
+  const at = new Date().toISOString();
+  meta.publications = { ...(meta.publications ?? {}) };
+  for (const [c, r] of Object.entries(results)) meta.publications[c] = { ...r, at };
+  if (Object.keys(results).length) {
+    const main = results.instagram ?? results.facebook;
+    meta.published = { ...main, at, caption: igText, channels: Object.keys(meta.publications) };
+  }
   await writeFile(metaPath, JSON.stringify(meta, null, 2));
-  return { ...result, reelId: id };
+
+  if (!Object.keys(results).length) {
+    throw new Error(Object.entries(errors).map(([c, m]) => `${CHANNELS[c]}: ${m}`).join(" · "));
+  }
+  return {
+    reelId: id,
+    results,
+    errors,
+    permalink: (results.instagram ?? results.facebook)?.permalink ?? null,
+  };
 }
 
 // ---------- Zeitplanung ----------
@@ -189,7 +274,7 @@ export function parseLocalTime(value, tz = TZ) {
 export const formatLocal = (date) =>
   new Date(date).toLocaleString("de-DE", { timeZone: TZ, dateStyle: "full", timeStyle: "short" });
 
-export async function addSchedule({ reelId, caption, at, shareToFeed = true }) {
+export async function addSchedule({ reelId, caption, facebookText, channels, at, shareToFeed = true }) {
   const reel = await getReel(reelId);
   const when = at instanceof Date ? at : parseLocalTime(at);
   if (Number.isNaN(when.getTime())) throw new Error("Ungültiger Zeitpunkt");
@@ -199,6 +284,8 @@ export async function addSchedule({ reelId, caption, at, shareToFeed = true }) {
     reelId,
     title: reel.plan.title,
     caption: caption?.trim() || captionFor(reel.plan),
+    facebookText: facebookText?.trim() || facebookTextFor(reel.plan),
+    channels: channels?.length ? channels : connectedChannels(),
     shareToFeed,
     at: when.toISOString(),
     status: "geplant",
@@ -242,7 +329,12 @@ async function tick() {
       await updateEntry(entry.id, { status: "wird veröffentlicht" });
       try {
         const result = await publishNow(entry.reelId, entry);
-        await updateEntry(entry.id, { status: "veröffentlicht", result });
+        const failed = Object.entries(result.errors ?? {});
+        await updateEntry(entry.id, {
+          status: failed.length ? "teilweise veröffentlicht" : "veröffentlicht",
+          error: failed.length ? failed.map(([c, m]) => `${c}: ${m}`).join(" · ") : null,
+          result,
+        });
       } catch (e) {
         await updateEntry(entry.id, { status: "fehlgeschlagen", error: e.message });
       }
