@@ -4,7 +4,7 @@ import { createHash, timingSafeEqual } from "node:crypto";
 import { z } from "zod";
 
 export const STORE_NAME = "hook-check";
-const MODEL = "claude-opus-5";
+export const MODEL = "claude-opus-5";
 
 /* ---------- Eingabe ---------- */
 
