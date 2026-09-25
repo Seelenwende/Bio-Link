@@ -59,67 +59,13 @@
     max-width:42ch;margin:14px auto 0;
   }
 
-  /* --- Fortschritt (klebt oben) --- */
-  .progress{
-    position:sticky;top:0;z-index:5;
-    background:var(--papier);
-    padding:14px 0 12px;margin-top:26px;
-    border-bottom:1px solid var(--linie);
-  }
-  .progress__row{display:flex;justify-content:space-between;font-size:12.5px;color:var(--gedaempft);}
-  .bar{height:6px;border-radius:6px;background:var(--sand);overflow:hidden;margin-top:6px;}
-  .bar i{display:block;height:100%;width:0;background:var(--rose);border-radius:6px;transition:width .35s ease;}
-
   /* --- Bereiche --- */
-  .section{margin-top:34px;}
   .eyebrow{display:flex;align-items:center;gap:14px;margin-bottom:6px;}
   .eyebrow::before,.eyebrow::after{content:"";flex:1;height:1px;background:var(--linie);}
   .eyebrow span{
     font-family:"Playfair Display",serif;
     font-size:10.5px;letter-spacing:.4em;text-transform:uppercase;color:var(--rose);white-space:nowrap;
   }
-  .section h2{
-    font-family:"Playfair Display",serif;font-weight:500;font-size:21px;text-align:center;
-  }
-  .section .why{font-size:13.5px;color:var(--gedaempft);text-align:center;margin:4px auto 14px;max-width:44ch;}
-
-  .q{
-    background:#fff;
-    border:1px solid var(--linie);
-    border-radius:16px;
-    padding:16px 18px;
-    margin-bottom:12px;
-    min-width:0;
-  }
-  .q__text{float:left;width:100%;font-size:15.5px;font-weight:400;line-height:1.5;}
-  .q__hint{font-size:13px;color:var(--gedaempft);margin-top:4px;line-height:1.55;}
-  .opts{display:flex;gap:8px;margin-top:12px;}
-  .opts label{flex:1;position:relative;}
-  .opts input{position:absolute;opacity:0;pointer-events:none;}
-  .opts span{
-    display:block;text-align:center;cursor:pointer;
-    font-size:13.5px;padding:8px 4px;border-radius:12px;
-    border:1px solid var(--linie);color:var(--gedaempft);background:var(--papier);
-    transition:background-color .2s ease,color .2s ease,border-color .2s ease;
-  }
-  .opts input:focus-visible + span{outline:2px solid var(--rose);outline-offset:2px;}
-  .opts input[value="2"]:checked + span{background:var(--gut);border-color:var(--gut);color:#fff;}
-  .opts input[value="1"]:checked + span{background:var(--rose);border-color:var(--rose);color:#fff;}
-  .opts input[value="0"]:checked + span{background:var(--pflaume);border-color:var(--pflaume);color:#fff;}
-
-  /* --- Bio-Werkstatt --- */
-  .workshop{
-    background:var(--sand);border-radius:16px;padding:18px;margin-top:10px;
-  }
-  .workshop label{font-size:13.5px;color:var(--gedaempft);display:block;margin-bottom:6px;}
-  .workshop input,.workshop textarea{
-    width:100%;font:inherit;font-size:15px;color:var(--pflaume);
-    background:#fff;border:1px solid var(--linie);border-radius:12px;padding:10px 12px;
-  }
-  .workshop textarea{min-height:120px;resize:vertical;line-height:1.5;}
-  .workshop input:focus,.workshop textarea:focus{outline:2px solid var(--rose);outline-offset:1px;}
-  .count{font-size:12px;color:var(--gedaempft);text-align:right;margin-top:4px;}
-  .count.over{color:#B0413E;font-weight:400;}
   .field + .field{margin-top:14px;}
 
   /* --- Buttons --- */
@@ -135,9 +81,6 @@
   @media (hover:hover){.btn:hover{transform:translateY(-2px);box-shadow:0 10px 26px -14px rgba(92,58,70,.5);}}
 
   /* --- Ergebnis --- */
-  #result{display:none;margin-top:40px;scroll-margin-top:70px;}
-  .q{scroll-margin-top:70px;}
-  #result.show{display:block;}
   .score{
     text-align:center;background:var(--pflaume);color:var(--papier);
     border-radius:20px;padding:26px 20px;
@@ -145,29 +88,6 @@
   .score__num{font-family:"Playfair Display",serif;font-size:54px;line-height:1;}
   .score__label{font-family:"Playfair Display",serif;font-style:italic;font-size:20px;margin-top:8px;}
   .score__text{font-size:14px;color:#E3CFD5;margin-top:8px;max-width:40ch;margin-left:auto;margin-right:auto;}
-
-  .cats{margin-top:22px;}
-  .cat{margin-bottom:12px;}
-  .cat__row{display:flex;justify-content:space-between;font-size:14px;}
-  .cat__row b{font-weight:400;}
-
-  .todo{margin-top:26px;}
-  .todo h3{font-family:"Playfair Display",serif;font-weight:500;font-size:19px;margin-bottom:10px;text-align:center;}
-  .todo ol{list-style:none;counter-reset:t;}
-  .todo li{
-    counter-increment:t;position:relative;
-    background:#fff;border:1px solid var(--linie);border-radius:14px;
-    padding:12px 14px 12px 50px;margin-bottom:10px;font-size:14.5px;line-height:1.55;
-  }
-  .todo li::before{
-    content:counter(t);position:absolute;left:14px;top:12px;
-    width:24px;height:24px;border-radius:50%;
-    background:var(--sand);color:var(--beere);
-    font-family:"Playfair Display",serif;font-size:13px;text-align:center;line-height:24px;
-  }
-  .todo li.prio::before{background:var(--beere);color:var(--papier);}
-  .todo li small{display:block;color:var(--gedaempft);font-size:12px;margin-bottom:2px;letter-spacing:.04em;}
-  .done{text-align:center;color:var(--gedaempft);font-size:14.5px;}
 
   .footer{
     font-family:"Playfair Display",serif;font-size:9px;letter-spacing:.42em;text-transform:uppercase;
@@ -224,20 +144,12 @@
   .s-low{color:var(--schwach);} .s-mid{color:var(--mittel);} .s-high{color:var(--gut);}
   .ai-note{font-size:12.5px;color:var(--gedaempft);text-align:center;margin-top:20px;}
 
-  .manual{margin-top:44px;border-top:1px solid var(--linie);padding-top:20px;}
-  .manual summary{cursor:pointer;font-family:"Playfair Display",serif;font-size:17px;text-align:center;color:var(--beere);list-style:none;}
-  .manual summary::-webkit-details-marker{display:none;}
-  .manual summary::after{content:" ▾";}
-  .manual[open] summary::after{content:" ▴";}
-
   @media (prefers-reduced-motion:reduce){.spinner{animation:none;}}
 
   @media print{
-    .ai,.manual{display:none;}
     body{padding:0;}
-    .progress{position:static;}
-    .actions,#resetBtn{display:none;}
-    .q,.todo li{break-inside:avoid;}
+    .ai{display:none;}
+    .item,.card{break-inside:avoid;}
   }
 </style>
 </head>
@@ -294,304 +206,10 @@
     <p class="ai-note">Analyse durch KI (Claude) auf Basis deiner öffentlichen Profildaten. Story-Highlights und angepinnte Beiträge liefert Instagram nicht mit – diese Punkte prüfst du selbst. Platzhalter in [eckigen Klammern] ersetzt du durch deine echten Details.</p>
   </section>
 
-  <details class="manual">
-  <summary>Lieber selbst durchgehen? Manuelle Checkliste</summary>
-
-  <div class="progress" aria-live="polite">
-    <div class="progress__row"><span id="progText">0 von 0 beantwortet</span><span id="progPct">0 %</span></div>
-    <div class="bar"><i id="progBar"></i></div>
-  </div>
-
-  <form id="check" autocomplete="off"></form>
-
-  <!-- Bio-Werkstatt -->
-  <section class="section">
-    <div class="eyebrow"><span>Werkstatt</span></div>
-    <h2>Name &amp; Bio neu schreiben</h2>
-    <p class="why">Hier kannst du direkt einen Entwurf schreiben. Wird nur in deinem Browser gespeichert.</p>
-    <div class="workshop">
-      <div class="field">
-        <label for="nameField">Namensfeld (mit Suchbegriff, max. 64 Zeichen)</label>
-        <input id="nameField" maxlength="80" placeholder="Seelenwende | Selbstwert &amp; Loslassen">
-        <div class="count" id="nameCount">0 / 64</div>
-      </div>
-      <div class="field">
-        <label for="bioField">Bio (max. 150 Zeichen)</label>
-        <textarea id="bioField" placeholder="Für Frauen, die sich selbst verloren haben 🦋&#10;Ich begleite dich zurück zu dir – sanft &amp; ehrlich&#10;↓ Dein kostenloses Self Care Journal"></textarea>
-        <div class="count" id="bioCount">0 / 150</div>
-      </div>
-    </div>
-  </section>
-
-  <div class="actions">
-    <button class="btn" type="button" id="evalBtn">Auswertung anzeigen</button>
-    <button class="btn btn--soft" type="button" id="resetBtn">Neu starten</button>
-  </div>
-
-  <section id="result" aria-live="polite">
-    <div class="score">
-      <div class="score__num" id="scoreNum">0 %</div>
-      <div class="score__label" id="scoreLabel"></div>
-      <p class="score__text" id="scoreText"></p>
-    </div>
-    <div class="cats" id="cats"></div>
-    <div class="todo">
-      <h3>Deine To-do-Liste</h3>
-      <ol id="todoList"></ol>
-    </div>
-    <div class="actions">
-      <button class="btn btn--soft" type="button" onclick="window.print()">Drucken / als PDF speichern</button>
-    </div>
-  </section>
-
-  </details>
-
   <div class="footer">Seelenwende · Profil-Check</div>
 </main>
 
 <script>
-/* Fragen: text, hint (Erklärung), tip (To-do, wenn nicht erfüllt), weight (2 = besonders wichtig) */
-const SECTIONS = [
-  {
-    id:"eindruck", eyebrow:"Bereich 1", title:"Erster Eindruck",
-    why:"Du hast etwa drei Sekunden, bis jemand entscheidet: folgen oder weiterscrollen.",
-    items:[
-      {text:"Mein Profilbild ist auch winzig klein klar erkennbar.",
-       hint:"Gesicht nah & freundlich oder ein ruhiges Logo – kein Gruppenbild, keine Landschaft.",
-       tip:"Neues Profilbild: Gesicht nah, heller Hintergrund in deinen Farben, im Kreis-Zuschnitt testen.", weight:1},
-      {text:"Mein Namensfeld enthält einen Suchbegriff, nicht nur meinen Namen.",
-       hint:"Das Namensfeld ist durchsuchbar – z. B. „Seelenwende | Selbstwert & Loslassen“.",
-       tip:"Namensfeld ergänzen: Name + Thema, nach dem deine Wunschkundin sucht (z. B. „Selbstliebe“, „Trennung“).", weight:2},
-      {text:"Mein Username ist leicht zu merken, zu schreiben und passt zur Marke.",
-       hint:"Wenige Unterstriche/Zahlen, gleich wie auf anderen Kanälen.",
-       tip:"Username prüfen: so einfach wie möglich, einheitlich mit deiner Linkseite und anderen Kanälen.", weight:1},
-      {text:"Ich habe ein professionelles Konto mit passender Kategorie.",
-       hint:"Creator- oder Business-Konto: Kategorie, Statistiken und Kontakt-Buttons.",
-       tip:"Auf Creator-/Business-Konto umstellen und eine passende Kategorie wählen (z. B. „Coach“, „Autorin“).", weight:1}
-    ]
-  },
-  {
-    id:"bio", eyebrow:"Bereich 2", title:"Deine Bio",
-    why:"Die Bio beantwortet: Wer bist du, für wen, und was bekomme ich hier?",
-    items:[
-      {text:"Die erste Zeile sagt klar, wem ich helfe und wobei.",
-       hint:"Nicht „Ich bin …“, sondern „Für Frauen, die …“.",
-       tip:"Erste Bio-Zeile umschreiben: „Für [wen], die [Problem/Wunsch]“.", weight:2},
-      {text:"Man versteht, welches Ergebnis / welche Veränderung ich anbiete.",
-       hint:"Das Gefühl oder der Zustand danach – z. B. „zurück zu dir“.",
-       tip:"Nutzenversprechen ergänzen: Was ist nach der Begleitung anders? In einem Satz.", weight:2},
-      {text:"Meine Persönlichkeit und mein Ton sind spürbar.",
-       hint:"Eine Prise „Ich“ – Werte, Haltung, eigene Geschichte in wenigen Worten.",
-       tip:"Eine persönliche Note einbauen (eigene Erfahrung, Haltung oder ein typisches Wort von dir).", weight:1},
-      {text:"Die Bio endet mit einer klaren Handlungsaufforderung zum Link.",
-       hint:"z. B. „↓ Hol dir dein kostenloses Journal“.",
-       tip:"Letzte Bio-Zeile als Call-to-Action formulieren, der direkt auf den Link zeigt.", weight:2},
-      {text:"Die Bio ist leicht lesbar: Zeilenumbrüche, wenige Emojis, keine Hashtag-Wand.",
-       hint:"Drei bis vier kurze Zeilen lesen sich am besten.",
-       tip:"Bio entrümpeln: 3–4 Zeilen, max. 2–3 Emojis als Aufzählung, keine Hashtags.", weight:1}
-    ]
-  },
-  {
-    id:"link", eyebrow:"Bereich 3", title:"Link in Bio",
-    why:"Hier wird aus einer Followerin eine Leserin, Abonnentin oder Kundin.",
-    items:[
-      {text:"Mein Link führt zu einer übersichtlichen, mobilen Linkseite.",
-       hint:"Lädt schnell, sieht aus wie dein Profil, keine fremde Werbung.",
-       tip:"Linkseite im eigenen Design nutzen – schnell, mobil, ohne Ablenkung.", weight:1},
-      {text:"Ganz oben steht mein wichtigster nächster Schritt (z. B. Freebie).",
-       hint:"Das, was du dir am meisten wünschst, dass Besucherinnen klicken.",
-       tip:"Den einen wichtigsten Link (Freebie oder Hauptangebot) nach ganz oben und optisch hervorheben.", weight:2},
-      {text:"Es gibt höchstens 5–6 Links – keine Auswahl-Überforderung.",
-       hint:"Jeder zusätzliche Link senkt die Klicks auf den wichtigsten.",
-       tip:"Links ausmisten: alles Veraltete raus, maximal 5–6 Einträge.", weight:1},
-      {text:"Jeder Link sagt, was die Person bekommt (nicht nur „Shop“).",
-       hint:"„Self Care Journal – kostenlos“ statt „Freebie“.",
-       tip:"Link-Titel mit Nutzen oder Preis versehen, damit klar ist, was nach dem Klick kommt.", weight:1}
-    ]
-  },
-  {
-    id:"highlights", eyebrow:"Bereich 4", title:"Story-Highlights",
-    why:"Highlights sind dein Schaufenster unter der Bio – das Menü deines Profils.",
-    items:[
-      {text:"Ich habe Highlights mit klarem Zweck (Über mich, Angebote, Stimmen …).",
-       hint:"Nicht „Urlaub 2023“, sondern Themen, die Vertrauen aufbauen.",
-       tip:"Highlights neu sortieren: Start hier · Über mich · Angebote · Stimmen · Freebie.", weight:2},
-      {text:"Es gibt ein „Start hier“ / „Über mich“-Highlight mit meiner Geschichte.",
-       hint:"Wer bist du, warum machst du das, wie kann man mit dir arbeiten.",
-       tip:"„Start hier“-Highlight aufnehmen: 5–8 Stories – deine Geschichte, dein Angebot, ein Call-to-Action.", weight:2},
-      {text:"Die Highlight-Cover sind einheitlich gestaltet.",
-       hint:"Gleiche Farben/Icons wie dein Profil.",
-       tip:"Einheitliche Highlight-Cover in deinen Markenfarben gestalten (z. B. mit Canva).", weight:1},
-      {text:"Die Highlights sind aktuell (keine alten Aktionen/Preise).",
-       hint:"Veraltetes wirkt unprofessionell.",
-       tip:"Alte Aktionen und Preise aus den Highlights löschen.", weight:1}
-    ]
-  },
-  {
-    id:"feed", eyebrow:"Bereich 5", title:"Feed & Inhalte",
-    why:"Der Feed zeigt, ob es sich lohnt, dir zu folgen.",
-    items:[
-      {text:"Ich habe 3 angepinnte Beiträge, die mich und mein Angebot erklären.",
-       hint:"z. B. 1× Über mich / Geschichte, 1× Mehrwert-Bestseller, 1× Angebot oder Stimme.",
-       tip:"3 Beiträge anpinnen: Wer du bist · dein bester Mehrwert-Post · dein Angebot/Kundenstimme.", weight:2},
-      {text:"Man erkennt auf einen Blick meine 3–4 Hauptthemen.",
-       hint:"Content-Säulen, z. B. Selbstwert, Loslassen, Selbstfürsorge, Einblicke.",
-       tip:"3–4 Content-Säulen festlegen und die nächsten Beiträge danach planen.", weight:2},
-      {text:"Mein Feed hat einen wiedererkennbaren visuellen Stil.",
-       hint:"Farben, Schriften, Bildstimmung – nicht perfekt, aber stimmig.",
-       tip:"Feste Vorlagen (2–3 Layouts) in deinen Farben & Schriften anlegen.", weight:1},
-      {text:"Ich poste regelmäßig (mind. 2–3× pro Woche, Stories fast täglich).",
-       hint:"Regelmäßigkeit schlägt Perfektion.",
-       tip:"Realistischen Posting-Rhythmus festlegen und 2 Wochen vorplanen.", weight:1},
-      {text:"Ich zeige mich als Mensch (Gesicht, Stimme, eigene Erfahrungen).",
-       hint:"Menschen folgen Menschen – gerade bei persönlichen Themen.",
-       tip:"Mindestens 1× pro Woche persönlich zeigen: Reel mit Gesicht, Story mit Stimme oder eigene Geschichte.", weight:1}
-    ]
-  },
-  {
-    id:"vertrauen", eyebrow:"Bereich 6", title:"Vertrauen & Angebot",
-    why:"Folgen ist schön – aber dein Profil soll auch zu deinem Angebot führen.",
-    items:[
-      {text:"Kundenstimmen / Erfahrungen sind leicht zu finden.",
-       hint:"Als Highlight, angepinnter Post oder auf der Linkseite.",
-       tip:"Kundenstimmen sammeln (Screenshots mit Erlaubnis) und als Highlight + Post zeigen.", weight:2},
-      {text:"Ich erwähne mein Angebot regelmäßig in Posts und Stories.",
-       hint:"Faustregel: etwa jeder 4.–5. Inhalt lädt zu einem nächsten Schritt ein.",
-       tip:"Angebot sichtbar machen: jede Woche mind. 1 Story-Serie oder 1 Post mit Einladung.", weight:2},
-      {text:"Neue Followerinnen bekommen einen einfachen ersten Schritt (Freebie).",
-       hint:"z. B. ein kostenloses Journal, Guide oder eine Mini-Übung.",
-       tip:"Freebie in Bio, Linkseite und angepinntem Post bewerben – als ersten, leichten Schritt.", weight:1},
-      {text:"Wichtige Hinweise sind sichtbar (z. B. „ersetzt keine Therapie“).",
-       hint:"Schafft Vertrauen und schützt dich.",
-       tip:"Hinweis „Selbsthilfe – ersetzt keine Therapie“ in Highlight oder Linkseite aufnehmen.", weight:1}
-    ]
-  }
-];
-
-const STORE_KEY = "seelenwende-profilcheck-v1";
-function load(){ try{ return JSON.parse(localStorage.getItem(STORE_KEY)) || {}; }catch(e){ return {}; } }
-function save(){ try{ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }catch(e){} }
-let state = load();
-state.answers = state.answers || {};
-
-const form = document.getElementById("check");
-const allQ = [];
-
-SECTIONS.forEach(sec => {
-  const s = document.createElement("section");
-  s.className = "section";
-  s.innerHTML = `<div class="eyebrow"><span>${sec.eyebrow}</span></div>
-    <h2>${sec.title}</h2><p class="why">${sec.why}</p>`;
-  sec.items.forEach((it, i) => {
-    const key = sec.id + "-" + i;
-    allQ.push({key, sec, it});
-    const q = document.createElement("fieldset");
-    q.className = "q";
-    q.innerHTML = `<legend class="q__text">${it.text}</legend>
-      <p class="q__hint" style="clear:both">${it.hint}</p>
-      <div class="opts">
-        ${[["2","Ja"],["1","Teilweise"],["0","Nein"]].map(([v,l]) =>
-          `<label><input type="radio" name="${key}" value="${v}" ${state.answers[key]===v?"checked":""}><span>${l}</span></label>`).join("")}
-      </div>`;
-    s.appendChild(q);
-  });
-  form.appendChild(s);
-});
-
-form.addEventListener("change", e => {
-  if(e.target.type === "radio"){ state.answers[e.target.name] = e.target.value; save(); updateProgress(); }
-});
-
-function updateProgress(){
-  const n = allQ.filter(q => state.answers[q.key] !== undefined).length;
-  const pct = Math.round(n / allQ.length * 100);
-  document.getElementById("progText").textContent = `${n} von ${allQ.length} beantwortet`;
-  document.getElementById("progPct").textContent = pct + " %";
-  document.getElementById("progBar").style.width = pct + "%";
-}
-
-/* Werkstatt */
-const nameField = document.getElementById("nameField");
-const bioField = document.getElementById("bioField");
-nameField.value = state.name || "";
-bioField.value = state.bio || "";
-function count(el, out, max){
-  const len = [...el.value].length;
-  out.textContent = `${len} / ${max}`;
-  out.classList.toggle("over", len > max);
-}
-function onWorkshop(){
-  state.name = nameField.value; state.bio = bioField.value; save();
-  count(nameField, document.getElementById("nameCount"), 64);
-  count(bioField, document.getElementById("bioCount"), 150);
-}
-nameField.addEventListener("input", onWorkshop);
-bioField.addEventListener("input", onWorkshop);
-
-/* Auswertung */
-const LEVELS = [
-  {min:85, label:"Dein Profil strahlt.", text:"Es ist klar, einladend und führt zu deinem Angebot. Feile nur noch an den letzten Details."},
-  {min:65, label:"Ein starkes Fundament.", text:"Die Basis stimmt. Mit ein paar gezielten Änderungen wird aus Besucherinnen deutlich öfter eine Followerin oder Kundin."},
-  {min:40, label:"Da ist viel Potenzial.", text:"Dein Profil verschenkt gerade noch Aufmerksamkeit. Fang mit den markierten Prioritäten an – sie bringen am meisten."},
-  {min:0,  label:"Zeit für einen Neustart.", text:"Kein Grund zur Sorge: Mit Bio, Link und angepinnten Beiträgen änderst du in einem Nachmittag sehr viel."}
-];
-
-function evaluate(){
-  const open = allQ.filter(q => state.answers[q.key] === undefined);
-  if(open.length){
-    if(!confirm(`${open.length} Punkt(e) sind noch offen und zählen als „Nein“. Trotzdem auswerten?`)){
-      const first = document.querySelector(`input[name="${open[0].key}"]`);
-      first.closest(".q").scrollIntoView({behavior:"smooth", block:"center"});
-      return;
-    }
-  }
-  let got = 0, max = 0;
-  const cats = SECTIONS.map(sec => ({sec, got:0, max:0}));
-  const todos = [];
-  allQ.forEach(q => {
-    const v = +(state.answers[q.key] || 0);
-    const w = q.it.weight;
-    const c = cats.find(c => c.sec === q.sec);
-    got += v * w; max += 2 * w; c.got += v * w; c.max += 2 * w;
-    if(v < 2) todos.push({q, v, prio: (2 - v) * w});
-  });
-  const pct = Math.round(got / max * 100);
-  const lvl = LEVELS.find(l => pct >= l.min);
-  document.getElementById("scoreNum").textContent = pct + " %";
-  document.getElementById("scoreLabel").textContent = lvl.label;
-  document.getElementById("scoreText").textContent = lvl.text;
-
-  document.getElementById("cats").innerHTML = cats.map(c => {
-    const p = Math.round(c.got / c.max * 100);
-    return `<div class="cat"><div class="cat__row"><b>${c.sec.title}</b><span>${p} %</span></div>
-      <div class="bar"><i style="width:${p}%"></i></div></div>`;
-  }).join("");
-
-  todos.sort((a, b) => b.prio - a.prio);
-  const list = document.getElementById("todoList");
-  list.innerHTML = todos.length
-    ? todos.map(t => `<li class="${t.prio >= 3 ? "prio" : ""}"><small>${t.q.sec.title}${t.prio >= 3 ? " · Priorität" : ""}</small>${t.q.it.tip}</li>`).join("")
-    : `<p class="done">Nichts offen – wunderbar. 🦋</p>`;
-
-  const res = document.getElementById("result");
-  res.classList.add("show");
-  res.scrollIntoView({behavior:"smooth"});
-}
-
-document.getElementById("evalBtn").addEventListener("click", evaluate);
-document.getElementById("resetBtn").addEventListener("click", () => {
-  if(!confirm("Alle Antworten und Entwürfe löschen?")) return;
-  state = {answers:{}}; save();
-  form.querySelectorAll("input").forEach(i => i.checked = false);
-  nameField.value = ""; bioField.value = ""; onWorkshop();
-  document.getElementById("result").classList.remove("show");
-  updateProgress();
-  window.scrollTo({top:0, behavior:"smooth"});
-});
-
-updateProgress();
-onWorkshop();
-
 /* ---------- KI-Profil-Check ---------- */
 (() => {
   const $ = id => document.getElementById(id);
@@ -633,8 +251,8 @@ onWorkshop();
     $("preview").hidden = true;
     status("Profil wird bei Instagram abgerufen …", "busy");
     try{
-      const res = await fetch("/api/hook-check/start", {method:"POST", headers:{"content-type":"application/json"},
-        body: JSON.stringify({mode:"profile", handle, accessCode: code})});
+      const res = await fetch("/api/profil-check/start", {method:"POST", headers:{"content-type":"application/json"},
+        body: JSON.stringify({handle, accessCode: code})});
       const data = await res.json().catch(() => ({}));
       if(!res.ok) throw new Error(data.error || `Start fehlgeschlagen (${res.status}).`);
       preview(data.preview);
@@ -647,7 +265,7 @@ onWorkshop();
         const secs = Math.round((Date.now() - started) / 1000);
         if(secs > 780) throw new Error("Die Analyse dauert ungewöhnlich lange. Bitte später noch einmal versuchen.");
         status(`${msgs[Math.min(msgs.length - 1, Math.floor(secs / 25))]} (${secs} s)`, "busy");
-        const st = await fetch(`/api/hook-check/status?id=${data.id}`).then(r => r.json()).catch(() => ({status:"pending"}));
+        const st = await fetch(`/api/profil-check/status?id=${data.id}`).then(r => r.json()).catch(() => ({status:"pending"}));
         if(st.status === "error") throw new Error(st.error || "Die Analyse ist fehlgeschlagen.");
         if(st.status === "done"){
           store.set("-last", JSON.stringify({result: st.result, preview: data.preview, at: Date.now()}));
