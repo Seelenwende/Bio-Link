@@ -238,7 +238,7 @@
     </div>
     <p class="intro">Es gibt kein Richtig oder Falsch. Wähle nicht, was du wichtig finden <i>solltest</i>, sondern was sich wahr anfühlt.</p>
     <div class="actions">
-      <button class="btn" type="button" data-go="1">Los geht's</button>
+      <button class="btn" type="button" id="start">Los geht's</button>
     </div>
     <div class="actions" id="resumeBox" hidden style="margin-top:8px">
       <button class="btn btn--link" type="button" id="resumeBtn">Letztes Ergebnis ansehen</button>
@@ -571,6 +571,8 @@
     if(s.picked.length < MIN_PICK){ nudge("hint1"); return; }
     // Genau fünf gewählt: Eingrenzen überspringen
     if(s.picked.length === TOP){ s.top = [...s.picked]; startDuel(); return; }
+    // Beim Eingrenzen immer frisch starten, nichts vorauswählen
+    s.top = [];
     show(2);
   });
   $("next2").addEventListener("click", () => {
@@ -597,6 +599,11 @@
   let framed = true; try{ framed = window.self !== window.top; }catch(e){}
   if(framed) $("printBtn").hidden = true;
   else $("printBtn").addEventListener("click", () => window.print());
+  $("start").addEventListener("click", () => {
+    // Nach einem fertigen Durchlauf mit leerer Auswahl neu beginnen
+    if(s.doneAt){ s = fresh(); $("resumeBox").hidden = true; }
+    show(1);
+  });
   $("resumeBtn").addEventListener("click", () => show(5));
   $("copyBtn").addEventListener("click", async e => {
     const text = resultText(), btn = e.currentTarget;
