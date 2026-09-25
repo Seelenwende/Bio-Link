@@ -1,6 +1,6 @@
 import type { Config, Context } from "@netlify/functions";
 import { getStore } from "@netlify/blobs";
-import { STORE_NAME, ID_PATTERN, json } from "../lib/hook-check.mts";
+import { STORE_NAME, ID_PATTERN, json } from "../lib/common.mts";
 
 export default async (req: Request, _context: Context) => {
   const id = new URL(req.url).searchParams.get("id") ?? "";
@@ -12,5 +12,5 @@ export default async (req: Request, _context: Context) => {
 };
 
 export const config: Config = {
-  path: "/api/hook-check/status",
+  path: "/api/profil-check/status",
 };

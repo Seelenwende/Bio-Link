@@ -1,7 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { betaZodOutputFormat } from "@anthropic-ai/sdk/helpers/beta/zod";
 import { z } from "zod";
-import { MODEL } from "./hook-check.mts";
+import { MODEL } from "./common.mts";
 import type { IgProfile } from "./instagram.mts";
 
 /* Die Punkte des Profil-Checks – dieselben wie in der manuellen Checkliste auf profil-check.html */
