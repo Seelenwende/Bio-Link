@@ -188,6 +188,9 @@
     font-family:"Playfair Display",serif;font-size:9px;letter-spacing:.42em;text-transform:uppercase;
     color:var(--mikro);text-align:center;margin-top:24px;
   }
+  .hint{font-size:14px;color:var(--beere);text-align:center;margin-top:10px;min-height:1.4em;}
+  .hint.pulse{animation:pulse .5s ease;}
+  @keyframes pulse{0%,100%{transform:none;}25%{transform:translateX(-4px);}75%{transform:translateX(4px);}}
   .sr-only{position:absolute;left:-9999px;}
 
   @keyframes rise{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
@@ -227,7 +230,7 @@
   <section class="step" data-step="0">
     <div class="how">
       <ol>
-        <li><b>Wählen:</b> Markiere 8 bis 15 Werte, die dich spontan berühren.</li>
+        <li><b>Wählen:</b> Markiere 5 bis 15 Werte, die dich spontan berühren.</li>
         <li><b>Eingrenzen:</b> Behalte die 5, auf die du am wenigsten verzichten möchtest.</li>
         <li><b>Abwägen:</b> Entscheide in kurzen Paaren, was dir wichtiger ist.</li>
         <li><b>Nachspüren:</b> Schätze ein, wie sehr du jeden Wert gerade lebst.</li>
@@ -253,6 +256,7 @@
       <button class="btn btn--soft" type="button" data-go="0">Zurück</button>
       <button class="btn" type="button" id="next1">Weiter</button>
     </div>
+    <p class="hint" id="hint1" role="status"></p>
   </section>
 
   <!-- 2 · Eingrenzen -->
@@ -266,6 +270,7 @@
       <button class="btn btn--soft" type="button" data-go="1">Zurück</button>
       <button class="btn" type="button" id="next2">Weiter</button>
     </div>
+    <p class="hint" id="hint2" role="status"></p>
   </section>
 
   <!-- 3 · Paarvergleich -->
@@ -309,7 +314,7 @@
 
     <div class="actions">
       <button class="btn btn--soft" type="button" id="copyBtn">Ergebnis kopieren</button>
-      <button class="btn btn--soft" type="button" onclick="window.print()">Drucken / als PDF</button>
+      <button class="btn btn--soft" type="button" id="printBtn">Drucken / als PDF</button>
       <button class="btn btn--link" type="button" id="restart">Neu starten</button>
     </div>
 
@@ -379,7 +384,7 @@
   const VALUES = {};
   GROUPS.forEach(g => g.values.forEach(([name, desc, prompt]) => VALUES[name] = {name, desc, prompt}));
 
-  const MIN_PICK = 8, MAX_PICK = 15, TOP = 5;
+  const MIN_PICK = 5, MAX_PICK = 15, TOP = 5;
 
   /* ---------- Zustand ---------- */
   const KEY = "seelenwende-wertefinder-v1";
@@ -420,7 +425,7 @@
     $("counter1").innerHTML = n < MIN_PICK
       ? `<b>${n}</b> gewählt · noch mindestens ${MIN_PICK - n}`
       : `<b>${n}</b> gewählt${full ? " · das Maximum ist erreicht" : " · du kannst weiter"}`;
-    $("next1").disabled = n < MIN_PICK;
+    $("hint1").textContent = n < MIN_PICK ? `Wähle noch ${MIN_PICK - n} ${MIN_PICK - n === 1 ? "Wert" : "Werte"}, dann geht es weiter.` : "";
   }
 
   /* ---------- 2 · Eingrenzen ---------- */
@@ -434,7 +439,7 @@
     const n = s.top.length;
     document.querySelectorAll("[data-top]").forEach(b => b.disabled = n >= TOP && b.getAttribute("aria-pressed") !== "true");
     $("counter2").innerHTML = n < TOP ? `<b>${n}</b> von ${TOP} gewählt` : `<b>${TOP}</b> von ${TOP} gewählt · schön`;
-    $("next2").disabled = n !== TOP;
+    $("hint2").textContent = n < TOP ? `Wähle noch ${TOP - n}, dann geht es weiter.` : "";
   }
 
   /* ---------- 3 · Paarvergleich ---------- */
@@ -555,23 +560,43 @@
     save();
   });
 
-  $("next1").addEventListener("click", () => show(2));
-  $("next2").addEventListener("click", () => {
+  const nudge = id => { const h = $(id); h.classList.remove("pulse"); void h.offsetWidth; h.classList.add("pulse"); };
+  const startDuel = () => {
     const same = s.pairs.length && s.pairs.every(p => p.every(v => s.top.includes(v)));
     if(!same) buildPairs();
     else s.answers = [];
     show(3);
+  };
+  $("next1").addEventListener("click", () => {
+    if(s.picked.length < MIN_PICK){ nudge("hint1"); return; }
+    // Genau fünf gewählt: Eingrenzen überspringen
+    if(s.picked.length === TOP){ s.top = [...s.picked]; startDuel(); return; }
+    show(2);
+  });
+  $("next2").addEventListener("click", () => {
+    if(s.top.length !== TOP){ nudge("hint2"); return; }
+    startDuel();
   });
   $("back3").addEventListener("click", () => {
     if(s.answers.length){ s.answers.pop(); save(); renderDuel(); }
-    else show(2);
+    else show(s.picked.length === TOP ? 1 : 2);
   });
   $("back4").addEventListener("click", () => { s.answers.pop(); show(3); });
   $("finish").addEventListener("click", () => { s.doneAt = null; show(5); });
-  $("restart").addEventListener("click", () => {
-    if(!confirm("Neu starten? Dein aktuelles Ergebnis wird dabei gelöscht.")) return;
+  let restartArmed = null;
+  $("restart").addEventListener("click", e => {
+    const btn = e.currentTarget;
+    if(!restartArmed){
+      btn.textContent = "Wirklich neu starten? Ergebnis wird gelöscht";
+      restartArmed = setTimeout(() => { restartArmed = null; btn.textContent = "Neu starten"; }, 4000);
+      return;
+    }
+    clearTimeout(restartArmed); restartArmed = null; btn.textContent = "Neu starten";
     s = fresh(); $("resumeBox").hidden = true; show(0);
   });
+  let framed = true; try{ framed = window.self !== window.top; }catch(e){}
+  if(framed) $("printBtn").hidden = true;
+  else $("printBtn").addEventListener("click", () => window.print());
   $("resumeBtn").addEventListener("click", () => show(5));
   $("copyBtn").addEventListener("click", async e => {
     const text = resultText(), btn = e.currentTarget;
