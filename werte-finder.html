@@ -102,25 +102,25 @@
   .chip[aria-pressed="true"]{background:var(--beere);border-color:var(--beere);color:var(--papier);}
   .chip[aria-pressed="true"] small{color:#EBD9DD;}
   .chip:disabled{opacity:.45;cursor:not-allowed;}
-  .chip:focus-visible,.btn:focus-visible,.choice:focus-visible{outline:2px solid var(--rose);outline-offset:3px;}
+  .chip:focus-visible,.btn:focus-visible{outline:2px solid var(--rose);outline-offset:3px;}
   .chips--big .chip{padding:10px 16px;}
 
-  /* --- Paarvergleich --- */
-  .question{font-size:15px;color:var(--gedaempft);text-align:center;margin-top:6px;}
-  .duel{display:grid;grid-template-columns:1fr;gap:12px;margin-top:22px;}
-  @media (min-width:480px){.duel{grid-template-columns:1fr 1fr;}}
-  .choice{
-    font:inherit;text-align:center;cursor:pointer;
-    background:#fff;border:1px solid var(--linie);border-radius:18px;padding:22px 16px;
-    color:var(--pflaume);
-    transition:transform .2s ease,box-shadow .2s ease,background-color .2s ease;
+  /* --- Bedeutung --- */
+  .meaning{background:#fff;border:1px solid var(--linie);border-radius:16px;padding:14px 16px;margin-top:14px;}
+  .meaning label{display:block;font-family:"Playfair Display",serif;font-size:18px;font-weight:500;line-height:1.35;}
+  .meaning label span{font-style:italic;font-weight:400;color:var(--beere);}
+  .meaning textarea{
+    width:100%;margin-top:8px;font:inherit;font-size:16px;line-height:1.5;color:var(--pflaume);
+    background:var(--papier);border:1px solid var(--linie);border-radius:12px;padding:10px 12px;resize:vertical;min-height:64px;
   }
-  .choice .title{font-family:"Playfair Display",serif;font-size:21px;font-weight:500;display:block;}
-  .choice .meta{font-size:13px;color:var(--gedaempft);display:block;margin-top:4px;line-height:1.45;}
-  @media (hover:hover){.choice:hover{transform:translateY(-2px);box-shadow:0 10px 26px -14px rgba(92,58,70,.5);background:var(--sand);}}
-  .or{text-align:center;font-family:"Playfair Display",serif;font-style:italic;color:var(--mikro);}
-  @media (min-width:480px){.or{display:none;}}
-  .duel__count{text-align:center;font-size:13px;color:var(--gedaempft);margin-top:14px;}
+  .meaning textarea:focus{outline:2px solid var(--rose);outline-offset:1px;}
+  .ideas{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+  .idea{
+    font:inherit;font-size:13px;line-height:1.4;color:var(--gedaempft);text-align:left;
+    background:var(--sand);border:1px solid transparent;border-radius:14px;padding:5px 11px;cursor:pointer;
+  }
+  .idea[aria-pressed="true"]{border-color:var(--rose);color:var(--pflaume);}
+  .idea:focus-visible{outline:2px solid var(--rose);outline-offset:2px;}
 
   /* --- Gelebt-Skala --- */
   .scale{background:#fff;border:1px solid var(--linie);border-radius:16px;padding:14px 16px;margin-top:12px;}
@@ -161,8 +161,7 @@
   }
 
   .value{background:#fff;border:1px solid var(--linie);border-radius:16px;padding:16px 18px;margin-bottom:12px;}
-  .value__top{display:flex;gap:14px;align-items:baseline;}
-  .value__rank{font-family:"Playfair Display",serif;font-size:30px;line-height:1;color:var(--rose);min-width:22px;}
+  .value__own{font-family:"Playfair Display",serif;font-style:italic;font-size:16.5px;line-height:1.45;margin-top:6px;}
   .value__name{font-family:"Playfair Display",serif;font-size:21px;font-weight:500;line-height:1.25;}
   .value__desc{font-size:13.5px;color:var(--gedaempft);line-height:1.5;}
   .bar{height:6px;border-radius:6px;background:var(--sand);margin-top:12px;overflow:hidden;}
@@ -232,7 +231,7 @@
       <ol>
         <li><b>Wählen:</b> Markiere 5 bis 15 Werte, die dich spontan berühren.</li>
         <li><b>Eingrenzen:</b> Behalte die 5, auf die du am wenigsten verzichten möchtest.</li>
-        <li><b>Abwägen:</b> Entscheide in kurzen Paaren, was dir wichtiger ist.</li>
+        <li><b>Bedeutung finden:</b> Beschreibe in einem Satz, was jeder Wert für dich heißt.</li>
         <li><b>Nachspüren:</b> Schätze ein, wie sehr du jeden Wert gerade lebst.</li>
       </ol>
     </div>
@@ -273,16 +272,17 @@
     <p class="hint" id="hint2" role="status"></p>
   </section>
 
-  <!-- 3 · Paarvergleich -->
+  <!-- 3 · Bedeutung -->
   <section class="step" data-step="3" aria-labelledby="s3title">
     <div class="step__label">Schritt 3 von 4</div>
-    <h2 id="s3title">Was ist dir wichtiger?</h2>
-    <p class="question">Wenn du dich entscheiden müsstest – ohne lange nachzudenken.</p>
-    <div class="duel" id="duel"></div>
-    <div class="duel__count" id="duelCount" role="status"></div>
+    <h2 id="s3title">Was bedeuten deine Werte für dich?</h2>
+    <p class="question">Zwei Menschen mit demselben Wert meinen oft ganz Verschiedenes. Ergänze jeden Satz in deinen Worten – oder tippe einen Vorschlag an und schreib ihn um.</p>
+    <div id="meanings"></div>
     <div class="actions">
       <button class="btn btn--soft" type="button" id="back3">Zurück</button>
+      <button class="btn" type="button" id="next3">Weiter</button>
     </div>
+    <p class="hint" id="hint3" role="status"></p>
   </section>
 
   <!-- 4 · Gelebt -->
@@ -336,59 +336,59 @@
   /* ---------- Werte ---------- */
   const GROUPS = [
     {name:"Innere Welt", values:[
-      ["Authentizität", "echt sein, ohne Maske", "Wo verstellst du dich gerade noch – und für wen?"],
-      ["Ruhe", "innerer Frieden, Stille", "Welcher Moment in deiner Woche schenkt dir wirklich Ruhe?"],
-      ["Achtsamkeit", "bewusst im Moment sein", "Wann warst du zuletzt ganz bei dir, ohne an später zu denken?"],
-      ["Selbstachtung", "mich selbst wertschätzen", "Wie würdest du heute handeln, wenn du dich selbst voll achten würdest?"],
-      ["Selbstfürsorge", "gut für mich sorgen", "Was brauchst du gerade – und was hält dich davon ab, es dir zu geben?"],
-      ["Spiritualität", "Verbindung zu etwas Größerem", "Wo spürst du Verbundenheit mit etwas, das größer ist als du?"],
-      ["Sinn", "wissen, wofür ich lebe", "Wofür lohnt es sich für dich, morgens aufzustehen?"],
-      ["Dankbarkeit", "das Gute sehen", "Wofür bist du heute, ganz konkret, dankbar?"],
+      ["Authentizität", "echt sein, ohne Maske", "Wo verstellst du dich gerade noch – und für wen?", ["… so zu sein, wie ich bin – auch wenn es nicht allen gefällt", "… meine Gefühle nicht mehr zu verstecken", "… dass mein Innen und Außen zusammenpassen"]],
+      ["Ruhe", "innerer Frieden, Stille", "Welcher Moment in deiner Woche schenkt dir wirklich Ruhe?", ["… nicht ständig erreichbar sein zu müssen", "… dass mein Kopf still werden darf", "… einen Ort zu haben, an dem ich aufatmen kann"]],
+      ["Achtsamkeit", "bewusst im Moment sein", "Wann warst du zuletzt ganz bei dir, ohne an später zu denken?", ["… wirklich da zu sein, wo ich gerade bin", "… zu spüren, was ich brauche, bevor es zu viel wird", "… den kleinen Momenten Aufmerksamkeit zu schenken"]],
+      ["Selbstachtung", "mich selbst wertschätzen", "Wie würdest du heute handeln, wenn du dich selbst voll achten würdest?", ["… mich nicht kleiner zu machen, als ich bin", "… Grenzen zu ziehen, ohne mich zu rechtfertigen", "… nicht zu bleiben, wo ich nicht gut behandelt werde"]],
+      ["Selbstfürsorge", "gut für mich sorgen", "Was brauchst du gerade – und was hält dich davon ab, es dir zu geben?", ["… meine Bedürfnisse ernst zu nehmen", "… Pausen zu machen, ohne sie mir zu verdienen", "… mit mir so liebevoll umzugehen wie mit anderen"]],
+      ["Spiritualität", "Verbindung zu etwas Größerem", "Wo spürst du Verbundenheit mit etwas, das größer ist als du?", ["… mich getragen zu fühlen von etwas Größerem", "… Vertrauen zu haben, dass alles einen Sinn hat", "… Stille und Verbindung zu suchen"]],
+      ["Sinn", "wissen, wofür ich lebe", "Wofür lohnt es sich für dich, morgens aufzustehen?", ["… zu wissen, wofür ich etwas tue", "… etwas zu hinterlassen, das bleibt", "… dass mein Leben sich nach meinem anfühlt"]],
+      ["Dankbarkeit", "das Gute sehen", "Wofür bist du heute, ganz konkret, dankbar?", ["… das Gute zu sehen, auch an schweren Tagen", "… nicht alles für selbstverständlich zu nehmen", "… jeden Abend etwas zu finden, das schön war"]],
     ]},
     {name:"Beziehungen", values:[
-      ["Liebe", "lieben und geliebt werden", "Wie zeigst du Liebe – und wie möchtest du sie empfangen?"],
-      ["Familie", "Nähe zu meinen Liebsten", "Welche Form von Familie tut dir gut – gewählt oder geboren?"],
-      ["Freundschaft", "echte, tiefe Verbindungen", "Bei wem kannst du ganz du selbst sein?"],
-      ["Verbundenheit", "dazugehören, nicht allein sein", "Wo fühlst du dich zugehörig – und wo nur geduldet?"],
-      ["Ehrlichkeit", "Wahrheit sagen und hören", "Welche Wahrheit möchtest du endlich aussprechen?"],
-      ["Vertrauen", "mich auf andere verlassen können", "Wem vertraust du wirklich – und woran merkst du das?"],
-      ["Respekt", "auf Augenhöhe begegnen", "Wo wirst du gerade nicht respektiert – und was wäre deine Grenze?"],
-      ["Mitgefühl", "Herz für andere und mich", "Kannst du dir selbst so viel Mitgefühl schenken wie anderen?"],
-      ["Loyalität", "treu zu Menschen stehen", "Wem gegenüber bist du loyal – auch dir selbst gegenüber?"],
+      ["Liebe", "lieben und geliebt werden", "Wie zeigst du Liebe – und wie möchtest du sie empfangen?", ["… ohne Bedingungen angenommen zu werden", "… mich sicher zu fühlen, wenn ich mich zeige", "… Liebe zu geben, ohne mich selbst zu verlieren"]],
+      ["Familie", "Nähe zu meinen Liebsten", "Welche Form von Familie tut dir gut – gewählt oder geboren?", ["… Menschen zu haben, zu denen ich immer zurückkann", "… meine eigene Familie wählen zu dürfen", "… füreinander da zu sein, auch wenn es schwer ist"]],
+      ["Freundschaft", "echte, tiefe Verbindungen", "Bei wem kannst du ganz du selbst sein?", ["… Menschen, bei denen ich nichts spielen muss", "… gemeinsam lachen und weinen zu können", "… Verbindungen, die Zeit und Abstand überstehen"]],
+      ["Verbundenheit", "dazugehören, nicht allein sein", "Wo fühlst du dich zugehörig – und wo nur geduldet?", ["… mich nicht allein zu fühlen mit dem, was mich bewegt", "… irgendwo wirklich dazuzugehören", "… gesehen zu werden, wie ich bin"]],
+      ["Ehrlichkeit", "Wahrheit sagen und hören", "Welche Wahrheit möchtest du endlich aussprechen?", ["… die Wahrheit zu sagen, auch wenn sie unbequem ist", "… mir selbst nichts mehr vorzumachen", "… mich auf das Wort anderer verlassen zu können"]],
+      ["Vertrauen", "mich auf andere verlassen können", "Wem vertraust du wirklich – und woran merkst du das?", ["… mich fallen lassen zu können, ohne Angst", "… zu wissen, dass ich nicht kontrollieren muss", "… mir selbst wieder zu vertrauen"]],
+      ["Respekt", "auf Augenhöhe begegnen", "Wo wirst du gerade nicht respektiert – und was wäre deine Grenze?", ["… dass meine Grenzen gehört werden", "… auf Augenhöhe miteinander umzugehen", "… andere nicht zu verletzen, auch wenn ich wütend bin"]],
+      ["Mitgefühl", "Herz für andere und mich", "Kannst du dir selbst so viel Mitgefühl schenken wie anderen?", ["… mir selbst sanft zu begegnen, wenn ich Fehler mache", "… den Schmerz anderer wahrzunehmen", "… Verständnis zu haben, ohne alles zu entschuldigen"]],
+      ["Loyalität", "treu zu Menschen stehen", "Wem gegenüber bist du loyal – auch dir selbst gegenüber?", ["… zu Menschen zu stehen, die mir wichtig sind", "… mir selbst treu zu bleiben", "… da zu sein, wenn es darauf ankommt"]],
     ]},
     {name:"Wachstum & Ausdruck", values:[
-      ["Freiheit", "selbst entscheiden, wie ich lebe", "Wo fühlst du dich gerade eingeengt – und was würde dich befreien?"],
-      ["Selbstbestimmung", "mein eigener Weg", "Welche Entscheidung triffst du noch für andere statt für dich?"],
-      ["Wachstum", "mich weiterentwickeln", "Worin bist du in den letzten Monaten gewachsen?"],
-      ["Kreativität", "gestalten, erschaffen", "Wann hast du zuletzt etwas nur aus Freude erschaffen?"],
-      ["Neugier", "Neues entdecken, lernen", "Was möchtest du schon lange lernen oder ausprobieren?"],
-      ["Mut", "trotz Angst handeln", "Welcher mutige Schritt wartet gerade auf dich?"],
-      ["Abenteuer", "Aufbruch, Erleben", "Wo darf wieder mehr Lebendigkeit in dein Leben?"],
-      ["Leichtigkeit", "Freude, Spiel, Humor", "Was bringt dich zum Lachen – und wie oft erlaubst du es dir?"],
-      ["Schönheit", "Ästhetik, Natur, Kunst", "Welche Schönheit umgibt dich, die du oft übersiehst?"],
-      ["Erfolg", "Ziele erreichen, etwas schaffen", "Was bedeutet Erfolg für dich – nicht für die anderen?"],
-      ["Anerkennung", "gesehen und gewürdigt werden", "Von wem wünschst du dir Anerkennung – und kannst du sie dir selbst geben?"],
+      ["Freiheit", "selbst entscheiden, wie ich lebe", "Wo fühlst du dich gerade eingeengt – und was würde dich befreien?", ["… Nein sagen zu dürfen", "… meinen Tag selbst zu gestalten", "… nicht mehr um Erlaubnis zu fragen, wie ich lebe"]],
+      ["Selbstbestimmung", "mein eigener Weg", "Welche Entscheidung triffst du noch für andere statt für dich?", ["… meine Entscheidungen selbst zu treffen", "… nicht mehr nach den Erwartungen anderer zu leben", "… meinen eigenen Weg zu gehen, auch wenn er ungewohnt ist"]],
+      ["Wachstum", "mich weiterentwickeln", "Worin bist du in den letzten Monaten gewachsen?", ["… aus Schwerem etwas Neues entstehen zu lassen", "… jeden Tag ein bisschen mehr ich zu werden", "… mich verändern zu dürfen"]],
+      ["Kreativität", "gestalten, erschaffen", "Wann hast du zuletzt etwas nur aus Freude erschaffen?", ["… etwas zu erschaffen, nur weil es mir Freude macht", "… meine Gefühle auszudrücken, auch ohne Worte", "… neue Wege zu finden, wo andere keine sehen"]],
+      ["Neugier", "Neues entdecken, lernen", "Was möchtest du schon lange lernen oder ausprobieren?", ["… offen zu bleiben für das, was ich noch nicht kenne", "… Fragen zu stellen, statt schnell zu urteilen", "… nie ganz fertig zu sein mit Lernen"]],
+      ["Mut", "trotz Angst handeln", "Welcher mutige Schritt wartet gerade auf dich?", ["… den ersten Schritt zu machen, obwohl ich Angst habe", "… für mich einzustehen", "… loszulassen, was mir nicht mehr guttut"]],
+      ["Abenteuer", "Aufbruch, Erleben", "Wo darf wieder mehr Lebendigkeit in dein Leben?", ["… Neues zu wagen, statt nur davon zu träumen", "… mich lebendig zu fühlen", "… Orte und Seiten an mir zu entdecken"]],
+      ["Leichtigkeit", "Freude, Spiel, Humor", "Was bringt dich zum Lachen – und wie oft erlaubst du es dir?", ["… nicht alles so schwer nehmen zu müssen", "… wieder aus vollem Herzen zu lachen", "… spielen zu dürfen, einfach so"]],
+      ["Schönheit", "Ästhetik, Natur, Kunst", "Welche Schönheit umgibt dich, die du oft übersiehst?", ["… mich mit Dingen zu umgeben, die mir guttun", "… das Schöne im Alltäglichen zu sehen", "… Zeit für Kunst, Natur und Musik zu haben"]],
+      ["Erfolg", "Ziele erreichen, etwas schaffen", "Was bedeutet Erfolg für dich – nicht für die anderen?", ["… meine eigenen Ziele zu erreichen, nicht die der anderen", "… stolz auf das zu sein, was ich geschafft habe", "… etwas aufzubauen, das mir gehört"]],
+      ["Anerkennung", "gesehen und gewürdigt werden", "Von wem wünschst du dir Anerkennung – und kannst du sie dir selbst geben?", ["… gesehen zu werden für das, was ich gebe", "… mir selbst Anerkennung schenken zu können", "… dass meine Mühe zählt"]],
     ]},
     {name:"Halt & Sicherheit", values:[
-      ["Sicherheit", "Stabilität, Planbarkeit", "Was gibt dir das Gefühl, sicher zu sein?"],
-      ["Geborgenheit", "gehalten sein, Wärme", "Wo und bei wem fühlst du dich geborgen?"],
-      ["Unabhängigkeit", "auf eigenen Beinen stehen", "Wovon möchtest du unabhängiger werden?"],
-      ["Gesundheit", "Körper und Seele stärken", "Was sagt dir dein Körper gerade – und hörst du hin?"],
-      ["Balance", "Gleichgewicht im Alltag", "Was ist gerade zu viel – und was zu wenig?"],
-      ["Ordnung", "Klarheit, Struktur", "Wo würde dir mehr Klarheit gerade guttun?"],
-      ["Verantwortung", "für mich und andere einstehen", "Welche Verantwortung trägst du, die gar nicht deine ist?"],
-      ["Gerechtigkeit", "Fairness für alle", "Wo setzt du dich für Fairness ein – auch für dich selbst?"],
-      ["Natur", "draußen sein, Verbindung zur Erde", "Wann warst du zuletzt draußen, nur um da zu sein?"],
+      ["Sicherheit", "Stabilität, Planbarkeit", "Was gibt dir das Gefühl, sicher zu sein?", ["… mich in meinem Zuhause sicher zu fühlen", "… zu wissen, dass ich für mich sorgen kann", "… keine Angst vor dem nächsten Tag haben zu müssen"]],
+      ["Geborgenheit", "gehalten sein, Wärme", "Wo und bei wem fühlst du dich geborgen?", ["… gehalten zu werden, wenn es schwer ist", "… einen Ort zu haben, der sich nach Zuhause anfühlt", "… mich bei jemandem fallen lassen zu können"]],
+      ["Unabhängigkeit", "auf eigenen Beinen stehen", "Wovon möchtest du unabhängiger werden?", ["… auf eigenen Beinen zu stehen", "… nicht von der Zustimmung anderer abzuhängen", "… für mich allein sorgen zu können"]],
+      ["Gesundheit", "Körper und Seele stärken", "Was sagt dir dein Körper gerade – und hörst du hin?", ["… auf meinen Körper zu hören", "… mich wach und kraftvoll zu fühlen", "… auch für meine Seele zu sorgen"]],
+      ["Balance", "Gleichgewicht im Alltag", "Was ist gerade zu viel – und was zu wenig?", ["… dass Geben und Nehmen im Gleichgewicht sind", "… Zeit für mich und für andere zu haben", "… nicht mehr über meine Grenzen zu gehen"]],
+      ["Ordnung", "Klarheit, Struktur", "Wo würde dir mehr Klarheit gerade guttun?", ["… Klarheit in meinem Kopf und meinem Zuhause", "… zu wissen, was als Nächstes kommt", "… Strukturen, die mir Halt geben"]],
+      ["Verantwortung", "für mich und andere einstehen", "Welche Verantwortung trägst du, die gar nicht deine ist?", ["… für mein Leben selbst einzustehen", "… Verantwortung abzugeben, die nicht meine ist", "… verlässlich für andere da zu sein"]],
+      ["Gerechtigkeit", "Fairness für alle", "Wo setzt du dich für Fairness ein – auch für dich selbst?", ["… dass alle fair behandelt werden – auch ich", "… meine Stimme zu erheben, wenn etwas nicht stimmt", "… Macht nicht auszunutzen"]],
+      ["Natur", "draußen sein, Verbindung zur Erde", "Wann warst du zuletzt draußen, nur um da zu sein?", ["… draußen zur Ruhe zu kommen", "… mich als Teil von etwas Lebendigem zu fühlen", "… die Jahreszeiten bewusst zu erleben"]],
     ]},
   ];
   const VALUES = {};
-  GROUPS.forEach(g => g.values.forEach(([name, desc, prompt]) => VALUES[name] = {name, desc, prompt}));
+  GROUPS.forEach(g => g.values.forEach(([name, desc, prompt, ideas]) => VALUES[name] = {name, desc, prompt, ideas}));
 
   const MIN_PICK = 5, MAX_PICK = 15, TOP = 5;
 
   /* ---------- Zustand ---------- */
   const KEY = "seelenwende-wertefinder-v1";
-  const fresh = () => ({step:0, picked:[], top:[], pairs:[], answers:[], lived:{}, doneAt:null});
+  const fresh = () => ({step:0, picked:[], top:[], meaning:{}, lived:{}, doneAt:null});
   let s = fresh();
   const save = () => { try{ localStorage.setItem(KEY, JSON.stringify(s)); }catch(e){} };
   const load = () => {
@@ -406,7 +406,7 @@
     bar.hidden = step === 0 || step === 5;
     [...bar.children].forEach((el, i) => el.classList.toggle("on", i < step));
     $("headIntro").hidden = step !== 0;
-    ({1:renderPick, 2:renderShort, 3:renderDuel, 4:renderScales, 5:renderResult})[step]?.();
+    ({1:renderPick, 2:renderShort, 3:renderMeanings, 4:renderScales, 5:renderResult})[step]?.();
     save();
     window.scrollTo({top:0, behavior:"smooth"});
   }
@@ -442,32 +442,23 @@
     $("hint2").textContent = n < TOP ? `Wähle noch ${TOP - n}, dann geht es weiter.` : "";
   }
 
-  /* ---------- 3 · Paarvergleich ---------- */
-  function buildPairs(){
-    const p = [];
-    for(let i = 0; i < s.top.length; i++) for(let j = i + 1; j < s.top.length; j++) p.push(Math.random() < .5 ? [s.top[i], s.top[j]] : [s.top[j], s.top[i]]);
-    for(let i = p.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [p[i], p[j]] = [p[j], p[i]]; }
-    s.pairs = p; s.answers = [];
+  /* ---------- 3 · Bedeutung ---------- */
+  function renderMeanings(){
+    $("meanings").innerHTML = s.top.map(n => {
+      const own = s.meaning[n] || "";
+      return `<div class="meaning">
+        <label for="m-${esc(n)}">${esc(n)} <span>heißt für mich …</span></label>
+        <textarea id="m-${esc(n)}" data-meaning="${esc(n)}" rows="2" maxlength="280" placeholder="In deinen Worten …">${esc(own)}</textarea>
+        <div class="ideas">${VALUES[n].ideas.map(i => `<button class="idea" type="button" data-idea="${esc(n)}" data-text="${esc(i.replace(/^… /, ""))}" aria-pressed="${own === i.replace(/^… /, "")}">${esc(i)}</button>`).join("")}</div>
+      </div>`;
+    }).join("");
+    $("hint3").textContent = "";
   }
-  function renderDuel(){
-    const i = s.answers.length;
-    if(i >= s.pairs.length){ show(4); return; }
-    const card = n => `<button class="choice" type="button" data-win="${esc(n)}"><span class="title">${esc(n)}</span><span class="meta">${esc(VALUES[n].desc)}</span></button>`;
-    const [a, b] = s.pairs[i];
-    $("duel").innerHTML = card(a) + `<div class="or">oder</div>` + card(b);
-    $("duelCount").textContent = `Paar ${i + 1} von ${s.pairs.length}`;
-  }
-
-  function ranking(){
-    const wins = Object.fromEntries(s.top.map(v => [v, 0]));
-    s.answers.forEach(w => wins[w]++);
-    const beat = (a, b) => s.pairs.some((p, i) => p.includes(a) && p.includes(b) && s.answers[i] === a);
-    return [...s.top].sort((a, b) => wins[b] - wins[a] || (beat(a, b) ? -1 : beat(b, a) ? 1 : 0));
-  }
+  const meaningOf = n => (s.meaning[n] || "").trim();
 
   /* ---------- 4 · Gelebt ---------- */
   function renderScales(){
-    $("scales").innerHTML = ranking().map(n => {
+    $("scales").innerHTML = s.top.map(n => {
       const v = s.lived[n] ?? 5;
       return `<div class="scale">
         <div class="scale__top"><label class="scale__name" for="lv-${esc(n)}">${esc(n)}</label><span class="scale__val" id="lvv-${esc(n)}">${v}</span></div>
@@ -475,25 +466,25 @@
         <div class="scale__ends"><span>kaum</span><span>voll und ganz</span></div>
       </div>`;
     }).join("");
-    ranking().forEach(n => { if(s.lived[n] == null) s.lived[n] = 5; });
+    s.top.forEach(n => { if(s.lived[n] == null) s.lived[n] = 5; });
   }
 
   /* ---------- 5 · Ergebnis ---------- */
   function renderResult(){
-    const r = ranking();
+    const r = s.top;
     const gaps = r.map((n, i) => ({n, i, lived: s.lived[n] ?? 5}));
-    // Fokus: der am wenigsten gelebte Wert (bei Gleichstand der wichtigere)
+    // Fokus: der am wenigsten gelebte Wert
     const focus = [...gaps].sort((a, b) => a.lived - b.lived || a.i - b.i)[0];
     const avg = gaps.reduce((t, g) => t + g.lived, 0) / gaps.length;
 
-    $("heroValues").innerHTML = r.map((n, i) => i === 0 ? `<em>${esc(n)}</em>` : esc(n)).join(" · ");
-    $("heroText").textContent = `${r[0]} steht für dich an erster Stelle. Diese fünf Werte sind dein innerer Kompass – sie zeigen dir, was sich stimmig anfühlt und wo du dich verlierst.`;
+    $("heroValues").textContent = r.join(" · ");
+    $("heroText").textContent = "Diese fünf Werte sind dein innerer Kompass. Sie zeigen dir, was sich stimmig anfühlt und wo du dich verlierst.";
 
-    $("valueList").innerHTML = r.map((n, i) => {
-      const lived = s.lived[n] ?? 5, isFocus = focus.n === n && focus.lived < 7;
+    $("valueList").innerHTML = r.map(n => {
+      const lived = s.lived[n] ?? 5, isFocus = focus.n === n && focus.lived < 7, own = meaningOf(n);
       return `<div class="value${isFocus ? " value--focus" : ""}">
-        <div class="value__top"><span class="value__rank">${i + 1}</span>
-          <div><div class="value__name">${esc(n)}</div><div class="value__desc">${esc(VALUES[n].desc)}</div></div></div>
+        <div class="value__name">${esc(n)}</div>
+        ${own ? `<div class="value__own">heißt für mich: ${esc(own)}</div>` : `<div class="value__desc">${esc(VALUES[n].desc)}</div>`}
         <div class="bar" aria-hidden="true"><span style="width:${lived * 10}%"></span></div>
         <div class="bar__label"><span>So sehr lebst du ihn gerade</span><span>${lived} / 10</span></div>
         ${isFocus ? `<span class="focus-tag">Hier ruft etwas nach dir</span>` : ""}
@@ -519,12 +510,11 @@
   }
 
   function resultText(){
-    const r = ranking();
     return [
       "Meine fünf Kernwerte (Seelenwende · Werte-Finder)",
       "",
-      ...r.map((n, i) => `${i + 1}. ${n} – ${VALUES[n].desc} (gelebt: ${s.lived[n] ?? 5}/10)\n   ${VALUES[n].prompt}`),
-    ].join("\n");
+      ...s.top.map(n => `${n} heißt für mich: ${meaningOf(n) || VALUES[n].desc} (gelebt: ${s.lived[n] ?? 5}/10)\n   ${VALUES[n].prompt}`),
+    ].join("\n\n");
   }
 
   /* ---------- Ereignisse ---------- */
@@ -546,13 +536,22 @@
       t.setAttribute("aria-pressed", String(!on));
       updateShort(); save(); return;
     }
-    if(t.dataset.win){
-      s.answers.push(t.dataset.win); save();
-      renderDuel(); return;
+    if(t.dataset.idea){
+      const n = t.dataset.idea, ta = $("m-" + n);
+      ta.value = t.dataset.text; s.meaning[n] = t.dataset.text; save();
+      t.parentNode.querySelectorAll(".idea").forEach(b => b.setAttribute("aria-pressed", String(b === t)));
+      ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length);
+      return;
     }
   });
 
   document.addEventListener("input", e => {
+    const m = e.target.dataset && e.target.dataset.meaning;
+    if(m){
+      s.meaning[m] = e.target.value;
+      e.target.parentNode.querySelectorAll(".idea").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.text === e.target.value)));
+      save(); return;
+    }
     const n = e.target.dataset && e.target.dataset.lived;
     if(!n) return;
     s.lived[n] = +e.target.value;
@@ -561,29 +560,31 @@
   });
 
   const nudge = id => { const h = $(id); h.classList.remove("pulse"); void h.offsetWidth; h.classList.add("pulse"); };
-  const startDuel = () => {
-    const same = s.pairs.length && s.pairs.every(p => p.every(v => s.top.includes(v)));
-    if(!same) buildPairs();
-    else s.answers = [];
-    show(3);
-  };
   $("next1").addEventListener("click", () => {
     if(s.picked.length < MIN_PICK){ nudge("hint1"); return; }
     // Genau fünf gewählt: Eingrenzen überspringen
-    if(s.picked.length === TOP){ s.top = [...s.picked]; startDuel(); return; }
+    if(s.picked.length === TOP){ s.top = [...s.picked]; show(3); return; }
     // Beim Eingrenzen immer frisch starten, nichts vorauswählen
     s.top = [];
     show(2);
   });
   $("next2").addEventListener("click", () => {
     if(s.top.length !== TOP){ nudge("hint2"); return; }
-    startDuel();
+    show(3);
   });
-  $("back3").addEventListener("click", () => {
-    if(s.answers.length){ s.answers.pop(); save(); renderDuel(); }
-    else show(s.picked.length === TOP ? 1 : 2);
+  $("back3").addEventListener("click", () => show(s.picked.length === TOP ? 1 : 2));
+  let skipArmed = false;
+  $("next3").addEventListener("click", () => {
+    const open = s.top.filter(n => !meaningOf(n)).length;
+    // Leere Felder sind erlaubt – beim ersten Klick nur sanft darauf hinweisen
+    if(open && !skipArmed){
+      skipArmed = true;
+      $("hint3").textContent = `${open === 1 ? "Ein Satz ist" : open + " Sätze sind"} noch offen. Tippe noch einmal auf „Weiter“, wenn du ${open === 1 ? "ihn" : "sie"} offen lassen möchtest.`;
+      nudge("hint3"); return;
+    }
+    skipArmed = false; show(4);
   });
-  $("back4").addEventListener("click", () => { s.answers.pop(); show(3); });
+  $("back4").addEventListener("click", () => show(3));
   $("finish").addEventListener("click", () => { s.doneAt = null; show(5); });
   let restartArmed = null;
   $("restart").addEventListener("click", e => {
@@ -619,7 +620,7 @@
     s = saved;
     // Unterbrochenen Durchlauf fortsetzen
     if(s.step > 0 && s.step < 5){ show(s.step); return; }
-    if(s.doneAt && s.pairs.length && s.answers.length === s.pairs.length) $("resumeBox").hidden = false;
+    if(s.doneAt && s.top.length === TOP) $("resumeBox").hidden = false;
   }
   show(0);
 })();
