@@ -2,7 +2,7 @@
 // Dateien (Bilder/Musik), Reels rendern, veröffentlichen, planen, Token pflegen.
 
 import { randomUUID } from "node:crypto";
-import { mkdir, readdir, readFile, writeFile, rm, rename, copyFile } from "node:fs/promises";
+import { mkdir, readdir, readFile, writeFile, rm, rename, copyFile, open, stat } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
@@ -14,10 +14,12 @@ import { DATA_DIR, saveSettings } from "./settings.js";
 export const OUTPUT = fileURLToPath(new URL("../output/", import.meta.url));
 const ASSETS = path.join(DATA_DIR, "assets");
 const SCHEDULE_FILE = path.join(DATA_DIR, "schedule.json");
+const LOCKS = path.join(DATA_DIR, "locks");
 export const TZ = process.env.TZ_NAME || "Europe/Berlin";
 
 await mkdir(OUTPUT, { recursive: true });
 await mkdir(ASSETS, { recursive: true });
+await mkdir(LOCKS, { recursive: true });
 
 const isId = (id) => typeof id === "string" && /^[0-9a-f-]{36}$/.test(id);
 const reelDir = (id) => {
@@ -49,16 +51,31 @@ function assetPath(id) {
   return p;
 }
 
+const IMAGE_EXT = [".jpg", ".jpeg", ".png", ".webp"];
+const AUDIO_EXT = [".mp3", ".wav", ".m4a", ".aac", ".ogg", ".flac"];
+
+/** Prüft eine lokale Datei (z. B. vom MCP-Client übergeben). */
+async function localFile(p, exts) {
+  const full = path.resolve(String(p));
+  if (!exts.includes(path.extname(full).toLowerCase())) throw new Error(`Dateityp nicht unterstützt: ${p} (erlaubt: ${exts.join(", ")})`);
+  const info = await stat(full).catch(() => null);
+  if (!info?.isFile()) throw new Error(`Datei nicht gefunden: ${p}`);
+  return full;
+}
+
 // ---------- Reels ----------
 
 const withUrls = (meta) => ({ ...meta, video: `/reels/${meta.id}/reel.mp4`, thumb: `/reels/${meta.id}/reel.jpg` });
 
 /** Rendert ein Drehbuch zu einem Reel und speichert es. */
-export async function createReel({ plan, imageIds = [], musicId, showHandle = true }, onStep = () => {}) {
+export async function createReel(
+  { plan, imageIds = [], musicId, imagePaths = [], musicPath, showHandle = true },
+  onStep = () => {},
+) {
   plan = normalizePlan(plan);
   if (totalDuration(plan) > 90) throw new Error("Reels dürfen über die API maximal 90 Sekunden lang sein.");
-  const images = imageIds.map(assetPath);
-  const musicFile = musicId ? assetPath(musicId) : undefined;
+  const images = [...imageIds.map(assetPath), ...(await Promise.all(imagePaths.map((p) => localFile(p, IMAGE_EXT))))];
+  const musicFile = musicId ? assetPath(musicId) : musicPath ? await localFile(musicPath, AUDIO_EXT) : undefined;
 
   const id = randomUUID();
   const dir = reelDir(id);
@@ -129,13 +146,26 @@ export async function publishNow(id, { caption, shareToFeed = true } = {}, onSte
 
 // ---------- Zeitplanung ----------
 
-let schedule = [];
-try {
-  schedule = JSON.parse(await readFile(SCHEDULE_FILE, "utf8"));
-} catch {
-  schedule = [];
+// Die Planung wird bei jedem Zugriff frisch gelesen, weil Web-App und MCP-Server parallel laufen können.
+async function readSchedule() {
+  try {
+    return JSON.parse(await readFile(SCHEDULE_FILE, "utf8"));
+  } catch {
+    return [];
+  }
 }
-const saveSchedule = () => writeFile(SCHEDULE_FILE, JSON.stringify(schedule, null, 2));
+async function writeSchedule(list) {
+  const tmp = `${SCHEDULE_FILE}.${process.pid}.tmp`;
+  await writeFile(tmp, JSON.stringify(list, null, 2));
+  await rename(tmp, SCHEDULE_FILE);
+}
+async function updateEntry(id, changes) {
+  const list = await readSchedule();
+  const entry = list.find((e) => e.id === id);
+  if (entry) Object.assign(entry, changes);
+  await writeSchedule(list);
+  return entry;
+}
 
 /** Wandelt "2026-09-24T18:00" (Ortszeit der Zeitzone) oder ISO mit Offset in ein Date. */
 export function parseLocalTime(value, tz = TZ) {
@@ -175,19 +205,30 @@ export async function addSchedule({ reelId, caption, at, shareToFeed = true }) {
     error: null,
     result: null,
   };
-  schedule.push(entry);
-  await saveSchedule();
+  const list = await readSchedule();
+  list.push(entry);
+  await writeSchedule(list);
   return entry;
 }
 
-export const listSchedule = () => [...schedule].sort((a, b) => a.at.localeCompare(b.at));
+export const listSchedule = async () => (await readSchedule()).sort((a, b) => a.at.localeCompare(b.at));
 
 export async function cancelSchedule(id) {
-  const entry = schedule.find((e) => e.id === id);
+  const list = await readSchedule();
+  const entry = list.find((e) => e.id === id);
   if (!entry) throw new Error("Geplanter Post nicht gefunden");
   if (entry.status !== "geplant") throw new Error("Dieser Post ist nicht mehr geplant.");
-  schedule = schedule.filter((e) => e.id !== id);
-  await saveSchedule();
+  await writeSchedule(list.filter((e) => e.id !== id));
+}
+
+/** Exklusive Sperre pro Post – verhindert doppeltes Posten, wenn mehrere Prozesse laufen. */
+async function claim(id) {
+  try {
+    await (await open(path.join(LOCKS, id), "wx")).close();
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 let ticking = false;
@@ -195,17 +236,16 @@ async function tick() {
   if (ticking) return;
   ticking = true;
   try {
-    for (const entry of schedule.filter((e) => e.status === "geplant" && Date.parse(e.at) <= Date.now())) {
-      entry.status = "wird veröffentlicht";
-      await saveSchedule();
+    const due = (await readSchedule()).filter((e) => e.status === "geplant" && Date.parse(e.at) <= Date.now());
+    for (const entry of due) {
+      if (!(await claim(entry.id))) continue; // ein anderer Prozess kümmert sich bereits darum
+      await updateEntry(entry.id, { status: "wird veröffentlicht" });
       try {
-        entry.result = await publishNow(entry.reelId, entry);
-        entry.status = "veröffentlicht";
+        const result = await publishNow(entry.reelId, entry);
+        await updateEntry(entry.id, { status: "veröffentlicht", result });
       } catch (e) {
-        entry.status = "fehlgeschlagen";
-        entry.error = e.message;
+        await updateEntry(entry.id, { status: "fehlgeschlagen", error: e.message });
       }
-      await saveSchedule();
     }
     await maybeRefreshToken();
   } finally {

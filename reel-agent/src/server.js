@@ -1,4 +1,4 @@
-import "dotenv/config";
+import "./env.js";
 import { loadSettings, saveSettings, publicSettings } from "./settings.js";
 await loadSettings();
 

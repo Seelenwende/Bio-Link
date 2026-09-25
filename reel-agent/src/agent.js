@@ -178,7 +178,7 @@ async function runTool(session, name, input, onStep) {
       return { reels: (await listReels()).slice(0, 20).map(summarizeReel) };
     case "list_scheduled":
       return {
-        geplant: listSchedule().map((e) => ({ schedule_id: e.id, titel: e.title, zeitpunkt: formatLocal(e.at), status: e.status, fehler: e.error })),
+        geplant: (await listSchedule()).map((e) => ({ schedule_id: e.id, titel: e.title, zeitpunkt: formatLocal(e.at), status: e.status, fehler: e.error })),
       };
     case "cancel_scheduled":
       await cancelSchedule(input.schedule_id);

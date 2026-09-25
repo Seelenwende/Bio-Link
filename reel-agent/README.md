@@ -6,11 +6,43 @@ Dein virtueller Instagram-Reel-Agent – **alles in einem Werkzeug**. Du sagst i
 - **Überarbeiten** – „Mach den Hook neugieriger“, „kürzer“, „energischere Musik“ – oder selbst im Editor ändern
 - **Video mit Musik erstellen** – 1080×1920, sanfte Übergänge, **eigens komponierte, lizenzfreie Musik**; optional deine Fotos und eigene Musik
 - **Posten oder einplanen** – „Poste es jetzt“ oder „Plane es für Freitag 18 Uhr ein“ – immer erst nach deinem Klick auf *Bestätigen*
-- **Einrichten** – Claude-Key, Marke und Instagram-Verbindung direkt in der App unter ⚙️ Einstellungen
+- **Zwei Wege, ein Agent** – direkt in der Claude-App als MCP-Server (ohne API-Key) oder als eigene Web-App mit Chat
 
 ---
 
-## Starten – per Doppelklick
+## Variante A: Direkt in Claude (MCP-Server) – empfohlen
+
+Der Reel-Agent kann als **MCP-Server** in der Claude-Desktop-App laufen. Dann ist **Claude selbst dein Reel-Agent**: Du chattest ganz normal mit Claude, Claude schreibt Hook, Inhalt, CTA, Caption und Hashtags – und nutzt die Werkzeuge des Reel-Agenten, um das Video mit Musik zu erstellen, zu posten oder einzuplanen. **Kein eigener Claude-API-Key nötig** – es läuft über dein Claude-Abo.
+
+**Einrichten (einmalig):**
+1. [Claude Desktop](https://claude.ai/download) und [Node.js](https://nodejs.org) (LTS) installieren.
+2. Im Ordner `reel-agent` doppelklicken: **Windows** `Mit Claude verbinden.bat` · **Mac** `Mit Claude verbinden.command` (erstes Mal: Rechtsklick → *Öffnen*).
+3. Claude Desktop komplett beenden und neu starten.
+
+**Loslegen** – in einem neuen Chat, z. B.:
+- „Mach mir ein Reel über 3 sanfte Morgenrituale. Schlag mir vorher 3 Hooks vor.“
+- „Nimm diese Fotos als Hintergrund: C:\Users\…\Bilder\morgen1.jpg, …“
+- „Verbinde Instagram mit diesem Token: IGAA…“ (einmalig, Token-Anleitung siehe unten)
+- „Poste es jetzt“ / „Plane es für Sonntag 18 Uhr ein“ / „Was ist geplant?“
+
+Claude fragt vor jedem Werkzeug-Aufruf um Erlaubnis, und gepostet wird nur nach deiner ausdrücklichen Zustimmung. Über das ➕-Menü gibt es außerdem die Vorlage **„Neues Reel“**.
+
+| Werkzeug | Was es tut |
+|---|---|
+| `reel_guide` | Markenstimme, Hook-/CTA-Regeln, Musikstimmungen, Instagram-Status |
+| `create_reel` | Video mit Musik aus dem Drehbuch erstellen (optional eigene Fotos/Musik) |
+| `list_reels` · `show_reel` | Gespeicherte Reels ansehen |
+| `publish_reel` · `schedule_reel` | Sofort posten oder einplanen |
+| `list_scheduled` · `cancel_scheduled` | Geplante Posts verwalten |
+| `connect_instagram` · `set_brand` | Instagram verbinden, Marke einstellen |
+
+> Geplante Posts werden veröffentlicht, solange Claude Desktop **oder** die Web-App (Variante B) läuft; verpasste Termine werden beim nächsten Start nachgeholt. Web-App und Claude teilen sich Reels, Einstellungen und Zeitplan.
+
+**Claude Code:** `claude mcp add reel-agent -- node /pfad/zu/reel-agent/src/mcp.js`
+
+## Variante B: Eigene Web-App mit Chat
+
+### Starten – per Doppelklick
 
 Einmalig [Node.js](https://nodejs.org) (LTS-Version) installieren. Danach im Ordner `reel-agent`:
 
@@ -28,7 +60,7 @@ npm start
 ```
 </details>
 
-## Einrichten – in der App unter ⚙️ Einstellungen
+### Einrichten – in der App unter ⚙️ Einstellungen
 
 Beim ersten Start öffnen sich die Einstellungen automatisch. Alles wird nur lokal auf deinem Rechner gespeichert (`data/settings.json`).
 
@@ -47,7 +79,7 @@ Beim ersten Start öffnen sich die Einstellungen automatisch. Alles wird nur lok
 
 Ohne Claude-Key kannst du im Bereich „Drehbuch & Material“ trotzdem Reels erstellen (der Text wird dann nur in Szenen aufgeteilt); ohne Instagram-Verbindung kannst du Reels herunterladen.
 
-## Beispiele für den Chat
+### Beispiele für den Chat
 
 - „Mach mir ein 20-Sekunden-Reel über 3 sanfte Morgenrituale für Frauen, die sich im Alltag verlieren.“
 - „Der Hook soll eine Frage sein. Und nimm verträumte Musik.“
@@ -88,7 +120,8 @@ Für die normale Nutzung nicht nötig – alles Wichtige geht über ⚙️ in de
 ## Entwicklung
 
 ```bash
-npm test        # Tests (Musik, Drehbuch, Zeitplanung, Instagram-Ablauf mit simulierter API)
+npm test        # Tests (Musik, Drehbuch, Zeitplanung, Instagram-Ablauf, MCP-Server)
+npm run mcp     # MCP-Server direkt starten (stdio)
 npm run dev     # Server mit Auto-Neustart
 ```
 
@@ -96,6 +129,8 @@ Aufbau:
 
 ```
 src/server.js     Web-Server & API
+src/mcp.js        MCP-Server für Claude Desktop / Claude Code
+src/install-claude.js  Trägt den MCP-Server in Claude Desktop ein
 src/agent.js      Chat-Agent (Claude mit Werkzeugen: Drehbuch, Rendern, Posten, Planen)
 src/reels.js      Reels speichern, veröffentlichen, Zeitplanung, Token-Verlängerung
 src/settings.js   Einstellungen aus der App (data/settings.json)

@@ -6,16 +6,20 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "node --watch src/server.js",
-    "test": "node --test"
+    "test": "node --test",
+    "mcp": "node src/mcp.js",
+    "claude:install": "node src/install-claude.js"
   },
   "license": "UNLICENSED",
   "dependencies": {
     "@anthropic-ai/sdk": "^0.128.0",
+    "@modelcontextprotocol/sdk": "^1.30.1",
     "@resvg/resvg-js": "^2.6.2",
     "dotenv": "^18.0.3",
     "express": "^5.2.1",
     "ffmpeg-static": "^5.3.0",
-    "multer": "^2.4.0"
+    "multer": "^2.4.0",
+    "zod": "^4.6.5"
   },
   "type": "module",
   "private": true,
