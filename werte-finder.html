@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seelenwende · Werte-Finder</title>
+<meta name="description" content="Finde in wenigen Minuten heraus, welche Werte dir wirklich wichtig sind – und wie sehr du sie gerade lebst.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --papier:#FAF6F4;
+    --sand:#F3ECE9;
+    --rose:#B5808F;
+    --beere:#8C5A69;
+    --pflaume:#5C3A46;
+    --gedaempft:#8E7079;
+    --linie:#E4D8D8;
+    --mikro:#C3AEB2;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    background:var(--papier);
+    color:var(--pflaume);
+    font-family:"Jost",sans-serif;
+    font-weight:300;
+    line-height:1.7;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    padding:44px 18px 60px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .page{width:100%;max-width:560px;}
+
+  /* --- Kopf --- */
+  header{text-align:center;}
+  .butterfly{width:52px;height:52px;margin:0 auto 14px;display:block;}
+  .butterfly path,.butterfly ellipse{
+    fill:none;stroke:var(--rose);stroke-width:1.5;
+    stroke-linecap:round;stroke-linejoin:round;
+  }
+  .butterfly .dot,.butterfly .body{fill:var(--rose);stroke:none;}
+  .handle{
+    font-family:"Playfair Display",serif;
+    font-size:11px;letter-spacing:.36em;text-transform:uppercase;color:var(--rose);
+  }
+  h1{
+    font-family:"Playfair Display",serif;
+    font-weight:500;font-size:32px;line-height:1.2;margin-top:10px;
+  }
+  h2{
+    font-family:"Playfair Display",serif;
+    font-weight:500;font-size:24px;line-height:1.3;text-align:center;
+  }
+  .intro{
+    font-size:15px;color:var(--gedaempft);
+    max-width:42ch;margin:14px auto 0;text-align:center;
+  }
+
+  /* --- Fortschritt --- */
+  .progress{display:flex;gap:6px;margin:30px 0 26px;}
+  .progress span{flex:1;height:3px;border-radius:3px;background:var(--linie);transition:background .3s ease;}
+  .progress span.on{background:var(--rose);}
+  .progress[hidden]{display:none;}
+
+  .step{display:none;}
+  .step.show{display:block;animation:rise .5s ease;}
+  .step__label{
+    font-family:"Playfair Display",serif;font-size:10.5px;letter-spacing:.4em;text-transform:uppercase;
+    color:var(--rose);text-align:center;margin-bottom:8px;
+  }
+
+  /* --- Einstieg --- */
+  .how{background:#fff;border:1px solid var(--linie);border-radius:20px;padding:20px 22px;margin-top:28px;}
+  .how ol{padding-left:20px;font-size:14.5px;line-height:1.6;}
+  .how li{margin-bottom:6px;}
+  .how li b{font-weight:400;}
+
+  /* --- Werte-Auswahl --- */
+  .counter{
+    position:sticky;top:0;z-index:2;
+    background:var(--papier);text-align:center;font-size:14px;color:var(--gedaempft);
+    padding:10px 0;margin-top:6px;
+  }
+  .counter b{font-weight:400;color:var(--pflaume);}
+  .group{margin-top:18px;}
+  .group h3{
+    font-family:"Playfair Display",serif;font-weight:500;font-size:15px;color:var(--beere);
+    margin-bottom:8px;
+  }
+  .chips{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{
+    font:inherit;font-size:14.5px;color:var(--pflaume);
+    background:#fff;border:1px solid var(--linie);border-radius:20px;
+    padding:7px 14px;cursor:pointer;text-align:left;
+    transition:background-color .2s ease,color .2s ease,border-color .2s ease;
+  }
+  .chip small{display:block;font-size:11.5px;color:var(--gedaempft);line-height:1.35;}
+  .chip[aria-pressed="true"]{background:var(--beere);border-color:var(--beere);color:var(--papier);}
+  .chip[aria-pressed="true"] small{color:#EBD9DD;}
+  .chip:disabled{opacity:.45;cursor:not-allowed;}
+  .chip:focus-visible,.btn:focus-visible,.choice:focus-visible{outline:2px solid var(--rose);outline-offset:3px;}
+  .chips--big .chip{padding:10px 16px;}
+
+  /* --- Paarvergleich --- */
+  .question{font-size:15px;color:var(--gedaempft);text-align:center;margin-top:6px;}
+  .duel{display:grid;grid-template-columns:1fr;gap:12px;margin-top:22px;}
+  @media (min-width:480px){.duel{grid-template-columns:1fr 1fr;}}
+  .choice{
+    font:inherit;text-align:center;cursor:pointer;
+    background:#fff;border:1px solid var(--linie);border-radius:18px;padding:22px 16px;
+    color:var(--pflaume);
+    transition:transform .2s ease,box-shadow .2s ease,background-color .2s ease;
+  }
+  .choice .title{font-family:"Playfair Display",serif;font-size:21px;font-weight:500;display:block;}
+  .choice .meta{font-size:13px;color:var(--gedaempft);display:block;margin-top:4px;line-height:1.45;}
+  @media (hover:hover){.choice:hover{transform:translateY(-2px);box-shadow:0 10px 26px -14px rgba(92,58,70,.5);background:var(--sand);}}
+  .or{text-align:center;font-family:"Playfair Display",serif;font-style:italic;color:var(--mikro);}
+  @media (min-width:480px){.or{display:none;}}
+  .duel__count{text-align:center;font-size:13px;color:var(--gedaempft);margin-top:14px;}
+
+  /* --- Gelebt-Skala --- */
+  .scale{background:#fff;border:1px solid var(--linie);border-radius:16px;padding:14px 16px;margin-top:12px;}
+  .scale__top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;}
+  .scale__name{font-family:"Playfair Display",serif;font-size:18px;font-weight:500;}
+  .scale__val{font-family:"Playfair Display",serif;font-size:20px;color:var(--beere);}
+  .scale input{width:100%;margin-top:8px;accent-color:var(--beere);}
+  .scale__ends{display:flex;justify-content:space-between;font-size:11.5px;color:var(--gedaempft);}
+
+  /* --- Buttons --- */
+  .actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:26px;}
+  .btn{
+    font-family:"Playfair Display",serif;font-size:16px;font-weight:500;
+    border:none;border-radius:16px;padding:14px 22px;cursor:pointer;
+    background:var(--beere);color:var(--papier);text-decoration:none;display:inline-block;
+    transition:transform .2s ease,box-shadow .2s ease,opacity .2s ease;
+  }
+  .btn--soft{background:var(--papier);color:var(--pflaume);border:1px solid var(--linie);}
+  .btn--link{background:none;color:var(--gedaempft);font-family:"Jost",sans-serif;font-size:14px;padding:8px 10px;text-decoration:underline;text-underline-offset:3px;}
+  .btn:disabled{opacity:.45;cursor:not-allowed;}
+  @media (hover:hover){.btn:not(:disabled):not(.btn--link):hover{transform:translateY(-2px);box-shadow:0 10px 26px -14px rgba(92,58,70,.5);}}
+
+  /* --- Ergebnis --- */
+  .hero{
+    text-align:center;background:var(--pflaume);color:var(--papier);
+    border-radius:20px;padding:26px 20px;
+  }
+  .hero__eyebrow{font-family:"Playfair Display",serif;font-size:10.5px;letter-spacing:.4em;text-transform:uppercase;color:#D9C4CB;}
+  .hero__values{font-family:"Playfair Display",serif;font-size:26px;line-height:1.35;margin-top:10px;}
+  .hero__values em{font-style:italic;color:#EBD9DD;}
+  .hero__text{font-size:14px;color:#E3CFD5;margin-top:10px;max-width:40ch;margin-left:auto;margin-right:auto;}
+
+  .eyebrow{display:flex;align-items:center;gap:14px;margin:30px 0 14px;}
+  .eyebrow::before,.eyebrow::after{content:"";flex:1;height:1px;background:var(--linie);}
+  .eyebrow span{
+    font-family:"Playfair Display",serif;
+    font-size:10.5px;letter-spacing:.4em;text-transform:uppercase;color:var(--rose);white-space:nowrap;
+  }
+
+  .value{background:#fff;border:1px solid var(--linie);border-radius:16px;padding:16px 18px;margin-bottom:12px;}
+  .value__top{display:flex;gap:14px;align-items:baseline;}
+  .value__rank{font-family:"Playfair Display",serif;font-size:30px;line-height:1;color:var(--rose);min-width:22px;}
+  .value__name{font-family:"Playfair Display",serif;font-size:21px;font-weight:500;line-height:1.25;}
+  .value__desc{font-size:13.5px;color:var(--gedaempft);line-height:1.5;}
+  .bar{height:6px;border-radius:6px;background:var(--sand);margin-top:12px;overflow:hidden;}
+  .bar span{display:block;height:100%;border-radius:6px;background:var(--rose);}
+  .bar__label{display:flex;justify-content:space-between;font-size:12px;color:var(--gedaempft);margin-top:4px;}
+  .prompt{font-size:14px;margin-top:12px;line-height:1.55;background:var(--sand);border-radius:10px;padding:9px 12px;}
+  .prompt::before{content:"Zum Nachspüren: ";font-weight:400;color:var(--beere);}
+  .value--focus{border-color:var(--rose);box-shadow:0 0 0 1px var(--rose);}
+  .focus-tag{
+    display:inline-block;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+    background:var(--rose);color:var(--papier);border-radius:20px;padding:2px 10px;margin-top:10px;
+  }
+
+  .insight{background:var(--sand);border-radius:16px;padding:16px 18px;font-size:14.5px;line-height:1.6;}
+  .insight h3{font-family:"Playfair Display",serif;font-weight:500;font-size:17px;margin-bottom:6px;}
+  .insight p + p{margin-top:8px;}
+
+  .next{background:#fff;border:1px solid var(--linie);border-radius:20px;padding:20px;text-align:center;margin-top:26px;}
+  .next p{font-size:14.5px;color:var(--gedaempft);max-width:38ch;margin:0 auto 14px;}
+
+  .note{font-size:12px;color:var(--gedaempft);text-align:center;margin-top:30px;line-height:1.65;}
+  .footer{
+    font-family:"Playfair Display",serif;font-size:9px;letter-spacing:.42em;text-transform:uppercase;
+    color:var(--mikro);text-align:center;margin-top:24px;
+  }
+  .sr-only{position:absolute;left:-9999px;}
+
+  @keyframes rise{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+  @media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important;}}
+
+  @media print{
+    body{padding:0;}
+    .progress,.actions,.next,.btn{display:none !important;}
+    .value,.insight,.hero{break-inside:avoid;}
+    .hero{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  }
+</style>
+</head>
+<body>
+<main class="page">
+
+  <header>
+    <svg class="butterfly" viewBox="0 0 100 100" aria-hidden="true">
+      <ellipse cx="38" cy="40" rx="13" ry="18" transform="rotate(-35 38 40)"/>
+      <ellipse cx="62" cy="40" rx="13" ry="18" transform="rotate(35 62 40)"/>
+      <ellipse cx="41" cy="61" rx="9" ry="13" transform="rotate(-20 41 61)"/>
+      <ellipse cx="59" cy="61" rx="9" ry="13" transform="rotate(20 59 61)"/>
+      <ellipse class="body" cx="50" cy="50" rx="1.5" ry="16"/>
+      <path d="M50 36 C47 30 45 27 43 24"/>
+      <path d="M50 36 C53 30 55 27 57 24"/>
+      <circle class="dot" cx="43" cy="23.5" r="1.5"/>
+      <circle class="dot" cx="57" cy="23.5" r="1.5"/>
+    </svg>
+    <div class="handle">@_seelenwende</div>
+    <h1>Werte-Finder</h1>
+    <p class="intro" id="headIntro">Was ist dir wirklich wichtig? Finde in etwa zehn Minuten deine fünf wichtigsten Werte – und wie sehr du sie gerade lebst.</p>
+  </header>
+
+  <div class="progress" id="progress" hidden aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+
+  <!-- 0 · Einstieg -->
+  <section class="step" data-step="0">
+    <div class="how">
+      <ol>
+        <li><b>Wählen:</b> Markiere 8 bis 15 Werte, die dich spontan berühren.</li>
+        <li><b>Eingrenzen:</b> Behalte die 5, auf die du am wenigsten verzichten möchtest.</li>
+        <li><b>Abwägen:</b> Entscheide in kurzen Paaren, was dir wichtiger ist.</li>
+        <li><b>Nachspüren:</b> Schätze ein, wie sehr du jeden Wert gerade lebst.</li>
+      </ol>
+    </div>
+    <p class="intro">Es gibt kein Richtig oder Falsch. Wähle nicht, was du wichtig finden <i>solltest</i>, sondern was sich wahr anfühlt.</p>
+    <div class="actions">
+      <button class="btn" type="button" data-go="1">Los geht's</button>
+    </div>
+    <div class="actions" id="resumeBox" hidden style="margin-top:8px">
+      <button class="btn btn--link" type="button" id="resumeBtn">Letztes Ergebnis ansehen</button>
+    </div>
+  </section>
+
+  <!-- 1 · Werte wählen -->
+  <section class="step" data-step="1" aria-labelledby="s1title">
+    <div class="step__label">Schritt 1 von 4</div>
+    <h2 id="s1title">Welche Werte berühren dich?</h2>
+    <p class="question">Tippe alles an, was sich nach „Ja, das bin ich“ anfühlt.</p>
+    <div class="counter" id="counter1" role="status"></div>
+    <div id="groups"></div>
+    <div class="actions">
+      <button class="btn btn--soft" type="button" data-go="0">Zurück</button>
+      <button class="btn" type="button" id="next1">Weiter</button>
+    </div>
+  </section>
+
+  <!-- 2 · Eingrenzen -->
+  <section class="step" data-step="2" aria-labelledby="s2title">
+    <div class="step__label">Schritt 2 von 4</div>
+    <h2 id="s2title">Welche fünf willst du behalten?</h2>
+    <p class="question">Stell dir vor, du dürftest nur fünf Werte mitnehmen. Welche wären es?</p>
+    <div class="counter" id="counter2" role="status"></div>
+    <div class="chips chips--big" id="shortlist" style="margin-top:14px"></div>
+    <div class="actions">
+      <button class="btn btn--soft" type="button" data-go="1">Zurück</button>
+      <button class="btn" type="button" id="next2">Weiter</button>
+    </div>
+  </section>
+
+  <!-- 3 · Paarvergleich -->
+  <section class="step" data-step="3" aria-labelledby="s3title">
+    <div class="step__label">Schritt 3 von 4</div>
+    <h2 id="s3title">Was ist dir wichtiger?</h2>
+    <p class="question">Wenn du dich entscheiden müsstest – ohne lange nachzudenken.</p>
+    <div class="duel" id="duel"></div>
+    <div class="duel__count" id="duelCount" role="status"></div>
+    <div class="actions">
+      <button class="btn btn--soft" type="button" id="back3">Zurück</button>
+    </div>
+  </section>
+
+  <!-- 4 · Gelebt -->
+  <section class="step" data-step="4" aria-labelledby="s4title">
+    <div class="step__label">Schritt 4 von 4</div>
+    <h2 id="s4title">Wie sehr lebst du diese Werte gerade?</h2>
+    <p class="question">Denk an die letzten Wochen: Wie viel Raum hatte jeder Wert in deinem Alltag?</p>
+    <div id="scales"></div>
+    <div class="actions">
+      <button class="btn btn--soft" type="button" id="back4">Zurück</button>
+      <button class="btn" type="button" id="finish">Mein Ergebnis</button>
+    </div>
+  </section>
+
+  <!-- 5 · Ergebnis -->
+  <section class="step" data-step="5" aria-labelledby="s5title">
+    <h2 id="s5title" class="sr-only">Dein Ergebnis</h2>
+    <div class="hero">
+      <div class="hero__eyebrow">Deine fünf Kernwerte</div>
+      <div class="hero__values" id="heroValues"></div>
+      <p class="hero__text" id="heroText"></p>
+    </div>
+
+    <div class="eyebrow"><span>Im Einzelnen</span></div>
+    <div id="valueList"></div>
+
+    <div class="eyebrow"><span>Was das heißt</span></div>
+    <div class="insight" id="insight"></div>
+
+    <div class="actions">
+      <button class="btn btn--soft" type="button" id="copyBtn">Ergebnis kopieren</button>
+      <button class="btn btn--soft" type="button" onclick="window.print()">Drucken / als PDF</button>
+      <button class="btn btn--link" type="button" id="restart">Neu starten</button>
+    </div>
+
+    <div class="next">
+      <p>Magst du weiter nachspüren? Das Self Care Journal begleitet dich sanft dabei, deine Werte in den Alltag zu holen.</p>
+      <a class="btn" href="https://seelenwende.mytentary.com/p/niaKY4" target="_blank" rel="noopener">Self Care Journal – kostenlos</a>
+    </div>
+  </section>
+
+  <p class="note">Deine Antworten bleiben auf deinem Gerät. Seelenwende ist Selbsthilfe und ersetzt keine Therapie.</p>
+  <div class="footer">Seelenwende · Werte-Finder</div>
+</main>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const esc = v => String(v ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+  /* ---------- Werte ---------- */
+  const GROUPS = [
+    {name:"Innere Welt", values:[
+      ["Authentizität", "echt sein, ohne Maske", "Wo verstellst du dich gerade noch – und für wen?"],
+      ["Ruhe", "innerer Frieden, Stille", "Welcher Moment in deiner Woche schenkt dir wirklich Ruhe?"],
+      ["Achtsamkeit", "bewusst im Moment sein", "Wann warst du zuletzt ganz bei dir, ohne an später zu denken?"],
+      ["Selbstachtung", "mich selbst wertschätzen", "Wie würdest du heute handeln, wenn du dich selbst voll achten würdest?"],
+      ["Selbstfürsorge", "gut für mich sorgen", "Was brauchst du gerade – und was hält dich davon ab, es dir zu geben?"],
+      ["Spiritualität", "Verbindung zu etwas Größerem", "Wo spürst du Verbundenheit mit etwas, das größer ist als du?"],
+      ["Sinn", "wissen, wofür ich lebe", "Wofür lohnt es sich für dich, morgens aufzustehen?"],
+      ["Dankbarkeit", "das Gute sehen", "Wofür bist du heute, ganz konkret, dankbar?"],
+    ]},
+    {name:"Beziehungen", values:[
+      ["Liebe", "lieben und geliebt werden", "Wie zeigst du Liebe – und wie möchtest du sie empfangen?"],
+      ["Familie", "Nähe zu meinen Liebsten", "Welche Form von Familie tut dir gut – gewählt oder geboren?"],
+      ["Freundschaft", "echte, tiefe Verbindungen", "Bei wem kannst du ganz du selbst sein?"],
+      ["Verbundenheit", "dazugehören, nicht allein sein", "Wo fühlst du dich zugehörig – und wo nur geduldet?"],
+      ["Ehrlichkeit", "Wahrheit sagen und hören", "Welche Wahrheit möchtest du endlich aussprechen?"],
+      ["Vertrauen", "mich auf andere verlassen können", "Wem vertraust du wirklich – und woran merkst du das?"],
+      ["Respekt", "auf Augenhöhe begegnen", "Wo wirst du gerade nicht respektiert – und was wäre deine Grenze?"],
+      ["Mitgefühl", "Herz für andere und mich", "Kannst du dir selbst so viel Mitgefühl schenken wie anderen?"],
+      ["Loyalität", "treu zu Menschen stehen", "Wem gegenüber bist du loyal – auch dir selbst gegenüber?"],
+    ]},
+    {name:"Wachstum & Ausdruck", values:[
+      ["Freiheit", "selbst entscheiden, wie ich lebe", "Wo fühlst du dich gerade eingeengt – und was würde dich befreien?"],
+      ["Selbstbestimmung", "mein eigener Weg", "Welche Entscheidung triffst du noch für andere statt für dich?"],
+      ["Wachstum", "mich weiterentwickeln", "Worin bist du in den letzten Monaten gewachsen?"],
+      ["Kreativität", "gestalten, erschaffen", "Wann hast du zuletzt etwas nur aus Freude erschaffen?"],
+      ["Neugier", "Neues entdecken, lernen", "Was möchtest du schon lange lernen oder ausprobieren?"],
+      ["Mut", "trotz Angst handeln", "Welcher mutige Schritt wartet gerade auf dich?"],
+      ["Abenteuer", "Aufbruch, Erleben", "Wo darf wieder mehr Lebendigkeit in dein Leben?"],
+      ["Leichtigkeit", "Freude, Spiel, Humor", "Was bringt dich zum Lachen – und wie oft erlaubst du es dir?"],
+      ["Schönheit", "Ästhetik, Natur, Kunst", "Welche Schönheit umgibt dich, die du oft übersiehst?"],
+      ["Erfolg", "Ziele erreichen, etwas schaffen", "Was bedeutet Erfolg für dich – nicht für die anderen?"],
+      ["Anerkennung", "gesehen und gewürdigt werden", "Von wem wünschst du dir Anerkennung – und kannst du sie dir selbst geben?"],
+    ]},
+    {name:"Halt & Sicherheit", values:[
+      ["Sicherheit", "Stabilität, Planbarkeit", "Was gibt dir das Gefühl, sicher zu sein?"],
+      ["Geborgenheit", "gehalten sein, Wärme", "Wo und bei wem fühlst du dich geborgen?"],
+      ["Unabhängigkeit", "auf eigenen Beinen stehen", "Wovon möchtest du unabhängiger werden?"],
+      ["Gesundheit", "Körper und Seele stärken", "Was sagt dir dein Körper gerade – und hörst du hin?"],
+      ["Balance", "Gleichgewicht im Alltag", "Was ist gerade zu viel – und was zu wenig?"],
+      ["Ordnung", "Klarheit, Struktur", "Wo würde dir mehr Klarheit gerade guttun?"],
+      ["Verantwortung", "für mich und andere einstehen", "Welche Verantwortung trägst du, die gar nicht deine ist?"],
+      ["Gerechtigkeit", "Fairness für alle", "Wo setzt du dich für Fairness ein – auch für dich selbst?"],
+      ["Natur", "draußen sein, Verbindung zur Erde", "Wann warst du zuletzt draußen, nur um da zu sein?"],
+    ]},
+  ];
+  const VALUES = {};
+  GROUPS.forEach(g => g.values.forEach(([name, desc, prompt]) => VALUES[name] = {name, desc, prompt}));
+
+  const MIN_PICK = 8, MAX_PICK = 15, TOP = 5;
+
+  /* ---------- Zustand ---------- */
+  const KEY = "seelenwende-wertefinder-v1";
+  const fresh = () => ({step:0, picked:[], top:[], pairs:[], answers:[], lived:{}, doneAt:null});
+  let s = fresh();
+  const save = () => { try{ localStorage.setItem(KEY, JSON.stringify(s)); }catch(e){} };
+  const load = () => {
+    try{
+      const d = JSON.parse(localStorage.getItem(KEY) || "null");
+      if(d && Array.isArray(d.picked) && d.picked.every(v => VALUES[v])) return Object.assign(fresh(), d);
+    }catch(e){}
+    return null;
+  };
+
+  function show(step){
+    s.step = step;
+    document.querySelectorAll(".step").forEach(el => el.classList.toggle("show", +el.dataset.step === step));
+    const bar = $("progress");
+    bar.hidden = step === 0 || step === 5;
+    [...bar.children].forEach((el, i) => el.classList.toggle("on", i < step));
+    $("headIntro").hidden = step !== 0;
+    ({1:renderPick, 2:renderShort, 3:renderDuel, 4:renderScales, 5:renderResult})[step]?.();
+    save();
+    window.scrollTo({top:0, behavior:"smooth"});
+  }
+
+  /* ---------- 1 · Wählen ---------- */
+  function renderPick(){
+    $("groups").innerHTML = GROUPS.map(g => `
+      <div class="group"><h3>${esc(g.name)}</h3><div class="chips">
+        ${g.values.map(([n, d]) => `<button class="chip" type="button" data-pick="${esc(n)}" aria-pressed="${s.picked.includes(n)}">${esc(n)}<small>${esc(d)}</small></button>`).join("")}
+      </div></div>`).join("");
+    updatePick();
+  }
+  function updatePick(){
+    const n = s.picked.length, full = n >= MAX_PICK;
+    document.querySelectorAll("[data-pick]").forEach(b => b.disabled = full && b.getAttribute("aria-pressed") !== "true");
+    $("counter1").innerHTML = n < MIN_PICK
+      ? `<b>${n}</b> gewählt · noch mindestens ${MIN_PICK - n}`
+      : `<b>${n}</b> gewählt${full ? " · das Maximum ist erreicht" : " · du kannst weiter"}`;
+    $("next1").disabled = n < MIN_PICK;
+  }
+
+  /* ---------- 2 · Eingrenzen ---------- */
+  function renderShort(){
+    s.top = s.top.filter(v => s.picked.includes(v));
+    $("shortlist").innerHTML = s.picked.map(n =>
+      `<button class="chip" type="button" data-top="${esc(n)}" aria-pressed="${s.top.includes(n)}">${esc(n)}<small>${esc(VALUES[n].desc)}</small></button>`).join("");
+    updateShort();
+  }
+  function updateShort(){
+    const n = s.top.length;
+    document.querySelectorAll("[data-top]").forEach(b => b.disabled = n >= TOP && b.getAttribute("aria-pressed") !== "true");
+    $("counter2").innerHTML = n < TOP ? `<b>${n}</b> von ${TOP} gewählt` : `<b>${TOP}</b> von ${TOP} gewählt · schön`;
+    $("next2").disabled = n !== TOP;
+  }
+
+  /* ---------- 3 · Paarvergleich ---------- */
+  function buildPairs(){
+    const p = [];
+    for(let i = 0; i < s.top.length; i++) for(let j = i + 1; j < s.top.length; j++) p.push(Math.random() < .5 ? [s.top[i], s.top[j]] : [s.top[j], s.top[i]]);
+    for(let i = p.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [p[i], p[j]] = [p[j], p[i]]; }
+    s.pairs = p; s.answers = [];
+  }
+  function renderDuel(){
+    const i = s.answers.length;
+    if(i >= s.pairs.length){ show(4); return; }
+    const card = n => `<button class="choice" type="button" data-win="${esc(n)}"><span class="title">${esc(n)}</span><span class="meta">${esc(VALUES[n].desc)}</span></button>`;
+    const [a, b] = s.pairs[i];
+    $("duel").innerHTML = card(a) + `<div class="or">oder</div>` + card(b);
+    $("duelCount").textContent = `Paar ${i + 1} von ${s.pairs.length}`;
+  }
+
+  function ranking(){
+    const wins = Object.fromEntries(s.top.map(v => [v, 0]));
+    s.answers.forEach(w => wins[w]++);
+    const beat = (a, b) => s.pairs.some((p, i) => p.includes(a) && p.includes(b) && s.answers[i] === a);
+    return [...s.top].sort((a, b) => wins[b] - wins[a] || (beat(a, b) ? -1 : beat(b, a) ? 1 : 0));
+  }
+
+  /* ---------- 4 · Gelebt ---------- */
+  function renderScales(){
+    $("scales").innerHTML = ranking().map(n => {
+      const v = s.lived[n] ?? 5;
+      return `<div class="scale">
+        <div class="scale__top"><label class="scale__name" for="lv-${esc(n)}">${esc(n)}</label><span class="scale__val" id="lvv-${esc(n)}">${v}</span></div>
+        <input type="range" min="0" max="10" step="1" value="${v}" id="lv-${esc(n)}" data-lived="${esc(n)}" aria-describedby="lvv-${esc(n)}">
+        <div class="scale__ends"><span>kaum</span><span>voll und ganz</span></div>
+      </div>`;
+    }).join("");
+    ranking().forEach(n => { if(s.lived[n] == null) s.lived[n] = 5; });
+  }
+
+  /* ---------- 5 · Ergebnis ---------- */
+  function renderResult(){
+    const r = ranking();
+    const gaps = r.map((n, i) => ({n, i, lived: s.lived[n] ?? 5}));
+    // Fokus: der am wenigsten gelebte Wert (bei Gleichstand der wichtigere)
+    const focus = [...gaps].sort((a, b) => a.lived - b.lived || a.i - b.i)[0];
+    const avg = gaps.reduce((t, g) => t + g.lived, 0) / gaps.length;
+
+    $("heroValues").innerHTML = r.map((n, i) => i === 0 ? `<em>${esc(n)}</em>` : esc(n)).join(" · ");
+    $("heroText").textContent = `${r[0]} steht für dich an erster Stelle. Diese fünf Werte sind dein innerer Kompass – sie zeigen dir, was sich stimmig anfühlt und wo du dich verlierst.`;
+
+    $("valueList").innerHTML = r.map((n, i) => {
+      const lived = s.lived[n] ?? 5, isFocus = focus.n === n && focus.lived < 7;
+      return `<div class="value${isFocus ? " value--focus" : ""}">
+        <div class="value__top"><span class="value__rank">${i + 1}</span>
+          <div><div class="value__name">${esc(n)}</div><div class="value__desc">${esc(VALUES[n].desc)}</div></div></div>
+        <div class="bar" aria-hidden="true"><span style="width:${lived * 10}%"></span></div>
+        <div class="bar__label"><span>So sehr lebst du ihn gerade</span><span>${lived} / 10</span></div>
+        ${isFocus ? `<span class="focus-tag">Hier ruft etwas nach dir</span>` : ""}
+        <div class="prompt">${esc(VALUES[n].prompt)}</div>
+      </div>`;
+    }).join("");
+
+    const parts = [];
+    if(avg >= 7.5){
+      parts.push(`<p>Du lebst deine Werte schon sehr bewusst. Das ist ein starkes Fundament – nutze es, wenn Entscheidungen anstehen: <i>„Passt das zu ${esc(r[0])}, ${esc(r[1])} und ${esc(r[2])}?“</i></p>`);
+    }else if(avg >= 4.5){
+      parts.push(`<p>Einige deiner Werte haben schon Raum in deinem Leben, andere kommen gerade zu kurz. Das ist kein Versagen, sondern ein Hinweis, wohin dein nächster sanfter Schritt gehen darf.</p>`);
+    }else{
+      parts.push(`<p>Viele deiner Werte haben gerade wenig Platz in deinem Alltag. Vielleicht erklärt das, warum sich manches schwer oder fremd anfühlt. Sei sanft mit dir – dass du hinschaust, ist schon der Anfang.</p>`);
+    }
+    if(focus.lived < 7){
+      parts.push(`<p><b>${esc(focus.n)}</b> ist dir wichtig, bekommt aber gerade am wenigsten Raum (${focus.lived}/10). Was wäre <i>ein</i> kleiner Schritt diese Woche, der ${esc(focus.n)} ein bisschen mehr Platz gibt?</p>`);
+    }
+    parts.push(`<p>Werte verändern sich mit dir. Mach den Werte-Finder in ein paar Monaten gerne noch einmal.</p>`);
+    $("insight").innerHTML = `<h3>Dein Kompass</h3>${parts.join("")}`;
+
+    if(!s.doneAt) s.doneAt = Date.now();
+  }
+
+  function resultText(){
+    const r = ranking();
+    return [
+      "Meine fünf Kernwerte (Seelenwende · Werte-Finder)",
+      "",
+      ...r.map((n, i) => `${i + 1}. ${n} – ${VALUES[n].desc} (gelebt: ${s.lived[n] ?? 5}/10)\n   ${VALUES[n].prompt}`),
+    ].join("\n");
+  }
+
+  /* ---------- Ereignisse ---------- */
+  document.addEventListener("click", async e => {
+    const t = e.target.closest("button,a");
+    if(!t) return;
+    if(t.dataset.go !== undefined){ show(+t.dataset.go); return; }
+    if(t.dataset.pick){
+      const n = t.dataset.pick, on = s.picked.includes(n);
+      if(!on && s.picked.length >= MAX_PICK) return;
+      s.picked = on ? s.picked.filter(v => v !== n) : [...s.picked, n];
+      t.setAttribute("aria-pressed", String(!on));
+      updatePick(); save(); return;
+    }
+    if(t.dataset.top){
+      const n = t.dataset.top, on = s.top.includes(n);
+      if(!on && s.top.length >= TOP) return;
+      s.top = on ? s.top.filter(v => v !== n) : [...s.top, n];
+      t.setAttribute("aria-pressed", String(!on));
+      updateShort(); save(); return;
+    }
+    if(t.dataset.win){
+      s.answers.push(t.dataset.win); save();
+      renderDuel(); return;
+    }
+  });
+
+  document.addEventListener("input", e => {
+    const n = e.target.dataset && e.target.dataset.lived;
+    if(!n) return;
+    s.lived[n] = +e.target.value;
+    $("lvv-" + n).textContent = e.target.value;
+    save();
+  });
+
+  $("next1").addEventListener("click", () => show(2));
+  $("next2").addEventListener("click", () => {
+    const same = s.pairs.length && s.pairs.every(p => p.every(v => s.top.includes(v)));
+    if(!same) buildPairs();
+    else s.answers = [];
+    show(3);
+  });
+  $("back3").addEventListener("click", () => {
+    if(s.answers.length){ s.answers.pop(); save(); renderDuel(); }
+    else show(2);
+  });
+  $("back4").addEventListener("click", () => { s.answers.pop(); show(3); });
+  $("finish").addEventListener("click", () => { s.doneAt = null; show(5); });
+  $("restart").addEventListener("click", () => {
+    if(!confirm("Neu starten? Dein aktuelles Ergebnis wird dabei gelöscht.")) return;
+    s = fresh(); $("resumeBox").hidden = true; show(0);
+  });
+  $("resumeBtn").addEventListener("click", () => show(5));
+  $("copyBtn").addEventListener("click", async e => {
+    const text = resultText(), btn = e.currentTarget;
+    try{ await navigator.clipboard.writeText(text); }
+    catch(err){ const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); try{ document.execCommand("copy"); }catch(_){} ta.remove(); }
+    btn.textContent = "Kopiert ✓";
+    setTimeout(() => btn.textContent = "Ergebnis kopieren", 1400);
+  });
+
+  /* ---------- Start ---------- */
+  const saved = load();
+  if(saved){
+    s = saved;
+    // Unterbrochenen Durchlauf fortsetzen
+    if(s.step > 0 && s.step < 5){ show(s.step); return; }
+    if(s.doneAt && s.pairs.length && s.answers.length === s.pairs.length) $("resumeBox").hidden = false;
+  }
+  show(0);
+})();
+</script>
+</body>
+</html>
