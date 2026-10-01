@@ -28,7 +28,7 @@ Viele Frauen wissen selbst nicht, in welcher Phase sie sind. Darum gilt: **Die E
 
 | Stufe | Noch drin | Im Gehen | Danach |
 |---|---|---|---|
-| **0 · Kostenlos** | Glaubenssätze-Test (Ergebnis per Mail) · Muster-Check (Idee) | Der Weg nach draußen (Mini-Guide) · Ausstiegs-Planer (Idee) | Self Care Journal · **Werte-Finder** · Red-Flag-Radar |
+| **0 · Kostenlos** | **Muster-Check** · Glaubenssätze-Test (Ergebnis per Mail) | Der Weg nach draußen (Mini-Guide) · Ausstiegs-Planer (Idee) | Self Care Journal · **Werte-Finder** · Red-Flag-Radar |
 | **0 · Kostenlos, alle Phasen** | **Sei sanft mit dir** (Affirmationen) | **Sei sanft mit dir** | **Sei sanft mit dir** |
 | **1 · Einstieg** | Mira, die Begleiterin (Schnupper-Code gratis, Kontingent ~19 €) · Klarheits-Tagebuch (~14 €, Idee) | Erste-Hilfe-Set mit Antwort-Helfer (19 €) | Neuer-Satz-Kompass (~19 €) · Du bist genug (E-Book, 29 €) |
 | **2 · Herzstück** | – | Das Bundle – Zurück zu dir (49 €) | Das Bundle – Zurück zu dir (49 €) |
@@ -37,6 +37,7 @@ Viele Frauen wissen selbst nicht, in welcher Phase sie sind. Darum gilt: **Die E
 
 ## Die Bausteine
 
+- **Muster-Check** (`muster-check.html`) – „Ist das noch normal?“: 20 konkrete Situationen zeigen, ob sich ein Muster wiederholt, ohne über ihn zu urteilen. Der Eingang für Frauen, die noch zweifeln, ob „es so schlimm ist“. Danach führt er zum Glaubenssätze-Test (Warum bleibe ich trotzdem?) und zum Mini-Guide. Mit Sicherheitshinweis und „Schnell weg“-Knopf.
 - **Glaubenssätze-Test** (`glaubenssaetze.html`) – erklärt, *warum* sie bleibt oder sich klein fühlt, ohne sie zum Gehen zu drängen. Stärkster Eingang für „Noch drin“, wirkt auch „Danach“. Das ausführliche Ergebnis kommt auf Wunsch per Mail (MailerLite, siehe `mails/glaubenssaetze-ergebnis.md`).
 - **Werte-Finder** (`werte-finder.html`) – in vier Schritten zu den eigenen fünf Kernwerten, in eigenen Worten. Für „Danach“: Die Frage „Wer bin ich ohne das?“ beginnt mit „Was ist mir wichtig?“. Auch für „Im Gehen“ wertvoll: Wer ihre Werte kennt, sieht klarer, wo die Beziehung sie verletzt. Ein natürlicher nächster Schritt nach dem Glaubenssätze-Test (alter Satz → eigene Werte → neuer Satz).
 - **Sei sanft mit dir** (`affirmationen.html`) – kostenlos, für alle drei Phasen: Selbstzweifel und ein harter Umgang mit sich selbst kommen in jeder Phase vor. Statt Hochglanz-Affirmationen wählt sie für jeden harten Satz selbst die Stufe, die sie heute glauben kann, und findet über die Freundinnen-Frage ihren eigenen Satz. Holt die Werte aus dem Werte-Finder dazu und führt je nach Phase zu Mira (noch drin, im Gehen) oder zu „Du bist genug“ (danach).
