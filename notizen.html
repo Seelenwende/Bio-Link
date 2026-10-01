@@ -185,6 +185,12 @@
   }
   .sr-only{position:absolute;left:-9999px;}
 
+  .mira{background:var(--sand);border-radius:16px;padding:16px 18px;margin-top:22px;}
+  .mira h3{margin-bottom:4px;}
+  .mira p{font-size:14px;line-height:1.6;}
+  .mira p + p{margin-top:6px;}
+  .mira ul{font-size:13.5px;line-height:1.55;padding-left:18px;margin-top:8px;color:var(--gedaempft);}
+
   #printout{display:none;}
 
   @keyframes rise{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
@@ -392,6 +398,22 @@
     <!-- Eintrag ansehen -->
     <div id="v-detail" hidden>
       <div class="detail" id="detailBody"></div>
+      <div class="mira">
+        <h3>Mit Mira einordnen</h3>
+        <p>Mira, die Seelenwende-Begleiterin, hilft dir zu verstehen, was in diesem Moment passiert ist – ohne Urteil und ohne Druck.</p>
+        <div id="miraInfo" hidden>
+          <ul>
+            <li>Dein Eintrag wird bei Mira ins Textfeld eingefügt. Du liest ihn und schickst ihn selbst ab – oder löschst, was du nicht teilen willst.</li>
+            <li>Belege und Zeugen werden nicht mitgeschickt.</li>
+            <li>Mira speichert keine Gespräche. Dein Tagebuch sperrt sich, sobald du wechselst.</li>
+            <li>Für Mira brauchst du einen Zugangscode.</li>
+          </ul>
+        </div>
+        <div class="actions" style="justify-content:flex-start;margin-top:12px">
+          <button class="btn btn--small" type="button" id="miraBtn">Mit Mira einordnen</button>
+          <button class="btn btn--link" type="button" id="miraMore">Wie funktioniert das?</button>
+        </div>
+      </div>
       <div class="actions">
         <button class="btn btn--soft" type="button" id="detailBack">Zurück</button>
         <button class="btn btn--soft" type="button" id="detailEdit">Bearbeiten</button>
@@ -662,6 +684,7 @@
   /* ---------- Schnell weg & automatisch sperren ---------- */
   function quickExit(){
     wipeMemory();
+    try{ sessionStorage.removeItem("sw_mira_prefill"); }catch(e){}
     show("s-lock");
     document.title = "Wetter";
     window.location.replace(EXIT_URL);
@@ -805,6 +828,7 @@
     if (!e){ renderList(); view("v-list"); return; }
     viewingId = id; editingId = null;
     const block = (title, body, cls) => body ? `<h3>${title}</h3><div class="${cls || "txt"}">${esc(body)}</div>` : "";
+    $("miraInfo").hidden = true;
     $("detailBody").innerHTML = `
       <p class="entry__date" style="margin-top:18px">${esc(fmtDate(e.when))}</p>
       ${block("Was passiert ist", e.what)}
@@ -824,6 +848,31 @@
     data.entries = data.entries.filter(x => x.id !== viewingId);
     await persist();
     renderList(); view("v-list");
+  });
+
+  /* ---------- An Mira übergeben ---------- */
+  // Nur über sessionStorage (dieser Tab, wird beim Schließen gelöscht) – nie in der Adresse, damit nichts im Verlauf landet.
+  const MIRA_KEY = "sw_mira_prefill";
+  const MIRA_MAX = 3800;
+  function miraText(e){
+    const lines = ["Ich habe in meinen Notizen festgehalten, was passiert ist. Hilf mir bitte, das einzuordnen.", ""];
+    lines.push("Wann: " + fmtDate(e.when));
+    if (e.what) lines.push("Was passiert ist: " + e.what);
+    if (e.said) lines.push("Was gesagt wurde: „" + e.said + "“");
+    if ((e.patterns || []).length) lines.push("Was ich darin erkenne: " + e.patterns.map(p => PNAME[p] || p).join(", "));
+    if ((e.felt || []).length) lines.push("Wie es mir ging: " + e.felt.join(", "));
+    if (e.after) lines.push("Danach: " + e.after);
+    if (e.anchor) lines.push("Was ich sicher weiß: " + e.anchor);
+    let t = lines.join("\n");
+    if (t.length > MIRA_MAX) t = t.slice(0, MIRA_MAX - 1) + "…";
+    return t;
+  }
+  $("miraMore").addEventListener("click", () => { $("miraInfo").hidden = !$("miraInfo").hidden; });
+  $("miraBtn").addEventListener("click", () => {
+    const e = data && data.entries.find(x => x.id === viewingId);
+    if (!e) return;
+    try{ sessionStorage.setItem(MIRA_KEY, miraText(e)); }catch(err){}
+    window.location.href = "begleiterin.html";
   });
 
   /* ---------- Muster ---------- */
