@@ -31,6 +31,14 @@ export interface Uebung {
   werkzeug?: Werkzeug;
 }
 
+/** Bonus-PDF, das im Programm enthalten ist. Die Datei liegt in netlify/bonus/ und kommt nur über programm-bonus. */
+export interface Bonus {
+  id: string;
+  titel: string;
+  text: string;
+  datei: string;
+}
+
 export interface Woche {
   nr: number;
   titel: string;
@@ -44,6 +52,8 @@ export interface Woche {
   hinweis?: string;
   /** Weitere Seelenwende-Tools, die zum Thema der Woche passen. */
   werkzeuge?: Werkzeug[];
+  /** IDs der Boni, die zu dieser Woche passen. */
+  bonus?: string[];
 }
 
 export interface Programm {
@@ -51,7 +61,51 @@ export interface Programm {
   willkommen: string[];
   soGehts: string[];
   wochen: Woche[];
+  boni: Bonus[];
   abschluss: string[];
+}
+
+export const BONI: Bonus[] = [
+  {
+    id: "anker-set",
+    titel: "Affirmations- & Anker-Set",
+    text: "12 Karten und 6 Sperrbildschirme für die Tage, an denen du dir nicht traust.",
+    datei: "affirmations-anker-set.pdf",
+  },
+  {
+    id: "klartext",
+    titel: "Klartext – das Journal gegen die Selbstzweifel",
+    text: "Situationen festhalten, Tatsache und Deutung trennen, Muster beim Namen nennen.",
+    datei: "klartext-journal.pdf",
+  },
+  {
+    id: "no-contact",
+    titel: "No Contact – dein Kit für den Kontaktabbruch",
+    text: "Anker-Zettel, Notfall-Sätze, 5-Minuten-Plan und 7 Tage Durchhalten.",
+    datei: "no-contact-kit.pdf",
+  },
+  {
+    id: "grenz-saetze",
+    titel: "Grenz-Sätze – Nein sagen, ohne dich zu erklären",
+    text: "Fertige Sätze für Grenzen, auch für Kontakt wegen der Kinder.",
+    datei: "grenz-saetze.pdf",
+  },
+  {
+    id: "du-bist-genug",
+    titel: "Du bist genug – das E-Book",
+    text: "Impulsbuch in acht Schritten zurück zu deinem Selbstwert.",
+    datei: "du-bist-genug.pdf",
+  },
+  {
+    id: "vision-board",
+    titel: "Vision Board Workbook",
+    text: "Von der Vision zum ersten Schritt, für dein neues Kapitel.",
+    datei: "vision-board-workbook.pdf",
+  },
+];
+
+export function findBonus(id: unknown): Bonus | undefined {
+  return typeof id === "string" ? BONI.find((b) => b.id === id) : undefined;
 }
 
 export const PROGRAMM: Programm = {
@@ -65,6 +119,7 @@ export const PROGRAMM: Programm = {
     "Die Übungen sind zum Schreiben. Kurz und ehrlich ist besser als schön. Du kannst jederzeit zurückkommen.",
     "Jeden Tag gibt es einen kleinen Anker. Fünf Minuten reichen. Wenn ein Tag nicht klappt, ist das kein Rückschritt.",
     "Mira ist im Programm enthalten. Du öffnest sie mit demselben Zugangscode. Zu jeder Woche findest du Gesprächsanstöße.",
+    "Sechs Seelenwende-Begleiter sind als Bonus dabei: Journals, Karten und das E-Book „Du bist genug“. Du findest sie in den passenden Wochen und gesammelt unten auf dieser Seite.",
     "Dein Tempo gilt. Wenn eine Woche länger braucht, bleib länger. Wenn dich ein Thema zu sehr aufwühlt, mach eine Pause.",
   ],
   wochen: [
@@ -73,6 +128,7 @@ export const PROGRAMM: Programm = {
       titel: "Ankommen",
       untertitel: "Erst sicher, dann klar.",
       satz: "Ich darf zur Ruhe kommen, bevor ich alles verstehe.",
+      bonus: ["anker-set"],
       einleitung: [
         "In der ersten Woche geht es noch nicht ums Verstehen. Es geht um deinen Körper. Solange er auf Alarm steht, fühlt sich jeder Gedanke an ihn an wie ein Notfall, und Klarheit hat kaum eine Chance.",
         "Diese Woche sammelst du deshalb kleine Werkzeuge, die dich zurück in die Ruhe holen. Und du legst fest, was du dir von diesen sechs Wochen wünschst.",
@@ -159,6 +215,7 @@ export const PROGRAMM: Programm = {
       titel: "Verstehen, was war",
       untertitel: "Meine Erinnerung gehört mir.",
       satz: "Ich darf meiner Wahrnehmung wieder trauen.",
+      bonus: ["klartext"],
       einleitung: [
         "Diese Woche schaust du auf das, was passiert ist. Nicht, um ihn zu analysieren oder eine Diagnose zu stellen. Sondern um dir deine eigene Geschichte zurückzuholen, in deinen Worten.",
         "Viele Frauen erzählen, dass sie in der Beziehung irgendwann nicht mehr ihn geprüft haben, sondern sich selbst. Diese Woche drehst du das vorsichtig um.",
@@ -243,6 +300,7 @@ export const PROGRAMM: Programm = {
       titel: "Abstand und Grenzen",
       untertitel: "Ich muss mich nicht erklären.",
       satz: "Nein ist ein ganzer Satz.",
+      bonus: ["no-contact", "grenz-saetze"],
       einleitung: [
         "Abstand ist das, was Heilung möglich macht. Für manche heißt das: gar kein Kontakt mehr. Für andere, besonders mit gemeinsamen Kindern, heißt es: so wenig und so sachlich wie möglich.",
         "Diese Woche legst du fest, wie viel Kontakt du zulässt, findest deine Sätze und machst einen Plan für die Momente, in denen du schwach wirst. Denn die kommen, und das ist normal.",
@@ -397,6 +455,7 @@ export const PROGRAMM: Programm = {
       titel: "Alte Sätze, neue Sätze",
       untertitel: "Ich bin nicht, was er über mich gesagt hat.",
       satz: "Ich lerne, mir wieder zu glauben.",
+      bonus: ["du-bist-genug"],
       einleitung: [
         "In uns allen gibt es Sätze, die leise mitlaufen: „Ich bin nicht genug.“ „Ich bin schuld.“ „Ich bin zu viel.“ Die meisten sind älter als die Beziehung. Die Beziehung hat sie oft verstärkt.",
         "Diese Woche hörst du hin, welche Sätze bei dir am lautesten sind, woher sie kommen und welcher neue Satz an ihre Stelle treten darf.",
@@ -475,6 +534,7 @@ export const PROGRAMM: Programm = {
       titel: "Wieder bei dir",
       untertitel: "Ich gehöre wieder mir.",
       satz: "Ich gehe meinen Weg in meinem Tempo.",
+      bonus: ["vision-board"],
       einleitung: [
         "Die letzte Woche schaut nach vorn. Wer bist du ohne das? Was ist dir wichtig? Woran willst du in Zukunft merken, dass dir jemand guttut?",
         "Und sie schaut zurück: auf das, was du dir in Woche 1 gewünscht hast, und auf den Weg, den du seitdem gegangen bist.",
@@ -559,6 +619,7 @@ export const PROGRAMM: Programm = {
       ],
     },
   ],
+  boni: BONI,
   abschluss: [
     "Du bist sechs Wochen lang für dich da gewesen. Das ist viel, auch wenn sich nicht alles gelöst hat.",
     "Die Übungen bleiben hier. Du kannst jederzeit zurückkommen, eine Woche wiederholen oder deinen Plan für schwere Tage lesen. Und Mira ist weiter für dich da, solange dein Kontingent reicht.",

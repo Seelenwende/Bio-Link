@@ -153,6 +153,13 @@
   .frage.lang textarea{min-height:200px;}
   .werkzeug{display:grid; gap:10px; justify-items:start; background:var(--sand); border-radius:12px; padding:12px 14px; font-size:.9rem;}
   .werkzeug .btn{padding:9px 16px; font-size:.86rem;}
+  .bonus{display:grid; grid-template-columns:auto minmax(0,1fr); gap:6px 14px; align-items:start;}
+  .bonus .icon{grid-row:span 3; width:38px; height:46px; border-radius:6px; background:var(--blush); border:1px solid var(--linie); display:grid; place-items:center; font-size:.62rem; letter-spacing:.1em; color:var(--beere); font-weight:500;}
+  .bonus .bt{font-family:var(--serif); font-size:1.02rem; font-weight:500; line-height:1.3;}
+  .bonus .bx{font-size:.88rem; color:var(--gedaempft);}
+  .bonus .row-actions{gap:10px;}
+  .bonus .btn{padding:8px 16px; font-size:.86rem;}
+  .bonus .msg{font-size:.84rem; color:var(--beere);}
   .rueckblick-zitat{background:var(--sand); border-radius:12px; padding:12px 14px; font-family:var(--serif); font-style:italic; white-space:pre-wrap;}
 
   .tage{list-style:none; margin:0; padding:0; display:grid; gap:8px;}
@@ -245,6 +252,12 @@
 
     <div class="section card stack" id="home-done" hidden></div>
 
+    <div class="section">
+      <h2>Deine Boni</h2>
+      <p class="muted small" style="margin-bottom:12px;">Im Programm enthalten. Zum Herunterladen auf dein Gerät.</p>
+      <div class="stack" id="home-boni"></div>
+    </div>
+
     <div class="section card mira-card">
       <h3>Mira ist mit dabei</h3>
       <p class="small">Wenn du zwischendurch reden möchtest, ist Mira da. Sie öffnet sich mit deinem Programm-Code.</p>
@@ -282,6 +295,11 @@
       <h2>Zum Schreiben</h2>
       <p class="saved no-print" id="wk-saved" aria-live="polite"></p>
       <div id="wk-uebungen"></div>
+    </div>
+
+    <div class="section" id="wk-boni-wrap" hidden>
+      <h2>Dein Bonus zu dieser Woche</h2>
+      <div class="stack" id="wk-boni"></div>
     </div>
 
     <div class="section" id="wk-werkzeuge-wrap" hidden>
@@ -473,6 +491,9 @@
       list.appendChild(b);
     });
 
+    var boni = $("home-boni"); boni.innerHTML = "";
+    (p.boni || []).forEach(function(b){ boni.appendChild(bonusKarte(b)); });
+
     var done = $("home-done");
     if (fertig === p.wochen.length) {
       done.innerHTML = "";
@@ -503,6 +524,45 @@
     ta.addEventListener("input", function(){ onNoteInput(key, ta.value); });
     wrap.appendChild(lab); wrap.appendChild(ta);
     parent.appendChild(wrap);
+  }
+
+  /* ---------- Boni ---------- */
+  function bonusKarte(b){
+    var c = el("div", "card bonus no-print");
+    c.appendChild(el("span", "icon", "PDF"));
+    c.appendChild(el("span", "bt", b.titel));
+    c.appendChild(el("span", "bx", b.text));
+    var row = el("div", "row-actions");
+    var btn = el("button", "btn soft", "Herunterladen"); btn.type = "button";
+    var msg = el("span", "msg"); msg.setAttribute("role", "status");
+    btn.addEventListener("click", function(){ ladeBonus(b, btn, msg); });
+    row.appendChild(btn); row.appendChild(msg);
+    c.appendChild(row);
+    return c;
+  }
+
+  function ladeBonus(b, btn, msg){
+    btn.disabled = true; msg.textContent = "Wird geladen …";
+    fetch("/api/programm/bonus", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({code: state.code, id: b.id}) })
+      .then(function(r){
+        if (!r.ok) return r.json().then(function(d){ throw new Error(d.error || "Der Download hat nicht geklappt."); });
+        return r.blob();
+      })
+      .then(function(blob){
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement("a");
+        a.href = url; a.download = b.datei;
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(function(){ URL.revokeObjectURL(url); }, 60000);
+        msg.textContent = "Heruntergeladen";
+      })
+      .catch(function(err){ msg.textContent = err && err.message ? err.message : "Keine Verbindung. Versuch es gleich noch einmal."; })
+      .then(function(){ btn.disabled = false; });
+  }
+
+  function boniFuer(ids){
+    var alle = (state.programm && state.programm.boni) || [];
+    return (ids || []).map(function(id){ return alle.filter(function(b){ return b.id === id; })[0]; }).filter(Boolean);
   }
 
   // Tools öffnen sich in einem neuen Tab, damit sie ihren Platz im Programm behält.
@@ -565,6 +625,11 @@
       addFrage(r, noteKey("w6-rueck", 0), "Was hat sich seitdem verändert, auch im Kleinen?");
       ue.insertBefore(r, ue.firstChild);
     }
+
+    var bListe = boniFuer(w.bonus);
+    var bBox = $("wk-boni"); bBox.innerHTML = "";
+    bListe.forEach(function(b){ bBox.appendChild(bonusKarte(b)); });
+    $("wk-boni-wrap").hidden = bListe.length === 0;
 
     var wzListe = w.werkzeuge || [];
     var wzBox = $("wk-werkzeuge"); wzBox.innerHTML = "";
