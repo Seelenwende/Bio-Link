@@ -69,6 +69,16 @@
   .how li{margin-bottom:6px;}
   .how li b{font-weight:400;}
 
+  .prep{background:var(--sand);border-radius:18px;padding:16px 18px;margin-top:16px;}
+  .prep__title{font-family:"Playfair Display",serif;font-weight:500;font-size:16px;}
+  .prep p{font-size:13.5px;color:var(--gedaempft);margin-top:2px;}
+  .prep ul{list-style:none;margin-top:10px;display:flex;flex-direction:column;gap:8px;}
+  .prep li{display:flex;gap:10px;align-items:baseline;font-size:14.5px;}
+  .prep li i{font-style:normal;color:var(--rose);min-width:1.1em;}
+  .prep li.ok i{color:var(--beere);}
+  .prep a{color:var(--beere);}
+  .prep small{color:var(--gedaempft);font-size:12.5px;}
+
   /* --- Auswahl --- */
   .found{
     background:var(--sand);border-radius:14px;padding:10px 14px;margin-top:16px;
@@ -260,6 +270,7 @@
         <li><b>30 Tage:</b> jeden Tag ein Impuls, eine kleine Aufgabe und eine Frage. Etwa zwei bis fünf Minuten.</li>
       </ol>
     </div>
+    <div class="prep" id="prep"></div>
     <p class="intro">Woche 1: den alten Satz bemerken. Woche 2: den neuen Satz kennenlernen. Woche 3: deine Werte leben. Woche 4: alles verankern.</p>
     <div class="actions">
       <button class="btn" type="button" id="start">Meinen Kompass einrichten</button>
@@ -667,8 +678,23 @@
   function view(name){
     document.querySelectorAll(".view").forEach(v => v.classList.toggle("show", v.id === "v-" + name));
     $("headIntro").hidden = name !== "intro";
-    ({satz: renderSatz, werte: renderWerte, start: renderStart, tag: () => renderTag(), ende: renderEnde})[name]?.();
+    ({intro: renderIntro, satz: renderSatz, werte: renderWerte, start: renderStart, tag: () => renderTag(), ende: renderEnde})[name]?.();
     window.scrollTo({top: 0, behavior: "smooth"});
+  }
+
+  /* Einstieg: Hinweis auf Test und Werte-Finder */
+  function renderIntro(){
+    const t = fromTest(), w = fromWerte();
+    const item = (ok, name, href, mins, what) => ok
+      ? `<li class="ok"><i>✓</i><span>${name} <small>· wird übernommen</small></span></li>`
+      : `<li><i>○</i><span><a href="${href}">${name}</a> <small>· ${mins} · ${what}</small></span></li>`;
+    $("prep").innerHTML = (t && w)
+      ? `<div class="prep__title">Alles bereit</div><p>Dein Kompass baut auf deinen Ergebnissen auf.</p>`
+      : `<div class="prep__title">Tipp: Mach vorher diese zwei Schritte</div><p>Dann übernimmt der Kompass deinen Satz und deine Werte und wird ganz persönlich. Du kannst aber auch direkt starten.</p>`;
+    $("prep").innerHTML += `<ul>
+      ${item(t, "Glaubenssätze-Test", "glaubenssaetze.html", "5 Minuten", "findet deinen lautesten Satz")}
+      ${item(w, "Werte-Finder", "werte-finder.html", "10 Minuten", "findet deine Werte")}
+    </ul>`;
   }
 
   /* 1 · Alter Satz */
