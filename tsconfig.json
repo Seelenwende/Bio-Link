@@ -10,10 +10,12 @@
     "types": [
       "node",
       "@netlify/functions"
-    ]
+    ],
+    "resolveJsonModule": true
   },
   "include": [
     "netlify/**/*.mts",
-    "netlify/edge-functions/*.ts"
+    "netlify/edge-functions/*.ts",
+    "glaubenssaetze.json"
   ]
 }

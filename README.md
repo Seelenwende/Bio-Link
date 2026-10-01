@@ -59,3 +59,12 @@ Neuer Code für eine Käuferin: an `BEGLEITERIN_CODES` anhängen, danach neu dep
 | `PROGRAMM_MIRA_LIMIT` | optional, Mira-Nachrichten pro Programm-Code (Standard 1000) |
 
 Neue Käuferin: Code an `PROGRAMM_CODES` anhängen, danach neu deployen.
+
+## Glaubenssätze-Test: Ergebnis per Mail (MailerLite)
+
+Die Texte des Tests stehen in `glaubenssaetze.json` (für Seite und Mail). Unter dem Ergebnis kann die Frau ihre Mail-Adresse eintragen. `test-ergebnis-mail` rechnet das Ergebnis aus den Punkten nach und trägt sie mit ihrem Hauptsatz in MailerLite ein; die Mail verschickt eine MailerLite-Automatisierung. Einrichtung, Felder und Mailtext: `mails/glaubenssaetze-ergebnis.md`.
+
+| Variable | Inhalt |
+|---|---|
+| `MAILERLITE_API_KEY` | API-Schlüssel aus MailerLite |
+| `MAILERLITE_GROUP_GLAUBENSSAETZE` | ID der Gruppe „Glaubenssätze-Test“ |
