@@ -31,13 +31,36 @@ export interface Uebung {
   werkzeug?: Werkzeug;
 }
 
-/** Bonus-PDF, das im Programm enthalten ist. Die Datei liegt in netlify/bonus/ und kommt nur über programm-bonus. */
-export interface Bonus {
+/* Boni, die im Programm enthalten sind. Die Dateien liegen unter /bonus/ und sind nur über
+   einen signierten Link aus programm-bonus abrufbar (Schutz: Edge-Funktion bonus-schutz). */
+
+export interface PdfBonus {
+  art: "pdf";
   id: string;
   titel: string;
   text: string;
+  /** Dateiname unter /bonus/ */
   datei: string;
 }
+
+export interface AudioSpur {
+  id: string;
+  titel: string;
+  text: string;
+  dauer: string;
+  /** Dateiname unter /bonus/, z. B. "audio/01-nicht-schlafen.mp3" */
+  datei: string;
+}
+
+export interface AudioBonus {
+  art: "audio";
+  id: string;
+  titel: string;
+  text: string;
+  spuren: AudioSpur[];
+}
+
+export type Bonus = PdfBonus | AudioBonus;
 
 export interface Woche {
   nr: number;
@@ -67,36 +90,48 @@ export interface Programm {
 
 export const BONI: Bonus[] = [
   {
+    art: "pdf",
     id: "anker-set",
     titel: "Affirmations- & Anker-Set",
     text: "12 Karten und 6 Sperrbildschirme für die Tage, an denen du dir nicht traust.",
     datei: "affirmations-anker-set.pdf",
   },
   {
+    art: "pdf",
     id: "klartext",
     titel: "Klartext – das Journal gegen die Selbstzweifel",
     text: "Situationen festhalten, Tatsache und Deutung trennen, Muster beim Namen nennen.",
     datei: "klartext-journal.pdf",
   },
   {
+    art: "pdf",
     id: "no-contact",
     titel: "No Contact – dein Kit für den Kontaktabbruch",
     text: "Anker-Zettel, Notfall-Sätze, 5-Minuten-Plan und 7 Tage Durchhalten.",
     datei: "no-contact-kit.pdf",
   },
   {
+    art: "pdf",
     id: "grenz-saetze",
     titel: "Grenz-Sätze – Nein sagen, ohne dich zu erklären",
     text: "Fertige Sätze für Grenzen, auch für Kontakt wegen der Kinder.",
     datei: "grenz-saetze.pdf",
   },
   {
-    id: "du-bist-genug",
-    titel: "Du bist genug – das E-Book",
-    text: "Impulsbuch in acht Schritten zurück zu deinem Selbstwert.",
-    datei: "du-bist-genug.pdf",
+    art: "audio",
+    id: "audio-schwere-tage",
+    titel: "Audio für schwere Tage",
+    text: "Eine Stimme für die Nächte, in denen niemand da ist. Du musst nicht meditieren können, nur zuhören.",
+    spuren: [
+      { id: "01", titel: "Wenn du nicht schlafen kannst", text: "Geführtes Atmen und ein langsamer Text, der dich nicht wachhält.", dauer: "14 Min", datei: "audio/01-wenn-du-nicht-schlafen-kannst.mp3" },
+      { id: "02", titel: "Wenn die Panik kommt", text: "Kurz, ruhig, mit klaren Ansagen. Für den Moment, in dem alles eng wird.", dauer: "6 Min", datei: "audio/02-wenn-die-panik-kommt.mp3" },
+      { id: "03", titel: "Wenn du ihn vermisst", text: "Kein Trost, der beschönigt. Ein Text, der es mit dir aushält.", dauer: "11 Min", datei: "audio/03-wenn-du-ihn-vermisst.mp3" },
+      { id: "04", titel: "Affirmationen zum Mitsprechen", text: "Zwölf Sätze, langsam, mit Pausen. Auch für den Weg zur Arbeit.", dauer: "9 Min", datei: "audio/04-affirmationen-zum-mitsprechen.mp3" },
+      { id: "05", titel: "Morgen danach", text: "Für den Tag nach einer schweren Nacht. Drei Minuten, damit du aufstehen kannst.", dauer: "3 Min", datei: "audio/05-morgen-danach.mp3" },
+    ],
   },
   {
+    art: "pdf",
     id: "vision-board",
     titel: "Vision Board Workbook",
     text: "Von der Vision zum ersten Schritt, für dein neues Kapitel.",
@@ -119,7 +154,7 @@ export const PROGRAMM: Programm = {
     "Die Übungen sind zum Schreiben. Kurz und ehrlich ist besser als schön. Du kannst jederzeit zurückkommen.",
     "Jeden Tag gibt es einen kleinen Anker. Fünf Minuten reichen. Wenn ein Tag nicht klappt, ist das kein Rückschritt.",
     "Mira ist im Programm enthalten. Du öffnest sie mit demselben Zugangscode. Zu jeder Woche findest du Gesprächsanstöße.",
-    "Sechs Seelenwende-Begleiter sind als Bonus dabei: Journals, Karten und das E-Book „Du bist genug“. Du findest sie in den passenden Wochen und gesammelt unten auf dieser Seite.",
+    "Als Bonus sind Seelenwende-Begleiter dabei: Journals, Karten, Kits und Audios für schwere Tage. Du findest sie in den passenden Wochen und gesammelt unten auf dieser Seite.",
     "Dein Tempo gilt. Wenn eine Woche länger braucht, bleib länger. Wenn dich ein Thema zu sehr aufwühlt, mach eine Pause.",
   ],
   wochen: [
@@ -381,6 +416,7 @@ export const PROGRAMM: Programm = {
       titel: "Trauern dürfen",
       untertitel: "Vermissen ist kein Rückfall.",
       satz: "Ich darf vermissen und trotzdem gehen.",
+      bonus: ["audio-schwere-tage"],
       einleitung: [
         "Vielleicht fragst du dich: Warum vermisse ich ihn, obwohl er mir das angetan hat? Diese Frage gehört zu den häufigsten, die Frauen stellen. Und sie hat eine gute Antwort.",
         "Diese Woche gibst du der Trauer Raum. Und der Wut, falls sie da ist. Beides muss nicht weggemacht werden. Beides will gefühlt werden, damit es weiterziehen kann.",
@@ -455,7 +491,6 @@ export const PROGRAMM: Programm = {
       titel: "Alte Sätze, neue Sätze",
       untertitel: "Ich bin nicht, was er über mich gesagt hat.",
       satz: "Ich lerne, mir wieder zu glauben.",
-      bonus: ["du-bist-genug"],
       einleitung: [
         "In uns allen gibt es Sätze, die leise mitlaufen: „Ich bin nicht genug.“ „Ich bin schuld.“ „Ich bin zu viel.“ Die meisten sind älter als die Beziehung. Die Beziehung hat sie oft verstärkt.",
         "Diese Woche hörst du hin, welche Sätze bei dir am lautesten sind, woher sie kommen und welcher neue Satz an ihre Stelle treten darf.",

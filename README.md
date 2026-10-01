@@ -49,12 +49,13 @@ Neuer Code für eine Käuferin: an `BEGLEITERIN_CODES` anhängen, danach neu dep
 
 1. `programm-inhalt` prüft den Zugangscode und liefert erst dann die Inhalte aus. Die Texte stehen in `netlify/lib/programm.mts`.
 2. Notizen, Tagesanker und Fortschritt werden nie hochgeladen. Mit Häkchen bleiben sie auf dem Gerät, ohne Häkchen nur, solange der Tab offen ist.
-3. Sechs Bonus-PDFs (Anker-Set, Klartext, No-Contact-Kit, Grenz-Sätze, Du bist genug, Vision Board) liegen in `netlify/bonus/` und kommen nur mit gültigem Code über `programm-bonus`. Der Ordner `netlify/` ist per Weiterleitung in `netlify.toml` nicht öffentlich abrufbar.
+3. Boni (vier PDFs, Vision Board Workbook und „Audio für schwere Tage“) liegen in `bonus/`. `programm-bonus` gibt mit gültigem Code einen drei Stunden gültigen, signierten Link heraus; die Edge-Funktion `bonus-schutz` lässt nur solche Links durch. Welche Dateien wohin gehören, steht in `bonus/LIESMICH.md`.
 4. Derselbe Code öffnet Mira, mit eigenem, größerem Kontingent. Die Gesprächsanstöße jeder Woche landen direkt in Miras Eingabefeld.
 
 | Variable | Inhalt |
 |---|---|
 | `PROGRAMM_CODES` | gültige Programm-Codes, kommagetrennt, z. B. `WIEDER-AB12-CD34` |
+| `BONUS_SECRET` | optional, eigenes Geheimnis für die Bonus-Links (sonst aus den Programm-Codes abgeleitet) |
 | `PROGRAMM_MIRA_LIMIT` | optional, Mira-Nachrichten pro Programm-Code (Standard 1000) |
 
 Neue Käuferin: Code an `PROGRAMM_CODES` anhängen, danach neu deployen.

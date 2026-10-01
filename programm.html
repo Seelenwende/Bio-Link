@@ -160,6 +160,14 @@
   .bonus .row-actions{gap:10px;}
   .bonus .btn{padding:8px 16px; font-size:.86rem;}
   .bonus .msg{font-size:.84rem; color:var(--beere);}
+  .bonus > .row-actions, .bonus > .spuren{grid-column:2;}
+  .spuren{list-style:none; margin:6px 0 0; padding:0; display:grid; gap:0;}
+  .spur{display:grid; gap:6px; padding-block:12px; border-top:1px solid var(--linie);}
+  .spur-kopf{display:flex; justify-content:space-between; gap:10px; align-items:baseline;}
+  .spur-titel{font-weight:400;}
+  .spur-dauer{font-size:.8rem; color:var(--gedaempft); white-space:nowrap; font-variant-numeric:tabular-nums;}
+  .spur-player audio{width:100%;}
+  .bonus .btn.link{padding:8px 4px;}
   .rueckblick-zitat{background:var(--sand); border-radius:12px; padding:12px 14px; font-family:var(--serif); font-style:italic; white-space:pre-wrap;}
 
   .tage{list-style:none; margin:0; padding:0; display:grid; gap:8px;}
@@ -526,38 +534,86 @@
     parent.appendChild(wrap);
   }
 
-  /* ---------- Boni ---------- */
+  /* ---------- Boni ----------
+     Die Datei kommt über einen zeitlich begrenzten Link, den es nur mit dem Programm-Code gibt. */
+  function holeLink(b, spur){
+    return fetch("/api/programm/bonus", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({code: state.code, id: b.id, spur: spur ? spur.id : undefined}) })
+      .then(function(r){ return r.json().then(function(d){ if (!r.ok) throw new Error(d.error || "Das hat nicht geklappt."); return d.url; }); })
+      .then(function(url){
+        // Prüfen, ob die Datei schon da ist, bevor sie geöffnet wird.
+        return fetch(url, { method:"HEAD", cache:"no-store" }).then(function(r){
+          if (!r.ok) throw new Error(spur ? "Diese Aufnahme kommt bald. Schau wieder vorbei." : "Dieser Bonus wird gerade vorbereitet. Schau bald wieder vorbei.");
+          return url;
+        });
+      });
+  }
+
+  function fehlerText(err){ return err && err.message && err.message !== "Failed to fetch" ? err.message : "Keine Verbindung. Versuch es gleich noch einmal."; }
+
+  function herunterladen(b, spur, btn, msg){
+    btn.disabled = true; msg.textContent = "Wird geladen …";
+    holeLink(b, spur)
+      .then(function(url){
+        var a = document.createElement("a");
+        a.href = url; a.download = (spur ? spur.datei : b.datei).split("/").pop();
+        document.body.appendChild(a); a.click(); a.remove();
+        msg.textContent = "";
+      })
+      .catch(function(err){ msg.textContent = fehlerText(err); })
+      .then(function(){ btn.disabled = false; });
+  }
+
+  function anhoeren(b, spur, btn, msg, platz){
+    btn.disabled = true; msg.textContent = "Wird geladen …";
+    holeLink(b, spur)
+      .then(function(url){
+        platz.innerHTML = "";
+        var audio = document.createElement("audio");
+        audio.controls = true; audio.preload = "auto"; audio.src = url;
+        audio.setAttribute("aria-label", spur.titel);
+        platz.appendChild(audio);
+        audio.play().catch(function(){});
+        msg.textContent = "";
+        btn.hidden = true;
+      })
+      .catch(function(err){ msg.textContent = fehlerText(err); btn.disabled = false; });
+  }
+
   function bonusKarte(b){
     var c = el("div", "card bonus no-print");
-    c.appendChild(el("span", "icon", "PDF"));
+    c.appendChild(el("span", "icon", b.art === "audio" ? "AUDIO" : "PDF"));
     c.appendChild(el("span", "bt", b.titel));
     c.appendChild(el("span", "bx", b.text));
+    if (b.art === "audio") {
+      var liste = el("ol", "spuren");
+      b.spuren.forEach(function(sp){
+        var li = el("li", "spur");
+        var kopf = el("div", "spur-kopf");
+        kopf.appendChild(el("span", "spur-titel", sp.titel));
+        kopf.appendChild(el("span", "spur-dauer", sp.dauer));
+        li.appendChild(kopf);
+        li.appendChild(el("span", "bx", sp.text));
+        var platz = el("div", "spur-player");
+        var row = el("div", "row-actions");
+        var play = el("button", "btn soft", "Anhören"); play.type = "button";
+        var dl = el("button", "btn link", "Herunterladen"); dl.type = "button";
+        var msg = el("span", "msg"); msg.setAttribute("role", "status");
+        play.addEventListener("click", function(){ anhoeren(b, sp, play, msg, platz); });
+        dl.addEventListener("click", function(){ herunterladen(b, sp, dl, msg); });
+        row.appendChild(play); row.appendChild(dl); row.appendChild(msg);
+        li.appendChild(platz); li.appendChild(row);
+        liste.appendChild(li);
+      });
+      c.appendChild(liste);
+      return c;
+    }
     var row = el("div", "row-actions");
     var btn = el("button", "btn soft", "Herunterladen"); btn.type = "button";
     var msg = el("span", "msg"); msg.setAttribute("role", "status");
-    btn.addEventListener("click", function(){ ladeBonus(b, btn, msg); });
+    btn.addEventListener("click", function(){ herunterladen(b, null, btn, msg); });
     row.appendChild(btn); row.appendChild(msg);
     c.appendChild(row);
     return c;
-  }
-
-  function ladeBonus(b, btn, msg){
-    btn.disabled = true; msg.textContent = "Wird geladen …";
-    fetch("/api/programm/bonus", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({code: state.code, id: b.id}) })
-      .then(function(r){
-        if (!r.ok) return r.json().then(function(d){ throw new Error(d.error || "Der Download hat nicht geklappt."); });
-        return r.blob();
-      })
-      .then(function(blob){
-        var url = URL.createObjectURL(blob);
-        var a = document.createElement("a");
-        a.href = url; a.download = b.datei;
-        document.body.appendChild(a); a.click(); a.remove();
-        setTimeout(function(){ URL.revokeObjectURL(url); }, 60000);
-        msg.textContent = "Heruntergeladen";
-      })
-      .catch(function(err){ msg.textContent = err && err.message ? err.message : "Keine Verbindung. Versuch es gleich noch einmal."; })
-      .then(function(){ btn.disabled = false; });
   }
 
   function boniFuer(ids){
