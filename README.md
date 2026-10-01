@@ -3,6 +3,7 @@
 - `index.html` – Link-in-Bio-Seite von Seelenwende.
 - `werte-finder.html` – Werte-Finder: in vier Schritten (5–15 Werte wählen, auf 5 eingrenzen, in eigenen Worten beschreiben, was jeder Wert bedeutet, einschätzen wie sehr man sie lebt) zu den eigenen fünf Kernwerten – mit eigenen Bedeutungssätzen und Impulsfragen zum Nachspüren. Läuft komplett im Browser, ohne KI, API-Schlüssel oder Kosten; Antworten bleiben auf dem Gerät.
 - `begleiterin.html` – **Mira**, die Seelenwende-Begleiterin: KI-Gesprächsbegleitung mit Zugangscode. Ein offenes Gespräch ohne Kategorien – die Begleiterin erkennt selbst, was gerade gebraucht wird. Krisenerkennung mit Notrufnummern (CH/DE/AT), „Schnell weg“-Knopf, Gespräche werden nicht gespeichert.
+- `planer.html` – **Ausstiegs-Planer** (Teil des Erste-Hilfe-Sets, mit Zugangscode): Sicherheitsplan als Checkliste in neun Abschnitten (Handy und Spuren, Notfall, Dokumente, Geld, Notfalltasche, Menschen, Schutz und Recht, der Tag selbst, die ersten Wochen) mit Hinweisen und Beratungsstellen für die Schweiz, Deutschland und Österreich. Bewusst neutraler Tab-Titel („Checkliste“), „Schnell weg“-Knopf. Ohne PIN wird nichts gespeichert, mit PIN bleibt der Plan verschlüsselt (AES-GCM) nur auf dem Gerät.
 - `profil-check.html` – KI-Profil-Check: Instagram-Namen eingeben, die KI liest Profil, Bio, Link-Seite und die letzten Posts (offizielle Instagram Graph API) und bewertet jeden Punkt des Profil-Checks mit konkretem Verbesserungsvorschlag.
 
 ## So funktioniert der Profil-Check (Netlify)
@@ -43,3 +44,15 @@ Die Anweisungen der Begleiterin stehen in `netlify/lib/begleiterin.mts`.
 | `BEGLEITERIN_MODEL` | optional, Standard `claude-opus-5-5` |
 
 Neuer Code für eine Käuferin: an `BEGLEITERIN_CODES` anhängen, danach neu deployen. Kosten: grob 0,01–0,04 $ pro Nachricht.
+
+## So funktioniert der Ausstiegs-Planer (Netlify)
+
+`planer-inhalt` prüft den Zugangscode und liefert erst dann den Inhalt aus. Ohne gültigen Code steht in der Seite selbst keine Checkliste. Es braucht keine KI und keinen API-Schlüssel, es entstehen keine Kosten pro Nutzung.
+
+Der Inhalt (Punkte, Tipps, Hinweise je Land, Beratungsstellen) steht in `netlify/lib/ausstiegs-planer.mts`. **Nummern und Stellen vor jeder Änderung fachlich prüfen lassen** (Stand: Oktober 2026).
+
+| Variable | Inhalt |
+|---|---|
+| `ERSTE_HILFE_CODES` | gültige Codes fürs Erste-Hilfe-Set, kommagetrennt, Groß-/Kleinschreibung egal. Gilt später auch für den Antwort-Helfer. Codes von Programm- oder Kreis-Käuferinnen hier ebenfalls eintragen. |
+
+Neuer Code: an `ERSTE_HILFE_CODES` anhängen, danach neu deployen. Codes lieber zufällig wählen (z. B. `HILFE-7K2P-Q9XM`), nicht erratbar.

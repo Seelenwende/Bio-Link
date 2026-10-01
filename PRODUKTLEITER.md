@@ -22,6 +22,7 @@ Viele Frauen wissen selbst nicht, in welcher Phase sie sind. Darum gilt: **Die E
 - **Werte-Finder** (`werte-finder.html`) – in vier Schritten zu den eigenen fünf Kernwerten, in eigenen Worten. Für „Danach“: Die Frage „Wer bin ich ohne das?“ beginnt mit „Was ist mir wichtig?“. Auch für „Im Gehen“ wertvoll: Wer ihre Werte kennt, sieht klarer, wo die Beziehung sie verletzt. Ein natürlicher nächster Schritt nach dem Glaubenssätze-Test (alter Satz → eigene Werte → neuer Satz).
 - **Mira, die Seelenwende-Begleiterin** (`begleiterin.html`) – eine Ansprechpartnerin für alle Situationen: einfach losschreiben, sie erkennt selbst, was gebraucht wird (runterkommen, Muster einordnen, Selbstzweifel, Grenz-Sätze, Klarheit, Glaubenssätze und Werte). Einzeln als Kontingent, im Programm und im Kreis enthalten.
 - **Der Weg nach draußen**, **Erste-Hilfe-Set** – für den Stups und die ersten Tage danach.
+- **Ausstiegs-Planer** (`planer.html`, gebaut) – Sicherheitsplan als Checkliste mit Beratungsstellen für CH, DE und AT. Teil des Erste-Hilfe-Sets, mit Zugangscode (`ERSTE_HILFE_CODES`). Diskret: neutraler Tab-Titel, „Schnell weg“, speichert nur mit PIN und nur verschlüsselt auf dem Gerät.
 - **Self Care Journal**, **Du bist genug**, **Das Bundle** – Selbstwert und Neuanfang.
 - **Klarheits-Analyse** – schriftliche Außensicht, ohne Telefonat (sicherer für Frauen, die noch drin sind).
 
