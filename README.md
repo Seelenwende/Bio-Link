@@ -3,6 +3,7 @@
 - `index.html` – Link-in-Bio-Seite von Seelenwende.
 - `werte-finder.html` – Werte-Finder: in vier Schritten (5–15 Werte wählen, auf 5 eingrenzen, in eigenen Worten beschreiben, was jeder Wert bedeutet, einschätzen wie sehr man sie lebt) zu den eigenen fünf Kernwerten – mit eigenen Bedeutungssätzen und Impulsfragen zum Nachspüren. Läuft komplett im Browser, ohne KI, API-Schlüssel oder Kosten; Antworten bleiben auf dem Gerät.
 - `begleiterin.html` – **Mira**, die Seelenwende-Begleiterin: KI-Gesprächsbegleitung mit Zugangscode. Ein offenes Gespräch ohne Kategorien – die Begleiterin erkennt selbst, was gerade gebraucht wird. Krisenerkennung mit Notrufnummern (CH/DE/AT), „Schnell weg“-Knopf, Gespräche werden nicht gespeichert.
+- `programm.html` – **„Wieder bei dir“**, das 6-Wochen-Programm mit Zugangscode: sechs Wochen mit Impulsen zum Lesen, Schreibübungen, sieben Tagesankern pro Woche und Gesprächsanstößen für Mira. Die Inhalte liegen nur auf dem Server und kommen erst nach dem Code. Notizen bleiben auf dem Gerät (dauerhaft nur mit Häkchen, sonst nur im offenen Tab). Mit „Schnell weg“ und Krisenleiste.
 - `profil-check.html` – KI-Profil-Check: Instagram-Namen eingeben, die KI liest Profil, Bio, Link-Seite und die letzten Posts (offizielle Instagram Graph API) und bewertet jeden Punkt des Profil-Checks mit konkretem Verbesserungsvorschlag.
 
 ## So funktioniert der Profil-Check (Netlify)
@@ -43,3 +44,16 @@ Die Anweisungen der Begleiterin stehen in `netlify/lib/begleiterin.mts`.
 | `BEGLEITERIN_MODEL` | optional, Standard `claude-opus-5-5` |
 
 Neuer Code für eine Käuferin: an `BEGLEITERIN_CODES` anhängen, danach neu deployen. Kosten: grob 0,01–0,04 $ pro Nachricht.
+
+## So funktioniert das 6-Wochen-Programm „Wieder bei dir“ (Netlify)
+
+1. `programm-inhalt` prüft den Zugangscode und liefert erst dann die Inhalte aus. Die Texte stehen in `netlify/lib/programm.mts`.
+2. Notizen, Tagesanker und Fortschritt werden nie hochgeladen. Mit Häkchen bleiben sie auf dem Gerät, ohne Häkchen nur, solange der Tab offen ist.
+3. Derselbe Code öffnet Mira, mit eigenem, größerem Kontingent. Die Gesprächsanstöße jeder Woche landen direkt in Miras Eingabefeld.
+
+| Variable | Inhalt |
+|---|---|
+| `PROGRAMM_CODES` | gültige Programm-Codes, kommagetrennt, z. B. `WIEDER-AB12-CD34` |
+| `PROGRAMM_MIRA_LIMIT` | optional, Mira-Nachrichten pro Programm-Code (Standard 1000) |
+
+Neue Käuferin: Code an `PROGRAMM_CODES` anhängen, danach neu deployen.
