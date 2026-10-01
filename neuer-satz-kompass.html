@@ -279,20 +279,20 @@
   <!-- Einstieg: zwei Wege -->
   <section class="view" id="v-intro">
     <section class="weg" aria-labelledby="t-weg1">
-      <div class="weg__label">Weg 1</div>
-      <h2 id="t-weg1">Direkt starten</h2>
-      <p>Du wählst deinen alten Satz und drei Werte selbst aus. Das dauert etwa zwei Minuten.</p>
-      <button class="btn btn--soft btn--block" type="button" id="start">Kompass einrichten</button>
+      <div class="weg__label">Weg 1 · empfohlen</div>
+      <h2 id="t-weg1">Mit Test und Werte-Finder</h2>
+      <p>Der Kompass übernimmt deinen lautesten Satz und deine Werte und wird ganz persönlich. Jeder Schritt öffnet sich, wenn der vorherige abgeschlossen ist.</p>
+      <div class="steps" id="steps"></div>
+      <p class="hint" id="stepHint" role="status"></p>
     </section>
 
     <div class="oder">oder</div>
 
     <section class="weg" aria-labelledby="t-weg2">
-      <div class="weg__label">Weg 2 · empfohlen</div>
-      <h2 id="t-weg2">Mit Test und Werte-Finder</h2>
-      <p>Der Kompass übernimmt deinen lautesten Satz und deine Werte und wird ganz persönlich. Jeder Schritt öffnet sich, wenn der vorherige abgeschlossen ist.</p>
-      <div class="steps" id="steps"></div>
-      <p class="hint" id="stepHint" role="status"></p>
+      <div class="weg__label">Weg 2</div>
+      <h2 id="t-weg2">Direkt starten</h2>
+      <p>Du wählst deinen alten Satz und drei Werte selbst aus. Das dauert etwa zwei Minuten.</p>
+      <button class="btn btn--soft btn--block" type="button" id="start">Kompass einrichten</button>
     </section>
 
     <p class="price-line">19 € einmalig · Einrichten ist frei, die 30 Tage öffnen sich mit deinem Zugangscode.</p>
@@ -515,7 +515,7 @@
   /* Einstieg: Hinweis auf Test und Werte-Finder */
   const LOCK = '<svg width="12" height="13" viewBox="0 0 12 13" aria-hidden="true"><rect x="1.5" y="5.5" width="9" height="6.5" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M3.5 5.5V4a2.5 2.5 0 0 1 5 0v1.5" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>';
   function renderIntro(){
-    // Weg 2: Test → Werte-Finder → Kompass; jeder Schritt öffnet sich erst nach dem vorherigen
+    // Weg 1 (empfohlen): Test → Werte-Finder → Kompass; jeder Schritt öffnet sich erst nach dem vorherigen
     const t = !!fromTest(), w = !!fromWerte();
     const steps = [
       {nr: 1, name: "Glaubenssätze-Test", zeit: "5 Min.", href: "glaubenssaetze.html", ok: t, zu: false},
@@ -731,7 +731,7 @@
 
   /* ---------- Ereignisse ---------- */
   const nudge = id => { const h = $(id); h.classList.remove("pulse"); void h.offsetWidth; h.classList.add("pulse"); };
-  // direct: Weg 1 – nichts aus Test und Werte-Finder übernehmen
+  // direct: Weg 2 (direkt starten) – nichts aus Test und Werte-Finder übernehmen
   const beginSetup = (keep, direct = false) => {
     draft = keep
       ? {beliefId: s.beliefId, alt: s.alt, neu: s.neu, values: s.values.map(v => ({...v}))}
