@@ -1,6 +1,5 @@
 import Anthropic from "@anthropic-ai/sdk";
-import { getStore } from "@netlify/blobs";
-import { createHash, timingSafeEqual } from "node:crypto";
+import { getUsage as getUsageIn, hasCodes, isValidCodeIn, limitFromEnv, setUsage } from "./zugang.mts";
 
 export const BEGLEITERIN_STORE = "begleiterin";
 const DEFAULT_MODEL = "claude-opus-5-5";
@@ -50,44 +49,27 @@ const REFUSAL_REPLY = `Darauf kann ich so leider nicht antworten. Wenn du gerade
 
 /* ---------- Zugangscodes ---------- */
 
-function normalizeCode(code: string): string {
-  return code.trim().toUpperCase();
-}
-
-function hash(value: string): Buffer {
-  return createHash("sha256").update(value).digest();
-}
+const CODE_ENVS = ["BEGLEITERIN_CODES"];
 
 /** Codes stehen kommagetrennt in BEGLEITERIN_CODES, z. B. "Wendepunkt, WENDE-AB12-CD34" (Groß-/Kleinschreibung egal). */
 export function isValidCode(given: unknown): given is string {
-  if (typeof given !== "string" || given.length > 64) return false;
-  const codes = (Netlify.env.get("BEGLEITERIN_CODES") ?? "").split(",").map(normalizeCode).filter(Boolean);
-  const g = hash(normalizeCode(given));
-  let ok = false;
-  for (const c of codes) ok = timingSafeEqual(g, hash(c)) || ok;
-  return ok;
+  return isValidCodeIn(CODE_ENVS, given);
 }
 
 export function isBegleiterinConfigured(): boolean {
-  return Boolean(Netlify.env.get("ANTHROPIC_API_KEY") && Netlify.env.get("BEGLEITERIN_CODES"));
+  return Boolean(Netlify.env.get("ANTHROPIC_API_KEY")) && hasCodes(CODE_ENVS);
 }
 
 export function messageLimit(): number {
-  const n = Number(Netlify.env.get("BEGLEITERIN_LIMIT"));
-  return Number.isFinite(n) && n > 0 ? Math.floor(n) : DEFAULT_LIMIT;
+  return limitFromEnv("BEGLEITERIN_LIMIT", DEFAULT_LIMIT);
 }
 
-function usageKey(code: string): string {
-  return "usage/" + hash(normalizeCode(code)).toString("hex");
+export function getUsage(code: string): Promise<number> {
+  return getUsageIn(BEGLEITERIN_STORE, code);
 }
 
-export async function getUsage(code: string): Promise<number> {
-  const data = (await getStore(BEGLEITERIN_STORE).get(usageKey(code), { type: "json" })) as { used?: number } | null;
-  return data?.used ?? 0;
-}
-
-export async function addUsage(code: string, used: number): Promise<void> {
-  await getStore(BEGLEITERIN_STORE).setJSON(usageKey(code), { used, updatedAt: Date.now() });
+export function addUsage(code: string, used: number): Promise<void> {
+  return setUsage(BEGLEITERIN_STORE, code, used);
 }
 
 /* ---------- Gesprächsverlauf prüfen ---------- */
