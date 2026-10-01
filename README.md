@@ -74,6 +74,15 @@ Satz und Werte wählt die Frau frei. Auf der letzten Einrichtungsseite gibt sie 
 
 Neue Käuferin: Code an `KOMPASS_CODES` anhängen, danach neu deployen. Ohne die Variable zeigt der Kompass „noch nicht eingerichtet“. Den Kauf-Link („Noch keinen Code?“) in `neuer-satz-kompass.html` auf das Tentary-Produkt setzen, sobald es angelegt ist.
 
+## Bio-Link: Werkzeuge erst nach Mail-Adresse
+
+Auf `index.html` öffnen Muster-Check, Glaubenssätze-Test, Werte-Finder und „Sei sanft mit dir“ nicht direkt. Zuerst kommt ein Fenster, in das die Frau ihre Mail-Adresse einträgt und den Mails zustimmt. `werkzeuge-anmeldung` (`/api/werkzeuge/anmelden`) trägt sie in MailerLite ein, danach öffnet sich das Werkzeug. Der Browser merkt sich die Anmeldung, beim nächsten Besuch geht es direkt weiter. Die Werkzeug-Seiten selbst bleiben über ihren direkten Link erreichbar (z. B. aus dem Programm oder den Ergebnis-Mails).
+
+| Variable | Inhalt |
+|---|---|
+| `MAILERLITE_API_KEY` | API-Schlüssel aus MailerLite (derselbe wie beim Glaubenssätze-Test) |
+| `MAILERLITE_GROUP_WERKZEUGE` | ID der Gruppe „Bio-Link Werkzeuge“ (optional; ohne sie landet die Adresse ohne Gruppe in MailerLite) |
+
 ## Glaubenssätze-Test: Ergebnis per Mail (MailerLite)
 
 Die Texte des Tests stehen in `glaubenssaetze.json` (für Seite und Mail). Unter dem Ergebnis kann die Frau ihre Mail-Adresse eintragen. `test-ergebnis-mail` rechnet das Ergebnis aus den Punkten nach und trägt sie mit ihrem Hauptsatz in MailerLite ein; die Mail verschickt eine MailerLite-Automatisierung. Einrichtung, Felder und Mailtext: `mails/glaubenssaetze-ergebnis.md`.
