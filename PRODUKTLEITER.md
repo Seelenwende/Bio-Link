@@ -10,7 +10,7 @@ Viele Frauen wissen selbst nicht, in welcher Phase sie sind. Darum gilt: **Die E
 
 | Stufe | Noch drin | Im Gehen | Danach |
 |---|---|---|---|
-| **0 · Kostenlos** | Glaubenssätze-Test | Der Weg nach draußen (Mini-Guide) | Self Care Journal · **Werte-Finder** |
+| **0 · Kostenlos** | **Muster-Check** · Glaubenssätze-Test | Der Weg nach draußen (Mini-Guide) | Self Care Journal · **Werte-Finder** |
 | **1 · Einstieg** | Mira, die Begleiterin (Kontingent, ~19 €) | Erste-Hilfe-Set (19 €) | Du bist genug (E-Book) |
 | **2 · Herzstück** | – | Das Bundle – Zurück zu dir (49 €) | Das Bundle – Zurück zu dir (49 €) |
 | **3 · Begleitung** | Klarheits-Analyse (99 €) | 6-Wochen-Programm inkl. Mira (149 €) | 6-Wochen-Programm inkl. Mira (149 €) |
@@ -18,6 +18,7 @@ Viele Frauen wissen selbst nicht, in welcher Phase sie sind. Darum gilt: **Die E
 
 ## Die Bausteine
 
+- **Muster-Check** (`muster-check.html`) – „Ist das noch normal?“: 20 konkrete Situationen zeigen, ob sich ein Muster wiederholt, ohne über ihn zu urteilen. Der Eingang für Frauen, die noch zweifeln, ob „es so schlimm ist“. Danach führt er zum Glaubenssätze-Test (Warum bleibe ich trotzdem?) und zum Mini-Guide. Mit Sicherheitshinweis und „Schnell weg“-Knopf.
 - **Glaubenssätze-Test** (`glaubenssaetze.html`) – erklärt, *warum* sie bleibt oder sich klein fühlt, ohne sie zum Gehen zu drängen. Stärkster Eingang für „Noch drin“, wirkt auch „Danach“.
 - **Werte-Finder** (`werte-finder.html`) – in vier Schritten zu den eigenen fünf Kernwerten, in eigenen Worten. Für „Danach“: Die Frage „Wer bin ich ohne das?“ beginnt mit „Was ist mir wichtig?“. Auch für „Im Gehen“ wertvoll: Wer ihre Werte kennt, sieht klarer, wo die Beziehung sie verletzt. Ein natürlicher nächster Schritt nach dem Glaubenssätze-Test (alter Satz → eigene Werte → neuer Satz).
 - **Mira, die Seelenwende-Begleiterin** (`begleiterin.html`) – eine Ansprechpartnerin für alle Situationen: einfach losschreiben, sie erkennt selbst, was gebraucht wird (runterkommen, Muster einordnen, Selbstzweifel, Grenz-Sätze, Klarheit, Glaubenssätze und Werte). Einzeln als Kontingent, im Programm und im Kreis enthalten.

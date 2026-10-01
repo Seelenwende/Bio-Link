@@ -1,6 +1,7 @@
 # Bio-Link
 
 - `index.html` – Link-in-Bio-Seite von Seelenwende.
+- `muster-check.html` – **Muster-Check** „Ist das noch normal?“: 20 konkrete Alltagssituationen in fünf Bereichen (Wahrnehmung, Abwertung, Kontrolle & Rückzug, Heiß & kalt, Schuld & Angst). Zeigt, wo sich ein Muster wiederholt, wie es in einer gesunden Beziehung aussähe, einen Satz und eine Journal-Frage. Sicherheitshinweis mit Hilfenummern (CH/DE/AT), sobald sie Angst vor seiner Wut angibt; „Schnell weg“-Knopf (auch zweimal Esc). Läuft komplett im Browser, nichts wird gespeichert.
 - `werte-finder.html` – Werte-Finder: in vier Schritten (5–15 Werte wählen, auf 5 eingrenzen, in eigenen Worten beschreiben, was jeder Wert bedeutet, einschätzen wie sehr man sie lebt) zu den eigenen fünf Kernwerten – mit eigenen Bedeutungssätzen und Impulsfragen zum Nachspüren. Läuft komplett im Browser, ohne KI, API-Schlüssel oder Kosten; Antworten bleiben auf dem Gerät.
 - `begleiterin.html` – **Mira**, die Seelenwende-Begleiterin: KI-Gesprächsbegleitung mit Zugangscode. Ein offenes Gespräch ohne Kategorien – die Begleiterin erkennt selbst, was gerade gebraucht wird. Krisenerkennung mit Notrufnummern (CH/DE/AT), „Schnell weg“-Knopf, Gespräche werden nicht gespeichert.
 - `profil-check.html` – KI-Profil-Check: Instagram-Namen eingeben, die KI liest Profil, Bio, Link-Seite und die letzten Posts (offizielle Instagram Graph API) und bewertet jeden Punkt des Profil-Checks mit konkretem Verbesserungsvorschlag.
