@@ -257,7 +257,11 @@
         lies den neuen Satz laut – und beobachte eine Woche lang, wann der alte sich meldet.
       </p>
 
-      <a class="btn no-print" href="https://seelenwende.mytentary.com/p/niaKY4" target="_blank" rel="noopener">
+      <a class="btn no-print" href="neuer-satz-kompass.html">
+        Neuer-Satz-Kompass
+        <span class="meta">Kostenlos · 30 Tage vom alten zum neuen Satz</span>
+      </a>
+      <a class="btn btn--soft no-print" href="https://seelenwende.mytentary.com/p/niaKY4" target="_blank" rel="noopener" style="margin-top:13px">
         Self Care Journal
         <span class="meta">Kostenlos · Raum für deine Journal-Fragen</span>
       </a>
@@ -470,6 +474,13 @@
     var ranked = BELIEFS.slice().sort(function(a, b){ return scores[b.id] - scores[a.id]; });
     var top = ranked.filter(function(b){ return scores[b.id] >= 5; }).slice(0, 3);
     if (!top.length) top = ranked.slice(0, 1);
+
+    // Ergebnis auf dem Gerät merken, damit der Neuer-Satz-Kompass daran anknüpfen kann
+    try {
+      localStorage.setItem("seelenwende-glaubenssaetze-v1", JSON.stringify({
+        ranked: top.map(function(b){ return b.id; }), scores: scores, doneAt: Date.now()
+      }));
+    } catch(e){}
 
     var strong = ranked.filter(function(b){ return scores[b.id] >= 8; }).length;
     $("summary").textContent = strong
