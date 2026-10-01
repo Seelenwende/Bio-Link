@@ -4,6 +4,7 @@
 - `muster-check.html` – **Muster-Check** „Ist das noch normal?“: 20 konkrete Alltagssituationen in fünf Bereichen (Wahrnehmung, Abwertung, Kontrolle & Rückzug, Heiß & kalt, Schuld & Angst). Zeigt, wo sich ein Muster wiederholt, wie es in einer gesunden Beziehung aussähe, einen Satz und eine Journal-Frage. Sicherheitshinweis mit Hilfenummern (CH/DE/AT), sobald sie Angst vor seiner Wut angibt; „Schnell weg“-Knopf (auch zweimal Esc). Läuft komplett im Browser, nichts wird gespeichert.
 - `werte-finder.html` – Werte-Finder: in vier Schritten (5–15 Werte wählen, auf 5 eingrenzen, in eigenen Worten beschreiben, was jeder Wert bedeutet, einschätzen wie sehr man sie lebt) zu den eigenen fünf Kernwerten – mit eigenen Bedeutungssätzen und Impulsfragen zum Nachspüren. Läuft komplett im Browser, ohne KI, API-Schlüssel oder Kosten; Antworten bleiben auf dem Gerät.
 - `affirmationen.html` – **Sei sanft mit dir**: persönliche Affirmationen für Frauen, die gerade zu hart mit sich sind. Sie wählt, was die harte Stimme sagt (bis zu drei Sätze, optional in eigenen Worten), wie es ihr gerade geht und wo sie steht, und beantwortet die Freundinnen-Frage („Was würdest du einer Freundin sagen?“). Danach bekommt sie zu jedem harten Satz eine Einordnung und einen freundlichen Satz in drei Stufen (ganz sanft · auf dem Weg · klar und stark) und wählt selbst, welche Stufe sie heute glauben kann. Dazu ein Satz für ihr Gefühl, ihre Phase und – falls vorhanden – ihre Werte aus dem Werte-Finder. Mit Lese-Moment im Vollbild, „Satz für heute“ beim nächsten Besuch und Krisenhinweis, wenn ihre eigenen Worte auf Gefahr deuten. Läuft komplett im Browser, ohne KI und ohne Kosten; alles bleibt auf dem Gerät.
+- `neuer-satz-kompass.html` – **Neuer-Satz-Kompass** (bezahlt, mit Zugangscode): 30 Tage, ein Impuls pro Tag (Impuls, kleine Aufgabe, Frage, eigene Notiz). Baut auf dem lautesten Satz aus dem Glaubenssätze-Test und drei Werten aus dem Werte-Finder auf – beide werden automatisch übernommen, wenn sie auf dem Gerät gemacht wurden, sonst wählt sie die Frau selbst. Woche 1 Bemerken, Woche 2 Der neue Satz, Woche 3 Werte leben, Woche 4 Verankern. Die Einrichtung ist frei; die 30 Impulse liefert der Server erst nach gültigem Code (siehe unten). Jeden Kalendertag öffnet sich ein neuer Tag, verpasste bleiben offen. Optional Kalender-Erinnerung (.ics). Notizen bleiben auf dem Gerät. Die Weiter-Knöpfe aus Test und Werte-Finder öffnen `neuer-satz-kompass.html#neu`: Dann erscheint immer ein neuer, leerer Kompass zum Einrichten (ein laufender bleibt über „Zu deinem bisherigen Kompass“ erreichbar, bis der neue gestartet wird). Vorschau mit allen Tagen: `neuer-satz-kompass.html?alle` oder `#alle`.
 - `begleiterin.html` – **Mira**, die Seelenwende-Begleiterin: KI-Gesprächsbegleitung mit Zugangscode. Ein offenes Gespräch ohne Kategorien – die Begleiterin erkennt selbst, was gerade gebraucht wird. Krisenerkennung mit Notrufnummern (CH/DE/AT), „Schnell weg“-Knopf, Gespräche werden nicht gespeichert.
 - `programm.html` – **„Wieder bei dir“**, das 6-Wochen-Programm mit Zugangscode: sechs Wochen mit Impulsen zum Lesen, Schreibübungen, sieben Tagesankern pro Woche und Gesprächsanstößen für Mira. Die Inhalte liegen nur auf dem Server und kommen erst nach dem Code. Notizen bleiben auf dem Gerät (dauerhaft nur mit Häkchen, sonst nur im offenen Tab). Mit „Schnell weg“ und Krisenleiste.
 - `profil-check.html` – KI-Profil-Check: Instagram-Namen eingeben, die KI liest Profil, Bio, Link-Seite und die letzten Posts (offizielle Instagram Graph API) und bewertet jeden Punkt des Profil-Checks mit konkretem Verbesserungsvorschlag.
@@ -61,6 +62,16 @@ Neuer Code für eine Käuferin: an `BEGLEITERIN_CODES` anhängen, danach neu dep
 | `PROGRAMM_MIRA_LIMIT` | optional, Mira-Nachrichten pro Programm-Code (Standard 1000) |
 
 Neue Käuferin: Code an `PROGRAMM_CODES` anhängen, danach neu deployen.
+
+## So funktioniert der Neuer-Satz-Kompass (Netlify)
+
+Satz und Werte wählt die Frau frei. Auf der letzten Einrichtungsseite gibt sie ihren Zugangscode ein. `kompass-tage` (`/api/kompass/tage`) prüft den Code und liefert die 30 Impulse, fertig eingesetzt mit ihrem Satz und ihren Werten. Die Impulse stehen nur in `netlify/lib/kompass.mts`, nicht in der Seite. Danach läuft alles auf ihrem Gerät; gespeichert wird auf dem Server nichts.
+
+| Variable | Inhalt |
+|---|---|
+| `KOMPASS_CODES` | gültige Kompass-Codes, kommagetrennt, Groß-/Kleinschreibung egal, z. B. `KOMPASS-AB12-CD34` |
+
+Neue Käuferin: Code an `KOMPASS_CODES` anhängen, danach neu deployen. Ohne die Variable zeigt der Kompass „noch nicht eingerichtet“. Den Kauf-Link („Noch keinen Code?“) in `neuer-satz-kompass.html` auf das Tentary-Produkt setzen, sobald es angelegt ist.
 
 ## Glaubenssätze-Test: Ergebnis per Mail (MailerLite)
 
