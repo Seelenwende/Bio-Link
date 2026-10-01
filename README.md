@@ -63,6 +63,16 @@ Neuer Code für eine Käuferin: an `BEGLEITERIN_CODES` anhängen, danach neu dep
 
 Neue Käuferin: Code an `PROGRAMM_CODES` anhängen, danach neu deployen.
 
+## So funktioniert der Neuer-Satz-Kompass (Netlify)
+
+Satz und Werte wählt die Frau frei. Auf der letzten Einrichtungsseite gibt sie ihren Zugangscode ein. `kompass-tage` (`/api/kompass/tage`) prüft den Code und liefert die 30 Impulse, fertig eingesetzt mit ihrem Satz und ihren Werten. Die Impulse stehen nur in `netlify/lib/kompass.mts`, nicht in der Seite. Danach läuft alles auf ihrem Gerät; gespeichert wird auf dem Server nichts.
+
+| Variable | Inhalt |
+|---|---|
+| `KOMPASS_CODES` | gültige Kompass-Codes, kommagetrennt, Groß-/Kleinschreibung egal, z. B. `KOMPASS-AB12-CD34` |
+
+Neue Käuferin: Code an `KOMPASS_CODES` anhängen, danach neu deployen. Ohne die Variable zeigt der Kompass „noch nicht eingerichtet“. Den Kauf-Link („Noch keinen Code?“) in `neuer-satz-kompass.html` auf das Tentary-Produkt setzen, sobald es angelegt ist.
+
 ## Glaubenssätze-Test: Ergebnis per Mail (MailerLite)
 
 Die Texte des Tests stehen in `glaubenssaetze.json` (für Seite und Mail). Unter dem Ergebnis kann die Frau ihre Mail-Adresse eintragen. `test-ergebnis-mail` rechnet das Ergebnis aus den Punkten nach und trägt sie mit ihrem Hauptsatz in MailerLite ein; die Mail verschickt eine MailerLite-Automatisierung. Einrichtung, Felder und Mailtext: `mails/glaubenssaetze-ergebnis.md`.

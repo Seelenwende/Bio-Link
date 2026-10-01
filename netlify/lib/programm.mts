@@ -704,6 +704,6 @@ export const PROGRAMM: Programm = {
   abschluss: [
     "Du bist sechs Wochen lang für dich da gewesen. Das ist viel, auch wenn sich nicht alles gelöst hat.",
     "Die Übungen bleiben hier. Du kannst jederzeit zurückkommen, eine Woche wiederholen oder deinen Plan für schwere Tage lesen. Und Mira ist weiter für dich da, solange dein Kontingent reicht.",
-    "Wenn du nach den sechs Wochen jeden Tag einen kleinen Impuls möchtest: Der Neuer-Satz-Kompass baut auf deinem Testergebnis und deinen Werten auf und begleitet dich 30 Tage lang. Er kommt bald.",
+    "Wenn du nach den sechs Wochen jeden Tag einen kleinen Impuls möchtest: Der Neuer-Satz-Kompass baut auf deinem Testergebnis und deinen Werten auf und begleitet dich 30 Tage lang (einzeln erhältlich, 19 €).",
   ],
 };
