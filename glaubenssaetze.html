@@ -179,6 +179,18 @@
     text-transform:uppercase;color:var(--mikro);margin-top:24px;
   }
 
+  /* --- Ergebnis per Mail --- */
+  .mail{text-align:left;background:#fff;border:1px solid var(--linie);border-radius:18px;padding:20px 22px;margin:22px 0 16px;}
+  .mail h4{font-family:"Playfair Display",serif;font-weight:500;font-size:17px;margin-bottom:6px;}
+  .mail p{font-size:14px;color:var(--gedaempft);line-height:1.6;}
+  .mail input[type="email"]{width:100%;margin-top:12px;font:inherit;font-size:16px;color:var(--pflaume);background:var(--papier);border:1px solid var(--linie);border-radius:12px;padding:12px 14px;}
+  .mail input[type="email"]:focus-visible{outline:2px solid var(--rose);outline-offset:1px;}
+  .mail .check{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--gedaempft);line-height:1.5;margin-top:12px;}
+  .mail .check input{margin-top:3px;accent-color:var(--beere);flex-shrink:0;}
+  .mail .safe{font-size:12.5px;margin-top:8px;}
+  .mail .btn{margin-top:10px;}
+  .mail-status{font-size:14px;color:var(--beere);margin-top:8px;min-height:1.4em;}
+  .sr,.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;}
   @keyframes rise{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
   @media (prefers-reduced-motion:reduce){
     *{animation:none !important;transition:none !important;}
@@ -228,6 +240,7 @@
         Test beginnen
         <span class="meta">Kostenlos · anonym · deine Antworten bleiben auf deinem Gerät</span>
       </button>
+      <p class="small" id="start-error" role="alert" style="color:var(--beere);margin-top:10px"></p>
     </section>
 
     <!-- FRAGEN -->
@@ -257,6 +270,17 @@
         lies den neuen Satz laut – und beobachte eine Woche lang, wann der alte sich meldet.
       </p>
 
+      <form class="mail no-print" id="mail-form" novalidate>
+        <h4>Dein Ergebnis per Mail</h4>
+        <p>Für deinen lautesten Satz: woher er kommt, ein neuer Satz, deine Journal-Frage und eine kleine Übung für die nächsten sieben Tage. Dazu die Übersicht über alle acht Sätze.</p>
+        <label class="sr" for="mail-email">Deine Mail-Adresse</label>
+        <input type="email" id="mail-email" autocomplete="email" placeholder="Deine Mail-Adresse" required>
+        <input type="text" name="website" id="mail-website" tabindex="-1" autocomplete="off" class="hp" aria-hidden="true">
+        <label class="check"><input type="checkbox" id="mail-ok"> Ich möchte mein Ergebnis per Mail bekommen und danach gelegentlich Impulse von Seelenwende. Abmelden kann ich mich jederzeit mit einem Klick.</label>
+        <p class="safe">Nutze eine Adresse, die nur du liest. Die Mail kommt von Seelenwende.</p>
+        <button class="btn btn--soft" type="submit" id="mail-send" style="margin-top:10px">Ergebnis senden</button>
+        <p class="mail-status" id="mail-status" role="status"></p>
+      </form>
       <a class="btn no-print" href="https://seelenwende.mytentary.com/p/niaKY4" target="_blank" rel="noopener">
         Self Care Journal
         <span class="meta">Kostenlos · Raum für deine Journal-Fragen</span>
@@ -287,113 +311,8 @@
 <script>
 (function(){
   // Acht häufige Glaubenssätze, je drei Aussagen (0–4 Punkte pro Aussage).
-  var BELIEFS = [
-    {
-      id:"genug", area:"Selbstwert",
-      satz:"Ich bin nicht genug.",
-      items:[
-        "Egal, wie viel ich schaffe – es fühlt sich selten genug an.",
-        "Wenn andere mich wirklich kennen würden, wären sie enttäuscht.",
-        "Ich vergleiche mich oft mit anderen und schneide dabei schlecht ab."
-      ],
-      zeigt:"Du leistest viel und spürst trotzdem kaum Zufriedenheit. Lob prallt ab, Kritik bleibt hängen.",
-      herkunft:"Oft aus Zeiten, in denen Anerkennung an Leistung geknüpft war oder du dich neben anderen übersehen gefühlt hast.",
-      neu:"Ich bin genug – auch an Tagen, an denen ich wenig schaffe.",
-      frage:"Wessen Stimme höre ich, wenn ich mir sage, dass ich nicht genug bin?"
-    },
-    {
-      id:"liebe", area:"Liebe & Beziehung",
-      satz:"Liebe muss ich mir verdienen.",
-      items:[
-        "Ich habe das Gefühl, mich anstrengen zu müssen, damit man mich mag.",
-        "Wenn ich nichts gebe, bin ich für andere uninteressant.",
-        "Ich bleibe lieber in etwas, das mir nicht guttut, als allein zu sein."
-      ],
-      zeigt:"Du gibst mehr, als du bekommst, und hältst an Beziehungen fest, obwohl sie dich erschöpfen.",
-      herkunft:"Häufig dort, wo Zuneigung unberechenbar war oder nur floss, wenn du „brav“, hilfreich oder unkompliziert warst.",
-      neu:"Ich bin liebenswert, einfach weil ich bin – nicht für das, was ich gebe.",
-      frage:"Wie würde ich mich in Beziehungen verhalten, wenn ich mir Liebe nicht verdienen müsste?"
-    },
-    {
-      id:"beduerfnisse", area:"Grenzen & Bedürfnisse",
-      satz:"Meine Bedürfnisse sind nicht so wichtig.",
-      items:[
-        "Es fällt mir schwer, Nein zu sagen, ohne mich schuldig zu fühlen.",
-        "Ich stelle die Wünsche anderer fast automatisch über meine eigenen.",
-        "Um Hilfe zu bitten fühlt sich an, als würde ich zur Last fallen."
-      ],
-      zeigt:"Du merkst oft erst spät, was du selbst brauchst – und sagst Ja, obwohl alles in dir Nein ruft.",
-      herkunft:"Oft aus einem Umfeld, in dem für deine Wünsche kein Platz war oder du früh für andere sorgen musstest.",
-      neu:"Meine Bedürfnisse zählen. Ein Nein zu anderen kann ein Ja zu mir sein.",
-      frage:"Was brauche ich heute – und was hält mich davon ab, es mir zu nehmen?"
-    },
-    {
-      id:"perfekt", area:"Perfektionismus",
-      satz:"Ich darf keine Fehler machen.",
-      items:[
-        "Fehler beschäftigen mich noch lange, nachdem sie passiert sind.",
-        "Ich fange Dinge manchmal gar nicht erst an, weil sie nicht perfekt werden könnten.",
-        "Kritik trifft mich, als ginge es um meinen ganzen Wert."
-      ],
-      zeigt:"Du bist streng mit dir, zögerst Neues hinaus und fühlst dich schnell beschämt.",
-      herkunft:"Oft aus Erfahrungen, in denen Fehler bestraft, belächelt oder mit Liebesentzug beantwortet wurden.",
-      neu:"Fehler gehören zum Wachsen. Ich darf lernen, statt perfekt zu sein.",
-      frage:"Was würde ich ausprobieren, wenn ein Fehler nichts über meinen Wert aussagen würde?"
-    },
-    {
-      id:"schuld", area:"Verantwortung & Schuld",
-      satz:"Ich bin dafür verantwortlich, dass es allen gut geht.",
-      items:[
-        "Wenn jemand in meiner Nähe schlecht gelaunt ist, frage ich mich, was ich falsch gemacht habe.",
-        "Ich entschuldige mich oft – auch für Dinge, die nicht meine Schuld sind.",
-        "Ich fühle mich egoistisch, wenn ich zuerst an mich denke."
-      ],
-      zeigt:"Du scannst ständig die Stimmung anderer und trägst Gefühle, die nicht deine sind.",
-      herkunft:"Oft aus der frühen Rolle, für Frieden sorgen zu müssen, oder aus Beziehungen, in denen dir die Schuld für die Launen anderer gegeben wurde.",
-      neu:"Ich bin für meine Gefühle verantwortlich – nicht für die aller anderen.",
-      frage:"Welche Last trage ich gerade, die eigentlich jemand anderem gehört?"
-    },
-    {
-      id:"vertrauen", area:"Vertrauen",
-      satz:"Ich kann mich auf niemanden verlassen.",
-      items:[
-        "Ich rechne eher damit, enttäuscht zu werden, als dass jemand für mich da ist.",
-        "Ich zeige meine Gefühle lieber nicht, weil sie gegen mich verwendet werden könnten.",
-        "Nähe macht mich schnell misstrauisch oder unruhig."
-      ],
-      zeigt:"Du hältst andere auf Abstand, regelst alles allein und bist innerlich oft in Alarmbereitschaft.",
-      herkunft:"Häufig aus Erfahrungen von Vertrauensbruch, Unzuverlässigkeit oder emotionaler Verletzung.",
-      neu:"Ich darf vorsichtig sein – und trotzdem Menschen finden, die sicher für mich sind.",
-      frage:"Bei wem fühle ich mich ein kleines Stück sicherer – und woran merke ich das?"
-    },
-    {
-      id:"kraft", area:"Selbstvertrauen",
-      satz:"Ich schaffe das nicht allein.",
-      items:[
-        "Große Entscheidungen traue ich mir allein kaum zu.",
-        "Ich glaube oft, dass andere besser wissen, was gut für mich ist.",
-        "Wenn ich an einen Neuanfang denke, fühle ich mich vor allem hilflos."
-      ],
-      zeigt:"Du zweifelst an deinem eigenen Urteil und wartest auf Erlaubnis, bevor du losgehst.",
-      herkunft:"Oft dort, wo dir wenig zugetraut wurde oder deine Wahrnehmung immer wieder infrage gestellt wurde.",
-      neu:"Ich habe schon so viel getragen. Ich kann mir selbst vertrauen – Schritt für Schritt.",
-      frage:"Welche schwere Situation habe ich schon gemeistert – und was sagt das über mich?"
-    },
-    {
-      id:"erlaubnis", area:"Freude & Leichtigkeit",
-      satz:"Ich darf nicht einfach glücklich sein.",
-      items:[
-        "Wenn es mir richtig gut geht, warte ich darauf, dass etwas schiefgeht.",
-        "Ich habe das Gefühl, mir Ruhe und Freude erst verdienen zu müssen.",
-        "Ein leichtes, schönes Leben ist für andere gedacht, nicht für mich."
-      ],
-      zeigt:"Pausen fühlen sich unverdient an, Glück fühlt sich gefährlich an – als müsstest du dafür bezahlen.",
-      herkunft:"Oft aus einem Umfeld, in dem Leichtigkeit keinen Platz hatte oder Freude schnell wieder zerstört wurde.",
-      neu:"Ich darf Freude empfangen, ohne sie mir vorher verdient zu haben.",
-      frage:"Was würde ich mir heute gönnen, wenn Glück für mich erlaubt wäre?"
-    }
-  ];
-
+  // Die Texte stehen in glaubenssaetze.json, damit auch die Ergebnis-Mail dieselben Texte nutzt.
+  var BELIEFS = [];
   var SCALE = [
     "Trifft gar nicht zu",
     "Trifft eher nicht zu",
@@ -404,8 +323,11 @@
 
   // Aussagen reihum mischen, damit die Bereiche nicht gebündelt auftauchen.
   var QUESTIONS = [];
-  for (var r = 0; r < 3; r++) {
-    BELIEFS.forEach(function(b){ QUESTIONS.push({ belief:b.id, text:b.items[r] }); });
+  function buildQuestions(){
+    QUESTIONS = [];
+    for (var r = 0; r < 3; r++) {
+      BELIEFS.forEach(function(b){ QUESTIONS.push({ belief:b.id, text:b.items[r] }); });
+    }
   }
 
   var $ = function(id){ return document.getElementById(id); };
@@ -462,6 +384,8 @@
     return e;
   }
 
+  var lastScores = null;
+
   function renderResult(){
     var scores = {};
     BELIEFS.forEach(function(b){ scores[b.id] = 0; });
@@ -512,6 +436,8 @@
       fills.push([fill, scores[b.id] / 12 * 100]);
     });
 
+    lastScores = scores;
+    $("mail-status").textContent = "";
     show("result");
     requestAnimationFrame(function(){
       requestAnimationFrame(function(){
@@ -520,12 +446,41 @@
     });
   }
 
+  $("start").disabled = true;
+  fetch("glaubenssaetze.json")
+    .then(function(r){ if (!r.ok) throw new Error(); return r.json(); })
+    .then(function(d){ BELIEFS = d.saetze; buildQuestions(); $("start").disabled = false; })
+    .catch(function(){ $("start-error").textContent = "Der Test konnte nicht geladen werden. Lade die Seite bitte neu."; });
+
   $("start").addEventListener("click", function(){
+    if (!QUESTIONS.length) return;
     answers = []; current = 0; show("quiz"); renderQuestion();
   });
   $("prev").addEventListener("click", function(){
     if (current > 0) { current--; renderQuestion(); }
   });
+  $("mail-form").addEventListener("submit", function(e){
+    e.preventDefault();
+    var status = $("mail-status");
+    var email = $("mail-email").value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { status.textContent = "Bitte prüf deine Mail-Adresse."; return; }
+    if (!$("mail-ok").checked) { status.textContent = "Bitte bestätige, dass du die Mail bekommen möchtest."; return; }
+    $("mail-send").disabled = true;
+    status.textContent = "Wird gesendet …";
+    fetch("/api/glaubenssaetze/mail", {
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({ email: email, einwilligung: true, punkte: lastScores, website: $("mail-website").value })
+    })
+      .then(function(r){ return r.json().then(function(d){ return {ok:r.ok, data:d}; }); })
+      .then(function(res){
+        if (!res.ok) { status.textContent = res.data.error || "Das hat nicht geklappt. Versuch es gleich noch einmal."; return; }
+        status.textContent = "Fast geschafft: Schau in dein Postfach und bestätige deine Adresse. Danach kommt dein Ergebnis.";
+        $("mail-email").value = "";
+      })
+      .catch(function(){ status.textContent = "Keine Verbindung. Versuch es gleich noch einmal."; })
+      .then(function(){ $("mail-send").disabled = false; });
+  });
+
   $("restart").addEventListener("click", function(){ show("intro"); });
   $("print").addEventListener("click", function(){ window.print(); });
 
