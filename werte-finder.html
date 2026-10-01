@@ -312,15 +312,15 @@
     <div class="eyebrow"><span>Was das heißt</span></div>
     <div class="insight" id="insight"></div>
 
+    <div class="next" style="margin-top:18px">
+      <p id="kompassText">Deine Werte können dich jetzt 30 Tage lang begleiten: Der Neuer-Satz-Kompass verbindet sie mit deinem neuen Satz – ein kleiner Impuls pro Tag.</p>
+      <a class="btn" id="kompassBtn" href="neuer-satz-kompass.html">Neuer-Satz-Kompass – kostenlos</a>
+    </div>
+
     <div class="actions">
       <button class="btn btn--soft" type="button" id="copyBtn">Ergebnis kopieren</button>
       <button class="btn btn--soft" type="button" id="printBtn">Drucken / als PDF</button>
       <button class="btn btn--link" type="button" id="restart">Neu starten</button>
-    </div>
-
-    <div class="next">
-      <p>Deine Werte können dich jetzt 30 Tage lang begleiten: Der Neuer-Satz-Kompass verbindet sie mit deinem neuen Satz – ein kleiner Impuls pro Tag.</p>
-      <a class="btn" href="neuer-satz-kompass.html">Neuer-Satz-Kompass – kostenlos</a>
     </div>
 
     <div class="next">
@@ -510,6 +510,14 @@
     }
     parts.push(`<p>Werte verändern sich mit dir. Mach den Werte-Finder in ein paar Monaten gerne noch einmal.</p>`);
     $("insight").innerHTML = `<h3>Dein Kompass</h3>${parts.join("")}`;
+
+    // Wer vorher den Glaubenssätze-Test gemacht hat, ist jetzt beim letzten Schritt
+    let testDone = false;
+    try{ testDone = !!JSON.parse(localStorage.getItem("seelenwende-glaubenssaetze-v1") || "null")?.doneAt; }catch(e){}
+    if(testDone){
+      $("kompassText").textContent = "Letzter Schritt: Der Neuer-Satz-Kompass verbindet deine Werte mit dem Satz aus deinem Glaubenssätze-Test. 30 Tage, ein kleiner Impuls pro Tag – beides ist dort schon eingetragen.";
+      $("kompassBtn").textContent = "Weiter zu Schritt 3: Neuer-Satz-Kompass";
+    }
 
     if(!s.doneAt) s.doneAt = Date.now();
   }
