@@ -23,10 +23,11 @@ Viele Frauen wissen selbst nicht, in welcher Phase sie sind. Darum gilt: **Die E
 - **Mira, die Seelenwende-Begleiterin** (`begleiterin.html`) – eine Ansprechpartnerin für alle Situationen: einfach losschreiben, sie erkennt selbst, was gebraucht wird (runterkommen, Muster einordnen, Selbstzweifel, Grenz-Sätze, Klarheit, Glaubenssätze und Werte). Einzeln als Kontingent, im Programm und im Kreis enthalten.
 - **Der Weg nach draußen**, **Erste-Hilfe-Set** – für den Stups und die ersten Tage danach.
 - **Self Care Journal**, **Du bist genug**, **Das Bundle** – Selbstwert und Neuanfang.
+- **Seelenwende Kreis** (`kreis.html`) – Mitgliedschaft für alle drei Phasen: ein Thema pro Monat mit vier Wochen-Impulsen, Archiv und Mira mit 150 Nachrichten pro Monat. Diskret: keine App, kein Gruppenchat. Gebaut; es fehlen der Tentary-Abo-Link und die Automatik für Code-Mails.
 - **Klarheits-Analyse** – schriftliche Außensicht, ohne Telefonat (sicherer für Frauen, die noch drin sind).
 
 ## Offene Punkte
 
 - Preise vereinheitlichen (Entwurf nennt Selbstwert-Paket 59 € und E-Book 24 €, live stehen 49 € und 29 €).
-- Kaufweg für die Begleiterin: Tentary-Produkt → Code erzeugen → Mail mit Code (z. B. über Make und MailerLite).
+- Kaufweg für Mira und den Kreis: Tentary-Kauf → Make ruft `/api/zugang/admin` (erstellen) → MailerLite-Mail mit Code. Beim Kreis zusätzlich: Kündigung → sperren. Bis dahin Codes von Hand in `zugang-admin.html` anlegen.
 - Tagline auf alle drei Gruppen öffnen, z. B. „Zurück zu dir – egal, wo du gerade stehst.“

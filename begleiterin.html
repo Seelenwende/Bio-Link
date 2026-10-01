@@ -181,6 +181,7 @@
   ];
   var MAX_TURNS = 30;
   var CODE_KEY = "sw_begleiterin_code";
+  var HANDOFF_KEY = "sw_mira_uebergabe"; // vom Kreis: { code, text }, nur in diesem Tab
   var EXIT_URL = "https://www.google.com/search?q=wetter";
 
   var state = { code:null, turns:[], busy:false, escCount:0, escTimer:null, pollTimer:null, jobId:null };
@@ -198,6 +199,10 @@
     e.preventDefault();
     var code = $("code-input").value.trim();
     if (!code) { $("gate-error").textContent = "Bitte gib deinen Zugangscode ein."; return; }
+    unlock(code, $("remember-input").checked, "");
+  });
+
+  function unlock(code, remember, prefill){
     $("gate-submit").disabled = true;
     $("gate-error").textContent = "";
     fetch("/api/begleiterin/zugang", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({code: code}) })
@@ -205,20 +210,24 @@
       .then(function(res){
         if (!res.ok) { $("gate-error").textContent = res.data.error || "Das hat nicht geklappt. Versuch es noch einmal."; return; }
         state.code = code;
-        try {
-          if ($("remember-input").checked) localStorage.setItem(CODE_KEY, code); else localStorage.removeItem(CODE_KEY);
-        } catch(e){}
-        setCounter(res.data.used, res.data.limit);
+        if (remember !== null) {
+          try { if (remember) localStorage.setItem(CODE_KEY, code); else localStorage.removeItem(CODE_KEY); } catch(e){}
+        }
+        setCounter(res.data);
         startChat();
+        if (prefill) { var i = $("chat-input"); i.value = prefill; autosize(i); }
       })
       .catch(function(){ $("gate-error").textContent = "Keine Verbindung. Prüf dein Internet und versuch es noch einmal."; })
       .then(function(){ $("gate-submit").disabled = false; });
-  });
+  }
 
-  function setCounter(used, limit){
-    if (typeof used !== "number" || typeof limit !== "number") return;
-    var left = Math.max(0, limit - used);
-    $("chat-counter").textContent = left <= 30 ? ("Noch " + left + " Nachrichten in diesem Zugang") : "";
+  function setCounter(d){
+    if (typeof d.used !== "number" || typeof d.limit !== "number") return;
+    var left = Math.max(0, d.limit - d.used);
+    var text = "";
+    if (d.plan === "kreis") text = left <= 30 ? ("Noch " + left + " Nachrichten in diesem Monat") : "";
+    else text = left <= 30 ? ("Noch " + left + " Nachrichten in diesem Zugang") : "";
+    $("chat-counter").textContent = text;
   }
 
   /* ---------- Gespräch ---------- */
@@ -299,7 +308,7 @@
           fail(res.data.error);
           return;
         }
-        setCounter(res.data.used, res.data.limit);
+        setCounter(res.data);
         state.jobId = res.data.id;
         poll(res.data.id, bubble, 0);
       })
@@ -348,10 +357,20 @@
   function autosize(el){ el.style.height = "auto"; el.style.height = Math.min(130, el.scrollHeight) + "px"; }
   $("chat-input").addEventListener("input", function(){ autosize(this); });
 
+  /* ---------- Übergabe aus dem Kreis ---------- */
+  // Der Code wird nicht gemerkt (remember = null lässt die Einstellung unverändert).
+  (function(){
+    var raw = null;
+    try { raw = sessionStorage.getItem(HANDOFF_KEY); sessionStorage.removeItem(HANDOFF_KEY); } catch(e){}
+    if (!raw) return;
+    try { var h = JSON.parse(raw); if (h && h.code) unlock(String(h.code), null, String(h.text || "")); } catch(e){}
+  })();
+
   /* ---------- Schnell weg ---------- */
   function quickExit(){
     stopPolling();
     state.turns = [];
+    try { sessionStorage.clear(); } catch(e){}
     $("chat-messages").innerHTML = "";
     $("chat-input").value = "";
     document.title = "Wetter";

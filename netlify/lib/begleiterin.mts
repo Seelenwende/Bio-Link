@@ -1,10 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk";
-import { getStore } from "@netlify/blobs";
-import { createHash, timingSafeEqual } from "node:crypto";
 
 export const BEGLEITERIN_STORE = "begleiterin";
 const DEFAULT_MODEL = "claude-opus-5-5";
-const DEFAULT_LIMIT = 300;
 
 export const MAX_TURNS = 30;
 const MAX_MESSAGE_CHARS = 4000;
@@ -47,48 +44,6 @@ Sicherheit – hat immer Vorrang:
 Das Gespräch hat mit dieser Begrüßung von dir begonnen: "Hallo, ich bin Mira. Schön, dass du da bist. Schreib einfach los, was dich gerade beschäftigt – ganz egal, wie durcheinander es sich anfühlt. Du musst nichts einordnen."`;
 
 const REFUSAL_REPLY = `Darauf kann ich so leider nicht antworten. Wenn du gerade in Gefahr bist oder an dir zweifelst, ob du das hier schaffst: Bitte ruf an – Notruf 112 (Schweiz 117), Hilfetelefon Deutschland 116 016, Frauenhelpline Österreich 0800 222 555, Die Dargebotene Hand 143. Magst du mir mit anderen Worten erzählen, was gerade los ist?`;
-
-/* ---------- Zugangscodes ---------- */
-
-function normalizeCode(code: string): string {
-  return code.trim().toUpperCase();
-}
-
-function hash(value: string): Buffer {
-  return createHash("sha256").update(value).digest();
-}
-
-/** Codes stehen kommagetrennt in BEGLEITERIN_CODES, z. B. "Wendepunkt, WENDE-AB12-CD34" (Groß-/Kleinschreibung egal). */
-export function isValidCode(given: unknown): given is string {
-  if (typeof given !== "string" || given.length > 64) return false;
-  const codes = (Netlify.env.get("BEGLEITERIN_CODES") ?? "").split(",").map(normalizeCode).filter(Boolean);
-  const g = hash(normalizeCode(given));
-  let ok = false;
-  for (const c of codes) ok = timingSafeEqual(g, hash(c)) || ok;
-  return ok;
-}
-
-export function isBegleiterinConfigured(): boolean {
-  return Boolean(Netlify.env.get("ANTHROPIC_API_KEY") && Netlify.env.get("BEGLEITERIN_CODES"));
-}
-
-export function messageLimit(): number {
-  const n = Number(Netlify.env.get("BEGLEITERIN_LIMIT"));
-  return Number.isFinite(n) && n > 0 ? Math.floor(n) : DEFAULT_LIMIT;
-}
-
-function usageKey(code: string): string {
-  return "usage/" + hash(normalizeCode(code)).toString("hex");
-}
-
-export async function getUsage(code: string): Promise<number> {
-  const data = (await getStore(BEGLEITERIN_STORE).get(usageKey(code), { type: "json" })) as { used?: number } | null;
-  return data?.used ?? 0;
-}
-
-export async function addUsage(code: string, used: number): Promise<void> {
-  await getStore(BEGLEITERIN_STORE).setJSON(usageKey(code), { used, updatedAt: Date.now() });
-}
 
 /* ---------- Gesprächsverlauf prüfen ---------- */
 

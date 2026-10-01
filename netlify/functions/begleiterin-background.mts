@@ -1,13 +1,14 @@
 import type { Context } from "@netlify/functions";
 import { getStore } from "@netlify/blobs";
 import { ID_PATTERN, errorMessage } from "../lib/common.mts";
-import { BEGLEITERIN_STORE, isValidCode, parseTurns, runBegleiterin } from "../lib/begleiterin.mts";
+import { BEGLEITERIN_STORE, parseTurns, runBegleiterin } from "../lib/begleiterin.mts";
+import { resolveAccess } from "../lib/zugang.mts";
 
 // Hintergrund-Funktion: fragt Claude und legt die Antwort kurz ab, bis die Seite sie abholt.
 export default async (req: Request, _context: Context) => {
   const body = await req.json().catch(() => null);
   if (!body || typeof body.id !== "string" || !ID_PATTERN.test(body.id)) return;
-  if (!isValidCode(body.code)) return;
+  if (!(await resolveAccess(body.code))) return;
   const turns = parseTurns(body.turns);
   if (!turns) return;
 
