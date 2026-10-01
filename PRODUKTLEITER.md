@@ -52,6 +52,5 @@ Viele Frauen wissen selbst nicht, in welcher Phase sie sind. Darum gilt: **Die E
 - MailerLite für die Ergebnis-Mail einrichten (Gruppe, Felder, Double-Opt-in, Automatisierung) und Datenschutzerklärung verlinken.
 - Audios für schwere Tage aufnehmen (Dateinamen in `bonus/LIESMICH.md`), nicht mehr einzeln verkaufen.
 - Shop-Links der Einzel-PDFs für die „Du hast schon …?“-Hinweise im Programm.
-
 - Preise vereinheitlichen (Entwurf nennt Selbstwert-Paket 59 € und E-Book 24 €, live stehen 49 € und 29 €).
 - Tagline auf alle drei Gruppen öffnen, z. B. „Zurück zu dir – egal, wo du gerade stehst.“
