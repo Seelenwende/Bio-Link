@@ -483,7 +483,7 @@
     {id:"leer", name:"Leer", practice:"Du musst gerade nichts fühlen. Ein Glas Wasser trinken, ein Fenster öffnen – das reicht für jetzt.", satz:"Auch wenn ich gerade wenig spüre, bin ich noch da."},
   ];
   const PHASES = [
-    {id:"drin", name:"Noch in der Beziehung", hint:"ich bin noch mit ihm zusammen", satz:"Ich muss niemandem beweisen, dass es wehtut. Was ich fühle, zählt."},
+    {id:"drin", name:"Noch in der Beziehung", hint:"ich bin noch mit der Person zusammen", satz:"Ich muss niemandem beweisen, dass es wehtut. Was ich fühle, zählt."},
     {id:"gehen", name:"Auf dem Weg hinaus", hint:"ich will gehen oder bin gerade dabei", satz:"Ich darf schwanken und trotzdem auf meinem Weg bleiben."},
     {id:"danach", name:"Getrennt", hint:"ich bin draußen und finde zu mir zurück", satz:"Ich muss nicht wieder die Alte werden. Ich darf ich werden."},
     {id:"unsicher", name:"Weiß ich nicht", hint:"oder es passt gerade nichts davon", satz:"Ich muss heute nicht wissen, wo ich stehe. Ich darf einfach hier sein."},
@@ -491,7 +491,7 @@
   const byId = (list, id) => list.find(x => x.id === id);
 
   /* Hinweise auf Gefahr oder Suizidgedanken in eigenen Worten → Hilfe zeigen */
-  const CRISIS_RE = /(umbringen|suizid|selbstmord|nicht mehr leben|nicht mehr da sein|will nicht mehr|sterben|tot sein|mir (was|etwas) antun|ritzen|selbst verletz|schlägt mich|schlug mich|würgt|gewürgt|bedroht|droht mir|angst um mein leben|angst vor ihm)/i;
+  const CRISIS_RE = /(umbringen|suizid|selbstmord|nicht mehr leben|nicht mehr da sein|will nicht mehr|sterben|tot sein|mir (was|etwas) antun|ritzen|selbst verletz|schlägt mich|schlug mich|würgt|gewürgt|bedroht|droht mir|angst um mein leben|angst vor ihm|angst vor ihr)/i;
   const CRISIS_HTML = `<h3>Du bist damit nicht allein.</h3>
     <p>Was du schreibst, klingt sehr schwer. Wenn du gerade in Gefahr bist oder daran denkst, dir etwas anzutun, ruf bitte jetzt an. Dort hört dir jemand zu, rund um die Uhr und kostenlos.</p>
     <ul>
