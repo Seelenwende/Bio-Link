@@ -16,10 +16,12 @@ export interface Impuls {
   absaetze: string[];
 }
 
+/** Kostenloses Seelenwende-Tool: entweder eine Seite (href) oder ein PDF zum Herunterladen (download = ID aus DOWNLOADS). */
 export interface Werkzeug {
   text: string;
   label: string;
-  href: string;
+  href?: string;
+  download?: string;
 }
 
 export interface Aufbau {
@@ -95,6 +97,7 @@ export interface Programm {
   soGehts: string[];
   wochen: Woche[];
   boni: Bonus[];
+  downloads: PdfBonus[];
   abschluss: string[];
 }
 
@@ -123,8 +126,28 @@ export const BONI: Bonus[] = [
   },
 ];
 
+/* Kostenlose PDFs, die im Programm direkt bei der passenden Woche heruntergeladen werden.
+   Sie erscheinen nicht unter „Deine Boni“, liegen aber genauso geschützt unter /bonus/. */
+export const DOWNLOADS: PdfBonus[] = [
+  {
+    art: "pdf",
+    id: "self-care-journal",
+    titel: "Self Care Journal",
+    text: "Kleine Rituale, die dich tragen.",
+    datei: "self-care-journal.pdf",
+  },
+  {
+    art: "pdf",
+    id: "mini-guide",
+    titel: "Der Weg nach draußen",
+    text: "Mini-Guide für die Zeit, in der du noch bleibst und schon weißt, dass du gehen willst.",
+    datei: "mini-guide-der-weg-nach-draussen.pdf",
+  },
+];
+
 export function findBonus(id: unknown): Bonus | undefined {
-  return typeof id === "string" ? BONI.find((b) => b.id === id) : undefined;
+  if (typeof id !== "string") return undefined;
+  return BONI.find((b) => b.id === id) ?? DOWNLOADS.find((b) => b.id === id);
 }
 
 export const PROGRAMM: Programm = {
@@ -231,8 +254,8 @@ export const PROGRAMM: Programm = {
       werkzeuge: [
         {
           text: "Das kostenlose Self Care Journal passt gut zu dieser Woche. Mit der Bestandsaufnahme darin siehst du, wo du gerade gut für dich sorgst und wo noch nicht.",
-          label: "Zum Self Care Journal",
-          href: "https://seelenwende.mytentary.com/p/niaKY4",
+          label: "Herunterladen",
+          download: "self-care-journal",
         },
       ],
       hinweis: "Wenn du noch mit ihm zusammenlebst oder Angst vor ihm hast, gehört zur Sicherheit auch die äußere Sicherheit. Beratungsstellen helfen dir kostenlos und vertraulich, einen Sicherheitsplan zu machen. Die Nummern stehen unten auf dieser Seite.",
@@ -323,8 +346,8 @@ export const PROGRAMM: Programm = {
       werkzeuge: [
         {
           text: "Du bist noch in der Beziehung oder gerade dabei zu gehen? Der kostenlose Mini-Guide „Der Weg nach draußen“ hilft dir, dir selbst zuzuhören, bevor du entscheidest.",
-          label: "Zum Mini-Guide",
-          href: "https://seelenwende.mytentary.com/p/WPedba",
+          label: "Herunterladen",
+          download: "mini-guide",
         },
       ],
     },
@@ -677,6 +700,7 @@ export const PROGRAMM: Programm = {
     },
   ],
   boni: BONI,
+  downloads: DOWNLOADS,
   abschluss: [
     "Du bist sechs Wochen lang für dich da gewesen. Das ist viel, auch wenn sich nicht alles gelöst hat.",
     "Die Übungen bleiben hier. Du kannst jederzeit zurückkommen, eine Woche wiederholen oder deinen Plan für schwere Tage lesen. Und Mira ist weiter für dich da, solange dein Kontingent reicht.",

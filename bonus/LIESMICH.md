@@ -11,6 +11,11 @@ Fehlt eine Datei, zeigt das Programm „wird gerade vorbereitet“ bzw. „Diese
 
 Einzelprodukte (Kits, Journals, E-Book, Bundle) gehören bewusst nicht hierher: Das Programm knüpft in „aufbau“ an sie an, liefert sie aber nicht mit.
 
+## Kostenlose PDFs zum Herunterladen im Programm
+
+- `self-care-journal.pdf` – Self Care Journal (Woche 1)
+- `mini-guide-der-weg-nach-draussen.pdf` – Mini-Guide „Der Weg nach draußen“ (Woche 2)
+
 ## Audio für schwere Tage (in den Unterordner `audio/`, Woche 4, nur im Programm)
 
 - `01-wenn-du-nicht-schlafen-kannst.mp3` (ca. 14 Min)
