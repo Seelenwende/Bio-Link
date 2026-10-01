@@ -73,6 +73,8 @@
     padding:7px 13px; font-size:.84rem; cursor:pointer; text-align:left; max-width:100%;
   }
   .starter:hover{border-color:var(--rose);}
+  .prefill-hint{width:100%; text-align:center; color:var(--gedaempft); font-size:.86rem; margin:0; max-width:44ch;}
+  .prefill-note{background:var(--sand); border-radius:12px; padding:9px 12px; font-size:.86rem;}
   .chat-screen{padding:0;}
   .chat-messages{flex:1; min-height:0; overflow-y:auto; padding:18px 16px; display:flex; flex-direction:column; gap:12px;}
   .msg{max-width:86%; padding:12px 15px; border-radius:16px; font-size:.95rem; line-height:1.6; white-space:pre-wrap; overflow-wrap:anywhere;}
@@ -146,6 +148,7 @@
     <form class="gate" id="gate-form" novalidate>
       <h1>Willkommen bei Mira.</h1>
       <p>Mira ist deine Seelenwende-Begleiterin. Gib deinen Zugangscode ein – du findest ihn in deiner Bestätigungs-Mail.</p>
+      <p class="prefill-note" id="gate-prefill" hidden>Dein Eintrag aus den Notizen ist bereit. Nach dem Code steht er im Textfeld – du schickst ihn selbst ab.</p>
       <label class="field" for="code-input">Zugangscode</label>
       <input type="text" id="code-input" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Dein Zugangswort" required>
       <label class="remember"><input type="checkbox" id="remember-input"> Code auf diesem Gerät merken. Lass das aus, wenn jemand anderes dein Handy benutzt oder kontrolliert.</label>
@@ -184,9 +187,15 @@
   var CODE_KEY = "sw_begleiterin_code";
   var EXIT_URL = "https://www.google.com/search?q=wetter";
 
-  var state = { code:null, turns:[], busy:false, escCount:0, escTimer:null, pollTimer:null, jobId:null };
+  var PREFILL_KEY = "sw_mira_prefill";
+
+  var state = { code:null, turns:[], busy:false, escCount:0, escTimer:null, pollTimer:null, jobId:null, prefill:null };
+
+  // Eintrag aus dem Klarheits-Tagebuch (notizen.html): sofort aus dem Speicher nehmen, nur im Arbeitsspeicher halten.
+  try { state.prefill = sessionStorage.getItem(PREFILL_KEY); sessionStorage.removeItem(PREFILL_KEY); } catch(e){}
 
   function $(id){ return document.getElementById(id); }
+  if (state.prefill) $("gate-prefill").hidden = false;
   function show(id){
     ["screen-gate","screen-chat"].forEach(function(s){ $(s).hidden = (s !== id); });
     $("restart-btn").hidden = (id !== "screen-chat");
@@ -258,8 +267,18 @@
       st.appendChild(b);
     });
     box.appendChild(st);
+    if (state.prefill) {
+      // Statt der Starthilfen: Eintrag einfügen, sie liest und schickt selbst ab.
+      st.innerHTML = '<span class="label">Aus deinen Notizen</span><p class="prefill-hint">Dein Eintrag steht unten im Textfeld. Lies ihn durch, lösch, was du nicht teilen magst, und schick ihn ab, wenn es passt.</p>';
+      $("chat-input").value = state.prefill;
+      state.prefill = null;
+      $("gate-prefill").hidden = true;
+    }
     show("screen-chat");
-    $("chat-input").focus();
+    var input = $("chat-input");
+    autosize(input);
+    input.focus();
+    if (input.value) { input.setSelectionRange(0, 0); input.scrollTop = 0; }
   }
   $("restart-btn").addEventListener("click", startChat);
 
@@ -372,6 +391,8 @@
   /* ---------- Schnell weg ---------- */
   function quickExit(){
     stopPolling();
+    state.prefill = null;
+    try { sessionStorage.removeItem(PREFILL_KEY); } catch(e){}
     state.turns = [];
     try { sessionStorage.clear(); } catch(e){}
     $("chat-messages").innerHTML = "";
