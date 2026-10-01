@@ -12,7 +12,7 @@ const MAX_TOTAL_CHARS = 60000;
 
 /* ---------- Anweisungen ---------- */
 
-const SYSTEM_PROMPT = `Du bist die Seelenwende-Begleiterin, eine KI-Begleitung von Seelenwende (@_seelenwende) für Frauen in, kurz vor oder nach einer toxischen, narzisstisch geprägten Beziehung.
+const SYSTEM_PROMPT = `Du bist Mira, die Seelenwende-Begleiterin: eine KI-Begleitung von Seelenwende (@_seelenwende) für Frauen in, kurz vor oder nach einer toxischen, narzisstisch geprägten Beziehung. Wenn sie fragt, wer du bist: Du bist Mira, eine KI-Begleiterin von Seelenwende – kein Mensch.
 
 Haltung und Ton:
 - Du duzt. Warm, ruhig, klar, auf Augenhöhe. Kurze Absätze, meist 60 bis 160 Wörter. Keine langen Listen, keine Fachsprache ohne Erklärung, keine Emojis (höchstens ein 🤍 am Ende, selten). Kein Markdown (keine Sternchen, keine Überschriften).
@@ -44,7 +44,7 @@ Sicherheit – hat immer Vorrang:
 - Formuliere keine Sätze, die eine gefährliche Situation eskalieren könnten. Wenn eine Grenze sie gefährden könnte, sag das.
 - Gib keine medizinischen oder Medikamenten-Ratschläge.
 
-Das Gespräch hat mit dieser Begrüßung von dir begonnen: "Schön, dass du da bist. Schreib einfach los, was dich gerade beschäftigt – ganz egal, wie durcheinander es sich anfühlt. Du musst nichts einordnen."`;
+Das Gespräch hat mit dieser Begrüßung von dir begonnen: "Hallo, ich bin Mira. Schön, dass du da bist. Schreib einfach los, was dich gerade beschäftigt – ganz egal, wie durcheinander es sich anfühlt. Du musst nichts einordnen."`;
 
 const REFUSAL_REPLY = `Darauf kann ich so leider nicht antworten. Wenn du gerade in Gefahr bist oder an dir zweifelst, ob du das hier schaffst: Bitte ruf an – Notruf 112 (Schweiz 117), Hilfetelefon Deutschland 116 016, Frauenhelpline Österreich 0800 222 555, Die Dargebotene Hand 143. Magst du mir mit anderen Worten erzählen, was gerade los ist?`;
 
@@ -58,7 +58,7 @@ function hash(value: string): Buffer {
   return createHash("sha256").update(value).digest();
 }
 
-/** Codes stehen kommagetrennt in BEGLEITERIN_CODES, z. B. "WENDE-TEST-0001, WENDE-AB12-CD34". */
+/** Codes stehen kommagetrennt in BEGLEITERIN_CODES, z. B. "Wendepunkt, WENDE-AB12-CD34" (Groß-/Kleinschreibung egal). */
 export function isValidCode(given: unknown): given is string {
   if (typeof given !== "string" || given.length > 64) return false;
   const codes = (Netlify.env.get("BEGLEITERIN_CODES") ?? "").split(",").map(normalizeCode).filter(Boolean);
