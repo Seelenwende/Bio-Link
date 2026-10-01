@@ -22,6 +22,13 @@ export interface Werkzeug {
   href: string;
 }
 
+export interface Aufbau {
+  produkt: string;
+  text: string;
+  /** Link zum Produkt im Shop */
+  href: string;
+}
+
 export interface Uebung {
   id: string;
   titel: string;
@@ -75,6 +82,9 @@ export interface Woche {
   hinweis?: string;
   /** Weitere Seelenwende-Tools, die zum Thema der Woche passen. */
   werkzeuge?: Werkzeug[];
+  /** „Du hast schon …?“: wie ein Seelenwende-Produkt, das sie vielleicht schon hat, an diese Woche anknüpft.
+      Das Programm ist ohne diese Produkte vollständig; sie vertiefen nur. */
+  aufbau?: Aufbau[];
   /** IDs der Boni, die zu dieser Woche passen. */
   bonus?: string[];
 }
@@ -88,40 +98,21 @@ export interface Programm {
   abschluss: string[];
 }
 
+/* Werkzeug und Weg: Im Programm stecken nur Boni, die es nirgends einzeln zu kaufen gibt.
+   Einzelprodukte (Kits, Journals, E-Book, Bundle) werden nicht mitgeliefert, sondern in „aufbau“ angeknüpft. */
 export const BONI: Bonus[] = [
   {
     art: "pdf",
-    id: "anker-set",
-    titel: "Affirmations- & Anker-Set",
-    text: "12 Karten und 6 Sperrbildschirme für die Tage, an denen du dir nicht traust.",
-    datei: "affirmations-anker-set.pdf",
-  },
-  {
-    art: "pdf",
-    id: "klartext",
-    titel: "Klartext – das Journal gegen die Selbstzweifel",
-    text: "Situationen festhalten, Tatsache und Deutung trennen, Muster beim Namen nennen.",
-    datei: "klartext-journal.pdf",
-  },
-  {
-    art: "pdf",
-    id: "no-contact",
-    titel: "No Contact – dein Kit für den Kontaktabbruch",
-    text: "Anker-Zettel, Notfall-Sätze, 5-Minuten-Plan und 7 Tage Durchhalten.",
-    datei: "no-contact-kit.pdf",
-  },
-  {
-    art: "pdf",
-    id: "grenz-saetze",
-    titel: "Grenz-Sätze – Nein sagen, ohne dich zu erklären",
-    text: "Fertige Sätze für Grenzen, auch für Kontakt wegen der Kinder.",
-    datei: "grenz-saetze.pdf",
+    id: "begleitheft",
+    titel: "Dein Begleitheft",
+    text: "Alle Übungen und Tagesanker der sechs Wochen zum Ausdrucken und Ausfüllen mit der Hand.",
+    datei: "wieder-bei-dir-begleitheft.pdf",
   },
   {
     art: "audio",
     id: "audio-schwere-tage",
     titel: "Audio für schwere Tage",
-    text: "Eine Stimme für die Nächte, in denen niemand da ist. Du musst nicht meditieren können, nur zuhören.",
+    text: "Eine Stimme für die Nächte, in denen niemand da ist. Du musst nicht meditieren können, nur zuhören. Nur im Programm.",
     spuren: [
       { id: "01", titel: "Wenn du nicht schlafen kannst", text: "Geführtes Atmen und ein langsamer Text, der dich nicht wachhält.", dauer: "14 Min", datei: "audio/01-wenn-du-nicht-schlafen-kannst.mp3" },
       { id: "02", titel: "Wenn die Panik kommt", text: "Kurz, ruhig, mit klaren Ansagen. Für den Moment, in dem alles eng wird.", dauer: "6 Min", datei: "audio/02-wenn-die-panik-kommt.mp3" },
@@ -129,13 +120,6 @@ export const BONI: Bonus[] = [
       { id: "04", titel: "Affirmationen zum Mitsprechen", text: "Zwölf Sätze, langsam, mit Pausen. Auch für den Weg zur Arbeit.", dauer: "9 Min", datei: "audio/04-affirmationen-zum-mitsprechen.mp3" },
       { id: "05", titel: "Morgen danach", text: "Für den Tag nach einer schweren Nacht. Drei Minuten, damit du aufstehen kannst.", dauer: "3 Min", datei: "audio/05-morgen-danach.mp3" },
     ],
-  },
-  {
-    art: "pdf",
-    id: "vision-board",
-    titel: "Vision Board Workbook",
-    text: "Von der Vision zum ersten Schritt, für dein neues Kapitel.",
-    datei: "vision-board-workbook.pdf",
   },
 ];
 
@@ -154,7 +138,8 @@ export const PROGRAMM: Programm = {
     "Die Übungen sind zum Schreiben. Kurz und ehrlich ist besser als schön. Du kannst jederzeit zurückkommen.",
     "Jeden Tag gibt es einen kleinen Anker. Fünf Minuten reichen. Wenn ein Tag nicht klappt, ist das kein Rückschritt.",
     "Mira ist im Programm enthalten. Du öffnest sie mit demselben Zugangscode. Zu jeder Woche findest du Gesprächsanstöße.",
-    "Als Bonus sind Seelenwende-Begleiter dabei: Journals, Karten, Kits und Audios für schwere Tage. Du findest sie in den passenden Wochen und gesammelt unten auf dieser Seite.",
+    "Zwei Boni gibt es nur hier: dein Begleitheft zum Ausdrucken und die Audios für schwere Tage. Du findest sie unten auf dieser Seite.",
+    "Du hast schon ein Seelenwende-Werkzeug wie das No-Contact-Kit oder Klartext? In den passenden Wochen steht, wie du es einbaust. Du brauchst aber nichts davon, das Programm ist vollständig.",
     "Dein Tempo gilt. Wenn eine Woche länger braucht, bleib länger. Wenn dich ein Thema zu sehr aufwühlt, mach eine Pause.",
   ],
   wochen: [
@@ -163,7 +148,14 @@ export const PROGRAMM: Programm = {
       titel: "Ankommen",
       untertitel: "Erst sicher, dann klar.",
       satz: "Ich darf zur Ruhe kommen, bevor ich alles verstehe.",
-      bonus: ["anker-set"],
+      aufbau: [
+        {
+          produkt: "Affirmations- & Anker-Set",
+          text: "Du hast das Affirmations- & Anker-Set? Such dir daraus den Satz aus, der dich heute anhält. Er ist dein Anker-Satz für die Übung „Mein Sicherheitsanker“ und darf diese Woche dein Sperrbildschirm sein.",
+          href: "https://seelenwende.mytentary.com/",
+        },
+      ],
+      bonus: ["begleitheft"],
       einleitung: [
         "In der ersten Woche geht es noch nicht ums Verstehen. Es geht um deinen Körper. Solange er auf Alarm steht, fühlt sich jeder Gedanke an ihn an wie ein Notfall, und Klarheit hat kaum eine Chance.",
         "Diese Woche sammelst du deshalb kleine Werkzeuge, die dich zurück in die Ruhe holen. Und du legst fest, was du dir von diesen sechs Wochen wünschst.",
@@ -250,7 +242,13 @@ export const PROGRAMM: Programm = {
       titel: "Verstehen, was war",
       untertitel: "Meine Erinnerung gehört mir.",
       satz: "Ich darf meiner Wahrnehmung wieder trauen.",
-      bonus: ["klartext"],
+      aufbau: [
+        {
+          produkt: "Klartext – das Journal gegen die Selbstzweifel",
+          text: "Du hast Klartext? Trag die Situation aus der Übung „Tatsache und Deutung“ dort ein und nimm die Wortliste dazu. Lies sie in vier Wochen, also in Woche 6, noch einmal.",
+          href: "https://seelenwende.mytentary.com/",
+        },
+      ],
       einleitung: [
         "Diese Woche schaust du auf das, was passiert ist. Nicht, um ihn zu analysieren oder eine Diagnose zu stellen. Sondern um dir deine eigene Geschichte zurückzuholen, in deinen Worten.",
         "Viele Frauen erzählen, dass sie in der Beziehung irgendwann nicht mehr ihn geprüft haben, sondern sich selbst. Diese Woche drehst du das vorsichtig um.",
@@ -335,7 +333,18 @@ export const PROGRAMM: Programm = {
       titel: "Abstand und Grenzen",
       untertitel: "Ich muss mich nicht erklären.",
       satz: "Nein ist ein ganzer Satz.",
-      bonus: ["no-contact", "grenz-saetze"],
+      aufbau: [
+        {
+          produkt: "No Contact – dein Kit für den Kontaktabbruch",
+          text: "Du hast das No-Contact-Kit? Füll den Anker-Zettel darin aus und nimm ihn als Grundlage für die Übung „Mein Plan für den Moment, in dem ich schreiben will“. Die Notfall-Sätze legst du dorthin, wo dein Handy liegt.",
+          href: "https://seelenwende.mytentary.com/",
+        },
+        {
+          produkt: "Grenz-Sätze",
+          text: "Du hast die Grenz-Sätze? Such dir für „Meine drei Grenz-Sätze“ je einen weichen, einen klaren und einen festen Satz daraus aus und schreib ihn in deinen Worten um.",
+          href: "https://seelenwende.mytentary.com/",
+        },
+      ],
       einleitung: [
         "Abstand ist das, was Heilung möglich macht. Für manche heißt das: gar kein Kontakt mehr. Für andere, besonders mit gemeinsamen Kindern, heißt es: so wenig und so sachlich wie möglich.",
         "Diese Woche legst du fest, wie viel Kontakt du zulässt, findest deine Sätze und machst einen Plan für die Momente, in denen du schwach wirst. Denn die kommen, und das ist normal.",
@@ -491,6 +500,13 @@ export const PROGRAMM: Programm = {
       titel: "Alte Sätze, neue Sätze",
       untertitel: "Ich bin nicht, was er über mich gesagt hat.",
       satz: "Ich lerne, mir wieder zu glauben.",
+      aufbau: [
+        {
+          produkt: "Du bist genug – das E-Book",
+          text: "Du hast „Du bist genug“? Lies diese Woche parallel zu den Übungen darin weiter. Die Gegenbeweise, die du hier sammelst, sind dein persönliches Kapitel zu diesem Buch.",
+          href: "https://seelenwende.mytentary.com/p/Mi6HH3",
+        },
+      ],
       einleitung: [
         "In uns allen gibt es Sätze, die leise mitlaufen: „Ich bin nicht genug.“ „Ich bin schuld.“ „Ich bin zu viel.“ Die meisten sind älter als die Beziehung. Die Beziehung hat sie oft verstärkt.",
         "Diese Woche hörst du hin, welche Sätze bei dir am lautesten sind, woher sie kommen und welcher neue Satz an ihre Stelle treten darf.",
@@ -569,7 +585,13 @@ export const PROGRAMM: Programm = {
       titel: "Wieder bei dir",
       untertitel: "Ich gehöre wieder mir.",
       satz: "Ich gehe meinen Weg in meinem Tempo.",
-      bonus: ["vision-board"],
+      aufbau: [
+        {
+          produkt: "Das Bundle – Zurück zu dir",
+          text: "Du hast das Bundle? Dann ist jetzt der Moment für dein Vision Board. Nimm deine Werte und deinen Brief an dich in sechs Monaten als Grundlage: Wie willst du dich in deinem neuen Kapitel fühlen?",
+          href: "https://seelenwende.mytentary.com/p/Mi6HH3",
+        },
+      ],
       einleitung: [
         "Die letzte Woche schaut nach vorn. Wer bist du ohne das? Was ist dir wichtig? Woran willst du in Zukunft merken, dass dir jemand guttut?",
         "Und sie schaut zurück: auf das, was du dir in Woche 1 gewünscht hast, und auf den Weg, den du seitdem gegangen bist.",
@@ -658,5 +680,6 @@ export const PROGRAMM: Programm = {
   abschluss: [
     "Du bist sechs Wochen lang für dich da gewesen. Das ist viel, auch wenn sich nicht alles gelöst hat.",
     "Die Übungen bleiben hier. Du kannst jederzeit zurückkommen, eine Woche wiederholen oder deinen Plan für schwere Tage lesen. Und Mira ist weiter für dich da, solange dein Kontingent reicht.",
+    "Wenn du nach den sechs Wochen jeden Tag einen kleinen Impuls möchtest: Der Neuer-Satz-Kompass baut auf deinem Testergebnis und deinen Werten auf und begleitet dich 30 Tage lang. Er kommt bald.",
   ],
 };

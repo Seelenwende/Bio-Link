@@ -5,15 +5,13 @@ Die Edge-Funktion `bonus-schutz` lässt nur zeitlich begrenzte, signierte Links 
 
 Fehlt eine Datei, zeigt das Programm „wird gerade vorbereitet“ bzw. „Diese Aufnahme kommt bald“.
 
-## PDFs (in diesen Ordner)
+## Begleitheft
 
-- `affirmations-anker-set.pdf` – Affirmations- & Anker-Set (Woche 1)
-- `klartext-journal.pdf` – Klartext, das Journal gegen die Selbstzweifel (Woche 2)
-- `no-contact-kit.pdf` – No Contact, dein Kit für den Kontaktabbruch (Woche 3)
-- `grenz-saetze.pdf` – Grenz-Sätze, Nein sagen, ohne dich zu erklären (Woche 3)
-- `vision-board-workbook.pdf` – Vision Board Workbook (Woche 6)
+- `wieder-bei-dir-begleitheft.pdf` – alle Übungen und Tagesanker zum Ausdrucken. Wird aus den Programminhalten erzeugt: `npm run begleitheft` (braucht Playwright). Nach jeder Textänderung im Programm neu erzeugen.
 
-## Audio für schwere Tage (in den Unterordner `audio/`, Woche 4)
+Einzelprodukte (Kits, Journals, E-Book, Bundle) gehören bewusst nicht hierher: Das Programm knüpft in „aufbau“ an sie an, liefert sie aber nicht mit.
+
+## Audio für schwere Tage (in den Unterordner `audio/`, Woche 4, nur im Programm)
 
 - `01-wenn-du-nicht-schlafen-kannst.mp3` (ca. 14 Min)
 - `02-wenn-die-panik-kommt.mp3` (ca. 6 Min)

@@ -168,6 +168,9 @@
   .spur-dauer{font-size:.8rem; color:var(--gedaempft); white-space:nowrap; font-variant-numeric:tabular-nums;}
   .spur-player audio{width:100%;}
   .bonus .btn.link{padding:8px 4px;}
+  .aufbau{display:grid; gap:6px; justify-items:start; font-size:.92rem;}
+  .aufbau .bt{font-family:var(--serif); font-size:1.02rem; font-weight:500;}
+  .aufbau .btn.link{padding:2px 0; font-size:.84rem;}
   .rueckblick-zitat{background:var(--sand); border-radius:12px; padding:12px 14px; font-family:var(--serif); font-style:italic; white-space:pre-wrap;}
 
   .tage{list-style:none; margin:0; padding:0; display:grid; gap:8px;}
@@ -631,6 +634,17 @@
     return box;
   }
 
+  function aufbauKarte(a){
+    var box = el("div", "card aufbau no-print");
+    box.appendChild(el("span", "eyebrow", "Du hast schon …?"));
+    box.appendChild(el("span", "bt", a.produkt));
+    box.appendChild(el("p", null, a.text));
+    var link = el("a", "btn link", "Im Shop ansehen");
+    link.href = a.href; link.target = "_blank"; link.rel = "noopener";
+    box.appendChild(link);
+    return box;
+  }
+
   function openWeek(nr){
     var p = state.programm;
     var w = p.wochen.filter(function(x){ return x.nr === nr; })[0];
@@ -687,10 +701,12 @@
     bListe.forEach(function(b){ bBox.appendChild(bonusKarte(b)); });
     $("wk-boni-wrap").hidden = bListe.length === 0;
 
-    var wzListe = w.werkzeuge || [];
+    // Kostenlose Tools und „Du hast schon …?“-Hinweise zu Produkten, die sie vielleicht schon hat.
+    var wzListe = w.werkzeuge || [], aufbau = w.aufbau || [];
     var wzBox = $("wk-werkzeuge"); wzBox.innerHTML = "";
     wzListe.forEach(function(wz){ wzBox.appendChild(werkzeugKarte(wz, "card werkzeug")); });
-    $("wk-werkzeuge-wrap").hidden = wzListe.length === 0;
+    aufbau.forEach(function(a){ wzBox.appendChild(aufbauKarte(a)); });
+    $("wk-werkzeuge-wrap").hidden = wzListe.length + aufbau.length === 0;
 
     var tage = $("wk-tage"); tage.innerHTML = "";
     var t = state.daten.tage[nr] || [];
