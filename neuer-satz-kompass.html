@@ -63,22 +63,32 @@
     color:var(--rose);text-align:center;margin:30px 0 8px;
   }
 
-  /* --- Einstieg --- */
-  .how{background:#fff;border:1px solid var(--linie);border-radius:20px;padding:20px 22px;margin-top:28px;}
-  .how ol{padding-left:20px;font-size:14.5px;line-height:1.6;}
-  .how li{margin-bottom:6px;}
-  .how li b{font-weight:400;}
-  .how .price{font-size:13.5px;color:var(--gedaempft);border-top:1px solid var(--linie);margin-top:12px;padding-top:10px;}
-
-  .prep{background:var(--sand);border-radius:18px;padding:16px 18px;margin-top:16px;}
-  .prep__title{font-family:"Playfair Display",serif;font-weight:500;font-size:16px;}
-  .prep p{font-size:13.5px;color:var(--gedaempft);margin-top:2px;}
-  .prep ul{list-style:none;margin-top:10px;display:flex;flex-direction:column;gap:8px;}
-  .prep li{display:flex;gap:10px;align-items:baseline;font-size:14.5px;}
-  .prep li i{font-style:normal;color:var(--rose);min-width:1.1em;}
-  .prep li.ok i{color:var(--beere);}
-  .prep a{color:var(--beere);}
-  .prep small{color:var(--gedaempft);font-size:12.5px;}
+  /* --- Einstieg: zwei Wege --- */
+  .weg{background:#fff;border:1px solid var(--linie);border-radius:18px;padding:18px;margin-top:24px;display:flex;flex-direction:column;gap:12px;}
+  .weg__label{font-family:"Playfair Display",serif;font-size:10.5px;letter-spacing:.32em;text-transform:uppercase;color:var(--rose);}
+  .weg h2{text-align:left;font-size:21px;margin-top:-6px;}
+  .weg p{font-size:14px;color:var(--gedaempft);}
+  .weg .hint{margin-top:0;min-height:0;}
+  .oder{text-align:center;font-family:"Playfair Display",serif;font-style:italic;color:var(--gedaempft);margin-top:14px;}
+  .steps{display:flex;flex-direction:column;gap:10px;}
+  .step-btn{
+    display:flex;align-items:center;gap:12px;width:100%;text-align:left;cursor:pointer;text-decoration:none;
+    border:1px solid var(--linie);border-radius:14px;padding:12px 16px;background:var(--papier);color:var(--pflaume);
+    font-family:"Playfair Display",serif;font-size:16.5px;font-weight:500;
+  }
+  .step-btn small{margin-left:auto;font-family:"Jost",sans-serif;font-weight:300;font-size:12.5px;color:var(--gedaempft);white-space:nowrap;}
+  .step-btn .nr{
+    flex:none;width:28px;height:28px;border-radius:50%;border:1px solid var(--rose);
+    display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--rose);
+  }
+  .step-btn.ok .nr{background:var(--rose);color:var(--papier);}
+  .step-btn.jetzt{background:var(--beere);border-color:var(--beere);color:var(--papier);}
+  .step-btn.jetzt small{color:#EBD9DD;}
+  .step-btn.jetzt .nr{border-color:var(--papier);color:var(--papier);}
+  .step-btn.zu{opacity:.5;cursor:not-allowed;background:var(--sand);}
+  .step-btn.zu .nr{border-style:dashed;}
+  .step-btn:focus-visible{outline:2px solid var(--rose);outline-offset:3px;}
+  .price-line{font-size:13.5px;color:var(--gedaempft);text-align:center;margin-top:22px;}
 
   /* --- Auswahl --- */
   .found{
@@ -266,21 +276,27 @@
     <p class="intro" id="headIntro">30 Tage, ein kleiner Impuls pro Tag: vom alten Satz, der dich klein gehalten hat, zu einem neuen, der zu dir passt.</p>
   </header>
 
-  <!-- Einstieg -->
+  <!-- Einstieg: zwei Wege -->
   <section class="view" id="v-intro">
-    <div class="how">
-      <ol>
-        <li><b>Dein alter Satz:</b> der Glaubenssatz, der gerade am lautesten ist – aus deinem Testergebnis oder selbst gewählt.</li>
-        <li><b>Deine Werte:</b> drei Werte, die dir den Weg zeigen – aus dem Werte-Finder oder selbst gewählt.</li>
-        <li><b>30 Tage:</b> jeden Tag ein Impuls, eine kleine Aufgabe und eine Frage. Etwa zwei bis fünf Minuten.</li>
-      </ol>
-      <p class="price">19 € einmalig · Einrichten kannst du schon vorher, die 30 Tage öffnen sich mit deinem Zugangscode.</p>
-    </div>
-    <div class="prep" id="prep"></div>
+    <section class="weg" aria-labelledby="t-weg1">
+      <div class="weg__label">Weg 1 · empfohlen</div>
+      <h2 id="t-weg1">Mit Test und Werte-Finder</h2>
+      <p>Der Kompass übernimmt deinen lautesten Satz und deine Werte und wird ganz persönlich. Jeder Schritt öffnet sich, wenn der vorherige abgeschlossen ist.</p>
+      <div class="steps" id="steps"></div>
+      <p class="hint" id="stepHint" role="status"></p>
+    </section>
+
+    <div class="oder">oder</div>
+
+    <section class="weg" aria-labelledby="t-weg2">
+      <div class="weg__label">Weg 2</div>
+      <h2 id="t-weg2">Direkt starten</h2>
+      <p>Du wählst deinen alten Satz und drei Werte selbst aus. Das dauert etwa zwei Minuten.</p>
+      <button class="btn btn--soft btn--block" type="button" id="start">Kompass einrichten</button>
+    </section>
+
+    <p class="price-line">19 € einmalig · Einrichten ist frei, die 30 Tage öffnen sich mit deinem Zugangscode.</p>
     <p class="intro">Woche 1: den alten Satz bemerken. Woche 2: den neuen Satz kennenlernen. Woche 3: deine Werte leben. Woche 4: alles verankern.</p>
-    <div class="actions">
-      <button class="btn" type="button" id="start">Meinen Kompass einrichten</button>
-    </div>
     <div class="actions" id="resumeBox" hidden style="margin-top:8px">
       <button class="btn btn--link" type="button" id="resumeBtn">Zu deinem bisherigen Kompass</button>
     </div>
@@ -497,18 +513,26 @@
   }
 
   /* Einstieg: Hinweis auf Test und Werte-Finder */
+  const LOCK = '<svg width="12" height="13" viewBox="0 0 12 13" aria-hidden="true"><rect x="1.5" y="5.5" width="9" height="6.5" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M3.5 5.5V4a2.5 2.5 0 0 1 5 0v1.5" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>';
   function renderIntro(){
-    const t = fromTest(), w = fromWerte();
-    const item = (ok, name, href, mins, what) => ok
-      ? `<li class="ok"><i>✓</i><span>${name} <small>· wird übernommen</small></span></li>`
-      : `<li><i>○</i><span><a href="${href}">${name}</a> <small>· ${mins} · ${what}</small></span></li>`;
-    $("prep").innerHTML = (t && w)
-      ? `<div class="prep__title">Alles bereit</div><p>Dein Kompass baut auf deinen Ergebnissen auf.</p>`
-      : `<div class="prep__title">Tipp: Mach vorher diese zwei Schritte</div><p>Dann übernimmt der Kompass deinen Satz und deine Werte und wird ganz persönlich. Du kannst aber auch direkt starten.</p>`;
-    $("prep").innerHTML += `<ul>
-      ${item(t, "Glaubenssätze-Test", "glaubenssaetze.html", "5 Minuten", "findet deinen lautesten Satz")}
-      ${item(w, "Werte-Finder", "werte-finder.html", "10 Minuten", "findet deine Werte")}
-    </ul>`;
+    // Weg 1 (empfohlen): Test → Werte-Finder → Kompass; jeder Schritt öffnet sich erst nach dem vorherigen
+    const t = !!fromTest(), w = !!fromWerte();
+    const steps = [
+      {nr: 1, name: "Glaubenssätze-Test", zeit: "5 Min.", href: "glaubenssaetze.html", ok: t, zu: false},
+      {nr: 2, name: "Werte-Finder", zeit: "10 Min.", href: "werte-finder.html", ok: w, zu: !t, vorher: "den Glaubenssätze-Test"},
+      {nr: 3, name: "Kompass einrichten", zeit: "2 Min.", ok: false, zu: !(t && w), vorher: "den Werte-Finder"},
+    ];
+    const jetzt = steps.find(x => !x.ok && !x.zu);
+    $("steps").innerHTML = steps.map(x => {
+      const cls = ["step-btn", x.ok ? "ok" : "", x.zu ? "zu" : "", x === jetzt ? "jetzt" : ""].join(" ");
+      const nr = x.ok ? "✓" : x.zu ? LOCK : x.nr;
+      const inner = `<span class="nr">${nr}</span>${x.name}<small>${x.ok ? "erledigt" : x.zeit}</small>`;
+      const label = `Schritt ${x.nr}: ${x.name}${x.ok ? ", erledigt" : x.zu ? ", gesperrt" : ""}`;
+      if(x.zu) return `<button class="${cls}" type="button" aria-disabled="true" data-locked="${x.vorher}" aria-label="${label}">${inner}</button>`;
+      if(x.href) return `<a class="${cls}" href="${x.href}" aria-label="${label}">${inner}</a>`;
+      return `<button class="${cls}" type="button" id="start2" aria-label="${label}">${inner}</button>`;
+    }).join("");
+    $("stepHint").textContent = "";
     // Ein bereits laufender Kompass bleibt erreichbar, bis ein neuer gestartet wird
     const running = !!(s.start && s.alt);
     $("resumeBox").hidden = !running;
@@ -518,14 +542,14 @@
   /* 1 · Alter Satz */
   let draft = null; // Einrichtung wird erst beim Start übernommen
   function renderSatz(){
-    const t = fromTest();
+    const t = draft.direct ? null : fromTest();
     const found = $("foundTest");
     if(t){
       found.hidden = false;
       found.textContent = "Aus deinem Glaubenssätze-Test: Deine lautesten Sätze sind markiert.";
       if(!draft.beliefId) draft.beliefId = t.top[0];
     }else{
-      found.hidden = false;
+      found.hidden = !!draft.direct;
       found.innerHTML = `Du weißt nicht, welcher Satz am lautesten ist? <a href="glaubenssaetze.html">Mach zuerst den Glaubenssätze-Test</a> (5 Minuten).`;
     }
     const tops = t ? t.top : [];
@@ -544,9 +568,9 @@
   /* 2 · Werte */
   let wfValues = null;
   function renderWerte(){
-    wfValues = fromWerte();
+    wfValues = draft.direct ? null : fromWerte();
     const found = $("foundWerte");
-    found.hidden = false;
+    found.hidden = !!draft.direct;
     let options;
     if(wfValues){
       found.textContent = "Aus deinem Werte-Finder. Vorausgewählt sind die drei, die gerade am wenigsten Raum in deinem Leben haben.";
@@ -707,10 +731,11 @@
 
   /* ---------- Ereignisse ---------- */
   const nudge = id => { const h = $(id); h.classList.remove("pulse"); void h.offsetWidth; h.classList.add("pulse"); };
-  const beginSetup = keep => {
+  // direct: Weg 2 (direkt starten) – nichts aus Test und Werte-Finder übernehmen
+  const beginSetup = (keep, direct = false) => {
     draft = keep
       ? {beliefId: s.beliefId, alt: s.alt, neu: s.neu, values: s.values.map(v => ({...v}))}
-      : {beliefId: null, alt: "", neu: "", values: [], fresh: true};
+      : {beliefId: null, alt: "", neu: "", values: [], fresh: true, direct};
     view("satz");
   };
 
@@ -718,6 +743,8 @@
     const t = e.target.closest("button");
     if(!t) return;
     if(t.dataset.view){ view(t.dataset.view); return; }
+    if(t.id === "start2"){ beginSetup(false); return; }
+    if(t.dataset.locked){ $("stepHint").textContent = `Schließ zuerst ${t.dataset.locked} ab – dann öffnet sich dieser Schritt.`; nudge("stepHint"); return; }
     if(t.dataset.belief){
       const id = t.dataset.belief;
       if(draft.beliefId !== id){
@@ -761,7 +788,7 @@
     if(el.id === "gRange"){ s.glaube[shown] = +el.value; $("gVal").textContent = el.value + " %"; save(); }
   });
 
-  $("start").addEventListener("click", () => beginSetup(false));
+  $("start").addEventListener("click", () => beginSetup(false, true));
   $("next1").addEventListener("click", () => {
     if(!draft.beliefId){ $("hint1").textContent = "Wähle einen Satz, dann geht es weiter."; nudge("hint1"); return; }
     if(draft.beliefId === "eigen"){
