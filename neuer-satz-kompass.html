@@ -275,6 +275,9 @@
     <div class="actions">
       <button class="btn" type="button" id="start">Meinen Kompass einrichten</button>
     </div>
+    <div class="actions" id="resumeBox" hidden style="margin-top:8px">
+      <button class="btn btn--link" type="button" id="resumeBtn">Zu deinem bisherigen Kompass</button>
+    </div>
   </section>
 
   <!-- 1 · Alter Satz -->
@@ -695,6 +698,10 @@
       ${item(t, "Glaubenssätze-Test", "glaubenssaetze.html", "5 Minuten", "findet deinen lautesten Satz")}
       ${item(w, "Werte-Finder", "werte-finder.html", "10 Minuten", "findet deine Werte")}
     </ul>`;
+    // Ein bereits laufender Kompass bleibt erreichbar, bis ein neuer gestartet wird
+    const running = !!(s.start && s.alt);
+    $("resumeBox").hidden = !running;
+    if(running) $("resumeBtn").textContent = `Zu deinem bisherigen Kompass (${doneCount()} von 30 Tagen geschafft)`;
   }
 
   /* 1 · Alter Satz */
@@ -893,7 +900,7 @@
   const beginSetup = keep => {
     draft = keep
       ? {beliefId: s.beliefId, alt: s.alt, neu: s.neu, values: s.values.map(v => ({...v}))}
-      : {beliefId: null, alt: "", neu: "", values: []};
+      : {beliefId: null, alt: "", neu: "", values: [], fresh: true};
     view("satz");
   };
 
@@ -960,12 +967,15 @@
   $("begin").addEventListener("click", () => {
     draft.neu = $("newSatz").value.trim();
     if(!draft.neu){ $("hint3").textContent = "Schreib deinen neuen Satz in das Feld."; nudge("hint3"); return; }
+    // Neuer Kompass: alter Fortschritt wird erst jetzt ersetzt
+    if(draft.fresh){ const reminder = s.reminder; s = fresh(); s.reminder = reminder; }
     const keepProgress = !!s.start;
     Object.assign(s, {beliefId: draft.beliefId, alt: draft.alt, neu: draft.neu, values: draft.values});
     if(!keepProgress) s.start = ymd(new Date());
     save(); view("tag");
   });
   $("editBtn").addEventListener("click", () => beginSetup(true));
+  $("resumeBtn").addEventListener("click", () => view(doneCount() === 30 ? "ende" : "tag"));
   $("icsBtn").addEventListener("click", downloadIcs);
   $("remTime").addEventListener("change", () => { s.reminder = $("remTime").value; save(); });
 
@@ -998,11 +1008,14 @@
   });
 
   /* ---------- Start ---------- */
+  // #neu: kommt vom Glaubenssätze-Test oder Werte-Finder und richtet einen neuen Kompass ein
+  const wantsNew = location.hash === "#neu";
+  if(wantsNew){ try{ history.replaceState(null, "", location.pathname + location.search); }catch(e){} }
   const saved = load();
-  if(saved && saved.start && saved.alt && saved.neu && saved.values.length === PICK){
-    s = saved;
-    view(doneCount() === 30 ? "ende" : "tag");
-  }else view("intro");
+  const valid = saved && saved.start && saved.alt && saved.neu && saved.values.length === PICK;
+  if(valid) s = saved;
+  if(valid && !wantsNew) view(doneCount() === 30 ? "ende" : "tag");
+  else view("intro");
 })();
 </script>
 </body>
