@@ -331,8 +331,8 @@
     <p class="question">Was ist im Moment am stärksten?</p>
     <div class="chips chips--big" id="moods" style="margin-top:14px;justify-content:center"></div>
 
-    <h2 style="margin-top:34px;font-size:21px">Und wo stehst du gerade?</h2>
-    <p class="question">Viele wissen das selbst nicht genau. Das ist völlig in Ordnung.</p>
+    <h2 style="margin-top:34px;font-size:21px">Und wo stehst du gerade in deiner Beziehung?</h2>
+    <p class="question">Gemeint ist die Beziehung, die dir wehtut oder wehgetan hat. Viele wissen selbst nicht genau, wo sie stehen. Das ist völlig in Ordnung.</p>
     <div class="chips chips--big" id="phases" style="margin-top:14px;justify-content:center"></div>
 
     <div class="field">
@@ -483,10 +483,10 @@
     {id:"leer", name:"Leer", practice:"Du musst gerade nichts fühlen. Ein Glas Wasser trinken, ein Fenster öffnen – das reicht für jetzt.", satz:"Auch wenn ich gerade wenig spüre, bin ich noch da."},
   ];
   const PHASES = [
-    {id:"drin", name:"Ich bin noch drin", satz:"Ich muss niemandem beweisen, dass es wehtut. Was ich fühle, zählt."},
-    {id:"gehen", name:"Ich will raus", satz:"Ich darf schwanken und trotzdem auf meinem Weg bleiben."},
-    {id:"danach", name:"Ich bin draußen", satz:"Ich muss nicht wieder die Alte werden. Ich darf ich werden."},
-    {id:"unsicher", name:"Weiß ich nicht", satz:"Ich muss heute nicht wissen, wo ich stehe. Ich darf einfach hier sein."},
+    {id:"drin", name:"Noch in der Beziehung", hint:"ich bin noch mit ihm zusammen", satz:"Ich muss niemandem beweisen, dass es wehtut. Was ich fühle, zählt."},
+    {id:"gehen", name:"Auf dem Weg hinaus", hint:"ich will gehen oder bin gerade dabei", satz:"Ich darf schwanken und trotzdem auf meinem Weg bleiben."},
+    {id:"danach", name:"Getrennt", hint:"ich bin draußen und finde zu mir zurück", satz:"Ich muss nicht wieder die Alte werden. Ich darf ich werden."},
+    {id:"unsicher", name:"Weiß ich nicht", hint:"oder es passt gerade nichts davon", satz:"Ich muss heute nicht wissen, wo ich stehe. Ich darf einfach hier sein."},
   ];
   const byId = (list, id) => list.find(x => x.id === id);
 
@@ -588,7 +588,7 @@
   /* ---------- 2 · Gefühl & Phase ---------- */
   function renderFeel(){
     $("moods").innerHTML = MOODS.map(m => `<button class="chip" type="button" data-mood="${m.id}" aria-pressed="${s.mood === m.id}">${esc(m.name)}</button>`).join("");
-    $("phases").innerHTML = PHASES.map(p => `<button class="chip" type="button" data-phase="${p.id}" aria-pressed="${s.phase === p.id}">${esc(p.name)}</button>`).join("");
+    $("phases").innerHTML = PHASES.map(p => `<button class="chip" type="button" data-phase="${p.id}" aria-pressed="${s.phase === p.id}">${esc(p.name)}<small>${esc(p.hint)}</small></button>`).join("");
     $("nameInput").value = s.name;
     $("hint2").textContent = "";
   }
@@ -667,7 +667,7 @@
         <p class="card__practice">${esc(m.practice)}</p>
         <p class="card__text">${esc(m.satz)}</p>
       </div>` : "") + (p ? `<div class="card card--soft">
-        <div class="card__kind" style="margin-top:0">Da, wo du gerade stehst</div>
+        <div class="card__kind" style="margin-top:0">Da, wo du in deiner Beziehung stehst</div>
         <p class="card__text">${esc(p.satz)}</p>
       </div>` : "");
 
