@@ -128,6 +128,11 @@
   .friend{background:var(--sand);border-radius:16px;padding:18px;margin-top:20px;text-align:center;}
   .friend__quote{font-family:"Playfair Display",serif;font-style:italic;font-size:20px;line-height:1.4;margin-top:6px;}
   .friend__lead{font-size:14px;color:var(--gedaempft);}
+  .friend + .field{margin-top:10px;}
+  .field__quote{font-family:"Playfair Display",serif;font-style:italic;font-size:18px;line-height:1.4;}
+  .field__quote small{display:block;font-family:"Jost",sans-serif;font-style:normal;font-size:12px;letter-spacing:.06em;color:var(--gedaempft);margin-bottom:2px;}
+  .card__friend{background:var(--sand);border-radius:10px;padding:9px 12px;margin-top:12px;font-size:14px;line-height:1.55;}
+  .card__friend b{font-weight:400;color:var(--beere);}
   .ideas{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
   .idea{
     font:inherit;font-size:13px;line-height:1.4;color:var(--gedaempft);text-align:left;
@@ -351,14 +356,9 @@
     <div class="step__label">Schritt 3 von 4</div>
     <h2 id="s3title">Die Freundinnen-Frage</h2>
     <div class="friend">
-      <p class="friend__lead">Stell dir vor, deine liebste Freundin sitzt dir gegenüber und sagt leise:</p>
-      <p class="friend__quote" id="friendQuote"></p>
+      <p class="friend__lead" id="friendLead"></p>
     </div>
-    <div class="field">
-      <label for="friendAnswer">Was würdest du ihr sagen?</label>
-      <textarea id="friendAnswer" rows="3" maxlength="300" placeholder="Schreib, was dir als Erstes einfällt …"></textarea>
-      <div class="ideas" id="friendIdeas"></div>
-    </div>
+    <div id="friendList"></div>
     <div class="crisis" id="crisis3" hidden></div>
     <div class="actions">
       <button class="btn btn--soft" type="button" data-go="2">Zurück</button>
@@ -519,13 +519,17 @@
 
   /* ---------- Zustand ---------- */
   const KEY = "seelenwende-affirmationen-v1";
-  const fresh = () => ({step:0, picked:[], ownHarsh:"", mood:null, phase:null, name:"", friend:"", levels:{}, doneAt:null});
+  const fresh = () => ({step:0, picked:[], ownHarsh:"", mood:null, phase:null, name:"", friend:{}, levels:{}, doneAt:null});
   let s = fresh();
   const save = () => { try{ localStorage.setItem(KEY, JSON.stringify(s)); }catch(e){} };
   const load = () => {
     try{
       const d = JSON.parse(localStorage.getItem(KEY) || "null");
-      if(d && Array.isArray(d.picked) && d.picked.every(k => HARSH[k])) return Object.assign(fresh(), d);
+      if(d && Array.isArray(d.picked) && d.picked.every(k => HARSH[k])){
+        // Ältere Version speicherte nur eine Antwort als Text
+        if(typeof d.friend === "string") d.friend = d.friend ? {[d.ownHarsh && d.ownHarsh.trim() ? "own" : d.picked[0]]: d.friend} : {};
+        return Object.assign(fresh(), d);
+      }
     }catch(e){}
     return null;
   };
@@ -537,8 +541,14 @@
   };
   const levelOf = id => s.levels[id] ?? 1;
   const name = () => s.name.trim();
-  const friendText = () => s.friend.trim();
-  const firstHarsh = () => s.ownHarsh.trim() || (s.picked[0] ? HARSH[s.picked[0]].text : "");
+  /* Freundinnen-Frage: eine Antwort je hartem Satz, auch für den in eigenen Worten (Schlüssel "own") */
+  const friendKeys = () => (s.ownHarsh.trim() ? ["own"] : []).concat(s.picked);
+  const harshText = k => k === "own" ? s.ownHarsh.trim() : HARSH[k].text;
+  const friendOf = k => String(s.friend[k] || "").trim();
+  const friendAnswers = () => [...new Set(friendKeys().map(friendOf).filter(Boolean))];
+  const OWN_FRIEND = ["Du hast getan, was du in dem Moment konntest.", "Ich sehe, wie schwer das für dich ist.", "Du bist damit nicht allein."];
+  const OWN_SATZ = "Ich darf mir selbst so freundlich begegnen wie einer Freundin.";
+  const friendIdeas = k => k === "own" ? OWN_FRIEND : HARSH[k].theme.friend;
 
   function show(step){
     s.step = step;
@@ -595,19 +605,27 @@
 
   /* ---------- 3 · Freundinnen-Frage ---------- */
   function renderFriend(){
-    $("friendQuote").textContent = `„${firstHarsh()}“`;
-    $("friendAnswer").value = s.friend;
-    const ideas = [];
-    pickedThemes().forEach(({theme}) => theme.friend.forEach(f => { if(!ideas.includes(f)) ideas.push(f); }));
-    $("friendIdeas").innerHTML = ideas.slice(0, 4).map(i => `<button class="idea" type="button" data-friend="${esc(i)}" aria-pressed="${s.friend === i}">${esc(i)}</button>`).join("");
-    checkCrisis("crisis3", s.friend);
+    const keys = friendKeys();
+    $("friendLead").textContent = keys.length > 1
+      ? "Stell dir vor, deine liebste Freundin sitzt dir gegenüber und sagt diese Sätze leise über sich. Was würdest du ihr auf jeden einzelnen antworten?"
+      : "Stell dir vor, deine liebste Freundin sitzt dir gegenüber und sagt diesen Satz leise über sich. Was würdest du ihr antworten?";
+    $("friendList").innerHTML = keys.map((k, i) => {
+      const own = friendOf(k);
+      return `<div class="field">
+        <label class="field__quote" for="fa-${i}"><small>${k === "own" ? "In deinen Worten" : `Satz ${keys.indexOf(k) + 1 - (keys[0] === "own" ? 1 : 0)} von ${s.picked.length}`}</small>„${esc(harshText(k))}“</label>
+        <textarea id="fa-${i}" data-answer="${k}" rows="2" maxlength="300" placeholder="Was würdest du ihr sagen?">${esc(s.friend[k] || "")}</textarea>
+        <div class="ideas">${friendIdeas(k).map(f => `<button class="idea" type="button" data-friend="${esc(f)}" data-for="${k}" aria-pressed="${own === f}">${esc(f)}</button>`).join("")}</div>
+      </div>`;
+    }).join("");
+    checkCrisis("crisis3", ...friendKeys().map(friendOf));
     $("hint3").textContent = "";
   }
 
   /* ---------- 4 · Ergebnis ---------- */
   function mySentences(){
     const out = [];
-    if(friendText()) out.push(friendText());
+    friendAnswers().forEach(f => out.push(f));
+    if(s.ownHarsh.trim() && !friendOf("own")) out.push(OWN_SATZ);
     pickedThemes().forEach(({theme}) => out.push(theme.ladder[levelOf(theme.id)]));
     const m = byId(MOODS, s.mood); if(m) out.push(m.satz);
     const p = byId(PHASES, s.phase); if(p) out.push(p.satz);
@@ -621,7 +639,7 @@
   }
 
   function renderHero(){
-    const n = name(), f = friendText();
+    const n = name(), f = friendAnswers()[0];
     const eyebrow = n ? `Für dich, ${esc(n)}` : "Für dich";
     if(f){
       $("hero").innerHTML = `<div class="hero__eyebrow">${eyebrow}</div>
@@ -637,13 +655,18 @@
 
   function cardHTML({key, theme}){
     const lv = levelOf(theme.id);
-    const ownLine = (key === s.picked[0] && s.ownHarsh.trim()) ? `<div class="card__harsh">Und in deinen Worten: <s>${esc(s.ownHarsh.trim())}</s></div>` : "";
+    // Alle gewählten Sätze dieses Themas, und die eigenen Worte beim ersten Thema
+    // Alle gewählten Sätze dieses Themas
+    const keys = s.picked.filter(k => HARSH[k].theme.id === theme.id);
+    const harshLines = keys.map(k => `<div class="card__harsh">Die harte Stimme sagt: <s>${esc(harshText(k))}</s></div>`).join("");
+    const answers = [...new Set(keys.map(friendOf).filter(Boolean))];
+    const friendLine = answers.length ? `<div class="card__friend"><b>Was du einer Freundin sagen würdest:</b> ${answers.map(a => `„${esc(a)}“`).join(" ")}</div>` : "";
     return `<div class="card" data-card="${theme.id}">
-      <div class="card__harsh">Die harte Stimme sagt: <s>${esc(HARSH[key].text)}</s></div>
-      ${ownLine}
+      ${harshLines}
       <p class="card__context">${esc(theme.context)}</p>
       <div class="card__kind">Dein freundlicher Satz</div>
       <p class="card__text" id="ct-${theme.id}">${esc(theme.ladder[lv])}</p>
+      ${friendLine}
       <div class="levels">
         <div class="dots" aria-label="Stufe ${lv + 1} von 3: ${LEVELS[lv]}">${[0,1,2].map(i => `<i class="${i <= lv ? "on" : ""}"></i>`).join("")}<span>${LEVELS[lv]}</span></div>
         <button class="lvl" type="button" data-softer="${theme.id}" ${lv === 0 ? "disabled" : ""}>Noch zu weit weg</button>
@@ -657,9 +680,16 @@
   }
 
   function renderResult(){
-    checkCrisis("crisis4", s.ownHarsh, s.friend);
+    checkCrisis("crisis4", s.ownHarsh, ...friendKeys().map(friendOf));
     renderHero();
-    $("cards").innerHTML = pickedThemes().map(cardHTML).join("");
+    const own = s.ownHarsh.trim(), ownAnswer = friendOf("own");
+    $("cards").innerHTML = (own ? `<div class="card">
+        <div class="card__harsh">In deinen Worten: <s>${esc(own)}</s></div>
+        <p class="card__context">Diesen Satz hast du selbst aufgeschrieben. Allein, dass du ihn ansiehst, statt ihn einfach zu glauben, ist ein Schritt.</p>
+        <div class="card__kind">Dein freundlicher Satz</div>
+        <p class="card__text">${esc(OWN_SATZ)}</p>
+        ${ownAnswer ? `<div class="card__friend"><b>Was du einer Freundin sagen würdest:</b> „${esc(ownAnswer)}“</div>` : ""}
+      </div>` : "") + pickedThemes().map(cardHTML).join("");
 
     const m = byId(MOODS, s.mood), p = byId(PHASES, s.phase);
     $("moment").innerHTML = (m ? `<div class="card card--soft">
@@ -766,9 +796,9 @@
       save(); return;
     }
     if(t.dataset.friend){
-      const ta = $("friendAnswer");
-      ta.value = t.dataset.friend; s.friend = t.dataset.friend; save();
-      document.querySelectorAll("[data-friend]").forEach(b => b.setAttribute("aria-pressed", String(b === t)));
+      const k = t.dataset.for, ta = document.querySelector(`[data-answer="${k}"]`);
+      ta.value = t.dataset.friend; s.friend[k] = t.dataset.friend; save();
+      t.parentNode.querySelectorAll("[data-friend]").forEach(b => b.setAttribute("aria-pressed", String(b === t)));
       ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length);
       return;
     }
@@ -782,7 +812,7 @@
       const txt = $("ct-" + id); txt.classList.add("fade");
       const again = document.querySelector(`[data-card="${id}"] [data-${step < 0 ? "softer" : "stronger"}]`);
       (again && !again.disabled ? again : document.querySelector(`[data-card="${id}"] .lvl:not(:disabled)`))?.focus();
-      if(!friendText() && pickedThemes()[0].theme === theme) renderHero();
+      if(!friendAnswers().length && pickedThemes()[0].theme === theme) renderHero();
       renderMine(); save(); return;
     }
   });
@@ -790,10 +820,11 @@
   document.addEventListener("input", e => {
     if(e.target.id === "ownHarsh"){ s.ownHarsh = e.target.value; checkCrisis("crisis1", s.ownHarsh); save(); }
     if(e.target.id === "nameInput"){ s.name = e.target.value; save(); }
-    if(e.target.id === "friendAnswer"){
-      s.friend = e.target.value;
-      document.querySelectorAll("[data-friend]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.friend === s.friend)));
-      checkCrisis("crisis3", s.friend); save();
+    const k = e.target.dataset && e.target.dataset.answer;
+    if(k){
+      s.friend[k] = e.target.value;
+      e.target.parentNode.querySelectorAll("[data-friend]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.friend === e.target.value)));
+      checkCrisis("crisis3", ...friendKeys().map(friendOf)); save();
     }
   });
 
@@ -814,9 +845,12 @@
   let skipArmed = false;
   $("next3").addEventListener("click", () => {
     // Leeres Feld ist erlaubt – beim ersten Klick nur sanft ermutigen
-    if(!friendText() && !skipArmed){
+    const open = friendKeys().filter(k => !friendOf(k)).length;
+    if(open && !skipArmed){
       skipArmed = true;
-      $("hint3").textContent = "Ein Satz reicht, auch ein kurzer. Tippe noch einmal, wenn du es heute offen lassen möchtest.";
+      $("hint3").textContent = open === friendKeys().length
+        ? "Ein Satz reicht, auch ein kurzer. Tippe noch einmal, wenn du es heute offen lassen möchtest."
+        : `${open === 1 ? "Eine Antwort ist" : open + " Antworten sind"} noch offen. Tippe noch einmal, wenn du ${open === 1 ? "sie" : "sie"} offen lassen möchtest.`;
       nudge("hint3"); return;
     }
     skipArmed = false; s.doneAt = null; show(4);
