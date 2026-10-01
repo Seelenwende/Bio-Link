@@ -53,7 +53,7 @@
   .butterfly{width:24px; height:24px; flex-shrink:0;}
   .butterfly .w1{fill:var(--beere);} .butterfly .w2{fill:var(--rose);} .butterfly .w3{fill:var(--linie);} .butterfly .k{fill:var(--pflaume);}
   .actions{display:flex; gap:8px; flex-shrink:0;}
-  .restart{background:none; border:none; color:var(--gedaempft); font-size:.8rem; cursor:pointer; padding:7px 4px;}
+  .restart{background:none; border:none; color:var(--gedaempft); font-size:.8rem; cursor:pointer; padding:7px 4px; text-decoration:none;}
   .exit{
     background:var(--sand); color:var(--pflaume); border:1px solid var(--linie);
     border-radius:20px; padding:7px 14px; font-size:.8rem; font-weight:500; cursor:pointer; white-space:nowrap;
@@ -137,6 +137,7 @@
     <span class="word">Mira</span>
   </div>
   <div class="actions">
+    <a class="restart" id="back-programm" href="programm.html" hidden>Zum Programm</a>
     <button class="restart" id="restart-btn" hidden>Neu beginnen</button>
     <button class="exit" id="exit-btn" title="Verlässt die Seite sofort (auch: zweimal Esc)">Schnell weg</button>
   </div>
@@ -203,6 +204,16 @@
   /* ---------- Zugang ---------- */
   try { var saved = localStorage.getItem(CODE_KEY); if (saved) { $("code-input").value = saved; $("remember-input").checked = true; } } catch(e){}
 
+  // Aus dem 6-Wochen-Programm: Code und Gesprächsanfang kommen über den Tab-Speicher, nicht über die Adresse.
+  var vomProgramm = { code:null, start:null };
+  try {
+    vomProgramm.code = sessionStorage.getItem("sw_mira_code");
+    vomProgramm.start = sessionStorage.getItem("sw_mira_start");
+    if (sessionStorage.getItem("sw_mira_von") === "programm") $("back-programm").hidden = false;
+    sessionStorage.removeItem("sw_mira_code");
+    sessionStorage.removeItem("sw_mira_start");
+  } catch(e){}
+
   $("gate-form").addEventListener("submit", function(e){
     e.preventDefault();
     var code = $("code-input").value.trim();
@@ -219,6 +230,10 @@
         } catch(e){}
         setCounter(res.data.used, res.data.limit);
         startChat();
+        if (vomProgramm.start) {
+          var i = $("chat-input"); i.value = vomProgramm.start; autosize(i); i.focus();
+          vomProgramm.start = null;
+        }
       })
       .catch(function(){ $("gate-error").textContent = "Keine Verbindung. Prüf dein Internet und versuch es noch einmal."; })
       .then(function(){ $("gate-submit").disabled = false; });
@@ -367,12 +382,19 @@
   function autosize(el){ el.style.height = "auto"; el.style.height = Math.min(130, el.scrollHeight) + "px"; }
   $("chat-input").addEventListener("input", function(){ autosize(this); });
 
+  if (vomProgramm.code) {
+    $("code-input").value = vomProgramm.code;
+    vomProgramm.code = null;
+    $("gate-form").requestSubmit();
+  }
+
   /* ---------- Schnell weg ---------- */
   function quickExit(){
     stopPolling();
     state.prefill = null;
     try { sessionStorage.removeItem(PREFILL_KEY); } catch(e){}
     state.turns = [];
+    try { sessionStorage.clear(); } catch(e){}
     $("chat-messages").innerHTML = "";
     $("chat-input").value = "";
     document.title = "Wetter";

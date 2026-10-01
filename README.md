@@ -1,9 +1,12 @@
 # Bio-Link
 
 - `index.html` – Link-in-Bio-Seite von Seelenwende.
+- `muster-check.html` – **Muster-Check** „Ist das noch normal?“: 20 konkrete Alltagssituationen in fünf Bereichen (Wahrnehmung, Abwertung, Kontrolle & Rückzug, Heiß & kalt, Schuld & Angst). Zeigt, wo sich ein Muster wiederholt, wie es in einer gesunden Beziehung aussähe, einen Satz und eine Journal-Frage. Sicherheitshinweis mit Hilfenummern (CH/DE/AT), sobald sie Angst vor seiner Wut angibt; „Schnell weg“-Knopf (auch zweimal Esc). Läuft komplett im Browser, nichts wird gespeichert.
 - `werte-finder.html` – Werte-Finder: in vier Schritten (5–15 Werte wählen, auf 5 eingrenzen, in eigenen Worten beschreiben, was jeder Wert bedeutet, einschätzen wie sehr man sie lebt) zu den eigenen fünf Kernwerten – mit eigenen Bedeutungssätzen und Impulsfragen zum Nachspüren. Läuft komplett im Browser, ohne KI, API-Schlüssel oder Kosten; Antworten bleiben auf dem Gerät.
 - `notizen.html` – **Klarheits-Tagebuch** (bewusst neutral benannt, heißt im Browser nur „Notizen“): Vorfälle mit Datum festhalten – was passiert ist, was wörtlich gesagt wurde, erkannte Muster (Leugnen, Kleinreden, Schuldumkehr …), Gefühle, Belege und ein Satz „Was weißt du sicher?“ für Zweifelsmomente. Übersicht „Muster“ zeigt, was sich wiederholt. PIN-geschützt und mit AES-GCM verschlüsselt (Schlüssel per PBKDF2 aus der PIN), gespeichert nur im Browser des Geräts – kein Server, kein Konto. Sperrt sich nach 5 Min. ohne Eingabe oder 30 Sek. im Hintergrund, „Schnell weg“-Knopf (auch zweimal Esc), Bremse nach 5 falschen PINs. Export als Druck/PDF oder Text (z. B. für eine Beratungsstelle), verschlüsselte Sicherungsdatei zum Mitnehmen auf ein anderes Gerät. Vergessene PIN = Tagebuch verloren (Absicht). Knopf **„Mit Mira einordnen“** in jedem Eintrag: übergibt den Eintrag (ohne Belege/Zeugen) über `sessionStorage` an `begleiterin.html`, wo er nach dem Zugangscode im Textfeld steht – sie liest ihn und schickt ihn selbst ab. Mira liest den Wert sofort aus und löscht ihn; nichts landet in Adresse oder Verlauf.
+- `affirmationen.html` – **Sei sanft mit dir**: persönliche Affirmationen für Frauen, die gerade zu hart mit sich sind. Sie wählt, was die harte Stimme sagt (bis zu drei Sätze, optional in eigenen Worten), wie es ihr gerade geht und wo sie steht, und beantwortet die Freundinnen-Frage („Was würdest du einer Freundin sagen?“). Danach bekommt sie zu jedem harten Satz eine Einordnung und einen freundlichen Satz in drei Stufen (ganz sanft · auf dem Weg · klar und stark) und wählt selbst, welche Stufe sie heute glauben kann. Dazu ein Satz für ihr Gefühl, ihre Phase und – falls vorhanden – ihre Werte aus dem Werte-Finder. Mit Lese-Moment im Vollbild, „Satz für heute“ beim nächsten Besuch und Krisenhinweis, wenn ihre eigenen Worte auf Gefahr deuten. Läuft komplett im Browser, ohne KI und ohne Kosten; alles bleibt auf dem Gerät.
 - `begleiterin.html` – **Mira**, die Seelenwende-Begleiterin: KI-Gesprächsbegleitung mit Zugangscode. Ein offenes Gespräch ohne Kategorien – die Begleiterin erkennt selbst, was gerade gebraucht wird. Krisenerkennung mit Notrufnummern (CH/DE/AT), „Schnell weg“-Knopf, Gespräche werden nicht gespeichert.
+- `programm.html` – **„Wieder bei dir“**, das 6-Wochen-Programm mit Zugangscode: sechs Wochen mit Impulsen zum Lesen, Schreibübungen, sieben Tagesankern pro Woche und Gesprächsanstößen für Mira. Die Inhalte liegen nur auf dem Server und kommen erst nach dem Code. Notizen bleiben auf dem Gerät (dauerhaft nur mit Häkchen, sonst nur im offenen Tab). Mit „Schnell weg“ und Krisenleiste.
 - `profil-check.html` – KI-Profil-Check: Instagram-Namen eingeben, die KI liest Profil, Bio, Link-Seite und die letzten Posts (offizielle Instagram Graph API) und bewertet jeden Punkt des Profil-Checks mit konkretem Verbesserungsvorschlag.
 
 ## So funktioniert der Profil-Check (Netlify)
@@ -44,3 +47,27 @@ Die Anweisungen der Begleiterin stehen in `netlify/lib/begleiterin.mts`.
 | `BEGLEITERIN_MODEL` | optional, Standard `claude-opus-5-5` |
 
 Neuer Code für eine Käuferin: an `BEGLEITERIN_CODES` anhängen, danach neu deployen. Kosten: grob 0,01–0,04 $ pro Nachricht.
+
+## So funktioniert das 6-Wochen-Programm „Wieder bei dir“ (Netlify)
+
+1. `programm-inhalt` prüft den Zugangscode und liefert erst dann die Inhalte aus. Die Texte stehen in `netlify/lib/programm.mts`.
+2. Notizen, Tagesanker und Fortschritt werden nie hochgeladen. Mit Häkchen bleiben sie auf dem Gerät, ohne Häkchen nur, solange der Tab offen ist.
+3. Boni (Begleitheft und „Audio für schwere Tage“, beide nur im Programm) liegen in `bonus/`. `programm-bonus` gibt mit gültigem Code einen drei Stunden gültigen, signierten Link heraus; die Edge-Funktion `bonus-schutz` lässt nur solche Links durch. Welche Dateien wohin gehören, steht in `bonus/LIESMICH.md`. Einzelprodukte werden nicht mitgeliefert; die Wochen knüpfen mit „Du hast schon …?“ an sie an (Werkzeug und Weg).
+4. Derselbe Code öffnet Mira, mit eigenem, größerem Kontingent. Die Gesprächsanstöße jeder Woche landen direkt in Miras Eingabefeld.
+
+| Variable | Inhalt |
+|---|---|
+| `PROGRAMM_CODES` | gültige Programm-Codes, kommagetrennt, z. B. `WIEDER-AB12-CD34` |
+| `BONUS_SECRET` | optional, eigenes Geheimnis für die Bonus-Links (sonst aus den Programm-Codes abgeleitet) |
+| `PROGRAMM_MIRA_LIMIT` | optional, Mira-Nachrichten pro Programm-Code (Standard 1000) |
+
+Neue Käuferin: Code an `PROGRAMM_CODES` anhängen, danach neu deployen.
+
+## Glaubenssätze-Test: Ergebnis per Mail (MailerLite)
+
+Die Texte des Tests stehen in `glaubenssaetze.json` (für Seite und Mail). Unter dem Ergebnis kann die Frau ihre Mail-Adresse eintragen. `test-ergebnis-mail` rechnet das Ergebnis aus den Punkten nach und trägt sie mit ihrem Hauptsatz in MailerLite ein; die Mail verschickt eine MailerLite-Automatisierung. Einrichtung, Felder und Mailtext: `mails/glaubenssaetze-ergebnis.md`.
+
+| Variable | Inhalt |
+|---|---|
+| `MAILERLITE_API_KEY` | API-Schlüssel aus MailerLite |
+| `MAILERLITE_GROUP_GLAUBENSSAETZE` | ID der Gruppe „Glaubenssätze-Test“ |
