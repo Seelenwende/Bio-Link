@@ -151,6 +151,8 @@
     color:var(--pflaume); background:var(--papier); border:1px solid var(--linie); border-radius:12px; padding:10px 12px;
   }
   .frage.lang textarea{min-height:200px;}
+  .werkzeug{display:grid; gap:10px; justify-items:start; background:var(--sand); border-radius:12px; padding:12px 14px; font-size:.9rem;}
+  .werkzeug .btn{padding:9px 16px; font-size:.86rem;}
   .rueckblick-zitat{background:var(--sand); border-radius:12px; padding:12px 14px; font-family:var(--serif); font-style:italic; white-space:pre-wrap;}
 
   .tage{list-style:none; margin:0; padding:0; display:grid; gap:8px;}
@@ -282,8 +284,9 @@
       <div id="wk-uebungen"></div>
     </div>
 
-    <div class="section" id="wk-werkzeug-wrap" hidden>
-      <div class="card stack"><p id="wk-werkzeug-text"></p><a class="btn soft" id="wk-werkzeug-link" href="#"></a></div>
+    <div class="section" id="wk-werkzeuge-wrap" hidden>
+      <h2>Passt zu dieser Woche</h2>
+      <div class="stack" id="wk-werkzeuge"></div>
     </div>
 
     <div class="section">
@@ -502,6 +505,16 @@
     parent.appendChild(wrap);
   }
 
+  // Tools öffnen sich in einem neuen Tab, damit sie ihren Platz im Programm behält.
+  function werkzeugKarte(wz, cls){
+    var box = el("div", cls);
+    box.appendChild(el("p", null, wz.text));
+    var a = el("a", "btn soft", wz.label);
+    a.href = wz.href; a.target = "_blank"; a.rel = "noopener";
+    box.appendChild(a);
+    return box;
+  }
+
   function openWeek(nr){
     var p = state.programm;
     var w = p.wochen.filter(function(x){ return x.nr === nr; })[0];
@@ -533,6 +546,7 @@
       var c = el("div", "card uebung");
       c.appendChild(el("h3", null, u.titel));
       c.appendChild(el("p", "anl", u.anleitung));
+      if (u.werkzeug) c.appendChild(werkzeugKarte(u.werkzeug, "werkzeug no-print"));
       u.fragen.forEach(function(f, i){ addFrage(c, noteKey(u.id, i), f, u.fragen.length === 1); });
       ue.appendChild(c);
     });
@@ -552,13 +566,10 @@
       ue.insertBefore(r, ue.firstChild);
     }
 
-    var wz = w.werkzeug;
-    $("wk-werkzeug-wrap").hidden = !wz;
-    if (wz) {
-      $("wk-werkzeug-text").textContent = wz.text;
-      $("wk-werkzeug-link").textContent = wz.label;
-      $("wk-werkzeug-link").href = wz.href;
-    }
+    var wzListe = w.werkzeuge || [];
+    var wzBox = $("wk-werkzeuge"); wzBox.innerHTML = "";
+    wzListe.forEach(function(wz){ wzBox.appendChild(werkzeugKarte(wz, "card werkzeug")); });
+    $("wk-werkzeuge-wrap").hidden = wzListe.length === 0;
 
     var tage = $("wk-tage"); tage.innerHTML = "";
     var t = state.daten.tage[nr] || [];

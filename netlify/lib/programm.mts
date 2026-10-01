@@ -16,11 +16,19 @@ export interface Impuls {
   absaetze: string[];
 }
 
+export interface Werkzeug {
+  text: string;
+  label: string;
+  href: string;
+}
+
 export interface Uebung {
   id: string;
   titel: string;
   anleitung: string;
   fragen: string[];
+  /** Tool, das die Übung vorbereitet. Steht direkt unter der Anleitung. */
+  werkzeug?: Werkzeug;
 }
 
 export interface Woche {
@@ -34,7 +42,8 @@ export interface Woche {
   tage: string[];
   mira: string[];
   hinweis?: string;
-  werkzeug?: { text: string; label: string; href: string };
+  /** Weitere Seelenwende-Tools, die zum Thema der Woche passen. */
+  werkzeuge?: Werkzeug[];
 }
 
 export interface Programm {
@@ -136,6 +145,13 @@ export const PROGRAMM: Programm = {
         "Ich bin in Woche 1 des Programms. Mein Körper ist ständig in Alarm. Kannst du mir helfen, runterzukommen?",
         "Mir fällt kein Ort ein, an dem ich mich sicher fühle. Wie finde ich trotzdem einen Anker?",
       ],
+      werkzeuge: [
+        {
+          text: "Das kostenlose Self Care Journal passt gut zu dieser Woche. Mit der Bestandsaufnahme darin siehst du, wo du gerade gut für dich sorgst und wo noch nicht.",
+          label: "Zum Self Care Journal",
+          href: "https://seelenwende.mytentary.com/p/niaKY4",
+        },
+      ],
       hinweis: "Wenn du noch mit ihm zusammenlebst oder Angst vor ihm hast, gehört zur Sicherheit auch die äußere Sicherheit. Beratungsstellen helfen dir kostenlos und vertraulich, einen Sicherheitsplan zu machen. Die Nummern stehen unten auf dieser Seite.",
     },
     {
@@ -213,6 +229,13 @@ export const PROGRAMM: Programm = {
       mira: [
         "Ich bin in Woche 2 des Programms. Ich beschreibe dir eine Situation und frage mich, ob das normal war.",
         "Ich zweifle ständig an meiner Erinnerung. Kannst du mir helfen, das zu sortieren?",
+      ],
+      werkzeuge: [
+        {
+          text: "Du bist noch in der Beziehung oder gerade dabei zu gehen? Der kostenlose Mini-Guide „Der Weg nach draußen“ hilft dir, dir selbst zuzuhören, bevor du entscheidest.",
+          label: "Zum Mini-Guide",
+          href: "https://seelenwende.mytentary.com/p/WPedba",
+        },
       ],
     },
     {
@@ -406,6 +429,11 @@ export const PROGRAMM: Programm = {
           id: "w5-laut",
           titel: "Mein lautester Satz",
           anleitung: "Wenn du den Glaubenssätze-Test gemacht hast, nimm deinen Hauptsatz.",
+          werkzeug: {
+            text: "Du weißt noch nicht, welcher Satz bei dir am lautesten ist? Der Glaubenssätze-Test zeigt es dir in fünf Minuten.",
+            label: "Zum Glaubenssätze-Test",
+            href: "glaubenssaetze.html",
+          },
           fragen: [
             "Welcher Satz über mich ist gerade am lautesten?",
             "Wann habe ich ihn zum ersten Mal gefühlt? Wer hat ihn mir beigebracht?",
@@ -441,11 +469,6 @@ export const PROGRAMM: Programm = {
         "Ich bin in Woche 5 des Programms. Mein lautester Satz ist: … Kannst du mich Schritt für Schritt begleiten, einen neuen Satz zu finden?",
         "Meine innere Kritikerin klingt wie er. Wie gehe ich damit um?",
       ],
-      werkzeug: {
-        text: "Du weißt noch nicht, welcher Satz bei dir am lautesten ist? Der Glaubenssätze-Test zeigt es dir in fünf Minuten.",
-        label: "Zum Glaubenssätze-Test",
-        href: "glaubenssaetze.html",
-      },
     },
     {
       nr: 6,
@@ -484,6 +507,11 @@ export const PROGRAMM: Programm = {
           id: "w6-werte",
           titel: "Meine Werte",
           anleitung: "Wenn du den Werte-Finder gemacht hast, nimm deine fünf Kernwerte.",
+          werkzeug: {
+            text: "Noch keine Werte gefunden? Der Werte-Finder führt dich in etwa zehn Minuten zu deinen fünf Kernwerten.",
+            label: "Zum Werte-Finder",
+            href: "werte-finder.html",
+          },
           fragen: [
             "Meine fünf wichtigsten Werte:",
             "Wo lebe ich sie heute schon?",
@@ -529,11 +557,6 @@ export const PROGRAMM: Programm = {
         "Ich bin in Woche 6 des Programms. Ich weiß nicht mehr, wer ich ohne ihn bin. Kannst du mir helfen, meine Werte in eigenen Worten zu finden?",
         "Ich habe Angst, dass mir so etwas wieder passiert. Woran erkenne ich es früh?",
       ],
-      werkzeug: {
-        text: "Der Werte-Finder führt dich in etwa zehn Minuten zu deinen fünf Kernwerten.",
-        label: "Zum Werte-Finder",
-        href: "werte-finder.html",
-      },
     },
   ],
   abschluss: [
