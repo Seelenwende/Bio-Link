@@ -170,6 +170,16 @@
   .bar .track{height:6px;background:var(--linie);border-radius:6px;overflow:hidden;margin-top:5px;}
   .bar .fill{height:100%;background:var(--rose);border-radius:6px;width:0;transition:width .8s ease;}
 
+  .path{list-style:none;text-align:left;margin-top:18px;display:flex;flex-direction:column;gap:10px;}
+  .path li{display:flex;gap:12px;align-items:center;font-size:13.5px;color:var(--gedaempft);line-height:1.45;}
+  .path i{
+    flex:none;width:28px;height:28px;border-radius:50%;border:1px solid var(--rose);
+    display:flex;align-items:center;justify-content:center;
+    font-family:"Playfair Display",serif;font-style:normal;font-size:14px;color:var(--rose);
+  }
+  .path li.ok i{background:var(--rose);color:var(--papier);}
+  .path b{display:block;font-family:"Playfair Display",serif;font-weight:500;font-size:15.5px;color:var(--pflaume);}
+
   .note{
     font-size:12px;color:var(--gedaempft);margin-top:30px;line-height:1.65;
     max-width:36ch;margin-left:auto;margin-right:auto;
@@ -266,11 +276,21 @@
 
       <div class="eyebrow"><span>Wie weiter?</span></div>
       <p class="text" style="margin-top:0">
-        Ein Glaubenssatz verliert an Kraft, sobald du ihn erkennst. Schreib deinen lautesten Satz auf,
-        lies den neuen Satz laut – und beobachte eine Woche lang, wann der alte sich meldet.
+        Ein Glaubenssatz verliert an Kraft, sobald du ihn erkennst. Den ersten Schritt hast du gerade gemacht.
       </p>
 
-      <form class="mail no-print" id="mail-form" novalidate>
+      <ol class="path no-print" aria-label="Dein Weg zum neuen Satz">
+        <li class="ok"><i>✓</i><span><b>Glaubenssätze-Test</b>deinen lautesten Satz erkennen</span></li>
+        <li id="pathWerte"><i>2</i><span><b>Werte-Finder</b>herausfinden, was dir wirklich wichtig ist</span></li>
+        <li><i>3</i><span><b>Neuer-Satz-Kompass</b>30 Tage vom alten zum neuen Satz · 19 €</span></li>
+      </ol>
+      <p class="text" id="nextText"></p>
+
+      <a class="btn no-print" id="nextBtn" href="werte-finder.html">
+        Weiter zu Schritt 2: Werte-Finder
+        <span class="meta">Kostenlos · 10 Minuten · danach wartet dein Kompass</span>
+      </a>
+      <form class="mail no-print" id="mail-form" novalidate style="margin-top:22px">
         <h4>Dein Ergebnis per Mail</h4>
         <p>Für deinen lautesten Satz: woher er kommt, ein neuer Satz, deine Journal-Frage und eine kleine Übung für die nächsten sieben Tage. Dazu die Übersicht über alle acht Sätze.</p>
         <label class="sr" for="mail-email">Deine Mail-Adresse</label>
@@ -281,7 +301,14 @@
         <button class="btn btn--soft" type="submit" id="mail-send" style="margin-top:10px">Ergebnis senden</button>
         <p class="mail-status" id="mail-status" role="status"></p>
       </form>
-      <a class="btn no-print" href="https://seelenwende.mytentary.com/p/niaKY4" target="_blank" rel="noopener">
+      <button class="btn btn--soft no-print" id="print" type="button" style="margin-top:13px">
+        Ergebnis speichern
+        <span class="meta">Drucken oder als PDF sichern</span>
+      </button>
+      <button class="link-btn no-print" id="restart" type="button">Test neu starten</button>
+
+      <div class="eyebrow no-print" style="margin-top:44px"><span>Für dich zum Weiterlesen</span></div>
+      <a class="btn btn--soft no-print" href="https://seelenwende.mytentary.com/p/niaKY4" target="_blank" rel="noopener" style="margin-top:0">
         Self Care Journal
         <span class="meta">Kostenlos · Raum für deine Journal-Fragen</span>
       </a>
@@ -289,11 +316,6 @@
         Das Bundle – Zurück zu dir
         <span class="meta">E-Book · Vision Board · Journal — 49 €</span>
       </a>
-      <button class="btn btn--soft no-print" id="print" type="button" style="margin-top:13px">
-        Ergebnis speichern
-        <span class="meta">Drucken oder als PDF sichern</span>
-      </button>
-      <button class="link-btn no-print" id="restart" type="button">Test neu starten</button>
 
       <p class="note">
         Wenn beim Lesen gerade viel hochkommt: Du musst das nicht allein tragen.
@@ -394,6 +416,32 @@
     var ranked = BELIEFS.slice().sort(function(a, b){ return scores[b.id] - scores[a.id]; });
     var top = ranked.filter(function(b){ return scores[b.id] >= 5; }).slice(0, 3);
     if (!top.length) top = ranked.slice(0, 1);
+
+    // Ergebnis auf dem Gerät merken, damit der Neuer-Satz-Kompass daran anknüpfen kann
+    try {
+      localStorage.setItem("seelenwende-glaubenssaetze-v1", JSON.stringify({
+        ranked: top.map(function(b){ return b.id; }), scores: scores, doneAt: Date.now()
+      }));
+    } catch(e){}
+
+    // Nächster Schritt: erst Werte-Finder, dann Kompass
+    var werteDone = false;
+    try {
+      var wf = JSON.parse(localStorage.getItem("seelenwende-wertefinder-v1") || "null");
+      werteDone = !!(wf && wf.doneAt && wf.top && wf.top.length >= 3);
+    } catch(e){}
+    var pw = $("pathWerte");
+    pw.className = werteDone ? "ok" : "";
+    pw.querySelector("i").textContent = werteDone ? "✓" : "2";
+    if (werteDone) {
+      $("nextText").textContent = "Deine Werte kennst du schon. Jetzt verbindet der Neuer-Satz-Kompass beides: 30 Tage, ein kleiner Impuls pro Tag.";
+      $("nextBtn").href = "neuer-satz-kompass.html#neu";
+      $("nextBtn").innerHTML = 'Weiter zum Neuer-Satz-Kompass<span class="meta">30 Tage · 2 Minuten am Tag · 19 € · dein Satz wird übernommen</span>';
+    } else {
+      $("nextText").textContent = "Als Nächstes findest du heraus, was dir wirklich wichtig ist. Deine Werte machen deinen neuen Satz stark. Danach begleitet dich der Neuer-Satz-Kompass 30 Tage lang – dein Testergebnis ist dort schon eingetragen.";
+      $("nextBtn").href = "werte-finder.html";
+      $("nextBtn").innerHTML = 'Weiter zu Schritt 2: Werte-Finder<span class="meta">Kostenlos · 10 Minuten · danach wartet dein Kompass</span>';
+    }
 
     var strong = ranked.filter(function(b){ return scores[b.id] >= 8; }).length;
     $("summary").textContent = strong
