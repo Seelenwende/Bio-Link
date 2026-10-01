@@ -282,7 +282,7 @@
 
   <!-- 1 · Alter Satz -->
   <section class="view" id="v-satz" aria-labelledby="t-satz">
-    <div class="step__label">Schritt 1 von 3</div>
+    <div class="step__label">Einrichten · 1 von 3</div>
     <h2 id="t-satz">Welcher Satz ist bei dir am lautesten?</h2>
     <p class="question">Wähle den Satz, der sich gerade am meisten nach dir anfühlt. Du kannst ihn später ändern.</p>
     <div class="found" id="foundTest" hidden></div>
@@ -300,7 +300,7 @@
 
   <!-- 2 · Werte -->
   <section class="view" id="v-werte" aria-labelledby="t-werte">
-    <div class="step__label">Schritt 2 von 3</div>
+    <div class="step__label">Einrichten · 2 von 3</div>
     <h2 id="t-werte">Welche drei Werte sollen dich begleiten?</h2>
     <p class="question">Dein neuer Satz wird stärker, wenn er mit dem verbunden ist, was dir wirklich wichtig ist.</p>
     <div class="found" id="foundWerte" hidden></div>
@@ -315,7 +315,7 @@
 
   <!-- 3 · Neuer Satz & Start -->
   <section class="view" id="v-start" aria-labelledby="t-start">
-    <div class="step__label">Schritt 3 von 3</div>
+    <div class="step__label">Einrichten · 3 von 3</div>
     <h2 id="t-start">Dein neuer Satz</h2>
     <p class="question">Er muss sich noch nicht wahr anfühlen – nur ein kleines bisschen möglich. Schreib ihn gern in deine Worte um.</p>
     <div class="own">
@@ -325,7 +325,7 @@
     </div>
     <div class="actions">
       <button class="btn btn--soft" type="button" data-view="werte">Zurück</button>
-      <button class="btn" type="button" id="begin">Kompass starten</button>
+      <button class="btn" type="button" id="begin">Fertig – Tag 1 beginnen</button>
     </div>
     <p class="hint" id="hint3" role="status"></p>
   </section>
@@ -971,7 +971,7 @@
     if(draft.fresh){ const reminder = s.reminder; s = fresh(); s.reminder = reminder; }
     const keepProgress = !!s.start;
     Object.assign(s, {beliefId: draft.beliefId, alt: draft.alt, neu: draft.neu, values: draft.values});
-    if(!keepProgress) s.start = ymd(new Date());
+    if(!keepProgress){ s.start = ymd(new Date()); s.createdAt = Date.now(); }
     save(); view("tag");
   });
   $("editBtn").addEventListener("click", () => beginSetup(true));
