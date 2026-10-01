@@ -141,6 +141,12 @@
   .btn--soft{background:var(--papier);color:var(--pflaume);border:1px solid var(--linie);}
   .btn--link{background:none;color:var(--gedaempft);font-family:"Jost",sans-serif;font-size:14px;padding:8px 10px;text-decoration:underline;text-underline-offset:3px;}
   .btn:disabled{opacity:.45;cursor:not-allowed;}
+  .btn--block{display:block;width:100%;text-align:center;padding:16px 20px;font-size:17px;}
+  .btn--block + .btn--block{margin-top:13px;}
+  .btn .meta{display:block;font-family:"Jost",sans-serif;font-weight:300;font-size:12.5px;margin-top:3px;color:#EBD9DD;}
+  .btn--soft .meta{color:var(--gedaempft);}
+  .btn--dark{background:var(--pflaume);}
+  .btn--dark .meta{color:#D9C4CB;}
   @media (hover:hover){.btn:not(:disabled):not(.btn--link):hover{transform:translateY(-2px);box-shadow:0 10px 26px -14px rgba(92,58,70,.5);}}
 
   /* --- Ergebnis --- */
@@ -197,7 +203,7 @@
 
   @media print{
     body{padding:0;}
-    .progress,.actions,.next,.btn{display:none !important;}
+    .progress,.actions,.next,.more,.btn{display:none !important;}
     .value,.insight,.hero{break-inside:avoid;}
     .hero{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
   }
@@ -323,9 +329,16 @@
       <button class="btn btn--link" type="button" id="restart">Neu starten</button>
     </div>
 
-    <div class="next">
-      <p>Magst du weiter nachspüren? Das Self Care Journal begleitet dich sanft dabei, deine Werte in den Alltag zu holen.</p>
-      <a class="btn btn--soft" href="https://seelenwende.mytentary.com/p/niaKY4" target="_blank" rel="noopener">Self Care Journal – kostenlos</a>
+    <div class="more">
+      <div class="eyebrow" style="margin-top:44px"><span>Für dich zum Weiterlesen</span></div>
+      <a class="btn btn--soft btn--block" href="https://seelenwende.mytentary.com/p/niaKY4" target="_blank" rel="noopener">
+        Self Care Journal
+        <span class="meta">Kostenlos · Raum, um deine Werte in den Alltag zu holen</span>
+      </a>
+      <a class="btn btn--dark btn--block" href="https://seelenwende.mytentary.com/p/Mi6HH3" target="_blank" rel="noopener">
+        Das Bundle – Zurück zu dir
+        <span class="meta">E-Book · Vision Board · Journal — 49 €</span>
+      </a>
     </div>
   </section>
 
