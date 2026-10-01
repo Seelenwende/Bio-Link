@@ -249,7 +249,7 @@
     <div class="eyebrow" style="animation-delay:.62s"><span>Dein erster Schritt</span></div>
 
     <!-- Self Care Journal · Tentary -->
-    <a class="link link--hero" href="https://seelenwende.mytentary.com/p/niaKY4" target="_blank" rel="noopener" style="animation-delay:.68s">
+    <a class="link link--hero" href="#freischalten" data-ziel="https://seelenwende.mytentary.com/p/niaKY4" style="animation-delay:.68s">
       <span class="title">Self Care Journal</span>
       <span class="meta">Kostenlos · dein sanfter Anfang</span>
     </a>
@@ -308,7 +308,7 @@
     <div class="eyebrow" style="animation-delay:1.06s"><span>Mehr</span></div>
 
     <!-- Mini-Guide · Tentary -->
-    <a class="link link--soft" href="https://seelenwende.mytentary.com/p/WPedba" target="_blank" rel="noopener" style="animation-delay:1.12s">
+    <a class="link link--soft" href="#freischalten" data-ziel="https://seelenwende.mytentary.com/p/WPedba" style="animation-delay:1.12s">
       <span class="title">Der Weg nach draußen</span>
       <span class="meta">Kostenloser Mini-Guide</span>
     </a>
@@ -326,13 +326,13 @@
     <button class="zu" type="button" id="gate-zu" aria-label="Schließen">&times;</button>
     <form id="gate-form" novalidate>
       <h2 id="gate-titel">Schön, dass du da bist.</h2>
-      <p>Trag deine Mail-Adresse ein, dann öffnen sich alle kostenlosen Werkzeuge für dich.</p>
+      <p>Trag deine Mail-Adresse ein, dann öffnen sich alle kostenlosen Angebote für dich.</p>
       <label class="sr" for="gate-email">Deine Mail-Adresse</label>
       <input type="email" id="gate-email" autocomplete="email" placeholder="Deine Mail-Adresse" required>
       <input type="text" name="website" id="gate-website" tabindex="-1" autocomplete="off" class="hp" aria-hidden="true">
       <label class="check"><input type="checkbox" id="gate-ok"> Ich möchte gelegentlich Impulse von Seelenwende per Mail bekommen. Abmelden kann ich mich jederzeit mit einem Klick.</label>
       <p class="safe">Nutze eine Adresse, die nur du liest. Die Mails kommen von Seelenwende.</p>
-      <button class="senden" type="submit" id="gate-senden">Werkzeug öffnen</button>
+      <button class="senden" type="submit" id="gate-senden">Jetzt öffnen</button>
       <p class="status" id="gate-status" role="status"></p>
     </form>
   </dialog>
@@ -384,7 +384,7 @@
       .then(function(r){
         if (!r.ok) throw new Error(r.data.error || "Das hat gerade nicht geklappt. Versuch es bitte später noch einmal.");
         merken();
-        status.textContent = "Danke! Dein Werkzeug öffnet sich …";
+        status.textContent = "Danke! Es öffnet sich gleich …";
         location.href = ziel;
       })
       .catch(function(err){
