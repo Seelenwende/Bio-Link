@@ -509,7 +509,7 @@
   /* ---------- Datum ---------- */
   const ymd = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
   const parseYmd = t => { const [y, m, d] = t.split("-").map(Number); return new Date(y, m - 1, d); };
-  const ALL = new URLSearchParams(location.search).has("alle"); // Vorschau: alle Tage offen
+  const ALL = new URLSearchParams(location.search).has("alle") || location.hash === "#alle"; // Vorschau: alle Tage offen
   function unlocked(){
     if(ALL) return 30;
     if(!s.start) return 1;
