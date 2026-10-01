@@ -76,12 +76,12 @@ Neue Käuferin: Code an `KOMPASS_CODES` anhängen, danach neu deployen. Ohne die
 
 ## Bio-Link: Werkzeuge erst nach Mail-Adresse
 
-Auf `index.html` öffnen Muster-Check, Glaubenssätze-Test, Werte-Finder und „Sei sanft mit dir“ nicht direkt. Zuerst kommt ein Fenster, in das die Frau ihre Mail-Adresse einträgt und den Mails zustimmt. `werkzeuge-anmeldung` (`/api/werkzeuge/anmelden`) trägt sie in MailerLite ein, danach öffnet sich das Werkzeug. Der Browser merkt sich die Anmeldung, beim nächsten Besuch geht es direkt weiter. Die Werkzeug-Seiten selbst bleiben über ihren direkten Link erreichbar (z. B. aus dem Programm oder den Ergebnis-Mails).
+Auf `index.html` öffnen Self Care Journal, Muster-Check, Glaubenssätze-Test, Werte-Finder, „Sei sanft mit dir“ und der Mini-Guide nicht direkt. Zuerst kommt ein Fenster, in das die Frau ihre Mail-Adresse einträgt und den Mails zustimmt. `werkzeuge-anmeldung` (`/api/werkzeuge/anmelden`) trägt sie in MailerLite ein, danach öffnet sich das Werkzeug. Der Browser merkt sich die Anmeldung, beim nächsten Besuch geht es direkt weiter. Journal und Mini-Guide öffnen danach ihre Tentary-Seite im selben Fenster. Die Werkzeug-Seiten selbst bleiben über ihren direkten Link erreichbar (z. B. aus dem Programm oder den Ergebnis-Mails).
 
 | Variable | Inhalt |
 |---|---|
 | `MAILERLITE_API_KEY` | API-Schlüssel aus MailerLite (derselbe wie beim Glaubenssätze-Test) |
-| `MAILERLITE_GROUP_WERKZEUGE` | ID der Gruppe „Bio-Link Werkzeuge“ (optional; ohne sie landet die Adresse ohne Gruppe in MailerLite) |
+| `MAILERLITE_GROUP_WERKZEUGE` | optional: ID einer anderen Gruppe. Ohne sie sucht die Funktion die Gruppe „Bio-Link Werkzeuge“ per Name und legt sie bei Bedarf selbst an. |
 
 ## Glaubenssätze-Test: Ergebnis per Mail (MailerLite)
 
