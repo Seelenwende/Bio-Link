@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="190 150 620 610" role="img" aria-label="Seelenwende">
+  <!-- Seelenwende-Schmetterling, nachgezeichnet nach assets/logo-seelenwende.png (Logo mit Schriftzug). -->
+  <path fill="#BE868E" d="M494 448 C484 330 420 214 326 212 C236 210 196 300 200 382 L206 444 C300 476 420 468 494 454 Z"/>
+  <path fill="#BE868E" d="M506 448 C516 330 580 214 674 212 C764 210 804 300 800 382 L794 444 C700 476 580 468 506 454 Z"/>
+  <path fill="#DDB9BD" d="M494 470 C430 530 340 585 310 655 C292 700 296 742 330 748 C392 750 452 640 494 490 Z"/>
+  <path fill="#DDB9BD" d="M506 470 C570 530 660 585 690 655 C708 700 704 742 670 748 C608 750 548 640 506 490 Z"/>
+  <circle fill="#FBF7F5" cx="344" cy="323" r="20"/>
+  <circle fill="#FBF7F5" cx="656" cy="323" r="20"/>
+  <path fill="none" stroke="#7A555E" stroke-width="2" d="M497 268 C482 222 428 205 416 165"/>
+  <path fill="none" stroke="#7A555E" stroke-width="2" d="M503 268 C518 222 572 205 584 165"/>
+  <circle fill="#7A555E" cx="416" cy="164" r="8.5"/>
+  <circle fill="#7A555E" cx="584" cy="164" r="8.5"/>
+  <rect fill="#7A555E" x="493" y="300" width="14" height="420"/>
+  <ellipse fill="#7A555E" cx="500" cy="296" rx="14" ry="32"/>
+</svg>

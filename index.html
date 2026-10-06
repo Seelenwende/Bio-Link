@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Seelenwende · Zurück zu dir</title>
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400&display=swap" rel="stylesheet">
@@ -36,21 +37,16 @@
 
   /* --- Kopf --- */
   .butterfly{
-    width:58px;height:58px;margin:0 auto 18px;display:block;
+    width:78px;height:78px;margin:0 auto 16px;display:block;
     opacity:0;animation:rise .9s ease .05s forwards;
   }
-  .butterfly path,.butterfly ellipse{
-    fill:none;stroke:var(--rose);stroke-width:1.5;
-    stroke-linecap:round;stroke-linejoin:round;
-  }
-  .butterfly .dot{fill:var(--rose);stroke:none;}
-  .butterfly .body{fill:var(--rose);stroke:none;}
 
   .wordmark{
     font-family:"Playfair Display",serif;
-    font-weight:500;
-    font-size:31px;
-    letter-spacing:.02em;
+    font-weight:400;
+    font-size:26px;
+    letter-spacing:.2em;
+    text-transform:uppercase;
     color:var(--pflaume);
     opacity:0;animation:rise .9s ease .18s forwards;
   }
@@ -226,18 +222,7 @@
 <body>
   <main class="page">
 
-    <!-- Schmetterling · vier runde Flügel, feine Fühler mit Punkten -->
-    <svg class="butterfly" viewBox="0 0 100 100" aria-hidden="true">
-      <ellipse cx="38" cy="40" rx="13" ry="18" transform="rotate(-35 38 40)"/>
-      <ellipse cx="62" cy="40" rx="13" ry="18" transform="rotate(35 62 40)"/>
-      <ellipse cx="41" cy="61" rx="9" ry="13" transform="rotate(-20 41 61)"/>
-      <ellipse cx="59" cy="61" rx="9" ry="13" transform="rotate(20 59 61)"/>
-      <ellipse class="body" cx="50" cy="50" rx="1.5" ry="16"/>
-      <path d="M50 36 C47 30 45 27 43 24"/>
-      <path d="M50 36 C53 30 55 27 57 24"/>
-      <circle class="dot" cx="43" cy="23.5" r="1.5"/>
-      <circle class="dot" cx="57" cy="23.5" r="1.5"/>
-    </svg>
+    <img class="butterfly" src="assets/logo.svg" alt="">
 
     <div class="wordmark">Seelenwende</div>
     <div class="handle">@_seelenwende</div>
@@ -344,7 +329,12 @@
     <!-- MEHR -->
     <div class="eyebrow" style="animation-delay:1.17s"><span>Mehr</span></div>
 
-    <a class="link link--soft" href="start.html" style="animation-delay:1.2s">
+    <a class="link link--soft" href="ueber-mich.html" style="animation-delay:1.2s">
+      <span class="title">Über mich</span>
+      <span class="meta">15 Jahre drin, letztes Jahr gegangen</span>
+    </a>
+
+    <a class="link link--soft" href="start.html" style="animation-delay:1.23s">
       <span class="title">Alles über Seelenwende</span>
       <span class="meta">Wo stehst du gerade? Alle Werkzeuge und Angebote</span>
     </a>

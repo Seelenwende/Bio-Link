@@ -19,18 +19,12 @@
     "du-bist-genug":   "https://seelenwende.mytentary.com/p/Mi6HH3"
   };
   var INSTAGRAM = "https://www.instagram.com/_seelenwende/";
+  // Logo im Kopf. Das echte Logo einfach als assets/logo.svg (oder .png, dann hier anpassen) ablegen.
+  var LOGO = "assets/logo.svg";
   var EXIT_URL = "https://www.google.com/search?q=wetter";
   var FREI_KEY = "seelenwende_werkzeuge_frei"; // derselbe Schlüssel wie im Bio-Link
 
   var $ = function(id){ return document.getElementById(id); };
-
-  var FALTER =
-    '<svg class="falter" viewBox="0 0 100 100" aria-hidden="true">' +
-    '<path class="w1" d="M50 30 C46 14 30 6 18 12 C6 18 8 38 22 44 C32 48 44 42 50 30 Z"/>' +
-    '<path class="w2" d="M50 30 C54 14 70 6 82 12 C94 18 92 38 78 44 C68 48 56 42 50 30 Z"/>' +
-    '<path class="w3" d="M50 46 C47 36 36 32 28 37 C20 42 22 54 32 57 C40 59 47 54 50 46 Z"/>' +
-    '<path class="w3" d="M50 46 C53 36 64 32 72 37 C80 42 78 54 68 57 C60 59 53 54 50 46 Z"/>' +
-    '<rect class="k" x="48.7" y="26" width="2.6" height="34" rx="1.3"/></svg>';
 
   /* ---------- Kopf ---------- */
   var kopf = $("kopf");
@@ -38,11 +32,11 @@
     kopf.className = "kopf";
     kopf.innerHTML =
       '<div class="kopf-innen">' +
-        '<a class="marke" href="start.html">' + FALTER + '<span>Seelenwende</span></a>' +
+        '<a class="marke" href="start.html"><img src="' + LOGO + '" alt=""><span>Seelenwende</span></a>' +
         '<nav class="nav" aria-label="Hauptnavigation">' +
           '<a class="nav-optional" href="start.html#werkzeuge">Gratis</a>' +
           '<a href="start.html#angebote">Angebote</a>' +
-          '<a class="nav-optional" href="start.html#ueber">Über</a>' +
+          '<a class="nav-optional" href="ueber-mich.html">Über mich</a>' +
           '<button class="schnell-weg" type="button" id="schnell-weg" title="Verlässt die Seite sofort (auch: zweimal Esc)">Schnell weg</button>' +
         '</nav>' +
       '</div>';
@@ -57,6 +51,7 @@
           '<a href="start.html">Start</a>' +
           '<a href="start.html#werkzeuge">Kostenlose Werkzeuge</a>' +
           '<a href="start.html#angebote">Alle Angebote</a>' +
+          '<a href="ueber-mich.html">Über mich</a>' +
           '<a href="planer.html">Ausstiegs-Planer</a>' +
           '<a href="' + INSTAGRAM + '" target="_blank" rel="noopener">Instagram</a>' +
         '</nav>' +
@@ -93,11 +88,16 @@
       a.rel = "noopener";
       return;
     }
+    // Knöpfe, die auf einen Abschnitt zeigen (z. B. #kaufen), bleiben stehen und springen zur Preisbox.
+    var ziel = a.getAttribute("href") || "";
+    if (ziel.length > 1 && ziel.charAt(0) === "#") return;
     var wort = a.getAttribute("data-wort");
     if (!wort) { a.hidden = true; return; }
     var p = document.createElement("p");
     p.className = "warteliste";
-    p.innerHTML = 'Bald erhältlich. Schreib <b></b> an <a href="' + INSTAGRAM + '" target="_blank" rel="noopener">@_seelenwende</a>, dann bekommst du Bescheid, sobald es losgeht.';
+    p.innerHTML = a.closest(".angebot")
+      ? 'Bald erhältlich · Schreib <b></b> an <a href="' + INSTAGRAM + '" target="_blank" rel="noopener">@_seelenwende</a>'
+      : 'Bald erhältlich. Schreib <b></b> an <a href="' + INSTAGRAM + '" target="_blank" rel="noopener">@_seelenwende</a>, dann bekommst du Bescheid, sobald es losgeht.';
     p.querySelector("b").textContent = wort;
     var reihe = a.closest(".knopf-reihe");
     if (reihe && reihe.querySelectorAll("a").length === 1) { reihe.replaceWith(p); }

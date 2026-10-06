@@ -9,24 +9,51 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/seite.css">
 </head>
 <body>
 <header id="kopf"></header>
 
 <main>
-  <section class="held">
+  <section class="held split">
     <div class="innen">
-      <span class="ueber">Seelenwende Kreis · Mitgliedschaft</span>
-      <h1>Ein Ort, der bleibt.</h1>
-      <p class="unterzeile">Egal, ob du noch drin bist, gerade gehst oder schon draußen bist.</p>
-      <p class="text">Heilung verläuft nicht gerade. Es gibt gute Wochen und Rückfälle, Tage voller Klarheit und Nächte voller Zweifel. Der Kreis begleitet dich Monat für Monat, in deinem Tempo, ohne dass du wissen musst, wo du gerade stehst.</p>
-      <div class="knopf-reihe">
-        <a class="knopf" href="#kaufen">Mitglied werden</a>
-        <a class="knopf leicht" href="#monat">So sieht ein Monat aus</a>
+      <div class="text-seite">
+        <span class="badge leise">Mitgliedschaft · alle Phasen</span>
+        <h1 style="margin-top:14px">Ein Ort, der bleibt.</h1>
+        <p class="unterzeile">Egal, ob du noch drin bist, gerade gehst oder schon draußen bist.</p>
+        <p class="text">Heilung verläuft nicht gerade. Der Kreis begleitet dich Monat für Monat, in deinem Tempo: mit einem Thema, kleinen Übungen und Mira an deiner Seite.</p>
+        <div class="preiszeile"><span class="betrag">19 €</span><span class="alt">pro Monat · jederzeit kündbar</span></div>
+        <div class="knopf-reihe">
+          <a class="knopf" data-kauf="kreis" data-wort="KREIS" href="#kaufen">Mitglied werden</a>
+          <a class="knopf leicht" href="#monat">So sieht ein Monat aus</a>
+        </div>
+        <div class="mikro">
+          <span><svg class="ic"><use href="assets/icons.svg#chat"/></svg>Mira jeden Monat neu</span>
+          <span><svg class="ic"><use href="assets/icons.svg#kompass"/></svg>Kompass inklusive</span>
+          <span><svg class="ic"><use href="assets/icons.svg#schloss"/></svg>Kein Gruppenchat</span>
+        </div>
+      </div>
+      <div class="bild-seite">
+        <div class="buehne">
+          <div class="monate" aria-hidden="true">
+            <div class="monat-karte"><span class="mini-titel">Dezember</span><b>Durch die Feiertage</b><i>Du musst nicht funktionieren, um dazuzugehören.</i></div>
+            <div class="monat-karte"><span class="mini-titel">November</span><b>Grenzen, die dich schützen</b><i>Ein Nein ist ein vollständiger Satz.</i></div>
+            <div class="monat-karte"><span class="mini-titel">Oktober · jetzt</span><b>Deiner Wahrnehmung wieder trauen</b><i>Was du gesehen, gehört und gespürt hast, zählt.</i></div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
+
+  <div class="vertrauen">
+    <ul>
+      <li><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#kalender"/></svg></span><div><b>Jeden Monat neu</b><span>Thema, Brief, vier Wochen-Impulse</span></div></li>
+      <li><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#chat"/></svg></span><div><b>Mira inklusive</b><span>150 Nachrichten pro Monat</span></div></li>
+      <li><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#schloss"/></svg></span><div><b>Diskret</b><span>Keine App, kein Profil, kein Chat</span></div></li>
+      <li><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#herz"/></svg></span><div><b>Jederzeit kündbar</b><span>Ohne Begründung</span></div></li>
+    </ul>
+  </div>
 
   <section class="abschnitt">
     <div class="innen schmal">
@@ -44,26 +71,37 @@
       <span class="ueber">Ein Monat im Kreis</span>
       <h2>Ein Thema, vier Wochen.</h2>
       <p class="einleitung">Zum Monatsersten öffnet sich ein neues Thema mit einem Brief. Jede Woche kommt ein Impuls, eine kleine Übung für den Alltag, eine Frage für dein Journal und ein Einstieg für ein Gespräch mit Mira.</p>
-      <div class="wochen">
-        <div class="woche"><span class="zeile">Oktober 2026</span><h3>Deiner Wahrnehmung wieder trauen</h3><p>Was du gesehen, gehört und gespürt hast, zählt.</p></div>
-        <div class="woche"><span class="zeile">Jeden Monat</span><h3>Ein Brief zum Thema</h3><p>Ein ruhiger Einstieg, warum dieses Thema gerade jetzt dran sein darf.</p></div>
-        <div class="woche"><span class="zeile">Jede Woche</span><h3>Impuls, Übung, Frage</h3><p>Klein genug für einen vollen Alltag, tief genug, dass sich etwas bewegt.</p></div>
-        <div class="woche"><span class="zeile">Immer</span><h3>Das Archiv</h3><p>Alle früheren Themen bleiben für dich offen.</p></div>
+      <div class="leistungen">
+        <div class="leistung"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#mail"/></svg></span><div><h3>Ein Brief zum Monat</h3><p>Ein ruhiger Einstieg, warum dieses Thema jetzt dran sein darf.</p></div></div>
+        <div class="leistung"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#blatt"/></svg></span><div><h3>Impuls und Übung</h3><p>Jede Woche, klein genug für einen vollen Alltag.</p></div></div>
+        <div class="leistung"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#stift"/></svg></span><div><h3>Frage fürs Journal</h3><p>Zum Nachspüren, wann immer du Zeit hast.</p></div></div>
+        <div class="leistung"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#tagebuch"/></svg></span><div><h3>Archiv</h3><p>Alle früheren Monatsthemen bleiben für dich offen.</p></div></div>
       </div>
     </div>
   </section>
 
   <section class="abschnitt">
     <div class="innen">
-      <span class="ueber">Das ist drin</span>
+      <span class="ueber">Das ist alles drin</span>
       <h2>Alles an einem Ort.</h2>
-      <div class="raster" style="margin-top:24px">
-        <div class="karte hervor"><h3>Mira, jeden Monat neu</h3><p>150 Nachrichten pro Monat. Am Monatsersten füllt sich dein Kontingent wieder auf.</p></div>
-        <div class="karte"><h3>Monatsthema</h3><p>Brief, vier Wochen-Impulse, Übungen und Journal-Fragen.</p></div>
-        <div class="karte"><h3>Antwort-Helfer</h3><p>Seine Nachricht einordnen und ruhig antworten, oder gar nicht. Dein Kreis-Code öffnet ihn.</p></div>
-        <div class="karte"><h3>Neuer-Satz-Kompass</h3><p>30 Tage vom alten zum neuen Satz. Inklusive.</p></div>
-        <div class="karte"><h3>Alle Werkzeuge</h3><p>Muster-Check, Klarheits-Tagebuch, Ausstiegs-Planer, Werte-Finder und mehr, übersichtlich im Mitgliederbereich.</p></div>
-        <div class="karte"><h3>Diskret</h3><p>Keine App, kein Gruppenchat, kein Profil. Niemand sieht, dass du dabei bist.</p></div>
+      <div class="leistungen" style="margin-top:24px">
+        <div class="leistung"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#chat"/></svg></span><div><h3>Mira, jeden Monat neu</h3><p>150 Nachrichten pro Monat. Am Monatsersten füllt sich dein Kontingent wieder auf.</p></div></div>
+        <div class="leistung"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#nachricht"/></svg></span><div><h3>Antwort-Helfer</h3><p>Seine Nachricht einordnen und ruhig antworten, oder gar nicht.</p></div></div>
+        <div class="leistung"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#kompass"/></svg></span><div><h3>Neuer-Satz-Kompass</h3><p>30 Tage vom alten zum neuen Satz.</p></div></div>
+        <div class="leistung"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#schild"/></svg></span><div><h3>Alle Werkzeuge</h3><p>Muster-Check, Klarheits-Tagebuch, Ausstiegs-Planer, Werte-Finder und mehr.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="abschnitt blush">
+    <div class="innen">
+      <div class="persoenlich">
+        <div class="portrait"><svg class="ic" aria-hidden="true"><use href="assets/icons.svg#schmetterling"/></svg><img src="assets/ueber-mich.jpg" alt="" onerror="this.remove()"></div>
+        <div>
+          <span class="ueber">Warum es den Kreis gibt</span>
+          <p class="zitat-gross">„Ich habe gelernt: Rausgehen ist ein Tag. Draußen bleiben ist jeden Tag eine neue Entscheidung. Dafür braucht es etwas, das bleibt.“</p>
+          <p class="von">Von Herzen, Seelenwende · <a href="ueber-mich.html">meine Geschichte</a></p>
+        </div>
       </div>
     </div>
   </section>
@@ -71,6 +109,7 @@
   <section class="abschnitt sand" id="kaufen">
     <div class="innen">
       <div class="preisbox">
+        <span class="badge">Alles in einem</span>
         <span class="titel">Seelenwende Kreis</span>
         <span class="betrag">19 € <small>pro Monat · jederzeit kündbar</small></span>
         <ul class="punkte haken">
@@ -79,7 +118,7 @@
           <li><span>Antwort-Helfer und Neuer-Satz-Kompass inklusive</span></li>
           <li><span>Archiv aller bisherigen Monate</span></li>
         </ul>
-        <div class="knopf-reihe"><a class="knopf breit" data-kauf="kreis" data-wort="KREIS" href="#">Mitglied werden</a></div>
+        <div class="knopf-reihe"><a class="knopf breit" data-kauf="kreis" data-wort="KREIS" href="#">Mitglied werden · 19 €/Monat</a></div>
         <p class="fein">Schon dabei? <a href="kreis.html">Hier geht's in den Kreis.</a></p>
       </div>
       <p class="leise klein zentriert" style="margin-top:22px">Bitte bedenke: Ein Abo erscheint jeden Monat auf deinem Konto. Wenn jemand deine Kontoauszüge sieht, sind <a href="angebot-mira.html">Mira</a> oder das <a href="angebot-programm.html">6-Wochen-Programm</a> mit einmaliger Zahlung vielleicht sicherer.</p>
@@ -95,6 +134,16 @@
         <details><summary>Gibt es eine Gruppe oder einen Chat?</summary><p>Nein, bewusst nicht. Der Kreis ist ein ruhiger Ort nur für dich. Niemand sieht, dass du Mitglied bist.</p></details>
         <details><summary>Ich habe das 6-Wochen-Programm gemacht. Lohnt sich der Kreis trotzdem?</summary><p>Ja, gerade dann. Das Programm bringt dich zu dir zurück, der Kreis hilft dir, dort zu bleiben. Die Inhalte wiederholen sich nicht.</p></details>
         <details><summary>Was passiert mit Miras Nachrichten, wenn ich sie nicht aufbrauche?</summary><p>Am Monatsersten startet dein Kontingent wieder bei 150. Ungenutzte Nachrichten werden nicht übertragen.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="abschnitt dunkel">
+    <div class="innen">
+      <div class="aufruf">
+        <h2>Du musst nicht wissen, wo du stehst. Nur, dass du nicht allein sein willst.</h2>
+        <p>19 € im Monat. Jederzeit kündbar.</p>
+        <div class="knopf-reihe" style="justify-content:center"><a class="knopf" data-kauf="kreis" data-wort="KREIS" href="#kaufen">Mitglied werden</a></div>
       </div>
     </div>
   </section>

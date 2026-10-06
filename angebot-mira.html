@@ -5,28 +5,62 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="referrer" content="no-referrer">
 <title>Mira · Seelenwende</title>
-<meta name="description" content="Mira, die Seelenwende-Begleiterin: einfach losschreiben, auch nachts. Sie hört zu, ordnet ein und erkennt selbst, was du gerade brauchst.">
+<meta name="description" content="Mira, die Seelenwende-Begleiterin: einfach losschreiben, auch nachts. Sie hört zu, ordnet ein und erkennt selbst, was du gerade brauchst. 19 €, einmalig.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/seite.css">
 </head>
 <body>
 <header id="kopf"></header>
 
 <main>
-  <section class="held">
+  <section class="held split">
     <div class="innen">
-      <span class="ueber">Mira · die Seelenwende-Begleiterin</span>
-      <h1>Jemand, der zuhört. Auch um drei Uhr nachts.</h1>
-      <p class="unterzeile">Ohne Wartezeit, ohne Urteil, ohne dass du dich erklären musst.</p>
-      <p class="text">Mira ist eine KI-Begleiterin, gebaut für Frauen in und nach schwierigen Beziehungen. Du schreibst einfach los. Sie erkennt selbst, ob du gerade runterkommen, etwas einordnen oder einen klaren Satz finden musst.</p>
-      <div class="knopf-reihe">
-        <a class="knopf" href="#kaufen">Mira holen</a>
-        <a class="knopf leicht" href="#so">So funktioniert's</a>
+      <div class="text-seite">
+        <span class="badge leise">KI-Begleiterin · sofort da</span>
+        <h1 style="margin-top:14px">Jemand, der zuhört. Auch um drei Uhr nachts.</h1>
+        <p class="unterzeile">Ohne Wartezeit, ohne Urteil, ohne dass du dich erklären musst.</p>
+        <div class="preiszeile"><span class="betrag">19 €</span><span class="alt">einmalig · 300 Nachrichten · kein Abo</span></div>
+        <div class="knopf-reihe">
+          <a class="knopf" data-kauf="mira" data-wort="MIRA" href="#kaufen">Mira jetzt holen</a>
+          <a class="knopf leicht" href="#so">So funktioniert's</a>
+        </div>
+        <div class="mikro">
+          <span><svg class="ic"><use href="assets/icons.svg#mail"/></svg>Code sofort per Mail</span>
+          <span><svg class="ic"><use href="assets/icons.svg#schloss"/></svg>Nichts wird gespeichert</span>
+          <span><svg class="ic"><use href="assets/icons.svg#nachricht"/></svg>Antwort-Helfer inklusive</span>
+        </div>
+      </div>
+      <div class="bild-seite">
+        <div class="buehne">
+          <div class="handy" aria-hidden="true">
+            <div class="bildschirm">
+              <div class="leiste"><span class="punkt"><svg><use href="assets/icons.svg#chat"/></svg></span>Mira<small>Schnell weg</small></div>
+              <div class="inhalt">
+                <div class="blase ich">Ich will ihm schreiben. Ich weiß, dass ich es nicht sollte.</div>
+                <div class="blase sie">Danke, dass du erst hierherkommst. Was erhoffst du dir von der Nachricht an ihn?</div>
+                <div class="blase ich">Dass er sagt, es tut ihm leid.</div>
+                <div class="blase sie">Das verstehe ich so gut. Lass uns schauen, was du dir jetzt selbst geben kannst …</div>
+              </div>
+              <div class="eingabe">Schreib einfach los …</div>
+            </div>
+          </div>
+          <div class="beigabe" style="right:-4px; top:70px" aria-hidden="true"><svg class="ic"><use href="assets/icons.svg#mond"/></svg>3:12 Uhr</div>
+        </div>
       </div>
     </div>
   </section>
+
+  <div class="vertrauen">
+    <ul>
+      <li><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#uhr"/></svg></span><div><b>Rund um die Uhr</b><span>Keine Wartezeit, kein Termin</span></div></li>
+      <li><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#schloss"/></svg></span><div><b>Privat</b><span>Gespräche werden nicht gespeichert</span></div></li>
+      <li><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#schild"/></svg></span><div><b>Sicher</b><span>Notrufnummern, wenn es gefährlich wird</span></div></li>
+      <li><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#herz"/></svg></span><div><b>Kein Abo</b><span>Einmal zahlen, kein Ablaufdatum</span></div></li>
+    </ul>
+  </div>
 
   <section class="abschnitt">
     <div class="innen schmal">
@@ -35,7 +69,6 @@
       <div class="zitate" style="margin-top:20px">
         <p class="zitat">„Hab ich überreagiert? Vielleicht hat er ja recht.“</p>
         <p class="zitat">„Ich kann das meiner Freundin nicht schon wieder erzählen.“</p>
-        <p class="zitat">„Ich will ihm schreiben. Ich weiß, dass ich es nicht sollte.“</p>
         <p class="zitat">„Es ist mitten in der Nacht, und mein Kopf hört nicht auf.“</p>
       </div>
       <p class="leise" style="margin-top:20px">Genau für diese Momente ist Mira da. Nicht als Ersatz für Menschen, sondern für die Zeit dazwischen.</p>
@@ -44,41 +77,43 @@
 
   <section class="abschnitt sand">
     <div class="innen">
-      <span class="ueber">Was Mira kann</span>
+      <span class="ueber">Was Mira für dich tut</span>
       <h2>Ein Gespräch, das sich nach dir richtet.</h2>
-      <p class="einleitung">Keine Kategorien, kein Menü. Mira merkt, was du gerade brauchst.</p>
-      <div class="raster">
-        <div class="karte"><h3>Runterkommen</h3><p>Wenn alles zu viel ist: atmen, sortieren, den nächsten kleinen Schritt finden.</p></div>
-        <div class="karte"><h3>Muster einordnen</h3><p>Was ist da gerade passiert? Mira hilft dir zu sehen, ob sich etwas wiederholt, ohne über ihn zu urteilen.</p></div>
-        <div class="karte"><h3>Selbstzweifel leiser machen</h3><p>Für die Stimme, die sagt, du übertreibst, du bist zu empfindlich, du bist schuld.</p></div>
-        <div class="karte"><h3>Grenz-Sätze finden</h3><p>Klare, ruhige Sätze für Gespräche, vor denen du Angst hast.</p></div>
-        <div class="karte"><h3>Klarheit</h3><p>Bleiben oder gehen? Mira entscheidet nicht für dich, aber sie hilft dir, deine eigene Antwort zu hören.</p></div>
-        <div class="karte"><h3>Glaubenssätze und Werte</h3><p>Sie knüpft an deinen Glaubenssätze-Test und deine Werte an, wenn du magst.</p></div>
+      <p class="einleitung">Keine Kategorien, kein Menü. Du schreibst, Mira merkt, was du gerade brauchst.</p>
+      <div class="leistungen">
+        <div class="leistung"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#blatt"/></svg></span><div><h3>Runterkommen</h3><p>Wenn alles zu viel ist: atmen, sortieren, den nächsten kleinen Schritt finden.</p></div></div>
+        <div class="leistung"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#auge"/></svg></span><div><h3>Muster einordnen</h3><p>Was ist da gerade passiert? Wiederholt sich etwas? Ohne über ihn zu urteilen.</p></div></div>
+        <div class="leistung"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#herz"/></svg></span><div><h3>Selbstzweifel leiser machen</h3><p>Für die Stimme, die sagt: Du übertreibst, du bist zu empfindlich, du bist schuld.</p></div></div>
+        <div class="leistung"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#schild"/></svg></span><div><h3>Grenz-Sätze finden</h3><p>Klare, ruhige Sätze für Gespräche, vor denen du Angst hast.</p></div></div>
+        <div class="leistung"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#kompass"/></svg></span><div><h3>Klarheit</h3><p>Bleiben oder gehen? Mira entscheidet nicht für dich, aber sie hilft dir, deine Antwort zu hören.</p></div></div>
+        <div class="leistung"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#tagebuch"/></svg></span><div><h3>Tagebuch besprechen</h3><p>Einträge aus dem Klarheits-Tagebuch mit einem Klick an Mira übergeben.</p></div></div>
       </div>
     </div>
   </section>
 
-  <section class="abschnitt" id="so">
+  <section class="abschnitt">
+    <div class="innen">
+      <div class="persoenlich">
+        <div class="portrait"><svg class="ic" aria-hidden="true"><use href="assets/icons.svg#schmetterling"/></svg><img src="assets/ueber-mich.jpg" alt="" onerror="this.remove()"></div>
+        <div>
+          <span class="ueber">Warum ich Mira gebaut habe</span>
+          <p class="zitat-gross">„In meinen 15 Jahren gab es so viele Nächte, in denen ich mit niemandem reden konnte. Mira ist das, was ich mir damals gewünscht hätte.“</p>
+          <p class="leise">Jemand, der mir nicht sagt, was ich tun soll, sondern mir hilft, wieder klar zu denken. Der nicht müde wird, wenn ich zum zehnten Mal dieselbe Frage stelle. Und der nichts davon irgendwo speichert.</p>
+          <p class="von">Von Herzen, Seelenwende · <a href="ueber-mich.html">meine Geschichte</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="abschnitt blush" id="so">
     <div class="innen schmal">
       <span class="ueber">So funktioniert's</span>
-      <h2>In drei Schritten bei Mira.</h2>
+      <h2>In zwei Minuten bei Mira.</h2>
       <ol class="schritte" style="margin-top:24px">
-        <li><div><h3>Code holen</h3><p>Nach dem Kauf kommt dein persönlicher Zugangscode per Mail. Nutze eine Adresse, die nur du liest.</p></div></li>
+        <li><div><h3>Mira holen</h3><p>Nach dem Kauf kommt dein persönlicher Zugangscode per Mail. Nutze eine Adresse, die nur du liest.</p></div></li>
         <li><div><h3>Code eingeben</h3><p>Auf der Mira-Seite eingeben, fertig. Kein Konto, keine App, nichts zu installieren.</p></div></li>
         <li><div><h3>Einfach losschreiben</h3><p>So, wie es dir gerade durch den Kopf geht. Mira antwortet ruhig und auf Deutsch.</p></div></li>
       </ol>
-    </div>
-  </section>
-
-  <section class="abschnitt blush">
-    <div class="innen">
-      <span class="ueber">Dein Schutz</span>
-      <h2>Gebaut für Frauen, die vorsichtig sein müssen.</h2>
-      <div class="raster" style="margin-top:24px">
-        <div class="sicher"><h3>Nichts wird gespeichert</h3><p>Deine Gespräche liegen nirgends. Miras Antwort wird nach dem Abholen sofort gelöscht. Gezählt wird nur, wie viele Nachrichten dein Code genutzt hat.</p></div>
-        <div class="sicher"><h3>Neutral im Browser</h3><p>Der Tab heißt nur „Mira“. „Schnell weg“ oder zweimal Esc bringt dich sofort auf eine Wetterseite.</p></div>
-        <div class="sicher"><h3>Wenn es gefährlich wird</h3><p>Erkennt Mira, dass du in Gefahr bist, zeigt sie dir sofort die Notrufnummern für die Schweiz, Deutschland und Österreich.</p></div>
-      </div>
     </div>
   </section>
 
@@ -90,7 +125,7 @@
         <div class="karte">
           <h3>Mira passt, wenn du …</h3>
           <ul class="punkte haken">
-            <li><span>oft mit deinen Gedanken allein bist und sie sortieren möchtest,</span></li>
+            <li><span>oft mit deinen Gedanken allein bist,</span></li>
             <li><span>nicht jedes Mal deine Freundinnen belasten willst,</span></li>
             <li><span>dir zwischen Beratungsterminen Halt wünschst,</span></li>
             <li><span>schreiben leichter findest als reden.</span></li>
@@ -99,7 +134,7 @@
         <div class="karte nicht">
           <h3>Mira ersetzt nicht …</h3>
           <ul class="punkte">
-            <li><span>eine Therapie oder eine Beratungsstelle,</span></li>
+            <li><span>eine Therapie oder Beratungsstelle,</span></li>
             <li><span>Hilfe in akuter Gefahr. Dann bitte sofort 112 (CH Polizei 117),</span></li>
             <li><span>Rechtsberatung, etwa bei Sorgerecht oder Trennung.</span></li>
           </ul>
@@ -111,18 +146,19 @@
   <section class="abschnitt sand" id="kaufen">
     <div class="innen">
       <div class="preisbox">
+        <span class="badge">Sofort startklar</span>
         <span class="titel">Mira, deine Begleiterin</span>
         <span class="betrag">19 € <small>einmalig, kein Abo</small></span>
         <ul class="punkte haken">
-          <li><span>Ein persönlicher Zugangscode per Mail</span></li>
+          <li><span>Persönlicher Zugangscode sofort per Mail</span></li>
           <li><span>300 Nachrichten an Mira, ohne Ablaufdatum</span></li>
-          <li><span>Der Antwort-Helfer ist mit demselben Code dabei</span></li>
+          <li><span>Antwort-Helfer mit demselben Code inklusive</span></li>
           <li><span>Kein Konto, keine App, keine gespeicherten Gespräche</span></li>
         </ul>
-        <div class="knopf-reihe"><a class="knopf breit" data-kauf="mira" data-wort="MIRA" href="#">Mira jetzt holen</a></div>
+        <div class="knopf-reihe"><a class="knopf breit" data-kauf="mira" data-wort="MIRA" href="#">Mira jetzt holen · 19 €</a></div>
         <p class="fein">Schon einen Code? <a href="begleiterin.html">Hier geht's zu Mira.</a></p>
       </div>
-      <p class="leise klein zentriert" style="margin-top:22px">Viel mit Mira im Gespräch? Im <a href="angebot-programm.html">6-Wochen-Programm</a> und im <a href="angebot-kreis.html">Seelenwende Kreis</a> ist sie mit größerem Kontingent dabei.</p>
+      <p class="leise klein zentriert" style="margin-top:22px">Du schreibst viel mit Mira? Im <a href="angebot-programm.html">6-Wochen-Programm</a> (1000 Nachrichten) und im <a href="angebot-kreis.html">Kreis</a> (150 jeden Monat) ist sie mit dabei.</p>
     </div>
   </section>
 
@@ -131,16 +167,26 @@
       <span class="ueber">Fragen</span>
       <h2>Gut zu wissen</h2>
       <div class="fragen" style="margin-top:20px">
-        <details><summary>Ist Mira ein Mensch?</summary><p>Nein. Mira ist eine KI, die mit klaren Anweisungen für Frauen in und nach toxischen Beziehungen arbeitet. Sie ist ruhig, parteiisch für dich und drängt dich zu nichts.</p></details>
+        <details><summary>Ist Mira ein Mensch?</summary><p>Nein. Mira ist eine KI mit klaren Anweisungen für Frauen in und nach toxischen Beziehungen. Sie ist ruhig, auf deiner Seite und drängt dich zu nichts.</p></details>
         <details><summary>Was passiert mit dem, was ich schreibe?</summary><p>Deine Nachricht geht zur Beantwortung an die KI und wird nicht gespeichert. Die Antwort wird nach dem Abholen sofort gelöscht. Auf dem Server liegt nur ein Zähler für deinen Code, nicht dein Name und nicht deine Worte.</p></details>
         <details><summary>Was ist, wenn die 300 Nachrichten aufgebraucht sind?</summary><p>Dann kannst du ein neues Kontingent holen. Im Kreis füllt sich Miras Kontingent jeden Monat wieder auf.</p></details>
         <details><summary>Kann ich Einträge aus dem Klarheits-Tagebuch mit Mira besprechen?</summary><p>Ja. Jeder Tagebuch-Eintrag hat den Knopf „Mit Mira einordnen“. Er legt den Text in Miras Eingabefeld, du entscheidest selbst, ob du ihn abschickst.</p></details>
       </div>
     </div>
   </section>
+
+  <section class="abschnitt dunkel">
+    <div class="innen">
+      <div class="aufruf">
+        <h2>Du musst heute Nacht nicht allein mit deinen Gedanken sein.</h2>
+        <p>19 €, einmalig. Dein Code kommt sofort per Mail.</p>
+        <div class="knopf-reihe" style="justify-content:center"><a class="knopf" data-kauf="mira" data-wort="MIRA" href="#kaufen">Mira jetzt holen</a></div>
+      </div>
+    </div>
+  </section>
 </main>
 
-<div class="kaufleiste" id="kaufleiste"><span class="preis">Mira · 19 €</span><a class="knopf" href="#kaufen">Mira holen</a></div>
+<div class="kaufleiste" id="kaufleiste"><span class="preis">Mira · 19 €</span><a class="knopf" href="#kaufen">Jetzt holen</a></div>
 <div id="fuss"></div>
 <script src="assets/seite.js"></script>
 </body>
