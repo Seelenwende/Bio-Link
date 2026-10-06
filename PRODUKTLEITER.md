@@ -28,7 +28,7 @@ Viele Frauen wissen selbst nicht, in welcher Phase sie sind. Darum gilt: **Die E
 
 | Stufe | Noch drin | Im Gehen | Danach |
 |---|---|---|---|
-| **0 · Kostenlos** | **Muster-Check** · Glaubenssätze-Test (Ergebnis per Mail) | Der Weg nach draußen (Mini-Guide) · Ausstiegs-Planer (Idee) | Self Care Journal · **Werte-Finder** · Red-Flag-Radar |
+| **0 · Kostenlos** | **Muster-Check** · Glaubenssätze-Test (Ergebnis per Mail) | Der Weg nach draußen (Mini-Guide) · **Ausstiegs-Planer** | Self Care Journal · **Werte-Finder** · Red-Flag-Radar |
 | **0 · Kostenlos, alle Phasen** | **Sei sanft mit dir** (Affirmationen) | **Sei sanft mit dir** | **Sei sanft mit dir** |
 | **1 · Einstieg** | Mira, die Begleiterin (Schnupper-Code gratis, Kontingent ~19 €) · Klarheits-Tagebuch (~14 €, einmalig) | Erste-Hilfe-Set mit Antwort-Helfer (19 €) | Neuer-Satz-Kompass (~19 €) · Du bist genug (E-Book, 29 €) |
 | **2 · Herzstück** | – | Das Bundle – Zurück zu dir (49 €) | Das Bundle – Zurück zu dir (49 €) |
@@ -46,7 +46,7 @@ Viele Frauen wissen selbst nicht, in welcher Phase sie sind. Darum gilt: **Die E
 - **Mira, die Seelenwende-Begleiterin** (`begleiterin.html`) – eine Ansprechpartnerin für alle Situationen: einfach losschreiben, sie erkennt selbst, was gebraucht wird (runterkommen, Muster einordnen, Selbstzweifel, Grenz-Sätze, Klarheit, Glaubenssätze und Werte). Einzeln als Kontingent, im Programm und im Kreis enthalten.
 - **„Wieder bei dir“ – 6-Wochen-Programm** (`programm.html`) – Ankommen · Verstehen, was war · Abstand und Grenzen · Trauern dürfen · Alte Sätze, neue Sätze · Wieder bei dir. Pro Woche Impulse, Schreibübungen, sieben Tagesanker und Mira-Anstöße. Woche 5 führt zum Glaubenssätze-Test, Woche 6 zum Werte-Finder und holt den Wunsch aus Woche 1 zurück. Boni nur im Programm: Begleitheft (Woche 1) und Audios für schwere Tage (Woche 4). „Du hast schon …?“-Hinweise knüpfen an Anker-Set, Klartext, No-Contact-Kit, Grenz-Sätze, Du bist genug und das Bundle an. Gebaut, Kaufweg (Tentary → Code) fehlt noch.
 - **Der Weg nach draußen**, **Erste-Hilfe-Set** – für den Stups und die ersten Tage danach.
-- **Ausstiegs-Planer** (`planer.html`, gebaut) – Sicherheitsplan als Checkliste mit Beratungsstellen für CH, DE und AT. Teil des Erste-Hilfe-Sets, mit Zugangscode (`ERSTE_HILFE_CODES`). Diskret: neutraler Tab-Titel, „Schnell weg“, speichert nur mit PIN und nur verschlüsselt auf dem Gerät.
+- **Ausstiegs-Planer** (`planer.html`, gebaut) – Sicherheitsplan als Checkliste mit Beratungsstellen für CH, DE und AT. Gratis, ohne Code, läuft komplett im Browser. Diskret: neutraler Tab-Titel, „Schnell weg“, speichert nur mit PIN und nur verschlüsselt auf dem Gerät.
 - **Self Care Journal**, **Du bist genug**, **Das Bundle** – Selbstwert und Neuanfang.
 - **Klarheits-Analyse** – schriftliche Außensicht, ohne Telefonat (sicherer für Frauen, die noch drin sind).
 

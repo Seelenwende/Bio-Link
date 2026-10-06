@@ -8,7 +8,7 @@
 - `neuer-satz-kompass.html` – **Neuer-Satz-Kompass** (bezahlt, mit Zugangscode): 30 Tage, ein Impuls pro Tag (Impuls, kleine Aufgabe, Frage, eigene Notiz). Baut auf dem lautesten Satz aus dem Glaubenssätze-Test und drei Werten aus dem Werte-Finder auf – beide werden automatisch übernommen, wenn sie auf dem Gerät gemacht wurden, sonst wählt sie die Frau selbst. Woche 1 Bemerken, Woche 2 Der neue Satz, Woche 3 Werte leben, Woche 4 Verankern. Die Startseite bietet zwei Wege: **Weg 1 (empfohlen)** über Glaubenssätze-Test → Werte-Finder → Kompass, wobei sich jeder Schritt erst nach dem vorherigen öffnet, oder **Weg 2** direkt starten (Satz und Werte selbst wählen, nichts wird übernommen). Die Einrichtung ist frei; die 30 Impulse liefert der Server erst nach gültigem Code (siehe unten). Jeden Kalendertag öffnet sich ein neuer Tag, verpasste bleiben offen. Optional Kalender-Erinnerung (.ics). Notizen bleiben auf dem Gerät. Die Weiter-Knöpfe aus Test und Werte-Finder öffnen `neuer-satz-kompass.html#neu`: Dann erscheint immer ein neuer, leerer Kompass zum Einrichten (ein laufender bleibt über „Zu deinem bisherigen Kompass“ erreichbar, bis der neue gestartet wird). Vorschau mit allen Tagen: `neuer-satz-kompass.html?alle` oder `#alle`.
 - `begleiterin.html` – **Mira**, die Seelenwende-Begleiterin: KI-Gesprächsbegleitung mit Zugangscode. Ein offenes Gespräch ohne Kategorien – die Begleiterin erkennt selbst, was gerade gebraucht wird. Krisenerkennung mit Notrufnummern (CH/DE/AT), „Schnell weg“-Knopf, Gespräche werden nicht gespeichert.
 - `programm.html` – **„Wieder bei dir“**, das 6-Wochen-Programm mit Zugangscode: sechs Wochen mit Impulsen zum Lesen, Schreibübungen, sieben Tagesankern pro Woche und Gesprächsanstößen für Mira. Die Inhalte liegen nur auf dem Server und kommen erst nach dem Code. Notizen bleiben auf dem Gerät (dauerhaft nur mit Häkchen, sonst nur im offenen Tab). Mit „Schnell weg“ und Krisenleiste.
-- `planer.html` – **Ausstiegs-Planer** (Teil des Erste-Hilfe-Sets, mit Zugangscode): Sicherheitsplan als Checkliste in neun Abschnitten (Handy und Spuren, Notfall, Dokumente, Geld, Notfalltasche, Menschen, Schutz und Recht, der Tag selbst, die ersten Wochen) mit Hinweisen und Beratungsstellen für die Schweiz, Deutschland und Österreich. Bewusst neutraler Tab-Titel („Checkliste“), „Schnell weg“-Knopf. Ohne PIN wird nichts gespeichert, mit PIN bleibt der Plan verschlüsselt (AES-GCM) nur auf dem Gerät.
+- `planer.html` – **Ausstiegs-Planer** (gratis, ohne Code): Sicherheitsplan als Checkliste in neun Abschnitten (Handy und Spuren, Notfall, Dokumente, Geld, Notfalltasche, Menschen, Schutz und Recht, der Tag selbst, die ersten Wochen) mit Hinweisen und Beratungsstellen für die Schweiz, Deutschland und Österreich. Bewusst neutraler Tab-Titel („Checkliste“), „Schnell weg“-Knopf. Ohne PIN wird nichts gespeichert, mit PIN bleibt der Plan verschlüsselt (AES-GCM) nur auf dem Gerät. Läuft komplett im Browser, ohne Server und ohne Kosten. Der Inhalt (Punkte, Tipps, Hinweise je Land, Beratungsstellen) steht oben im Skript als `INHALT`. **Nummern und Stellen vor jeder Änderung fachlich prüfen lassen** (Stand: Oktober 2026).
 - `profil-check.html` – KI-Profil-Check: Instagram-Namen eingeben, die KI liest Profil, Bio, Link-Seite und die letzten Posts (offizielle Instagram Graph API) und bewertet jeden Punkt des Profil-Checks mit konkretem Verbesserungsvorschlag.
 
 ## So funktioniert der Profil-Check (Netlify)
@@ -92,14 +92,3 @@ Die Texte des Tests stehen in `glaubenssaetze.json` (für Seite und Mail). Unter
 |---|---|
 | `MAILERLITE_API_KEY` | API-Schlüssel aus MailerLite |
 | `MAILERLITE_GROUP_GLAUBENSSAETZE` | ID der Gruppe „Glaubenssätze-Test“ |
-## So funktioniert der Ausstiegs-Planer (Netlify)
-
-`planer-inhalt` prüft den Zugangscode und liefert erst dann den Inhalt aus. Ohne gültigen Code steht in der Seite selbst keine Checkliste. Es braucht keine KI und keinen API-Schlüssel, es entstehen keine Kosten pro Nutzung.
-
-Der Inhalt (Punkte, Tipps, Hinweise je Land, Beratungsstellen) steht in `netlify/lib/ausstiegs-planer.mts`. **Nummern und Stellen vor jeder Änderung fachlich prüfen lassen** (Stand: Oktober 2026).
-
-| Variable | Inhalt |
-|---|---|
-| `ERSTE_HILFE_CODES` | gültige Codes fürs Erste-Hilfe-Set, kommagetrennt, Groß-/Kleinschreibung egal. Gilt später auch für den Antwort-Helfer. Codes von Programm- oder Kreis-Käuferinnen hier ebenfalls eintragen. |
-
-Neuer Code: an `ERSTE_HILFE_CODES` anhängen, danach neu deployen. Codes lieber zufällig wählen (z. B. `HILFE-7K2P-Q9XM`), nicht erratbar.
