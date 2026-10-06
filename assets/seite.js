@@ -95,17 +95,20 @@
     // Knöpfe, die auf einen Abschnitt zeigen (z. B. #kaufen), bleiben stehen und springen zur Preisbox.
     var ziel = a.getAttribute("href") || "";
     if (ziel.length > 1 && ziel.charAt(0) === "#") return;
+    // Noch kein Kauf-Link: Der Knopf bleibt ein Knopf und führt auf die Warteliste per Instagram.
     var wort = a.getAttribute("data-wort");
     if (!wort) { a.hidden = true; return; }
-    var p = document.createElement("p");
-    p.className = "warteliste";
-    p.innerHTML = a.closest(".angebot")
-      ? 'Bald erhältlich · Schreib <b></b> an <a href="' + INSTAGRAM + '" target="_blank" rel="noopener">@_seelenwende</a>'
-      : 'Bald erhältlich. Schreib <b></b> an <a href="' + INSTAGRAM + '" target="_blank" rel="noopener">@_seelenwende</a>, dann bekommst du Bescheid, sobald es losgeht.';
-    p.querySelector("b").textContent = wort;
+    a.href = INSTAGRAM;
+    a.target = "_blank";
+    a.rel = "noopener";
+    a.textContent = "Schreib " + wort + " an @_seelenwende";
+    var hinweis = document.createElement("p");
+    hinweis.className = "warteliste";
+    hinweis.textContent = a.closest(".angebot")
+      ? "Bald erhältlich"
+      : "Bald erhältlich. Schreib uns, dann bekommst du Bescheid, sobald es losgeht.";
     var reihe = a.closest(".knopf-reihe");
-    if (reihe && reihe.querySelectorAll("a").length === 1) { reihe.replaceWith(p); }
-    else { a.replaceWith(p); }
+    (reihe || a).insertAdjacentElement("afterend", hinweis);
   });
 
   /* ---------- Kaufleiste auf dem Handy ---------- */

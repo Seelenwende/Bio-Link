@@ -932,3 +932,6 @@ h1, h2, h3{letter-spacing:-.015em;}
 .stimmung::before{background:var(--verlauf-beere);}
 /* Ohne die Info-Karten braucht das Porträt unten keinen Extra-Platz mehr */
 .foto-buehne.quadrat{margin-bottom:0;}
+/* Warteliste-Hinweis unter dem Knopf */
+.preisbox .warteliste{margin-top:-4px;}
+.angebot .warteliste{margin:6px 0 0; text-align:left;}
