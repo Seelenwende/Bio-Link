@@ -927,3 +927,8 @@ h1, h2, h3{letter-spacing:-.015em;}
 .schwebe-reihe{position:relative; z-index:3; display:flex; gap:12px; justify-content:center; margin:-34px -30px 0;}
 .schwebe-reihe .schwebe-karte{position:static; flex:1 1 0; max-width:250px;}
 @media (max-width:520px){ .schwebe-reihe{margin:-28px -6px 0; gap:8px;} .schwebe-reihe .schwebe-karte{padding:9px 10px 9px 9px;} .schwebe-reihe .schwebe-karte .ic-rund{width:34px; height:34px;} .schwebe-reihe .schwebe-karte b{font-size:.84rem;} .schwebe-reihe .schwebe-karte small{font-size:.7rem;} }
+
+/* Stimmungsfotos: dunkelbeerige Fläche dahinter, wie beim Porträt oben */
+.stimmung::before{background:var(--verlauf-beere);}
+/* Ohne die Info-Karten braucht das Porträt unten keinen Extra-Platz mehr */
+.foto-buehne.quadrat{margin-bottom:0;}
