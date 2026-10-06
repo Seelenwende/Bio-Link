@@ -225,6 +225,7 @@
         <button class="land" type="button" data-land="CH" aria-pressed="false">Schweiz</button>
         <button class="land" type="button" data-land="DE" aria-pressed="false">Deutschland</button>
         <button class="land" type="button" data-land="AT" aria-pressed="false">Österreich</button>
+        <button class="land" type="button" data-land="XX" aria-pressed="false">Anderes Land</button>
       </div>
     </div>
 
@@ -311,7 +312,7 @@
         titel: "Für den Notfall",
         intro: "Falls es eskaliert, bevor du gehst. Diese Punkte schützen dich auch dann, wenn du dich noch nicht entschieden hast.",
         punkte: [
-          { id: "nummern", text: "Notrufnummern im Handy speichern, unter unauffälligem Namen", land: { CH: "Polizei 117, Sanität 144, Opferhilfe 142.", DE: "Polizei 110, Notruf 112, Hilfetelefon 116 016.", AT: "Polizei 133, Notruf 112, Frauenhelpline 0800 222 555." } },
+          { id: "nummern", text: "Notrufnummern im Handy speichern, unter unauffälligem Namen", land: { CH: "Polizei 117, Sanität 144, Opferhilfe 142.", DE: "Polizei 110, Notruf 112, Hilfetelefon 116 016.", AT: "Polizei 133, Notruf 112, Frauenhelpline 0800 222 555.", XX: "Den Notruf deines Landes (in ganz Europa 112) und die Nummer einer Frauen-Helpline vor Ort, siehe unten." } },
           { id: "codewort", text: "Ein Codewort mit einer Vertrauensperson ausmachen", tipp: "Wenn du es schreibst oder sagst, ruft sie die Polizei. Trag es unten bei „Meine Angaben“ ein." },
           { id: "raeume", text: "Wissen, wo du im Streit hingehst", tipp: "Möglichst in einen Raum mit Ausgang oder Telefon. Küche, Bad und Garage meiden – dort gibt es harte Kanten und Gegenstände." },
           { id: "ausweg", text: "Den schnellsten Weg nach draußen kennen", tipp: "Auch nachts. Schlüssel immer am gleichen Ort, Auto mit der Front zur Ausfahrt parken, wenn möglich." },
@@ -380,6 +381,7 @@
               CH: "Die Polizei kann ihn wegweisen (kantonal geregelt). Längerer Schutz über das Zivilgericht (Art. 28b ZGB). Die Opferhilfe begleitet dich dabei.",
               DE: "Die Polizei kann ihn der Wohnung verweisen. Schutzanordnungen und Wohnungszuweisung nach dem Gewaltschutzgesetz beim Familiengericht, auch als Eilantrag.",
               AT: "Die Polizei kann ein Betretungs- und Annäherungsverbot aussprechen (zwei Wochen). Danach meldet sich das Gewaltschutzzentrum bei dir. Länger über eine einstweilige Verfügung beim Bezirksgericht.",
+              XX: "In vielen Ländern gibt es Wegweisung, Kontakt- und Annäherungsverbote. Was bei dir gilt, weiß eine Beratungsstelle vor Ort.",
             },
           },
           { id: "arzt", text: "Verletzungen ärztlich festhalten lassen", tipp: "Auch wenn sie klein wirken. Ein Bericht kann später wichtig sein, für Schutzanordnungen oder das Sorgerecht." },
@@ -409,6 +411,7 @@
               CH: "Bei der Einwohnerkontrolle deiner Gemeinde eine Datensperre beantragen.",
               DE: "Beim Bürgeramt eine Auskunftssperre im Melderegister beantragen.",
               AT: "Beim Meldeamt eine Auskunftssperre beantragen.",
+              XX: "Frag beim Einwohner- oder Meldeamt, ob du deine Adresse sperren lassen kannst.",
             },
           },
           { id: "sichern", text: "Jeden Kontakt von ihm sichern, nicht beantworten", tipp: "Screenshots mit Datum. Wenn ihr wegen der Kinder Kontakt braucht: kurz, sachlich, schriftlich." },
@@ -440,12 +443,17 @@
         { name: "Autonome Österreichische Frauenhäuser", web: "aoef.at", info: "Übersicht der Frauenhäuser in Österreich." },
         { name: "Telefonseelsorge", nummer: "142", info: "Wenn du einfach jemanden zum Reden brauchst, rund um die Uhr." },
       ],
+      XX: [
+        { name: "Notruf", nummer: "112", info: "Bei akuter Gefahr. Gilt in ganz Europa und funktioniert in vielen Ländern auch außerhalb.", notruf: true },
+        { name: "WAVE „Find Help“", web: "wave-network.org", info: "Rund 2000 Frauenhäuser, Helplines und Beratungsstellen in 46 Ländern Europas. Manche nationalen Nummern sind nur im Land selbst erreichbar." },
+        { name: "Außerhalb Europas", info: "Such nach „domestic violence hotline“ und dem Namen deines Landes, am besten auf einem sicheren Gerät. Lebst du im Ausland, kann dir auch die Botschaft deines Heimatlandes weiterhelfen." },
+      ],
     },
   };
 
   var STORE_KEY = "notizen-v1";
   var EXIT_URL = "https://www.google.com/search?q=wetter";
-  var LAND_NAMEN = { CH: "Schweiz", DE: "Deutschland", AT: "Österreich" };
+  var LAND_NAMEN = { CH: "Schweiz", DE: "Deutschland", AT: "Österreich", XX: "Anderes Land" };
 
   var $ = function(id){ return document.getElementById(id); };
   var state = null;      // { land, done:{}, felder:{} }
