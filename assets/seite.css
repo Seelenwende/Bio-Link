@@ -832,3 +832,23 @@ h1, h2, h3{letter-spacing:-.015em;}
 /* Quadratisches Porträt im Held (Startseite) */
 .foto-buehne.quadrat{width:min(420px, 78vw);}
 .foto-buehne.quadrat .foto{aspect-ratio:1;}
+
+/* Muster-Kacheln 3 x 2, Phasen-Knöpfe gleich breit */
+@media (min-width:900px){ .leistungen.drei{grid-template-columns:repeat(3, 1fr);} }
+@media (min-width:600px) and (max-width:899px){ .leistungen.drei{grid-template-columns:repeat(2, 1fr);} }
+.phasen-tabs{display:grid; grid-template-columns:1fr 1fr;}
+.phasen-tabs button{text-align:center;}
+
+/* Angebote nach Phase gruppiert */
+.angebots-gruppe{margin-top:44px;}
+.angebots-gruppe:first-of-type{margin-top:8px;}
+.gruppen-kopf{display:flex; align-items:center; gap:16px; margin-bottom:18px; padding-bottom:14px; border-bottom:1px solid var(--linie);}
+.gruppen-nr{
+  width:44px; height:44px; border-radius:14px; flex-shrink:0; display:grid; place-items:center;
+  background:var(--verlauf-beere); color:#fff; font-family:var(--serif); font-size:1.2rem; box-shadow:var(--s-knopf);
+}
+.gruppen-kopf h3{font-size:1.4rem; margin:0;}
+.gruppen-kopf p{color:var(--gedaempft); font-size:.95rem; margin:2px 0 0;}
+@media (min-width:900px){ .angebots-gruppe .angebote{grid-template-columns:repeat(3, 1fr);} }
+@media (min-width:600px) and (max-width:899px){ .angebots-gruppe .angebote{grid-template-columns:repeat(2, 1fr);} }
+@media (max-width:599px){ .angebots-gruppe .angebote{grid-template-columns:1fr;} }
