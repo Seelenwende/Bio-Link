@@ -165,3 +165,9 @@ const THEMEN: Thema[] = [
 export function themenBis(period: string): Thema[] {
   return THEMEN.filter((t) => t.monat <= period).sort((a, b) => b.monat.localeCompare(a.monat));
 }
+
+/** Das nächste Thema nach dem angegebenen Monat, nur Titel und Untertitel (als Vorschau, ohne Inhalt). */
+export function naechstesThema(period: string): Pick<Thema, "monat" | "titel" | "untertitel"> | null {
+  const t = THEMEN.filter((x) => x.monat > period).sort((a, b) => a.monat.localeCompare(b.monat))[0];
+  return t ? { monat: t.monat, titel: t.titel, untertitel: t.untertitel } : null;
+}

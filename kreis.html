@@ -126,6 +126,14 @@
   .links a span{font-size:.85rem; color:var(--gedaempft);}
   @media (hover:hover){ .links a:hover{background:var(--sand);} }
 
+  .mira .actions-row{display:flex; gap:8px; flex-wrap:wrap;}
+  .mira .actions-row .btn{flex:1 1 200px;}
+  .next{display:grid; gap:4px;}
+  .next .title{font-family:var(--serif); font-size:1.15rem;}
+  .tool-group{display:grid; gap:8px;}
+  .tool-group h4{margin:6px 0 0; font-size:.68rem; letter-spacing:.18em; text-transform:uppercase; color:var(--rose); font-weight:500; font-family:var(--sans);}
+  .links a .tag{display:inline-block; margin-left:6px; font-family:var(--sans); font-size:.62rem; letter-spacing:.12em; text-transform:uppercase; color:var(--beere); border:1px solid var(--linie); border-radius:20px; padding:0 7px; vertical-align:2px;}
+  .preview-note{background:var(--blush); border-radius:12px; padding:10px 14px; font-size:.85rem; color:var(--beere);}
   .archive{display:grid; gap:8px;}
   .archive button{
     text-align:left; background:var(--papier); border:1px solid var(--linie); border-radius:12px; padding:10px 14px; cursor:pointer; color:var(--pflaume);
@@ -175,6 +183,7 @@
     <ul class="includes">
       <li><span><b>Ein Thema pro Monat.</b> Jede Woche ein kurzer Impuls, eine kleine Übung für den Alltag und eine Frage für dein Journal.</span></li>
       <li><span><b>Mira, jeden Monat neu.</b> Deine KI-Begleiterin mit <span id="limit-text">150</span> Nachrichten pro Monat. Das Kontingent füllt sich am Monatsersten wieder auf.</span></li>
+      <li><span><b>Alle Werkzeuge an einem Ort.</b> Muster-Check, Klarheits-Tagebuch, Ausstiegs-Planer und mehr, dazu der Neuer-Satz-Kompass (einzeln 19 €).</span></li>
       <li><span><b>Diskret.</b> Keine App, kein Gruppenchat, kein Profil. Niemand sieht, dass du dabei bist. Mit „Schnell weg“-Knopf.</span></li>
       <li><span><b>Alles bisherige bleibt.</b> Frühere Monatsthemen findest du im Archiv.</span></li>
     </ul>
@@ -219,26 +228,56 @@
     <div class="body" id="week-text"></div>
     <div class="block"><span class="label">Kleine Übung</span><p id="week-uebung"></p></div>
     <div class="block frage"><span class="label">Frage für dein Journal</span><p id="week-frage"></p></div>
-    <button class="btn soft" id="mira-week-btn">Mit Mira darüber sprechen</button>
   </section>
 
   <section class="card mira" aria-labelledby="mira-title">
-    <div class="row"><h3 id="mira-title">Mira</h3><span class="muted" id="mira-count" style="font-size:.88rem"></span></div>
+    <div class="row"><h3 id="mira-title">Mit Mira weiterdenken</h3><span class="muted" id="mira-count" style="font-size:.88rem"></span></div>
     <div class="meter" aria-hidden="true"><span id="mira-meter" style="width:0"></span></div>
-    <p class="muted" id="mira-reset" style="font-size:.88rem"></p>
-    <button class="btn" id="mira-btn">Mira öffnen</button>
+    <p id="mira-text" style="font-size:.95rem"></p>
+    <div class="actions-row">
+      <button class="btn" id="mira-week-btn">Über diese Woche sprechen</button>
+      <button class="btn soft" id="mira-btn">Einfach losschreiben</button>
+    </div>
+    <p class="muted" id="mira-reset" style="font-size:.85rem"></p>
+  </section>
+
+  <section class="card outline next" id="next-card" hidden aria-label="Nächster Monat">
+    <span class="eyebrow" id="next-label"></span>
+    <span class="title" id="next-title"></span>
+    <span class="muted" id="next-sub" style="font-size:.92rem"></span>
   </section>
 
   <section aria-labelledby="tools-title" style="display:grid; gap:12px">
     <h3 id="tools-title" style="font-size:1.2rem">Werkzeuge</h3>
-    <div class="links">
-      <a href="glaubenssaetze.html"><b>Glaubenssätze-Test</b><span>Welche alten Sätze tragen dich gerade?</span></a>
-      <a href="werte-finder.html"><b>Werte-Finder</b><span>Was ist dir wirklich wichtig?</span></a>
+    <p class="muted" style="font-size:.9rem">Alle Werkzeuge laufen in deinem Browser. Was du eingibst, bleibt auf deinem Gerät.</p>
+    <div class="tool-group">
+      <h4>Klarheit</h4>
+      <div class="links">
+        <a href="muster-check.html"><b>Muster-Check</b><span>Ist das noch normal? 20 Situationen aus dem Alltag.</span></a>
+        <a href="glaubenssaetze.html"><b>Glaubenssätze-Test</b><span>Welche alten Sätze halten dich fest?</span></a>
+        <a href="notizen.html"><b>Klarheits-Tagebuch</b><span>Vorfälle festhalten, mit PIN geschützt. Heißt im Browser nur „Notizen“.</span></a>
+      </div>
+    </div>
+    <div class="tool-group">
+      <h4>Schutz</h4>
+      <div class="links">
+        <a href="planer.html"><b>Ausstiegs-Planer</b><span>Sicherheitsplan Schritt für Schritt, mit Beratungsstellen für CH, DE und AT.</span></a>
+        <a href="red-flag-radar.html"><b>Red-Flag-Radar</b><span>Passiert mir das wieder? Ein Check für neue Bekanntschaften.</span></a>
+      </div>
+    </div>
+    <div class="tool-group">
+      <h4>Stärkung</h4>
+      <div class="links">
+        <a href="affirmationen.html"><b>Sei sanft mit dir</b><span>Freundliche Sätze für die harte Stimme in dir.</span></a>
+        <a href="werte-finder.html"><b>Werte-Finder</b><span>Was ist dir wirklich wichtig?</span></a>
+        <a href="neuer-satz-kompass.html"><b>Neuer-Satz-Kompass <span class="tag">im Kreis enthalten</span></b><span>30 Tage vom alten zum neuen Satz. Dein Kreis-Code öffnet ihn.</span></a>
+      </div>
     </div>
   </section>
 
   <section id="archive-section" aria-labelledby="archive-title" style="display:grid; gap:12px" hidden>
-    <h3 id="archive-title" style="font-size:1.2rem">Archiv</h3>
+    <h3 id="archive-title" style="font-size:1.2rem">Alle Monatsthemen</h3>
+    <p class="preview-note" id="preview-note" hidden>Testansicht: Hier siehst du auch kommende Monate. Mitglieder sehen einen Monat erst ab seinem Ersten.</p>
     <div class="archive" id="archive"></div>
   </section>
 
@@ -330,17 +369,25 @@
       return;
     }
     renderMira(d.mira);
+    renderNext(d.naechstes);
     renderArchive();
-    var aktuell = d.themen[0];
-    var woche = Math.min(3, Math.floor((d.heute.day - 1) / 7));
-    showThema(aktuell, woche);
+    showThema(aktuellesThema(), aktuelleWoche());
     show("screen-home");
   }
 
+  // Das Thema dieses Monats (in der Testansicht kommen auch spätere Monate mit).
+  function aktuellesThema(){
+    var d = state.data;
+    for (var i = 0; i < d.themen.length; i++) if (d.themen[i].monat <= d.aktuell) return d.themen[i];
+    return d.themen[d.themen.length - 1];
+  }
+  function aktuelleWoche(){ return Math.min(3, Math.floor((state.data.heute.day - 1) / 7)); }
+
   function showThema(thema, woche){
     state.thema = thema;
-    var istAktuell = thema === state.data.themen[0];
-    $("month-label").textContent = (istAktuell ? "Thema im " : "Aus dem Archiv · ") + monatName(thema.monat);
+    var istAktuell = thema.monat === state.data.aktuell;
+    var label = istAktuell ? "Thema im " : (thema.monat > state.data.aktuell ? "Vorschau · " : "Aus dem Archiv · ");
+    $("month-label").textContent = label + monatName(thema.monat);
     $("month-title").textContent = thema.titel;
     $("month-sub").textContent = thema.untertitel;
     paragraphs($("letter-text"), thema.brief);
@@ -352,7 +399,7 @@
       var b = document.createElement("button");
       b.className = "tab"; b.setAttribute("role", "tab");
       b.innerHTML = "<b>Woche " + (i + 1) + "</b>";
-      if (istAktuell && i === Math.min(3, Math.floor((state.data.heute.day - 1) / 7))) b.appendChild(document.createTextNode("diese Woche"));
+      if (istAktuell && i === aktuelleWoche()) b.appendChild(document.createTextNode("diese Woche"));
       b.addEventListener("click", function(){ showWoche(i); });
       tabs.appendChild(b);
     });
@@ -368,6 +415,7 @@
     paragraphs($("week-text"), w.text);
     $("week-uebung").textContent = w.uebung;
     $("week-frage").textContent = w.frage;
+    $("mira-text").textContent = "Magst du über „" + w.titel + "“ sprechen? Mira bekommt den Einstieg schon mit, du kannst ihn vor dem Senden noch ändern.";
   }
 
   // Brief zum Monat: erst nur der erste Absatz, der Rest auf Wunsch.
@@ -386,22 +434,31 @@
     $("mira-meter").style.width = Math.round(100 * left / m.limit) + "%";
     var reset = m.resetsOn ? new Date(m.resetsOn + "T12:00:00Z").toLocaleDateString("de-CH", { day:"numeric", month:"long" }) : "";
     $("mira-reset").textContent = left > 0
-      ? "Schreib einfach los, Mira erkennt selbst, was du gerade brauchst." + (reset ? " Am " + reset + " wird dein Kontingent wieder voll." : "")
+      ? (reset ? "Am " + reset + " wird dein Kontingent wieder voll." : "")
       : "Dein Kontingent für diesen Monat ist aufgebraucht." + (reset ? " Am " + reset + " geht es weiter." : "");
     $("mira-btn").disabled = left === 0;
     $("mira-week-btn").disabled = left === 0;
   }
 
+  function renderNext(n){
+    $("next-card").hidden = !n;
+    if (!n) return;
+    $("next-label").textContent = "Ab 1. " + monatName(n.monat).split(" ")[0];
+    $("next-title").textContent = n.titel;
+    $("next-sub").textContent = n.untertitel;
+  }
+
   function renderArchive(){
     var alte = state.data.themen;
     $("archive-section").hidden = alte.length < 2;
+    $("preview-note").hidden = !state.data.vorschau;
     var box = $("archive");
     box.innerHTML = "";
     alte.forEach(function(t){
       var b = document.createElement("button");
       b.dataset.monat = t.monat;
       b.textContent = t.titel;
-      var s = document.createElement("span"); s.textContent = monatName(t.monat);
+      var s = document.createElement("span"); s.textContent = (t.monat > state.data.aktuell ? "Vorschau · " : "") + monatName(t.monat);
       b.appendChild(s);
       b.addEventListener("click", function(){ showThema(t, 0); window.scrollTo(0, 0); });
       box.appendChild(b);

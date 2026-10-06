@@ -49,7 +49,7 @@ Viele Frauen wissen selbst nicht, in welcher Phase sie sind. Darum gilt: **Die E
 - **Der Weg nach draußen**, **Erste-Hilfe-Set** – für den Stups und die ersten Tage danach.
 - **Ausstiegs-Planer** (`planer.html`, gebaut) – Sicherheitsplan als Checkliste mit Beratungsstellen für CH, DE und AT. Gratis, ohne Code, läuft komplett im Browser. Diskret: neutraler Tab-Titel, „Schnell weg“, speichert nur mit PIN und nur verschlüsselt auf dem Gerät.
 - **Self Care Journal**, **Du bist genug**, **Das Bundle** – Selbstwert und Neuanfang.
-- **Seelenwende Kreis** (`kreis.html`) – Mitgliedschaft für alle drei Phasen: ein Thema pro Monat mit vier Wochen-Impulsen, Archiv und Mira mit 150 Nachrichten pro Monat. Diskret: keine App, kein Gruppenchat. Gebaut; es fehlen der Tentary-Abo-Link und die Automatik für Code-Mails.
+- **Seelenwende Kreis** (`kreis.html`) – Mitgliedschaft für alle drei Phasen: ein Thema pro Monat mit vier Wochen-Impulsen, Archiv, Mira mit 150 Nachrichten pro Monat, alle Werkzeuge an einem Ort und der Neuer-Satz-Kompass inklusive. Diskret: keine App, kein Gruppenchat. Gebaut; es fehlen der Tentary-Abo-Link und die Automatik für Code-Mails.
 - **Klarheits-Analyse** – schriftliche Außensicht, ohne Telefonat (sicherer für Frauen, die noch drin sind).
 
 ## Offene Punkte

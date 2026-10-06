@@ -78,7 +78,7 @@ Authorization: Bearer <SEELENWENDE_ADMIN_KEY>
 
 ## Kreis-Inhalte
 
-Die Monatsthemen stehen in `netlify/lib/kreis-inhalte.mts` und werden nur mit gültigem Kreis-Code ausgeliefert (`/api/kreis/inhalt`). Ein Monat wird an seinem ersten Tag sichtbar, ältere bleiben im Archiv. Angelegt sind Oktober, November und Dezember 2026. Den Kauf-Link trägst du in `kreis.html` bei `KAUF_URL` ein; solange er leer ist, zeigt die Seite den Hinweis „Schreib KREIS an @_seelenwende“.
+Die Monatsthemen stehen in `netlify/lib/kreis-inhalte.mts` und werden nur mit gültigem Kreis-Code ausgeliefert (`/api/kreis/inhalt`). Ein Monat wird an seinem ersten Tag sichtbar, ältere bleiben im Archiv. Vom nächsten Monat zeigt die Seite vorab nur Titel und Untertitel. In Netlify-Vorschauen (Deploy Previews) kommen alle Monate mit, damit man sie prüfen kann. Ein Kreis-Code öffnet auch den Neuer-Satz-Kompass (`kompass-tage`). Angelegt sind Oktober, November und Dezember 2026. Den Kauf-Link trägst du in `kreis.html` bei `KAUF_URL` ein; solange er leer ist, zeigt die Seite den Hinweis „Schreib KREIS an @_seelenwende“.
 
 
 ### Kreis in einer Netlify-Vorschau testen
