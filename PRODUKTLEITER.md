@@ -14,8 +14,9 @@ Viele Frauen wissen selbst nicht, in welcher Phase sie sind. Darum gilt: **Die E
 
 | Stufe | Ihre Frage | Produkte |
 |---|---|---|
-| Erkennen | „Was ist hier los?“ | Glaubenssätze-Test, Werte-Finder, Sei sanft mit dir, Red-Flag-Radar, Muster-Check, Ausstiegs-Planer, Mini-Guide, Self Care Journal – **gratis** |
-| Werkzeug | „Was mache ich jetzt, in diesem Moment?“ | No-Contact-Kit, Grenz-Sätze, Klartext, Anker-Set, Erste-Hilfe-Set, Neuer-Satz-Kompass |
+| Erkennen | „Was ist hier los?“ | Muster-Check, Glaubenssätze-Test, Ausstiegs-Planer, Mini-Guide – **gratis** (je Phase ein Einstieg, Sicherheit immer gratis) |
+| Kleine Werkzeuge | „Was hilft mir genau hier?“ | Red-Flag-Radar (9 €), Werte-Finder (9 €, im Kompass-Paket), Sei sanft mit dir (7 €, Bonus im Bundle), Self Care Journal (9 €) |
+| Werkzeug | „Was mache ich jetzt, in diesem Moment?“ | No-Contact-Kit, Grenz-Sätze, Klartext, Anker-Set, Erste-Hilfe-Set, Werte-Finder + Neuer-Satz-Kompass (24 €) |
 | Wissen | „Warum fühle ich mich so klein?“ | Du bist genug, Bundle |
 | Weg | „Wie komme ich wirklich zu mir zurück?“ | „Wieder bei dir“, 6 Wochen |
 | Bleiben | „Wie halte ich das?“ | Seelenwende Kreis |
@@ -34,6 +35,23 @@ Viele Frauen wissen selbst nicht, in welcher Phase sie sind. Darum gilt: **Die E
 | **2 · Herzstück** | – | Das Bundle – Zurück zu dir (49 €) | Das Bundle – Zurück zu dir (49 €) |
 | **3 · Begleitung** | Klarheits-Analyse (99 €) | 6-Wochen-Programm inkl. Mira, Begleitheft, Audios (149 €) | 6-Wochen-Programm (149 €) |
 | **4 · Dauerhaft** | Seelenwende Kreis inkl. Mira und Audios (ab 19 €/Mo) | Seelenwende Kreis | Seelenwende Kreis |
+
+## Gratis bewusst knapp (Oktober 2026)
+
+Nur noch vier Gratis-Einstiege: Muster-Check (noch drin), Ausstiegs-Planer und Mini-Guide (im Gehen), Glaubenssätze-Test (danach). Dazu später der Mira-Schnupper-Code. Alles andere hat einen kleinen Preis, weil zu viel Gratis unglaubwürdig wirkt und wer einmal 7–9 € ausgibt, eher auch das Programm kauft. Kreis- und Programm-Codes öffnen alle kleinen Werkzeuge („alle Werkzeuge inklusive“), Kompass-Codes zusätzlich den Werte-Finder.
+
+## Phasen-Wegweiser
+
+Startseite (`start.html#phasen`) und Bio-Link fragen zuerst „Wo stehst du gerade?“ und zeigen je Phase genau drei Schritte:
+
+| | Kostenlos starten | Für jetzt | Nächster Schritt |
+|---|---|---|---|
+| Noch drin | Muster-Check | Mira (oder Klarheits-Tagebuch) | Bundle |
+| Im Gehen | Ausstiegs-Planer (oder Mini-Guide) | Erste-Hilfe-Set (oder Mira) | „Wieder bei dir“ |
+| Danach | Glaubenssätze-Test | Werte-Finder + Kompass (oder Red-Flag-Radar) | „Wieder bei dir“ (oder Kreis) |
+| Weiß nicht | Muster-Check | Mira | Kreis |
+
+Direkt verlinkbar: `start.html#drin`, `#gehen`, `#draussen`, `#unsicher`.
 
 ## Die Bausteine
 

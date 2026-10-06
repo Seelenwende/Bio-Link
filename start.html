@@ -24,7 +24,7 @@
         <p class="unterzeile">Von einer Frau, die über 15 Jahre selbst drin war.</p>
         <p class="text">Ob du noch zweifelst, gerade gehst oder schon draußen bist: Hier findest du Werkzeuge, die dir Klarheit geben, dich schützen und dich Schritt für Schritt zu dir zurückbringen. Diskret, in deinem Tempo, ohne Urteil.</p>
         <div class="knopf-reihe">
-          <a class="knopf" href="#angebote">Angebote ansehen</a>
+          <a class="knopf" href="#phasen">Wo stehe ich gerade?</a>
           <a class="knopf leicht" href="#werkzeuge">Kostenlos starten</a>
         </div>
         <div class="mikro">
@@ -53,24 +53,16 @@
   </div>
 
   <!-- Wegweiser: schneller Überblick, führt direkt zur passenden Salespage -->
-  <section class="abschnitt" id="wegweiser">
+  <section class="abschnitt" id="phasen">
     <div class="innen">
       <div class="bild-text">
         <figure class="stimmung"><img src="assets/bilder/start-fenster.jpg" alt="Frau sitzt mit einer Tasse Tee am Fenster" width="900" height="1125" loading="lazy"></figure>
         <div class="text">
-      <span class="ueber">Schneller Überblick</span>
-      <h2>Was brauchst du gerade?</h2>
-      <p class="einleitung">Tipp an, was sich am meisten nach dir anfühlt.</p>
-      <nav class="wegweiser" aria-label="Wegweiser zu den Angeboten">
-        <a href="angebot-mira.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#chat"/></svg></span><span class="bedarf">Jemanden zum Reden, jetzt sofort<span class="antwort">Mira, deine Begleiterin · 19 €</span></span><svg class="ic pfeil"><use href="assets/icons.svg#pfeil"/></svg></a>
-        <a href="angebot-antwort-helfer.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#nachricht"/></svg></span><span class="bedarf">Er schreibt mir, und ich weiß nicht, was ich antworten soll<span class="antwort">Antwort-Helfer im Erste-Hilfe-Set · 19 €</span></span><svg class="ic pfeil"><use href="assets/icons.svg#pfeil"/></svg></a>
-        <a href="angebot-tagebuch.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#tagebuch"/></svg></span><span class="bedarf">Ich zweifle an meiner eigenen Erinnerung<span class="antwort">Klarheits-Tagebuch · 14 €</span></span><svg class="ic pfeil"><use href="assets/icons.svg#pfeil"/></svg></a>
-        <a href="planer.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#tuer"/></svg></span><span class="bedarf">Ich will gehen und brauche einen sicheren Plan<span class="antwort">Ausstiegs-Planer · kostenlos</span></span><svg class="ic pfeil"><use href="assets/icons.svg#pfeil"/></svg></a>
-        <a href="angebot-programm.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#blatt"/></svg></span><span class="bedarf">Ich bin draußen, aber noch nicht bei mir angekommen<span class="antwort">„Wieder bei dir“, 6 Wochen · 149 €</span></span><svg class="ic pfeil"><use href="assets/icons.svg#pfeil"/></svg></a>
-        <a href="angebot-bundle.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#buch"/></svg></span><span class="bedarf">Ich fühle mich klein und nicht genug<span class="antwort">Das Bundle „Zurück zu dir“ · 49 €</span></span><svg class="ic pfeil"><use href="assets/icons.svg#pfeil"/></svg></a>
-        <a href="angebot-kompass.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#kompass"/></svg></span><span class="bedarf">Ich will alte Sätze in meinem Kopf loswerden<span class="antwort">Neuer-Satz-Kompass, 30 Tage · 19 €</span></span><svg class="ic pfeil"><use href="assets/icons.svg#pfeil"/></svg></a>
-        <a href="angebot-kreis.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#kreis"/></svg></span><span class="bedarf">Ich will dauerhaft begleitet werden<span class="antwort">Seelenwende Kreis · 19 € im Monat</span></span><svg class="ic pfeil"><use href="assets/icons.svg#pfeil"/></svg></a>
-      </nav>
+          <span class="ueber">Wo stehst du gerade?</span>
+          <h2>Finde in einem Klick, was dir jetzt hilft.</h2>
+          <p class="einleitung">Wähle, was sich am meisten nach dir anfühlt. Du bekommst drei Schritte: einen kostenlosen Einstieg, etwas für jetzt und deinen nächsten Schritt.</p>
+          <div class="phasen-tabs" role="tablist" aria-label="Deine Phase"><button type="button" role="tab" id="tab-drin" aria-controls="panel-drin" aria-selected="true">Noch drin</button><button type="button" role="tab" id="tab-gehen" aria-controls="panel-gehen" aria-selected="false">Ich will gehen</button><button type="button" role="tab" id="tab-draussen" aria-controls="panel-draussen" aria-selected="false">Ich bin draußen</button><button type="button" role="tab" id="tab-unsicher" aria-controls="panel-unsicher" aria-selected="false">Ich weiß es nicht</button></div>
+          <div class="phase-panel" role="tabpanel" id="panel-drin" aria-labelledby="tab-drin"><p class="phase-frage">„Bilde ich mir das ein?“</p><p class="leise">Du spürst, dass etwas nicht stimmt, und zweifelst trotzdem an dir.</p><ol class="schritt-liste"><li class="schritt-karte gratis"><span class="stufe">Kostenlos starten</span><a class="schritt-link" href="#phasen" data-ziel="muster-check.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#auge"/></svg></span><span class="schritt-text"><b>Muster-Check</b><span>20 Alltagssituationen zeigen, ob sich ein Muster wiederholt.</span></span><span class="schritt-preis">Kostenlos</span></a></li><li class="schritt-karte"><span class="stufe">Für jetzt</span><a class="schritt-link" href="angebot-mira.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#chat"/></svg></span><span class="schritt-text"><b>Mira, deine Begleiterin</b><span>Jemand zum Reden, auch um drei Uhr nachts.</span></span><span class="schritt-preis">19 €</span></a><span class="oder">oder <a href="angebot-tagebuch.html">Klarheits-Tagebuch · 14 €</a></span></li><li class="schritt-karte"><span class="stufe">Dein nächster Schritt</span><a class="schritt-link" href="angebot-bundle.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#buch"/></svg></span><span class="schritt-text"><b>Das Bundle – Zurück zu dir</b><span>E-Book, Vision Board, Journal und „Sei sanft mit dir“.</span></span><span class="schritt-preis">49 €</span></a></li></ol></div><div class="phase-panel" role="tabpanel" id="panel-gehen" aria-labelledby="tab-gehen" hidden><p class="phase-frage">„Wie komme ich sicher raus?“</p><p class="leise">Die Entscheidung ist da, oder fast. Jetzt brauchst du einen Plan und Rückhalt.</p><ol class="schritt-liste"><li class="schritt-karte gratis"><span class="stufe">Kostenlos starten</span><a class="schritt-link" href="planer.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#tuer"/></svg></span><span class="schritt-text"><b>Ausstiegs-Planer</b><span>Dein Sicherheitsplan mit Beratungsstellen für CH, DE und AT.</span></span><span class="schritt-preis">Kostenlos</span></a><span class="oder">oder <a href="#phasen" data-ziel="https://seelenwende.mytentary.com/p/WPedba">Mini-Guide „Der Weg nach draußen“</a></span></li><li class="schritt-karte"><span class="stufe">Für jetzt</span><a class="schritt-link" href="angebot-antwort-helfer.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#nachricht"/></svg></span><span class="schritt-text"><b>Erste-Hilfe-Set</b><span>Seine Nachrichten ruhig einordnen und sachlich antworten.</span></span><span class="schritt-preis">19 €</span></a><span class="oder">oder <a href="angebot-mira.html">Mira · 19 €</a></span></li><li class="schritt-karte"><span class="stufe">Dein nächster Schritt</span><a class="schritt-link" href="angebot-programm.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#blatt"/></svg></span><span class="schritt-text"><b>„Wieder bei dir“ – 6 Wochen</b><span>Vom Ankommen bis zu dir selbst, mit Mira, Begleitheft und Audios.</span></span><span class="schritt-preis">149 €</span></a></li></ol></div><div class="phase-panel" role="tabpanel" id="panel-draussen" aria-labelledby="tab-draussen" hidden><p class="phase-frage">„Wer bin ich ohne das?“</p><p class="leise">Du bist gegangen, aber noch nicht bei dir angekommen.</p><ol class="schritt-liste"><li class="schritt-karte gratis"><span class="stufe">Kostenlos starten</span><a class="schritt-link" href="#phasen" data-ziel="glaubenssaetze.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#chat"/></svg></span><span class="schritt-text"><b>Glaubenssätze-Test</b><span>Welcher alte Satz ist in dir am lautesten?</span></span><span class="schritt-preis">Kostenlos</span></a></li><li class="schritt-karte"><span class="stufe">Für jetzt</span><a class="schritt-link" href="angebot-kompass.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#kompass"/></svg></span><span class="schritt-text"><b>Werte-Finder + Kompass</b><span>Vom alten Satz über deine Werte zum neuen Satz, in 30 Tagen.</span></span><span class="schritt-preis">24 €</span></a><span class="oder">oder <a href="angebot-radar.html">Red-Flag-Radar · 9 €</a></span></li><li class="schritt-karte"><span class="stufe">Dein nächster Schritt</span><a class="schritt-link" href="angebot-programm.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#blatt"/></svg></span><span class="schritt-text"><b>„Wieder bei dir“ – 6 Wochen</b><span>Sechs Wochen, in denen es um dich geht. Nicht um ihn.</span></span><span class="schritt-preis">149 €</span></a><span class="oder">oder <a href="angebot-kreis.html">Seelenwende Kreis · 19 €/Monat</a></span></li></ol></div><div class="phase-panel" role="tabpanel" id="panel-unsicher" aria-labelledby="tab-unsicher" hidden><p class="phase-frage">„Ich weiß gar nicht, wo ich stehe.“</p><p class="leise">Das geht vielen Frauen so. Du musst es nicht wissen, um anzufangen.</p><ol class="schritt-liste"><li class="schritt-karte gratis"><span class="stufe">Kostenlos starten</span><a class="schritt-link" href="#phasen" data-ziel="muster-check.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#auge"/></svg></span><span class="schritt-text"><b>Muster-Check</b><span>Fünf Minuten, die dir zeigen, was gerade los ist.</span></span><span class="schritt-preis">Kostenlos</span></a></li><li class="schritt-karte"><span class="stufe">Für jetzt</span><a class="schritt-link" href="angebot-mira.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#chat"/></svg></span><span class="schritt-text"><b>Mira, deine Begleiterin</b><span>Schreib einfach los. Mira erkennt, was du brauchst.</span></span><span class="schritt-preis">19 €</span></a></li><li class="schritt-karte"><span class="stufe">Dein nächster Schritt</span><a class="schritt-link" href="angebot-kreis.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#kreis"/></svg></span><span class="schritt-text"><b>Seelenwende Kreis</b><span>Für jede Phase: ein Thema pro Monat, Mira inklusive.</span></span><span class="schritt-preis">19 €/Mt.</span></a></li></ol></div>
         </div>
       </div>
     </div>
@@ -139,13 +131,13 @@
           <div class="vorschau"><span class="badge leise">30 Tage</span><svg class="ic"><use href="assets/icons.svg#kompass"/></svg></div>
           <div class="koerper">
             <span class="frage">„Wie werde ich die alten Sätze los?“</span>
-            <h3>Neuer-Satz-Kompass</h3>
+            <h3>Werte-Finder + Kompass</h3>
             <ul>
-              <li><svg class="ic"><use href="assets/icons.svg#haken"/></svg>5 Minuten pro Tag</li>
-              <li><svg class="ic"><use href="assets/icons.svg#haken"/></svg>Baut auf deinem Test und deinen Werten auf</li>
-              <li><svg class="ic"><use href="assets/icons.svg#haken"/></svg>Kein Abo</li>
+              <li><svg class="ic"><use href="assets/icons.svg#haken"/></svg>Deine fünf Kernwerte finden</li>
+              <li><svg class="ic"><use href="assets/icons.svg#haken"/></svg>30 Tage, 5 Minuten pro Tag</li>
+              <li><svg class="ic"><use href="assets/icons.svg#haken"/></svg>Werte-Finder einzeln 9 €</li>
             </ul>
-            <div class="fuss-zeile"><span class="preis">19 € <small>einmalig</small></span><a class="knopf" href="angebot-kompass.html">Ansehen</a></div>
+            <div class="fuss-zeile"><span class="preis">24 € <small>einmalig</small></span><a class="knopf" href="angebot-kompass.html">Ansehen</a></div>
           </div>
         </article>
         <article class="angebot">
@@ -172,6 +164,45 @@
               <li><svg class="ic"><use href="assets/icons.svg#haken"/></svg>Jederzeit kündbar</li>
             </ul>
             <div class="fuss-zeile"><span class="preis">19 € <small>pro Monat</small></span><a class="knopf" href="angebot-kreis.html">Ansehen</a></div>
+          </div>
+        </article>
+        <article class="angebot">
+          <div class="vorschau"><span class="badge leise">Danach</span><svg class="ic"><use href="assets/icons.svg#schild"/></svg></div>
+          <div class="koerper">
+            <span class="frage">„Passiert mir das wieder?“</span>
+            <h3>Red-Flag-Radar</h3>
+            <ul>
+              <li><svg class="ic"><use href="assets/icons.svg#haken"/></svg>18 Situationen, 4 Minuten</li>
+              <li><svg class="ic"><use href="assets/icons.svg#haken"/></svg>Warnzeichen und Zeichen von Sicherheit</li>
+              <li><svg class="ic"><use href="assets/icons.svg#haken"/></svg>Für jeden neuen Menschen</li>
+            </ul>
+            <div class="fuss-zeile"><span class="preis">9 € <small>einmalig</small></span><a class="knopf" href="angebot-radar.html">Ansehen</a></div>
+          </div>
+        </article>
+        <article class="angebot">
+          <div class="vorschau"><span class="badge leise">Selbstwert</span><svg class="ic"><use href="assets/icons.svg#herz"/></svg></div>
+          <div class="koerper">
+            <span class="frage">„Warum bin ich so hart zu mir?“</span>
+            <h3>Sei sanft mit dir</h3>
+            <ul>
+              <li><svg class="ic"><use href="assets/icons.svg#haken"/></svg>Für deine eigenen harten Sätze</li>
+              <li><svg class="ic"><use href="assets/icons.svg#haken"/></svg>Drei Stufen, du wählst</li>
+              <li><svg class="ic"><use href="assets/icons.svg#haken"/></svg>Im Bundle als Bonus</li>
+            </ul>
+            <div class="fuss-zeile"><span class="preis">7 € <small>einmalig</small></span><a class="knopf" href="angebot-sanft.html">Ansehen</a></div>
+          </div>
+        </article>
+        <article class="angebot">
+          <div class="vorschau"><span class="badge leise">PDF</span><svg class="ic"><use href="assets/icons.svg#stift"/></svg></div>
+          <div class="koerper">
+            <span class="frage">„Wo fange ich an?“</span>
+            <h3>Self Care Journal</h3>
+            <ul>
+              <li><svg class="ic"><use href="assets/icons.svg#haken"/></svg>Dein sanfter Anfang</li>
+              <li><svg class="ic"><use href="assets/icons.svg#haken"/></svg>Jeden Tag ein Stück zu dir zurück</li>
+              <li><svg class="ic"><use href="assets/icons.svg#haken"/></svg>Sofort zum Herunterladen</li>
+            </ul>
+            <div class="fuss-zeile"><span class="preis">9 € <small>einmalig</small></span><a class="knopf" href="https://seelenwende.mytentary.com/p/niaKY4" target="_blank" rel="noopener">Ansehen</a></div>
           </div>
         </article>
         <article class="angebot">
@@ -219,15 +250,11 @@
     <div class="innen">
       <span class="ueber">Kostenlos</span>
       <h2>Erst einmal verstehen, was los ist.</h2>
-      <p class="einleitung">Diese Werkzeuge kosten nichts. Deine Antworten bleiben auf deinem Gerät. Beim ersten Öffnen trägst du einmal deine Mail-Adresse ein, der Ausstiegs-Planer öffnet sich immer sofort.</p>
-      <div class="raster">
+      <p class="einleitung">Vier Einstiege kosten nichts, weil niemand für Klarheit und Sicherheit bezahlen soll. Deine Antworten bleiben auf deinem Gerät. Beim ersten Öffnen trägst du einmal deine Mail-Adresse ein, der Ausstiegs-Planer öffnet sich immer sofort.</p>
+      <div class="raster vier">
         <a class="karte" href="#werkzeuge" data-ziel="muster-check.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#auge"/></svg></span><span class="zeile">Noch drin · 5 Min.</span><h3>Ist das noch normal?</h3><p>20 Alltagssituationen zeigen, ob sich ein Muster wiederholt.</p><span class="weiter">Muster-Check öffnen</span></a>
         <a class="karte" href="#werkzeuge" data-ziel="glaubenssaetze.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#chat"/></svg></span><span class="zeile">Alle Phasen · 5 Min.</span><h3>Welche Sätze halten dich fest?</h3><p>Der Glaubenssätze-Test zeigt, warum du bleibst oder dich klein fühlst.</p><span class="weiter">Test starten</span></a>
         <a class="karte" href="planer.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#tuer"/></svg></span><span class="zeile">Im Gehen · ohne Anmeldung</span><h3>Ausstiegs-Planer</h3><p>Dein Sicherheitsplan mit Beratungsstellen in CH, DE und AT.</p><span class="weiter">Planer öffnen</span></a>
-        <a class="karte" href="#werkzeuge" data-ziel="werte-finder.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#kompass"/></svg></span><span class="zeile">Danach · 10 Min.</span><h3>Was ist dir wirklich wichtig?</h3><p>In vier Schritten zu deinen fünf Kernwerten.</p><span class="weiter">Werte-Finder öffnen</span></a>
-        <a class="karte" href="#werkzeuge" data-ziel="affirmationen.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#herz"/></svg></span><span class="zeile">Alle Phasen · 5 Min.</span><h3>Sei sanft mit dir</h3><p>Freundliche Sätze für die harte Stimme in dir.</p><span class="weiter">Sätze finden</span></a>
-        <a class="karte" href="#werkzeuge" data-ziel="red-flag-radar.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#schild"/></svg></span><span class="zeile">Danach · 4 Min.</span><h3>Passiert mir das wieder?</h3><p>Der Red-Flag-Radar für neue Bekanntschaften.</p><span class="weiter">Radar öffnen</span></a>
-        <a class="karte" href="#werkzeuge" data-ziel="https://seelenwende.mytentary.com/p/niaKY4"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#stift"/></svg></span><span class="zeile">PDF</span><h3>Self Care Journal</h3><p>Dein sanfter Anfang, jeden Tag ein Stück zurück zu dir.</p><span class="weiter">Journal holen</span></a>
         <a class="karte" href="#werkzeuge" data-ziel="https://seelenwende.mytentary.com/p/WPedba"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#blatt"/></svg></span><span class="zeile">PDF</span><h3>Der Weg nach draußen</h3><p>Der Mini-Guide für den Moment, in dem du gehen willst.</p><span class="weiter">Guide holen</span></a>
       </div>
     </div>
@@ -276,6 +303,25 @@
 </main>
 
 <div id="fuss"></div>
+<script>
+/* Phasen-Wegweiser: Reiter umschalten, #drin / #gehen / #draussen / #unsicher öffnet direkt die Phase */
+(function(){
+  var tabs = document.querySelectorAll('.phasen-tabs [role="tab"]');
+  function waehle(key, scroll){
+    var gefunden = false;
+    tabs.forEach(function(t){
+      var an = t.id === "tab-" + key; if (an) gefunden = true;
+      t.setAttribute("aria-selected", an ? "true" : "false");
+      document.getElementById(t.getAttribute("aria-controls")).hidden = !an;
+    });
+    if (gefunden && scroll) document.getElementById("phasen").scrollIntoView();
+    return gefunden;
+  }
+  tabs.forEach(function(t){ t.addEventListener("click", function(){ waehle(t.id.slice(4), false); }); });
+  var h = location.hash.slice(1);
+  if (h) waehle(h, true);
+})();
+</script>
 <script src="assets/seite.js"></script>
 </body>
 </html>

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Red-Flag-Radar · Seelenwende</title>
-<meta name="description" content="Passiert mir das wieder? Ein sanfter Check für neue Bekanntschaften – 18 Situationen, vier Minuten, kostenlos und anonym.">
+<meta name="description" content="Passiert mir das wieder? Ein sanfter Check für neue Bekanntschaften – 18 Situationen, vier Minuten, anonym, deine Antworten bleiben auf deinem Gerät.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400&display=swap" rel="stylesheet">
@@ -267,7 +267,7 @@
 
       <button class="btn" id="start" type="button">
         Check beginnen
-        <span class="meta">Kostenlos · anonym · deine Antworten bleiben auf deinem Gerät</span>
+        <span class="meta">Anonym · deine Antworten bleiben auf deinem Gerät</span>
       </button>
     </section>
 
@@ -342,7 +342,7 @@
       </a>
       <a class="btn btn--soft no-print" href="werte-finder.html" style="margin-top:13px">
         Was ist dir wirklich wichtig?
-        <span class="meta">Kostenloser Werte-Finder · wer seine Werte kennt, erkennt schneller, was nicht passt</span>
+        <span class="meta">Werte-Finder · wer seine Werte kennt, erkennt schneller, was nicht passt</span>
       </a>
       <button class="btn btn--soft no-print" id="share" type="button" style="margin-top:13px">
         An eine Freundin schicken
@@ -623,7 +623,7 @@
     var url = location.href.split("#")[0].split("?")[0];
     var data = {
       title:"Red-Flag-Radar · Seelenwende",
-      text:"Passiert mir das wieder? Ein sanfter Check für neue Bekanntschaften – kostenlos und anonym.",
+      text:"Passiert mir das wieder? Ein sanfter Check für neue Bekanntschaften.",
       url:url
     };
     var btn = $("share");
@@ -660,5 +660,6 @@
   });
 })();
 </script>
+<script src="assets/werkzeug-zugang.js" data-werkzeug="radar" data-name="Red-Flag-Radar" data-preis="9 €" data-angebot="angebot-radar.html"></script>
 </body>
 </html>

@@ -117,9 +117,21 @@ Satz und Werte wählt die Frau frei. Auf der letzten Einrichtungsseite gibt sie 
 
 Neue Käuferin: Code an `KOMPASS_CODES` anhängen, danach neu deployen. Ohne die Variable zeigt der Kompass „noch nicht eingerichtet“. Den Kauf-Link („Noch keinen Code?“) in `neuer-satz-kompass.html` auf das Tentary-Produkt setzen, sobald es angelegt ist.
 
+## Bezahlte Browser-Werkzeuge (Red-Flag-Radar, Werte-Finder, Sei sanft mit dir)
+
+Die drei Seiten laufen weiter komplett im Browser. Beim Öffnen fragt `assets/werkzeug-zugang.js` nach einem Zugangscode und prüft ihn über `werkzeug-zugang` (`/api/werkzeug/zugang`). Gemerkt wird nur „freigeschaltet“ (mit Häkchen dauerhaft, sonst bis der Tab zu ist), der Code selbst nicht. In Netlify-Vorschauen gibt es „Vorschau: ohne Code ansehen“. Weil der Inhalt in der Seite steht, ist das eine einfache Sperre, kein Kopierschutz – für Preise von 7–9 € reicht das.
+
+| Variable | Inhalt |
+|---|---|
+| `RADAR_CODES` | Codes für den Red-Flag-Radar (9 €), kommagetrennt |
+| `WERTE_CODES` | Codes nur für den Werte-Finder (9 €). Kompass-Codes (`KOMPASS_CODES`) öffnen ihn ebenfalls (Paket 24 €). |
+| `SANFT_CODES` | Codes für „Sei sanft mit dir“ (7 €) – auch den Code für Bundle-Käuferinnen hier eintragen |
+
+Kreis- und Programm-Codes öffnen alle drei. Salespages: `angebot-radar.html`, `angebot-sanft.html`, Werte-Finder auf `angebot-kompass.html`.
+
 ## Bio-Link: Werkzeuge erst nach Mail-Adresse
 
-Auf `index.html` öffnen Self Care Journal, Muster-Check, Glaubenssätze-Test, Werte-Finder, „Sei sanft mit dir“ und der Mini-Guide nicht direkt. Zuerst kommt ein Fenster, in das die Frau ihre Mail-Adresse einträgt und den Mails zustimmt. `werkzeuge-anmeldung` (`/api/werkzeuge/anmelden`) trägt sie in MailerLite ein, danach öffnet sich das Werkzeug. Der Browser merkt sich die Anmeldung, beim nächsten Besuch geht es direkt weiter. Journal und Mini-Guide öffnen danach ihre Tentary-Seite im selben Fenster. Die Werkzeug-Seiten selbst bleiben über ihren direkten Link erreichbar (z. B. aus dem Programm oder den Ergebnis-Mails).
+Auf `index.html` und `start.html` öffnen die kostenlosen Einstiege (Muster-Check, Glaubenssätze-Test, Mini-Guide) nicht direkt. Zuerst kommt ein Fenster, in das die Frau ihre Mail-Adresse einträgt und den Mails zustimmt. `werkzeuge-anmeldung` (`/api/werkzeuge/anmelden`) trägt sie in MailerLite ein, danach öffnet sich das Werkzeug. Der Browser merkt sich die Anmeldung, beim nächsten Besuch geht es direkt weiter. Der Mini-Guide öffnet danach seine Tentary-Seite im selben Fenster. Das Self Care Journal ist jetzt ein Produkt für 9 € (Preis in Tentary einstellen). Die Werkzeug-Seiten selbst bleiben über ihren direkten Link erreichbar (z. B. aus dem Programm oder den Ergebnis-Mails).
 
 | Variable | Inhalt |
 |---|---|
