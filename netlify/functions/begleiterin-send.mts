@@ -14,7 +14,7 @@ export default async (req: Request, _context: Context) => {
   const turns = parseTurns(body.turns);
   if (!turns) return json({ error: "Das Gespräch ist zu lang geworden. Tippe oben auf „Neu beginnen“." }, 400);
 
-  const limit = messageLimit();
+  const limit = messageLimit(body.code);
   const used = await getUsage(body.code);
   if (used >= limit) return json({ error: "Die Nachrichten dieses Zugangs sind aufgebraucht.", reason: "zugang" }, 403);
 

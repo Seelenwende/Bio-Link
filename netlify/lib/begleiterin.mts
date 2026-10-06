@@ -1,9 +1,11 @@
 import Anthropic from "@anthropic-ai/sdk";
-import { getUsage as getUsageIn, hasCodes, isValidCodeIn, limitFromEnv, setUsage } from "./zugang.mts";
+import { getStore } from "@netlify/blobs";
+import { hashCode, isCodeInList } from "./codes.mts";
 
 export const BEGLEITERIN_STORE = "begleiterin";
 const DEFAULT_MODEL = "claude-opus-5-5";
 const DEFAULT_LIMIT = 300;
+const DEFAULT_PROGRAMM_LIMIT = 1000;
 
 export const MAX_TURNS = 30;
 const MAX_MESSAGE_CHARS = 4000;
@@ -34,6 +36,7 @@ Wenn nicht klar ist, was sie sich wünscht, frag einmal sanft, z. B.: "Möchtest
 - Sie ist verwirrt und will verstehen, was da eigentlich los ist: Führe langsam durch ihre Geschichte (Anfang, erste Irritationen, Veränderungen, wie es ihr heute geht, auch körperlich, was sie sich wünscht). Pro Antwort kurz aufgreifen, dann eine nächste Frage. Ab und zu zusammenfassen und fragen, ob es stimmt. Die Klarheit soll aus ihr kommen.
 - Sie überlegt zu gehen und braucht Mut oder Struktur: Würdige, was sie schon weiß. Kein Drängen. Konkrete kleine nächste Schritte nur, wenn sie danach fragt (Vertrauensperson, Beratungsstelle, Unterlagen, eigenes Geld), und der Hinweis auf einen Sicherheitsplan.
 - Sie ist draußen und fragt sich, wer sie ohne das ist, oder ein alter Satz ist laut ("Ich bin nicht genug", "Ich bin schuld"): Begleite Schritt für Schritt: Satz festhalten, woher er kommt und wovor er sie früher geschützt hat, wo die Beziehung ihn verstärkt hat, Gegenbeweise aus ihrem Leben, gemeinsam einen glaubwürdigen neuen Satz finden (nicht übertrieben positiv), eine kleine Übung für die Woche. Wenn es um ihre Werte geht ("Was ist mir eigentlich wichtig?"), hilf ihr, sie in eigenen Worten zu benennen.
+- Sie schickt einen Eintrag aus ihren Notizen (beginnt mit "Ich habe in meinen Notizen festgehalten"; Felder wie "Was gesagt wurde", "Was ich darin erkenne", "Was ich sicher weiß"): Würdige zuerst, dass sie es festgehalten hat – das ist Selbstschutz, kein Misstrauen. Ordne dann ein wie oben bei einer geschilderten Situation: Was ist passiert, welches Muster könnte passen und wie wirkt es. Greif ihre eigenen Wörter auf, besonders "Was ich sicher weiß", und bestärke ihre Wahrnehmung, ohne zu übertreiben. Hat sie selbst ein Muster markiert, das nicht recht passt, sag das behutsam. Kein Urteil über die ganze Beziehung aus einem Eintrag. Eine Frage zum Schluss, z. B. ob sie das schon öfter erlebt hat oder was sie jetzt braucht.
 - Sie will einfach nur erzählen: Dann hörst du zu, spiegelst und lässt Raum. Nicht alles muss gelöst werden.
 
 Sicherheit – hat immer Vorrang:
@@ -49,27 +52,46 @@ const REFUSAL_REPLY = `Darauf kann ich so leider nicht antworten. Wenn du gerade
 
 /* ---------- Zugangscodes ---------- */
 
-const CODE_ENVS = ["BEGLEITERIN_CODES"];
+/* Mira lässt sich mit einem eigenen Mira-Code öffnen oder mit dem Code des 6-Wochen-Programms
+   (darin ist ein größeres Mira-Kontingent enthalten). Jede Art hat ihr eigenes Nachrichten-Limit. */
+type CodeArt = "begleiterin" | "programm";
 
-/** Codes stehen kommagetrennt in BEGLEITERIN_CODES, z. B. "Wendepunkt, WENDE-AB12-CD34" (Groß-/Kleinschreibung egal). */
+function codeArt(given: unknown): CodeArt | null {
+  if (isCodeInList("BEGLEITERIN_CODES", given)) return "begleiterin";
+  if (isCodeInList("PROGRAMM_CODES", given)) return "programm";
+  return null;
+}
+
 export function isValidCode(given: unknown): given is string {
-  return isValidCodeIn(CODE_ENVS, given);
+  return codeArt(given) !== null;
 }
 
 export function isBegleiterinConfigured(): boolean {
-  return Boolean(Netlify.env.get("ANTHROPIC_API_KEY")) && hasCodes(CODE_ENVS);
+  return Boolean(Netlify.env.get("ANTHROPIC_API_KEY") && (Netlify.env.get("BEGLEITERIN_CODES") || Netlify.env.get("PROGRAMM_CODES")));
 }
 
-export function messageLimit(): number {
-  return limitFromEnv("BEGLEITERIN_LIMIT", DEFAULT_LIMIT);
+function limitFromEnv(name: string, fallback: number): number {
+  const n = Number(Netlify.env.get(name));
+  return Number.isFinite(n) && n > 0 ? Math.floor(n) : fallback;
 }
 
-export function getUsage(code: string): Promise<number> {
-  return getUsageIn(BEGLEITERIN_STORE, code);
+export function messageLimit(code: string): number {
+  return codeArt(code) === "programm"
+    ? limitFromEnv("PROGRAMM_MIRA_LIMIT", DEFAULT_PROGRAMM_LIMIT)
+    : limitFromEnv("BEGLEITERIN_LIMIT", DEFAULT_LIMIT);
 }
 
-export function addUsage(code: string, used: number): Promise<void> {
-  return setUsage(BEGLEITERIN_STORE, code, used);
+function usageKey(code: string): string {
+  return "usage/" + hashCode(code).toString("hex");
+}
+
+export async function getUsage(code: string): Promise<number> {
+  const data = (await getStore(BEGLEITERIN_STORE).get(usageKey(code), { type: "json" })) as { used?: number } | null;
+  return data?.used ?? 0;
+}
+
+export async function addUsage(code: string, used: number): Promise<void> {
+  await getStore(BEGLEITERIN_STORE).setJSON(usageKey(code), { used, updatedAt: Date.now() });
 }
 
 /* ---------- Gesprächsverlauf prüfen ---------- */

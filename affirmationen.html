@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seelenwende · Sei sanft mit dir</title>
+<meta name="description" content="Wenn die Stimme in dir gerade hart ist: Finde in fünf Minuten freundliche Sätze, die zu dir passen und die du wirklich glauben kannst.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  /* Layout: eine ruhige Spalte wie beim Werte-Finder; vier kurze Schritte, danach die eigenen Sätze und ein Lese-Moment im Vollbild */
+  :root{
+    --papier:#FAF6F4;
+    --sand:#F3ECE9;
+    --rose:#B5808F;
+    --beere:#8C5A69;
+    --pflaume:#5C3A46;
+    --gedaempft:#8E7079;
+    --linie:#E4D8D8;
+    --mikro:#C3AEB2;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    background:var(--papier);
+    color:var(--pflaume);
+    font-family:"Jost",sans-serif;
+    font-weight:300;
+    line-height:1.7;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    padding:44px 18px 60px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .page{width:100%;max-width:560px;}
+
+  /* --- Kopf --- */
+  header{text-align:center;}
+  .butterfly{width:52px;height:52px;margin:0 auto 14px;display:block;}
+  .butterfly path,.butterfly ellipse{
+    fill:none;stroke:var(--rose);stroke-width:1.5;
+    stroke-linecap:round;stroke-linejoin:round;
+  }
+  .butterfly .dot,.butterfly .body{fill:var(--rose);stroke:none;}
+  .handle{
+    font-family:"Playfair Display",serif;
+    font-size:11px;letter-spacing:.36em;text-transform:uppercase;color:var(--rose);
+  }
+  h1{
+    font-family:"Playfair Display",serif;
+    font-weight:500;font-size:32px;line-height:1.2;margin-top:10px;
+  }
+  h2{
+    font-family:"Playfair Display",serif;
+    font-weight:500;font-size:24px;line-height:1.3;text-align:center;
+  }
+  .intro{
+    font-size:15px;color:var(--gedaempft);
+    max-width:42ch;margin:14px auto 0;text-align:center;
+  }
+  .question{font-size:15px;color:var(--gedaempft);text-align:center;max-width:44ch;margin:8px auto 0;}
+
+  /* --- Fortschritt --- */
+  .progress{display:flex;gap:6px;margin:30px 0 26px;}
+  .progress span{flex:1;height:3px;border-radius:3px;background:var(--linie);transition:background .3s ease;}
+  .progress span.on{background:var(--rose);}
+  .progress[hidden]{display:none;}
+
+  .step{display:none;}
+  .step.show{display:block;animation:rise .5s ease;}
+  .step__label{
+    font-family:"Playfair Display",serif;font-size:10.5px;letter-spacing:.4em;text-transform:uppercase;
+    color:var(--rose);text-align:center;margin-bottom:8px;
+  }
+
+  /* --- Einstieg --- */
+  .how{background:#fff;border:1px solid var(--linie);border-radius:20px;padding:20px 22px;margin-top:28px;}
+  .how ol{padding-left:20px;font-size:14.5px;line-height:1.6;}
+  .how li{margin-bottom:6px;}
+  .how li b{font-weight:400;}
+  .today{
+    text-align:center;background:var(--pflaume);color:var(--papier);
+    border-radius:20px;padding:24px 20px;margin-top:28px;
+  }
+  .today__eyebrow{font-family:"Playfair Display",serif;font-size:10.5px;letter-spacing:.4em;text-transform:uppercase;color:#D9C4CB;}
+  .today__text{font-family:"Playfair Display",serif;font-style:italic;font-size:22px;line-height:1.4;margin-top:10px;}
+
+  /* --- Auswahl --- */
+  .counter{
+    position:sticky;top:0;z-index:2;
+    background:var(--papier);text-align:center;font-size:14px;color:var(--gedaempft);
+    padding:10px 0;margin-top:6px;
+  }
+  .counter b{font-weight:400;color:var(--pflaume);}
+  .group{margin-top:18px;}
+  .group h3{
+    font-family:"Playfair Display",serif;font-weight:500;font-size:15px;color:var(--beere);
+    margin-bottom:8px;
+  }
+  .chips{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{
+    font:inherit;font-size:14.5px;color:var(--pflaume);
+    background:#fff;border:1px solid var(--linie);border-radius:20px;
+    padding:7px 14px;cursor:pointer;text-align:left;
+    transition:background-color .2s ease,color .2s ease,border-color .2s ease;
+  }
+  .chip small{display:block;font-size:11.5px;color:var(--gedaempft);line-height:1.35;}
+  .chip[aria-pressed="true"]{background:var(--beere);border-color:var(--beere);color:var(--papier);}
+  .chip[aria-pressed="true"] small{color:#EBD9DD;}
+  .chip:disabled{opacity:.45;cursor:not-allowed;}
+  .chip:focus-visible,.btn:focus-visible,.lvl:focus-visible{outline:2px solid var(--rose);outline-offset:3px;}
+  .chips--big .chip{padding:10px 16px;}
+
+  .field{background:#fff;border:1px solid var(--linie);border-radius:16px;padding:14px 16px;margin-top:18px;}
+  .field label{display:block;font-family:"Playfair Display",serif;font-size:17px;font-weight:500;line-height:1.35;}
+  .field label span{font-family:"Jost",sans-serif;font-size:13px;font-weight:300;color:var(--gedaempft);}
+  .field textarea,.field input{
+    width:100%;margin-top:8px;font:inherit;font-size:16px;line-height:1.5;color:var(--pflaume);
+    background:var(--papier);border:1px solid var(--linie);border-radius:12px;padding:10px 12px;
+  }
+  .field textarea{resize:vertical;min-height:64px;}
+  .field textarea:focus,.field input:focus{outline:2px solid var(--rose);outline-offset:1px;}
+  .field .small{font-size:13px;color:var(--gedaempft);margin-top:6px;line-height:1.5;}
+
+  /* --- Freundinnen-Frage --- */
+  .friend{background:var(--sand);border-radius:16px;padding:18px;margin-top:20px;text-align:center;}
+  .friend__quote{font-family:"Playfair Display",serif;font-style:italic;font-size:20px;line-height:1.4;margin-top:6px;}
+  .friend__lead{font-size:14px;color:var(--gedaempft);}
+  .friend + .field{margin-top:10px;}
+  .field__quote{font-family:"Playfair Display",serif;font-style:italic;font-size:18px;line-height:1.4;}
+  .field__quote small{display:block;font-family:"Jost",sans-serif;font-style:normal;font-size:12px;letter-spacing:.06em;color:var(--gedaempft);margin-bottom:2px;}
+  .card__friend{background:var(--sand);border-radius:10px;padding:9px 12px;margin-top:12px;font-size:14px;line-height:1.55;}
+  .card__friend b{font-weight:400;color:var(--beere);}
+  .ideas{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+  .idea{
+    font:inherit;font-size:13px;line-height:1.4;color:var(--gedaempft);text-align:left;
+    background:var(--sand);border:1px solid transparent;border-radius:14px;padding:5px 11px;cursor:pointer;
+  }
+  .idea[aria-pressed="true"]{border-color:var(--rose);color:var(--pflaume);}
+  .idea:focus-visible{outline:2px solid var(--rose);outline-offset:2px;}
+
+  /* --- Krise --- */
+  .crisis{
+    background:#fff;border:1.5px solid var(--beere);border-radius:16px;padding:16px 18px;margin-top:16px;
+    font-size:14.5px;line-height:1.6;
+  }
+  .crisis h3{font-family:"Playfair Display",serif;font-weight:500;font-size:18px;margin-bottom:6px;}
+  .crisis ul{list-style:none;margin-top:8px;}
+  .crisis li{padding:3px 0;border-top:1px dashed var(--linie);}
+  .crisis li:first-child{border-top:none;}
+  .crisis b{font-weight:400;color:var(--beere);}
+  .crisis[hidden]{display:none;}
+
+  /* --- Buttons --- */
+  .actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:26px;}
+  .btn{
+    font-family:"Playfair Display",serif;font-size:16px;font-weight:500;
+    border:none;border-radius:16px;padding:14px 22px;cursor:pointer;
+    background:var(--beere);color:var(--papier);text-decoration:none;display:inline-block;
+    transition:transform .2s ease,box-shadow .2s ease,opacity .2s ease;
+  }
+  .btn--soft{background:var(--papier);color:var(--pflaume);border:1px solid var(--linie);}
+  .btn--link{background:none;color:var(--gedaempft);font-family:"Jost",sans-serif;font-size:14px;padding:8px 10px;text-decoration:underline;text-underline-offset:3px;}
+  .btn:disabled{opacity:.45;cursor:not-allowed;}
+  @media (hover:hover){.btn:not(:disabled):not(.btn--link):hover{transform:translateY(-2px);box-shadow:0 10px 26px -14px rgba(92,58,70,.5);}}
+
+  /* --- Ergebnis --- */
+  .hero{
+    text-align:center;background:var(--pflaume);color:var(--papier);
+    border-radius:20px;padding:26px 20px;
+  }
+  .hero__eyebrow{font-family:"Playfair Display",serif;font-size:10.5px;letter-spacing:.4em;text-transform:uppercase;color:#D9C4CB;}
+  .hero__text{font-family:"Playfair Display",serif;font-style:italic;font-size:23px;line-height:1.4;margin-top:10px;}
+  .hero__sub{font-size:14px;color:#E3CFD5;margin-top:12px;max-width:40ch;margin-left:auto;margin-right:auto;}
+
+  .eyebrow{display:flex;align-items:center;gap:14px;margin:30px 0 14px;}
+  .eyebrow::before,.eyebrow::after{content:"";flex:1;height:1px;background:var(--linie);}
+  .eyebrow span{
+    font-family:"Playfair Display",serif;
+    font-size:10.5px;letter-spacing:.4em;text-transform:uppercase;color:var(--rose);white-space:nowrap;
+  }
+  .lead{font-size:14.5px;color:var(--gedaempft);text-align:center;max-width:44ch;margin:-4px auto 14px;}
+
+  .card{background:#fff;border:1px solid var(--linie);border-radius:16px;padding:16px 18px;margin-bottom:12px;}
+  .card__harsh{font-size:13.5px;color:var(--gedaempft);}
+  .card__harsh s{text-decoration-color:var(--rose);}
+  .card__context{font-size:13.5px;color:var(--gedaempft);line-height:1.55;margin-top:6px;}
+  .card__kind{
+    font-family:"Playfair Display",serif;font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--rose);
+    margin-top:14px;
+  }
+  .card__text{font-family:"Playfair Display",serif;font-size:20px;font-weight:500;line-height:1.4;margin-top:4px;}
+  .card__text.fade{animation:rise .4s ease;}
+  .levels{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;}
+  .levels .dots{grid-column:1 / -1;}
+  .lvl{
+    font:inherit;font-size:13.5px;color:var(--pflaume);background:var(--sand);border:1px solid transparent;
+    border-radius:14px;padding:6px 12px;cursor:pointer;
+  }
+  .lvl:disabled{opacity:.4;cursor:not-allowed;}
+  .dots{display:flex;gap:5px;align-items:center;}
+  .dots i{width:7px;height:7px;border-radius:50%;background:var(--linie);display:block;}
+  .dots i.on{background:var(--beere);}
+  .dots span{font-size:12px;color:var(--gedaempft);margin-left:6px;}
+
+  .card--soft{background:var(--sand);border-color:transparent;}
+  .card__practice{font-size:14.5px;line-height:1.6;margin-top:4px;}
+
+  .insight{background:var(--sand);border-radius:16px;padding:16px 18px;font-size:14.5px;line-height:1.6;}
+  .insight h3{font-family:"Playfair Display",serif;font-weight:500;font-size:17px;margin-bottom:6px;}
+  .insight p + p{margin-top:8px;}
+
+  .mine{background:#fff;border:1px solid var(--linie);border-radius:20px;padding:6px 20px;}
+  .mine li{list-style:none;font-family:"Playfair Display",serif;font-size:17px;line-height:1.45;padding:12px 0;border-top:1px solid var(--linie);}
+  .mine li:first-child{border-top:none;}
+
+  .next{background:#fff;border:1px solid var(--linie);border-radius:20px;padding:20px;text-align:center;margin-top:26px;}
+  .next p{font-size:14.5px;color:var(--gedaempft);max-width:40ch;margin:0 auto 14px;}
+  .next .btn + .btn{margin-top:10px;}
+  .next .stack{display:flex;flex-direction:column;align-items:center;gap:10px;}
+
+  .note{font-size:12px;color:var(--gedaempft);text-align:center;margin-top:30px;line-height:1.65;}
+  .note b{font-weight:400;}
+  .footer{
+    font-family:"Playfair Display",serif;font-size:9px;letter-spacing:.42em;text-transform:uppercase;
+    color:var(--mikro);text-align:center;margin-top:24px;
+  }
+  .hint{font-size:14px;color:var(--beere);text-align:center;margin-top:10px;min-height:1.4em;}
+  .hint.pulse{animation:pulse .5s ease;}
+  @keyframes pulse{0%,100%{transform:none;}25%{transform:translateX(-4px);}75%{transform:translateX(4px);}}
+  .sr-only{position:absolute;left:-9999px;}
+
+  /* --- Lese-Moment --- */
+  .moment{
+    position:fixed;inset:0;z-index:10;background:var(--pflaume);color:var(--papier);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:32px 22px;text-align:center;
+  }
+  .moment[hidden]{display:none;}
+  .moment__ring{
+    width:120px;height:120px;border-radius:50%;border:1.5px solid #D9C4CB;
+    animation:breathe 10s ease-in-out infinite;margin-bottom:28px;
+  }
+  .moment__breath{font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:#D9C4CB;min-height:1.5em;}
+  .moment__text{font-family:"Playfair Display",serif;font-style:italic;font-size:26px;line-height:1.45;max-width:24ch;margin-top:18px;min-height:4.4em;}
+  .moment__text.fade{animation:rise .6s ease;}
+  .moment__count{font-size:12px;color:#D9C4CB;margin-top:16px;}
+  .moment .actions{margin-top:22px;}
+  .moment .btn{background:var(--papier);color:var(--pflaume);}
+  .moment .btn--ghost{background:none;border:1px solid #D9C4CB;color:var(--papier);}
+  @keyframes breathe{0%,100%{transform:scale(.72);opacity:.6;}40%{transform:scale(1);opacity:1;}50%{transform:scale(1);opacity:1;}}
+
+  @keyframes rise{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+  @media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important;}}
+
+  @media print{
+    body{padding:0;}
+    .progress,.actions,.next,.btn,.levels,.moment{display:none !important;}
+    .card,.insight,.hero,.mine{break-inside:avoid;}
+    .hero{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  }
+</style>
+</head>
+<body>
+<main class="page">
+
+  <header>
+    <svg class="butterfly" viewBox="0 0 100 100" aria-hidden="true">
+      <ellipse cx="38" cy="40" rx="13" ry="18" transform="rotate(-35 38 40)"/>
+      <ellipse cx="62" cy="40" rx="13" ry="18" transform="rotate(35 62 40)"/>
+      <ellipse cx="41" cy="61" rx="9" ry="13" transform="rotate(-20 41 61)"/>
+      <ellipse cx="59" cy="61" rx="9" ry="13" transform="rotate(20 59 61)"/>
+      <ellipse class="body" cx="50" cy="50" rx="1.5" ry="16"/>
+      <path d="M50 36 C47 30 45 27 43 24"/>
+      <path d="M50 36 C53 30 55 27 57 24"/>
+      <circle class="dot" cx="43" cy="23.5" r="1.5"/>
+      <circle class="dot" cx="57" cy="23.5" r="1.5"/>
+    </svg>
+    <div class="handle">@_seelenwende</div>
+    <h1>Sei sanft mit dir</h1>
+    <p class="intro" id="headIntro">Wenn die Stimme in dir gerade hart ist: Finde in fünf Minuten freundliche Sätze, die zu dir passen und die du wirklich glauben kannst.</p>
+  </header>
+
+  <div class="progress" id="progress" hidden aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+
+  <!-- 0 · Einstieg -->
+  <section class="step" data-step="0">
+    <div class="today" id="todayBox" hidden>
+      <div class="today__eyebrow" id="todayEyebrow">Dein Satz für heute</div>
+      <p class="today__text" id="todayText"></p>
+    </div>
+    <div class="how">
+      <ol>
+        <li><b>Hinhören:</b> Was sagt die harte Stimme in dir gerade?</li>
+        <li><b>Spüren:</b> Wie geht es dir in diesem Moment, und wo stehst du?</li>
+        <li><b>Die Freundinnen-Frage:</b> Was würdest du einer Freundin sagen?</li>
+        <li><b>Deine Sätze:</b> Freundliche Worte, so sanft oder so stark, wie es für dich heute stimmt.</li>
+      </ol>
+    </div>
+    <p class="intro">Keine Hochglanz-Sprüche. Ein Satz hilft nur, wenn du ihn glauben kannst. Darum suchst du dir hier selbst aus, wie weit er gehen darf.</p>
+    <div class="actions">
+      <button class="btn" type="button" id="start">Los geht's</button>
+    </div>
+    <div class="actions" id="resumeBox" hidden style="margin-top:8px">
+      <button class="btn btn--soft" type="button" id="momentStart">Meine Sätze in Ruhe lesen</button>
+      <button class="btn btn--link" type="button" id="resumeBtn">Meine Sätze ansehen</button>
+    </div>
+  </section>
+
+  <!-- 1 · Die harte Stimme -->
+  <section class="step" data-step="1" aria-labelledby="s1title">
+    <div class="step__label">Schritt 1 von 4</div>
+    <h2 id="s1title">Was sagt die harte Stimme gerade?</h2>
+    <p class="question">Tippe bis zu drei Sätze an, die du dir in letzter Zeit selbst sagst. Es ist okay, wenn sie wehtun.</p>
+    <div class="counter" id="counter1" role="status"></div>
+    <div id="groups"></div>
+    <div class="field">
+      <label for="ownHarsh">In deinen eigenen Worten <span>(freiwillig)</span></label>
+      <textarea id="ownHarsh" rows="2" maxlength="200" placeholder="Zum Beispiel: Ich hätte mich wehren müssen."></textarea>
+      <p class="small">Genau so, wie es in deinem Kopf klingt. Niemand außer dir liest das.</p>
+    </div>
+    <div class="crisis" id="crisis1" hidden></div>
+    <div class="actions">
+      <button class="btn btn--soft" type="button" data-go="0">Zurück</button>
+      <button class="btn" type="button" id="next1">Weiter</button>
+    </div>
+    <p class="hint" id="hint1" role="status"></p>
+  </section>
+
+  <!-- 2 · Gefühl & Phase -->
+  <section class="step" data-step="2" aria-labelledby="s2title">
+    <div class="step__label">Schritt 2 von 4</div>
+    <h2 id="s2title">Wie geht es dir gerade?</h2>
+    <p class="question">Was ist im Moment am stärksten?</p>
+    <div class="chips chips--big" id="moods" style="margin-top:14px;justify-content:center"></div>
+
+    <h2 style="margin-top:34px;font-size:21px">Und wo stehst du gerade in deiner Beziehung?</h2>
+    <p class="question">Gemeint ist die Beziehung, die dir wehtut oder wehgetan hat. Viele wissen selbst nicht genau, wo sie stehen. Das ist völlig in Ordnung.</p>
+    <div class="chips chips--big" id="phases" style="margin-top:14px;justify-content:center"></div>
+
+    <div class="field">
+      <label for="nameInput">Wie dürfen wir dich nennen? <span>(freiwillig)</span></label>
+      <input id="nameInput" type="text" maxlength="30" autocomplete="given-name" placeholder="Dein Vorname">
+    </div>
+    <div class="actions">
+      <button class="btn btn--soft" type="button" data-go="1">Zurück</button>
+      <button class="btn" type="button" id="next2">Weiter</button>
+    </div>
+    <p class="hint" id="hint2" role="status"></p>
+  </section>
+
+  <!-- 3 · Freundinnen-Frage -->
+  <section class="step" data-step="3" aria-labelledby="s3title">
+    <div class="step__label">Schritt 3 von 4</div>
+    <h2 id="s3title">Die Freundinnen-Frage</h2>
+    <div class="friend">
+      <p class="friend__lead" id="friendLead"></p>
+    </div>
+    <div id="friendList"></div>
+    <div class="crisis" id="crisis3" hidden></div>
+    <div class="actions">
+      <button class="btn btn--soft" type="button" data-go="2">Zurück</button>
+      <button class="btn" type="button" id="next3">Meine Sätze</button>
+    </div>
+    <p class="hint" id="hint3" role="status"></p>
+  </section>
+
+  <!-- 4 · Ergebnis -->
+  <section class="step" data-step="4" aria-labelledby="s4title">
+    <h2 id="s4title" class="sr-only">Deine Sätze</h2>
+    <div class="crisis" id="crisis4" hidden></div>
+
+    <div class="hero" id="hero"></div>
+
+    <div class="eyebrow"><span>Gegen die harte Stimme</span></div>
+    <p class="lead">Wähle bei jedem Satz die Stufe, die du heute glauben kannst, nicht die, die du glauben solltest.</p>
+    <div id="cards"></div>
+
+    <div class="eyebrow"><span>Für diesen Moment</span></div>
+    <div id="moment"></div>
+
+    <div id="valuesBox"></div>
+
+    <div class="eyebrow"><span>Deine Sätze</span></div>
+    <ul class="mine" id="mineList"></ul>
+
+    <div class="actions">
+      <button class="btn" type="button" id="momentBtn">In Ruhe lesen</button>
+      <button class="btn btn--soft" type="button" id="copyBtn">Sätze kopieren</button>
+      <button class="btn btn--soft" type="button" id="printBtn">Drucken / als PDF</button>
+    </div>
+
+    <div class="eyebrow"><span>Was das heißt</span></div>
+    <div class="insight" id="insight"></div>
+
+    <div class="next" id="nextBox"></div>
+
+    <div class="actions">
+      <button class="btn btn--link" type="button" id="restart">Neu beginnen</button>
+    </div>
+  </section>
+
+  <p class="note">Deine Antworten bleiben auf deinem Gerät. Seelenwende ist Selbsthilfe und ersetzt keine Therapie.<br>
+  Wenn es gerade zu viel ist: <b>Notruf 112</b> · Seelsorge <b>CH 143</b> · <b>DE 0800 111 0 111</b> · <b>AT 142</b></p>
+  <div class="footer">Seelenwende · Sei sanft mit dir</div>
+</main>
+
+<!-- Lese-Moment im Vollbild -->
+<div class="moment" id="momentView" hidden role="dialog" aria-modal="true" aria-labelledby="momentText">
+  <div class="moment__ring" aria-hidden="true"></div>
+  <div class="moment__breath" id="momentBreath" aria-hidden="true"></div>
+  <p class="moment__text" id="momentText" aria-live="polite"></p>
+  <div class="moment__count" id="momentCount"></div>
+  <div class="actions">
+    <button class="btn btn--ghost" type="button" id="momentClose">Schließen</button>
+    <button class="btn" type="button" id="momentNext">Nächster Satz</button>
+  </div>
+</div>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const esc = v => String(v ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+  /* ---------- Die harte Stimme: je Thema zwei typische Sätze, eine Einordnung und drei Stufen ----------
+     Stufe 0 „Ganz sanft“ (Erlaubnis), 1 „Auf dem Weg“ (Werden), 2 „Klar und stark“ (Wahrheit).
+     Zu große Sprünge wirken bei niedrigem Selbstwert oft gegenteilig – darum wählt sie selbst. */
+  const THEMES = [
+    {id:"genug", area:"Wert", harsh:["Ich bin nicht genug.", "Ich bin nichts wert."],
+      context:"Dieser Satz ist meist älter als die Situation, in der er gerade laut wird. Er beschreibt nicht deinen Wert, sondern wie oft du ihn dir erkämpfen musstest.",
+      ladder:["Ich bin bereit, die Möglichkeit zuzulassen, dass ich genug bin.", "Ich lerne, meinen Wert nicht an dem zu messen, was ich heute geschafft habe.", "Ich bin genug – auch an Tagen, an denen ich wenig schaffe."],
+      friend:["Du bist so viel mehr, als du gerade siehst.", "Du musst dir deinen Platz nicht verdienen."]},
+    {id:"liebe", area:"Liebe", harsh:["Mich kann man nicht wirklich lieben.", "Ich muss mir Liebe verdienen."],
+      context:"Wenn Zuneigung an Bedingungen geknüpft war, lernt man, dass man sie sich verdienen muss. Das sagt etwas über diese Bedingungen, nicht über dich.",
+      ladder:["Vielleicht lag es nie daran, dass ich nicht liebenswert bin.", "Ich lerne, dass echte Liebe nicht an Bedingungen geknüpft ist.", "Ich bin liebenswert, einfach weil ich bin – nicht für das, was ich gebe."],
+      friend:["Du bist liebenswert, genau so, wie du bist.", "Wer dich wirklich liebt, verlangt keinen Preis dafür."]},
+    {id:"wahrnehmung", area:"Wahrnehmung", harsh:["Ich bin zu empfindlich.", "Vielleicht bilde ich mir das alles nur ein."],
+      context:"Wer oft hört, sie übertreibe, beginnt ihrer eigenen Wahrnehmung zu misstrauen. Das ist keine Schwäche, sondern eine verständliche Folge.",
+      ladder:["Ich darf meinem Gefühl erst einmal glauben, auch wenn ich noch unsicher bin.", "Ich lerne wieder, meiner eigenen Wahrnehmung zu vertrauen.", "Was ich fühle, ist echt. Meine Feinfühligkeit ist kein Fehler, sondern eine Stärke."],
+      friend:["Was du fühlst, ist echt.", "Du bist nicht zu empfindlich. Es hat dich verletzt."]},
+    {id:"schuld", area:"Schuld", harsh:["Ich bin selbst schuld.", "Wenn ich mich mehr angestrengt hätte, wäre es anders."],
+      context:"Die Schuld bei sich zu suchen, fühlt sich manchmal sicherer an als Ohnmacht. Aber für das Verhalten eines anderen Menschen bist du nicht verantwortlich.",
+      ladder:["Ich darf aufhören, mir allein die Schuld zu geben.", "Ich lerne zu unterscheiden, was meins ist und was nicht.", "Ich bin nicht verantwortlich dafür, wie andere mich behandelt haben."],
+      friend:["Das ist nicht deine Schuld.", "Du hast so viel versucht. Es lag nicht an dir."]},
+    {id:"dumm", area:"Scham", harsh:["Wie konnte ich nur so dumm sein?", "Ich hätte es viel früher merken müssen."],
+      context:"Hinterher sieht man klarer als mittendrin. Du bist geblieben, weil du gehofft, geliebt und an das Gute geglaubt hast, nicht weil du dumm bist.",
+      ladder:["Ich darf milder mit der Frau sein, die ich damals war.", "Ich lerne zu verstehen, warum ich geblieben bin, statt mich dafür zu verurteilen.", "Ich habe getan, was ich mit dem Wissen und der Kraft von damals konnte. Das genügt."],
+      friend:["Du warst nicht dumm. Du hast gehofft.", "Du konntest es damals nicht wissen."]},
+    {id:"zuviel", area:"Raum", harsh:["Ich bin zu viel.", "Ich falle allen nur zur Last."],
+      context:"Wer gehört hat, sie sei zu viel, macht sich klein, um anderen Platz zu lassen. Deine Bedürfnisse sind keine Zumutung.",
+      ladder:["Ich darf ein kleines bisschen Raum einnehmen.", "Ich lerne, dass meine Bedürfnisse genauso zählen wie die anderer.", "Ich bin nicht zu viel. Ich darf ganz da sein."],
+      friend:["Du bist mir nie zu viel.", "Ich bin froh, dass du dich meldest."]},
+    {id:"versagen", area:"Fehler", harsh:["Ich mache alles falsch.", "Ich habe versagt."],
+      context:"Die harte Stimme zählt nur die Fehler. Sie übersieht alles, was du trotzdem getragen und geschafft hast.",
+      ladder:["Ich darf Fehler machen und trotzdem in Ordnung sein.", "Ich lerne, mich so anzusehen wie jemanden, den ich mag.", "Ein Fehler ist etwas, das ich tue – nicht etwas, das ich bin."],
+      friend:["Du machst so vieles richtig, auch wenn du es gerade nicht siehst.", "Ein Fehler macht dich nicht weniger wert."]},
+    {id:"kraft", area:"Kraft", harsh:["Ich schaffe das nicht.", "Ich bin zu schwach."],
+      context:"Erschöpfung fühlt sich an wie Schwäche. Dabei zeigt sie oft, wie lange du schon stark sein musstest.",
+      ladder:["Ich muss heute nur den nächsten kleinen Schritt schaffen.", "Ich lerne, mir selbst wieder etwas zuzutrauen, Schritt für Schritt.", "Ich habe schon so viel getragen. Ich bin stärker, als die harte Stimme glaubt."],
+      friend:["Du musst das nicht alles auf einmal schaffen.", "Schau, was du schon alles durchgestanden hast."]},
+    {id:"kaputt", area:"Zukunft", harsh:["Ich bin kaputt.", "Ich werde nie wieder glücklich."],
+      context:"Verletzt zu sein heißt nicht, kaputt zu sein. Heilung verläuft selten gerade, aber sie verläuft.",
+      ladder:["Ich darf hoffen, auch wenn ich es noch nicht glauben kann.", "Ich heile, auch an Tagen, an denen ich es nicht spüre.", "Ich bin nicht kaputt. Ich wurde verletzt – und ich finde zurück zu mir."],
+      friend:["Du bist nicht kaputt. Du bist verletzt worden.", "Es wird wieder hell, auch wenn es gerade nicht so aussieht."]},
+    {id:"koerper", area:"Körper", harsh:["Ich bin nicht schön genug.", "Ich mag nicht, was ich im Spiegel sehe."],
+      context:"Abwertende Worte über den Körper bleiben oft lange haften. Dein Körper hat dich durch alles getragen. Er verdient Freundlichkeit statt Urteil.",
+      ladder:["Ich darf meinem Körper heute mit etwas weniger Härte begegnen.", "Ich lerne, meinen Körper als mein Zuhause zu sehen, nicht als Baustelle.", "Mein Wert hängt nicht davon ab, wie ich aussehe."],
+      friend:["Du bist schön, und du bist so viel mehr als dein Aussehen.", "Dein Körper hat dich durch so viel getragen."]},
+  ];
+  const HARSH = {};
+  THEMES.forEach(t => t.harsh.forEach((h, i) => HARSH[t.id + ":" + i] = {theme:t, text:h}));
+  const LEVELS = ["Ganz sanft", "Auf dem Weg", "Klar und stark"];
+  const MAX_PICK = 3;
+
+  const MOODS = [
+    {id:"erschoepft", name:"Erschöpft", practice:"Leg eine Hand auf deinen Bauch. Atme dreimal ein und noch etwas länger wieder aus. Mehr musst du gerade nicht tun.", satz:"Ich muss heute nichts mehr beweisen."},
+    {id:"beschaemt", name:"Beschämt", practice:"Scham möchte, dass du dich versteckst. Leg eine Hand aufs Herz und sag dir leise: „Das ist gerade schwer.“ Scham wird leiser, wenn sie freundlich angesehen wird.", satz:"Ich muss mich nicht verstecken. Ich darf mir selbst beistehen."},
+    {id:"traurig", name:"Traurig", practice:"Lass die Traurigkeit einen Moment da sein, ohne sie wegzumachen. Sie zeigt, wie viel dir wichtig war.", satz:"Meine Tränen sind kein Zeichen von Schwäche."},
+    {id:"unruhig", name:"Unruhig oder ängstlich", practice:"Spür deine Füße auf dem Boden. Zähl fünf Dinge, die du gerade siehst, und drei, die du hörst. So kommt dein Körper ins Jetzt.", satz:"Ich darf einen Atemzug nach dem anderen nehmen."},
+    {id:"wuetend", name:"Wütend auf mich", practice:"Wut auf dich selbst ist oft Wut, die eigentlich woanders hingehört. Sie darf da sein. Schreib sie auf, statt sie gegen dich zu richten.", satz:"Meine Wut darf da sein, ohne dass ich sie gegen mich richte."},
+    {id:"leer", name:"Leer", practice:"Du musst gerade nichts fühlen. Ein Glas Wasser trinken, ein Fenster öffnen – das reicht für jetzt.", satz:"Auch wenn ich gerade wenig spüre, bin ich noch da."},
+  ];
+  const PHASES = [
+    {id:"drin", name:"Noch in der Beziehung", hint:"ich bin noch mit der Person zusammen", satz:"Ich muss niemandem beweisen, dass es wehtut. Was ich fühle, zählt."},
+    {id:"gehen", name:"Auf dem Weg hinaus", hint:"ich will gehen oder bin gerade dabei", satz:"Ich darf schwanken und trotzdem auf meinem Weg bleiben."},
+    {id:"danach", name:"Getrennt", hint:"ich bin draußen und finde zu mir zurück", satz:"Ich muss nicht wieder die Alte werden. Ich darf ich werden."},
+    {id:"unsicher", name:"Weiß ich nicht", hint:"oder es passt gerade nichts davon", satz:"Ich muss heute nicht wissen, wo ich stehe. Ich darf einfach hier sein."},
+  ];
+  const byId = (list, id) => list.find(x => x.id === id);
+
+  /* Hinweise auf Gefahr oder Suizidgedanken in eigenen Worten → Hilfe zeigen */
+  const CRISIS_RE = /(umbringen|suizid|selbstmord|nicht mehr leben|nicht mehr da sein|will nicht mehr|sterben|tot sein|mir (was|etwas) antun|ritzen|selbst verletz|schlägt mich|schlug mich|würgt|gewürgt|bedroht|droht mir|angst um mein leben|angst vor ihm|angst vor ihr)/i;
+  const CRISIS_HTML = `<h3>Du bist damit nicht allein.</h3>
+    <p>Was du schreibst, klingt sehr schwer. Wenn du gerade in Gefahr bist oder daran denkst, dir etwas anzutun, ruf bitte jetzt an. Dort hört dir jemand zu, rund um die Uhr und kostenlos.</p>
+    <ul>
+      <li>In akuter Gefahr: <b>Notruf 112</b> (Schweiz Polizei <b>117</b>, Sanität <b>144</b>)</li>
+      <li>Schweiz: Die Dargebotene Hand <b>143</b> · Opferhilfe: opferhilfe-schweiz.ch</li>
+      <li>Deutschland: TelefonSeelsorge <b>0800 111 0 111</b> · Hilfetelefon Gewalt gegen Frauen <b>116 016</b></li>
+      <li>Österreich: Telefonseelsorge <b>142</b> · Frauenhelpline <b>0800 222 555</b></li>
+    </ul>`;
+  function checkCrisis(boxId, ...texts){
+    const hit = texts.some(t => CRISIS_RE.test(t || ""));
+    const box = $(boxId);
+    if(hit && box.hidden) box.innerHTML = CRISIS_HTML;
+    box.hidden = !hit;
+    return hit;
+  }
+
+  /* Werte aus dem Werte-Finder (gleiche Seite, gleiches Gerät) */
+  function loadValues(){
+    try{
+      const d = JSON.parse(localStorage.getItem("seelenwende-wertefinder-v1") || "null");
+      if(d && d.doneAt && Array.isArray(d.top) && d.top.length >= 3) return d.top.slice(0, 5).map(String);
+    }catch(e){}
+    return null;
+  }
+
+  /* ---------- Zustand ---------- */
+  const KEY = "seelenwende-affirmationen-v1";
+  const fresh = () => ({step:0, picked:[], ownHarsh:"", mood:null, phase:null, name:"", friend:{}, levels:{}, doneAt:null});
+  let s = fresh();
+  const save = () => { try{ localStorage.setItem(KEY, JSON.stringify(s)); }catch(e){} };
+  const load = () => {
+    try{
+      const d = JSON.parse(localStorage.getItem(KEY) || "null");
+      if(d && Array.isArray(d.picked) && d.picked.every(k => HARSH[k])){
+        // Ältere Version speicherte nur eine Antwort als Text
+        if(typeof d.friend === "string") d.friend = d.friend ? {[d.ownHarsh && d.ownHarsh.trim() ? "own" : d.picked[0]]: d.friend} : {};
+        return Object.assign(fresh(), d);
+      }
+    }catch(e){}
+    return null;
+  };
+
+  const pickedThemes = () => {
+    const seen = new Set(), out = [];
+    s.picked.forEach(k => { const t = HARSH[k].theme; if(!seen.has(t.id)){ seen.add(t.id); out.push({key:k, theme:t}); } });
+    return out;
+  };
+  const levelOf = id => s.levels[id] ?? 1;
+  const name = () => s.name.trim();
+  /* Freundinnen-Frage: eine Antwort je hartem Satz, auch für den in eigenen Worten (Schlüssel "own") */
+  const friendKeys = () => (s.ownHarsh.trim() ? ["own"] : []).concat(s.picked);
+  const harshText = k => k === "own" ? s.ownHarsh.trim() : HARSH[k].text;
+  const friendOf = k => String(s.friend[k] || "").trim();
+  const friendAnswers = () => [...new Set(friendKeys().map(friendOf).filter(Boolean))];
+  const OWN_FRIEND = ["Du hast getan, was du in dem Moment konntest.", "Ich sehe, wie schwer das für dich ist.", "Du bist damit nicht allein."];
+  const OWN_SATZ = "Ich darf mir selbst so freundlich begegnen wie einer Freundin.";
+  const friendIdeas = k => k === "own" ? OWN_FRIEND : HARSH[k].theme.friend;
+
+  function show(step){
+    s.step = step;
+    document.querySelectorAll(".step").forEach(el => el.classList.toggle("show", +el.dataset.step === step));
+    const bar = $("progress");
+    bar.hidden = step === 0 || step === 4;
+    [...bar.children].forEach((el, i) => el.classList.toggle("on", i < step));
+    $("headIntro").hidden = step !== 0;
+    ({0:renderStart, 1:renderPick, 2:renderFeel, 3:renderFriend, 4:renderResult})[step]?.();
+    save();
+    window.scrollTo({top:0, behavior:"smooth"});
+  }
+
+  /* ---------- 0 · Start ---------- */
+  function renderStart(){
+    const list = s.doneAt ? mySentences() : [];
+    $("resumeBox").hidden = !list.length;
+    $("todayBox").hidden = !list.length;
+    if(list.length){
+      // Jeden Tag ein anderer Satz aus ihren eigenen
+      const day = Math.floor((Date.now() - new Date().getTimezoneOffset() * 60000) / 86400000);
+      $("todayEyebrow").textContent = name() ? `Dein Satz für heute, ${name()}` : "Dein Satz für heute";
+      $("todayText").textContent = list[day % list.length];
+    }
+  }
+
+  /* ---------- 1 · Wählen ---------- */
+  function renderPick(){
+    $("groups").innerHTML = `<div class="chips">${
+      THEMES.flatMap(t => t.harsh.map((h, i) => {
+        const k = t.id + ":" + i;
+        return `<button class="chip" type="button" data-pick="${k}" aria-pressed="${s.picked.includes(k)}">${esc(h)}</button>`;
+      })).join("")}</div>`;
+    $("ownHarsh").value = s.ownHarsh;
+    checkCrisis("crisis1", s.ownHarsh);
+    updatePick();
+  }
+  function updatePick(){
+    const n = s.picked.length, full = n >= MAX_PICK;
+    document.querySelectorAll("[data-pick]").forEach(b => b.disabled = full && b.getAttribute("aria-pressed") !== "true");
+    $("counter1").innerHTML = n === 0
+      ? "Wähle mindestens einen Satz"
+      : `<b>${n}</b> von ${MAX_PICK} gewählt${full ? " · mehr braucht es heute nicht" : ""}`;
+    $("hint1").textContent = "";
+  }
+
+  /* ---------- 2 · Gefühl & Phase ---------- */
+  function renderFeel(){
+    $("moods").innerHTML = MOODS.map(m => `<button class="chip" type="button" data-mood="${m.id}" aria-pressed="${s.mood === m.id}">${esc(m.name)}</button>`).join("");
+    $("phases").innerHTML = PHASES.map(p => `<button class="chip" type="button" data-phase="${p.id}" aria-pressed="${s.phase === p.id}">${esc(p.name)}<small>${esc(p.hint)}</small></button>`).join("");
+    $("nameInput").value = s.name;
+    $("hint2").textContent = "";
+  }
+
+  /* ---------- 3 · Freundinnen-Frage ---------- */
+  function renderFriend(){
+    const keys = friendKeys();
+    $("friendLead").textContent = keys.length > 1
+      ? "Stell dir vor, deine liebste Freundin sitzt dir gegenüber und sagt diese Sätze leise über sich. Was würdest du ihr auf jeden einzelnen antworten?"
+      : "Stell dir vor, deine liebste Freundin sitzt dir gegenüber und sagt diesen Satz leise über sich. Was würdest du ihr antworten?";
+    $("friendList").innerHTML = keys.map((k, i) => {
+      const own = friendOf(k);
+      return `<div class="field">
+        <label class="field__quote" for="fa-${i}"><small>${k === "own" ? "In deinen Worten" : `Satz ${keys.indexOf(k) + 1 - (keys[0] === "own" ? 1 : 0)} von ${s.picked.length}`}</small>„${esc(harshText(k))}“</label>
+        <textarea id="fa-${i}" data-answer="${k}" rows="2" maxlength="300" placeholder="Was würdest du ihr sagen?">${esc(s.friend[k] || "")}</textarea>
+        <div class="ideas">${friendIdeas(k).map(f => `<button class="idea" type="button" data-friend="${esc(f)}" data-for="${k}" aria-pressed="${own === f}">${esc(f)}</button>`).join("")}</div>
+      </div>`;
+    }).join("");
+    checkCrisis("crisis3", ...friendKeys().map(friendOf));
+    $("hint3").textContent = "";
+  }
+
+  /* ---------- 4 · Ergebnis ---------- */
+  function mySentences(){
+    const out = [];
+    friendAnswers().forEach(f => out.push(f));
+    if(s.ownHarsh.trim() && !friendOf("own")) out.push(OWN_SATZ);
+    pickedThemes().forEach(({theme}) => out.push(theme.ladder[levelOf(theme.id)]));
+    const m = byId(MOODS, s.mood); if(m) out.push(m.satz);
+    const p = byId(PHASES, s.phase); if(p) out.push(p.satz);
+    const v = loadValues(); if(v) out.push(valuesSentence(v));
+    return out;
+  }
+  function valuesSentence(v){
+    const list = v.slice(0, 3);
+    const joined = list.length > 1 ? list.slice(0, -1).join(", ") + " und " + list[list.length - 1] : list[0];
+    return `Mir sind ${joined} wichtig. Das sagt mehr über mich als jeder harte Satz.`;
+  }
+
+  function renderHero(){
+    const n = name(), f = friendAnswers()[0];
+    const eyebrow = n ? `Für dich, ${esc(n)}` : "Für dich";
+    if(f){
+      $("hero").innerHTML = `<div class="hero__eyebrow">${eyebrow}</div>
+        <p class="hero__text">„${esc(f)}“</p>
+        <p class="hero__sub">Das würdest du einer Freundin sagen. Es gilt auch für dich. Du verdienst dieselbe Wärme, die du anderen so selbstverständlich schenkst.</p>`;
+    }else{
+      const t = pickedThemes()[0].theme;
+      $("hero").innerHTML = `<div class="hero__eyebrow">${eyebrow}</div>
+        <p class="hero__text">${esc(t.ladder[levelOf(t.id)])}</p>
+        <p class="hero__sub">Die harte Stimme ist laut, aber sie hat nicht recht. Du darfst ihr heute etwas Freundlicheres entgegensetzen.</p>`;
+    }
+  }
+
+  function cardHTML({key, theme}){
+    const lv = levelOf(theme.id);
+    // Alle gewählten Sätze dieses Themas, und die eigenen Worte beim ersten Thema
+    // Alle gewählten Sätze dieses Themas
+    const keys = s.picked.filter(k => HARSH[k].theme.id === theme.id);
+    const harshLines = keys.map(k => `<div class="card__harsh">Die harte Stimme sagt: <s>${esc(harshText(k))}</s></div>`).join("");
+    const answers = [...new Set(keys.map(friendOf).filter(Boolean))];
+    const friendLine = answers.length ? `<div class="card__friend"><b>Was du einer Freundin sagen würdest:</b> ${answers.map(a => `„${esc(a)}“`).join(" ")}</div>` : "";
+    return `<div class="card" data-card="${theme.id}">
+      ${harshLines}
+      <p class="card__context">${esc(theme.context)}</p>
+      <div class="card__kind">Dein freundlicher Satz</div>
+      <p class="card__text" id="ct-${theme.id}">${esc(theme.ladder[lv])}</p>
+      ${friendLine}
+      <div class="levels">
+        <div class="dots" aria-label="Stufe ${lv + 1} von 3: ${LEVELS[lv]}">${[0,1,2].map(i => `<i class="${i <= lv ? "on" : ""}"></i>`).join("")}<span>${LEVELS[lv]}</span></div>
+        <button class="lvl" type="button" data-softer="${theme.id}" ${lv === 0 ? "disabled" : ""}>Noch zu weit weg</button>
+        <button class="lvl" type="button" data-stronger="${theme.id}" ${lv === 2 ? "disabled" : ""}>Darf stärker sein</button>
+      </div>
+    </div>`;
+  }
+
+  function renderMine(){
+    $("mineList").innerHTML = mySentences().map(t => `<li>${esc(t)}</li>`).join("");
+  }
+
+  function renderResult(){
+    checkCrisis("crisis4", s.ownHarsh, ...friendKeys().map(friendOf));
+    renderHero();
+    const own = s.ownHarsh.trim(), ownAnswer = friendOf("own");
+    $("cards").innerHTML = (own ? `<div class="card">
+        <div class="card__harsh">In deinen Worten: <s>${esc(own)}</s></div>
+        <p class="card__context">Diesen Satz hast du selbst aufgeschrieben. Allein, dass du ihn ansiehst, statt ihn einfach zu glauben, ist ein Schritt.</p>
+        <div class="card__kind">Dein freundlicher Satz</div>
+        <p class="card__text">${esc(OWN_SATZ)}</p>
+        ${ownAnswer ? `<div class="card__friend"><b>Was du einer Freundin sagen würdest:</b> „${esc(ownAnswer)}“</div>` : ""}
+      </div>` : "") + pickedThemes().map(cardHTML).join("");
+
+    const m = byId(MOODS, s.mood), p = byId(PHASES, s.phase);
+    $("moment").innerHTML = (m ? `<div class="card card--soft">
+        <div class="card__kind" style="margin-top:0">Wenn du dich ${esc(m.name.toLowerCase())} fühlst</div>
+        <p class="card__practice">${esc(m.practice)}</p>
+        <p class="card__text">${esc(m.satz)}</p>
+      </div>` : "") + (p ? `<div class="card card--soft">
+        <div class="card__kind" style="margin-top:0">Da, wo du in deiner Beziehung stehst</div>
+        <p class="card__text">${esc(p.satz)}</p>
+      </div>` : "");
+
+    const v = loadValues();
+    $("valuesBox").innerHTML = v ? `<div class="card card--soft">
+        <div class="card__kind" style="margin-top:0">Aus deinem Werte-Finder</div>
+        <p class="card__text">${esc(valuesSentence(v))}</p>
+      </div>` : `<div class="card card--soft">
+        <div class="card__kind" style="margin-top:0">Noch ein Satz, der nur dir gehört</div>
+        <p class="card__practice">Wenn du weißt, was dir wirklich wichtig ist, hat die harte Stimme weniger Macht. Der Werte-Finder zeigt dir in zehn Minuten deine fünf Kernwerte. Danach erscheinen sie hier.</p>
+        <div class="actions" style="margin-top:12px"><a class="btn btn--soft" href="werte-finder.html">Zum Werte-Finder</a></div>
+      </div>`;
+
+    renderMine();
+
+    const themes = pickedThemes().map(x => x.theme);
+    const parts = [];
+    parts.push(`<p>Die harte Stimme in dir ist nicht deine Wahrheit. Oft ist sie ein Echo: von Menschen, die dich kleingemacht haben, oder von Zeiten, in denen Strenge mit dir selbst sich sicherer angefühlt hat als Mitgefühl.</p>`);
+    if(themes.some(t => t.id === "wahrnehmung" || t.id === "schuld" || t.id === "dumm")){
+      parts.push(`<p>Selbstzweifel an der eigenen Wahrnehmung und Schuldgefühle sind typische Spuren von Beziehungen, in denen dir immer wieder gesagt wurde, du seist das Problem. Dass du sie jetzt spürst, heißt nicht, dass sie stimmen.</p>`);
+    }
+    parts.push(`<p>Freundliche Sätze wirken nicht wie ein Schalter. Sie wirken wie ein Weg, den man oft geht. Lies deine Sätze jeden Tag einmal, am besten laut. Wenn sich eine Stufe irgendwann leicht anfühlt, probier die nächste.</p>`);
+    $("insight").innerHTML = `<h3>Warum gerade diese Sätze</h3>${parts.join("")}`;
+
+    // Nächster Schritt passend zur Phase
+    const mira = `<a class="btn" href="begleiterin.html">Mit Mira sprechen</a>`;
+    const book = `<a class="btn" href="https://seelenwende.mytentary.com/p/Mi6HH3" target="_blank" rel="noopener">Du bist genug – E-Book</a>`;
+    $("nextBox").innerHTML = s.phase === "drin" || s.phase === "gehen"
+      ? `<p>Manchmal braucht die harte Stimme mehr als ein paar Sätze. Mira, die Seelenwende-Begleiterin, hört dir zu, anonym und ohne Telefonat, und hilft dir, deine eigenen Worte zu finden.</p>
+         <div class="stack">${mira}<a class="btn btn--link" href="https://seelenwende.mytentary.com/p/Mi6HH3" target="_blank" rel="noopener">Oder: Du bist genug – Impulsbuch zum Selbstwert</a></div>`
+      : `<p>Möchtest du tiefer gehen? „Du bist genug“ begleitet dich in acht Schritten zurück zu deinem Selbstwert, in deinem Tempo.</p>
+         <div class="stack">${book}<a class="btn btn--link" href="begleiterin.html">Oder: mit Mira darüber sprechen</a></div>`;
+
+    if(!s.doneAt) s.doneAt = Date.now();
+  }
+
+  function resultText(){
+    return [
+      name() ? `Meine freundlichen Sätze, ${name()} (Seelenwende · Sei sanft mit dir)` : "Meine freundlichen Sätze (Seelenwende · Sei sanft mit dir)",
+      "",
+      ...mySentences().map(t => "· " + t),
+    ].join("\n");
+  }
+
+  /* ---------- Lese-Moment ---------- */
+  let mi = 0, mList = [], breathTimer = null;
+  function openMoment(){
+    mList = mySentences(); mi = 0;
+    if(!mList.length) return;
+    $("momentView").hidden = false;
+    document.body.style.overflow = "hidden";
+    showMoment();
+    let inhale = true;
+    const tick = () => { $("momentBreath").textContent = inhale ? "Einatmen" : "Ausatmen"; inhale = !inhale; };
+    tick(); breathTimer = setInterval(tick, 5000);
+    $("momentNext").focus();
+  }
+  function showMoment(){
+    const el = $("momentText");
+    el.textContent = mList[mi];
+    el.classList.remove("fade"); void el.offsetWidth; el.classList.add("fade");
+    $("momentCount").textContent = `${mi + 1} von ${mList.length}`;
+    $("momentNext").textContent = mi === mList.length - 1 ? "Von vorn" : "Nächster Satz";
+  }
+  function closeMoment(){
+    $("momentView").hidden = true;
+    document.body.style.overflow = "";
+    clearInterval(breathTimer); breathTimer = null;
+  }
+  $("momentNext").addEventListener("click", () => { mi = (mi + 1) % mList.length; showMoment(); });
+  $("momentClose").addEventListener("click", closeMoment);
+  document.addEventListener("keydown", e => { if(e.key === "Escape" && !$("momentView").hidden) closeMoment(); });
+  $("momentBtn").addEventListener("click", openMoment);
+  $("momentStart").addEventListener("click", openMoment);
+
+  /* ---------- Ereignisse ---------- */
+  document.addEventListener("click", e => {
+    const t = e.target.closest("button");
+    if(!t) return;
+    if(t.dataset.go !== undefined){ show(+t.dataset.go); return; }
+    if(t.dataset.pick){
+      const k = t.dataset.pick, on = s.picked.includes(k);
+      if(!on && s.picked.length >= MAX_PICK) return;
+      s.picked = on ? s.picked.filter(v => v !== k) : [...s.picked, k];
+      t.setAttribute("aria-pressed", String(!on));
+      updatePick(); save(); return;
+    }
+    if(t.dataset.mood){
+      s.mood = s.mood === t.dataset.mood ? null : t.dataset.mood;
+      document.querySelectorAll("[data-mood]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.mood === s.mood)));
+      $("hint2").textContent = ""; save(); return;
+    }
+    if(t.dataset.phase){
+      s.phase = s.phase === t.dataset.phase ? null : t.dataset.phase;
+      document.querySelectorAll("[data-phase]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.phase === s.phase)));
+      save(); return;
+    }
+    if(t.dataset.friend){
+      const k = t.dataset.for, ta = document.querySelector(`[data-answer="${k}"]`);
+      ta.value = t.dataset.friend; s.friend[k] = t.dataset.friend; save();
+      t.parentNode.querySelectorAll("[data-friend]").forEach(b => b.setAttribute("aria-pressed", String(b === t)));
+      ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length);
+      return;
+    }
+    const step = t.dataset.softer ? -1 : t.dataset.stronger ? 1 : 0;
+    if(step){
+      const id = t.dataset.softer || t.dataset.stronger;
+      s.levels[id] = Math.max(0, Math.min(2, levelOf(id) + step));
+      const card = document.querySelector(`[data-card="${id}"]`);
+      const theme = THEMES.find(x => x.id === id);
+      card.outerHTML = cardHTML(pickedThemes().find(x => x.theme.id === id));
+      const txt = $("ct-" + id); txt.classList.add("fade");
+      const again = document.querySelector(`[data-card="${id}"] [data-${step < 0 ? "softer" : "stronger"}]`);
+      (again && !again.disabled ? again : document.querySelector(`[data-card="${id}"] .lvl:not(:disabled)`))?.focus();
+      if(!friendAnswers().length && pickedThemes()[0].theme === theme) renderHero();
+      renderMine(); save(); return;
+    }
+  });
+
+  document.addEventListener("input", e => {
+    if(e.target.id === "ownHarsh"){ s.ownHarsh = e.target.value; checkCrisis("crisis1", s.ownHarsh); save(); }
+    if(e.target.id === "nameInput"){ s.name = e.target.value; save(); }
+    const k = e.target.dataset && e.target.dataset.answer;
+    if(k){
+      s.friend[k] = e.target.value;
+      e.target.parentNode.querySelectorAll("[data-friend]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.friend === e.target.value)));
+      checkCrisis("crisis3", ...friendKeys().map(friendOf)); save();
+    }
+  });
+
+  const nudge = id => { const h = $(id); h.classList.remove("pulse"); void h.offsetWidth; h.classList.add("pulse"); };
+  $("next1").addEventListener("click", () => {
+    if(!s.picked.length){
+      $("hint1").textContent = s.ownHarsh.trim()
+        ? "Tippe noch den Satz an, der deinen Worten am nächsten kommt."
+        : "Wähle mindestens einen Satz, dann geht es weiter.";
+      nudge("hint1"); return;
+    }
+    show(2);
+  });
+  $("next2").addEventListener("click", () => {
+    if(!s.mood){ $("hint2").textContent = "Tippe an, was gerade am stärksten ist."; nudge("hint2"); return; }
+    show(3);
+  });
+  let skipArmed = false;
+  $("next3").addEventListener("click", () => {
+    // Leeres Feld ist erlaubt – beim ersten Klick nur sanft ermutigen
+    const open = friendKeys().filter(k => !friendOf(k)).length;
+    if(open && !skipArmed){
+      skipArmed = true;
+      $("hint3").textContent = open === friendKeys().length
+        ? "Ein Satz reicht, auch ein kurzer. Tippe noch einmal, wenn du es heute offen lassen möchtest."
+        : `${open === 1 ? "Eine Antwort ist" : open + " Antworten sind"} noch offen. Tippe noch einmal, wenn du ${open === 1 ? "sie" : "sie"} offen lassen möchtest.`;
+      nudge("hint3"); return;
+    }
+    skipArmed = false; s.doneAt = null; show(4);
+  });
+  let restartArmed = null;
+  $("restart").addEventListener("click", e => {
+    const btn = e.currentTarget;
+    if(!restartArmed){
+      btn.textContent = "Wirklich neu beginnen? Deine Sätze werden gelöscht";
+      restartArmed = setTimeout(() => { restartArmed = null; btn.textContent = "Neu beginnen"; }, 4000);
+      return;
+    }
+    clearTimeout(restartArmed); restartArmed = null; btn.textContent = "Neu beginnen";
+    s = fresh(); show(0);
+  });
+  let framed = true; try{ framed = window.self !== window.top; }catch(e){}
+  if(framed) $("printBtn").hidden = true;
+  else $("printBtn").addEventListener("click", () => window.print());
+  $("start").addEventListener("click", () => {
+    // Nach einem fertigen Durchlauf frisch beginnen, den Namen behalten
+    if(s.doneAt){ const n = s.name; s = fresh(); s.name = n; }
+    show(1);
+  });
+  $("resumeBtn").addEventListener("click", () => show(4));
+  $("copyBtn").addEventListener("click", async e => {
+    const text = resultText(), btn = e.currentTarget;
+    try{ await navigator.clipboard.writeText(text); }
+    catch(err){ const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); try{ document.execCommand("copy"); }catch(_){} ta.remove(); }
+    btn.textContent = "Kopiert ✓";
+    setTimeout(() => btn.textContent = "Sätze kopieren", 1400);
+  });
+
+  /* ---------- Start ---------- */
+  const saved = load();
+  if(saved){
+    s = saved;
+    // Unterbrochenen Durchlauf fortsetzen
+    if(s.step > 0 && s.step < 4 && !(s.step > 1 && !s.picked.length)){ show(s.step); return; }
+  }
+  show(0);
+})();
+</script>
+</body>
+</html>

@@ -1,7 +1,8 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { betaZodOutputFormat } from "@anthropic-ai/sdk/helpers/beta/zod";
 import { z } from "zod";
-import { getUsage as getUsageIn, hasCodes, isValidCodeIn, limitFromEnv, setUsage } from "./zugang.mts";
+import { getStore } from "@netlify/blobs";
+import { hashCode, isCodeInList } from "./codes.mts";
 
 export const ANTWORT_STORE = "antwort-helfer";
 const DEFAULT_MODEL = "claude-opus-5-5";
@@ -12,27 +13,35 @@ const MAX_ANLIEGEN_CHARS = 600;
 
 /* ---------- Zugangscodes ---------- */
 
-// Eigene Codes (z. B. aus dem Erste-Hilfe-Set) – Mira-Codes gelten auch, damit Programm und Kreis ihn mitnutzen.
-const CODE_ENVS = ["ANTWORT_HELFER_CODES", "BEGLEITERIN_CODES"];
+// Eigene Codes (z. B. aus dem Erste-Hilfe-Set). Mira- und Programm-Codes gelten auch, mit eigenem Zähler.
+const CODE_ENVS = ["ANTWORT_HELFER_CODES", "BEGLEITERIN_CODES", "PROGRAMM_CODES"];
 
 export function isValidCode(given: unknown): given is string {
-  return isValidCodeIn(CODE_ENVS, given);
+  let ok = false;
+  for (const env of CODE_ENVS) ok = isCodeInList(env, given) || ok;
+  return ok;
 }
 
 export function isAntwortHelferConfigured(): boolean {
-  return Boolean(Netlify.env.get("ANTHROPIC_API_KEY")) && hasCodes(CODE_ENVS);
+  return Boolean(Netlify.env.get("ANTHROPIC_API_KEY")) && CODE_ENVS.some((env) => Boolean(Netlify.env.get(env)?.trim()));
 }
 
 export function checkLimit(): number {
-  return limitFromEnv("ANTWORT_HELFER_LIMIT", DEFAULT_LIMIT);
+  const n = Number(Netlify.env.get("ANTWORT_HELFER_LIMIT"));
+  return Number.isFinite(n) && n > 0 ? Math.floor(n) : DEFAULT_LIMIT;
 }
 
-export function getUsage(code: string): Promise<number> {
-  return getUsageIn(ANTWORT_STORE, code);
+function usageKey(code: string): string {
+  return "usage/" + hashCode(code).toString("hex");
 }
 
-export function addUsage(code: string, used: number): Promise<void> {
-  return setUsage(ANTWORT_STORE, code, used);
+export async function getUsage(code: string): Promise<number> {
+  const data = (await getStore(ANTWORT_STORE).get(usageKey(code), { type: "json" })) as { used?: number } | null;
+  return data?.used ?? 0;
+}
+
+export async function addUsage(code: string, used: number): Promise<void> {
+  await getStore(ANTWORT_STORE).setJSON(usageKey(code), { used, updatedAt: Date.now() });
 }
 
 /* ---------- Eingabe prüfen ---------- */

@@ -10,7 +10,7 @@ export default async (req: Request, _context: Context) => {
   const body = await req.json().catch(() => null);
   if (!isValidCode(body?.code)) return json({ error: "Dieser Zugangscode ist ungültig. Prüf ihn in deiner Bestätigungs-Mail." }, 401);
 
-  const limit = messageLimit();
+  const limit = messageLimit(body.code);
   const used = await getUsage(body.code);
   if (used >= limit) return json({ error: "Die Nachrichten dieses Zugangs sind aufgebraucht." }, 403);
   return json({ ok: true, used, limit });
