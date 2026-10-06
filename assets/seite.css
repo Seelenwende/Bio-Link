@@ -1,0 +1,270 @@
+/* Seelenwende – gemeinsames Aussehen für Website (start.html) und Angebotsseiten (angebot-*.html).
+   Farben und Schriften wie im Bio-Link und im Kreis. */
+:root{
+  --papier:#FAF6F4; --sand:#F3ECE9; --blush:#F6E9EC;
+  --rose:#B5808F; --beere:#8C5A69; --pflaume:#5C3A46;
+  --gedaempft:#8E7079; --linie:#E4D8D8; --mikro:#C3AEB2;
+  --auf-dunkel:#FAF6F4; --auf-dunkel-leise:#E6D3D8;
+  --flaeche-dunkel:#5C3A46;
+  --serif:"Playfair Display",Georgia,serif;
+  --sans:"Jost",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --breit:1080px; --schmal:680px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --papier:#1B1417; --sand:#241B1F; --blush:#2A1E22;
+    --rose:#D9A6B3; --beere:#B47388; --pflaume:#F3E4E7;
+    --gedaempft:#C0A2AA; --linie:#3D2C31; --mikro:#7A6067;
+    --auf-dunkel:#FBF1F3; --auf-dunkel-leise:#E2C9CF;
+    --flaeche-dunkel:#3A2630;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --papier:#1B1417; --sand:#241B1F; --blush:#2A1E22;
+  --rose:#D9A6B3; --beere:#B47388; --pflaume:#F3E4E7;
+  --gedaempft:#C0A2AA; --linie:#3D2C31; --mikro:#7A6067;
+  --auf-dunkel:#FBF1F3; --auf-dunkel-leise:#E2C9CF;
+  --flaeche-dunkel:#3A2630;
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box;}
+[hidden]{display:none !important;}
+html{-webkit-text-size-adjust:100%; scroll-behavior:smooth;}
+body{
+  margin:0; background:var(--papier); color:var(--pflaume);
+  font-family:var(--sans); font-weight:300; font-size:17px; line-height:1.7;
+  -webkit-font-smoothing:antialiased; overflow-x:hidden;
+}
+img{max-width:100%;}
+a{color:var(--beere);}
+a:focus-visible, button:focus-visible, summary:focus-visible, input:focus-visible{outline:2px solid var(--rose); outline-offset:3px;}
+h1,h2,h3{font-family:var(--serif); font-weight:500; margin:0; line-height:1.2; text-wrap:balance;}
+p{margin:0;}
+b, strong{font-weight:500;}
+.leise{color:var(--gedaempft);}
+.klein{font-size:.88rem;}
+.zentriert{text-align:center;}
+.sr{position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden;}
+.hp{position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden;}
+
+/* ---------- Kopf ---------- */
+.kopf{
+  position:sticky; top:0; z-index:10; background:var(--papier);
+  border-bottom:1px solid var(--linie);
+}
+.kopf-innen{
+  max-width:var(--breit); margin:0 auto; padding:10px 16px;
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+}
+.marke{display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--pflaume); min-width:0;}
+.marke svg{width:28px; height:28px; flex-shrink:0;}
+.marke span{font-family:var(--serif); font-size:1.15rem; font-weight:500; letter-spacing:.02em; white-space:nowrap;}
+.falter .w1{fill:var(--beere);} .falter .w2{fill:var(--rose);} .falter .w3{fill:var(--linie);} .falter .k{fill:var(--pflaume);}
+.nav{display:flex; align-items:center; gap:4px;}
+.nav a{color:var(--pflaume); text-decoration:none; font-size:.92rem; padding:6px 10px; border-radius:20px;}
+@media (hover:hover){ .nav a:hover{background:var(--sand);} }
+.schnell-weg{
+  background:var(--sand); color:var(--pflaume); border:1px solid var(--linie);
+  border-radius:20px; padding:7px 14px; font:inherit; font-size:.8rem; font-weight:400; cursor:pointer; white-space:nowrap;
+}
+@media (max-width:720px){ .nav a.nav-optional{display:none;} }
+@media (max-width:420px){ .nav a{display:none;} }
+
+/* ---------- Abschnitte ---------- */
+.abschnitt{padding:64px 16px;}
+.abschnitt.sand{background:var(--sand);}
+.abschnitt.blush{background:var(--blush);}
+.innen{max-width:var(--breit); margin:0 auto;}
+.innen.schmal{max-width:var(--schmal);}
+.ueber{
+  display:block; font-family:var(--serif); font-size:.7rem; letter-spacing:.32em; text-transform:uppercase;
+  color:var(--rose); margin-bottom:12px;
+}
+.abschnitt h2{font-size:clamp(1.6rem, 4.5vw, 2.2rem); margin-bottom:14px;}
+.abschnitt .einleitung{color:var(--gedaempft); max-width:60ch; margin-bottom:32px;}
+.abschnitt.zentriert .einleitung{margin-left:auto; margin-right:auto;}
+
+/* ---------- Held ---------- */
+.held{padding:72px 16px 64px; text-align:center; background:linear-gradient(180deg, var(--blush), var(--papier));}
+.held .innen{max-width:760px;}
+.held h1{font-size:clamp(2.1rem, 7vw, 3.4rem); margin-bottom:18px;}
+.held .unterzeile{font-family:var(--serif); font-style:italic; font-size:clamp(1.15rem, 3.4vw, 1.4rem); margin-bottom:16px;}
+.held .text{color:var(--gedaempft); max-width:56ch; margin:0 auto 28px;}
+.held .knopf-reihe{justify-content:center;}
+.held .preis-hinweis{margin-top:14px; font-size:.9rem; color:var(--gedaempft);}
+
+/* ---------- Knöpfe ---------- */
+.knopf-reihe{display:flex; flex-wrap:wrap; gap:12px;}
+.knopf{
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  background:var(--beere); color:var(--auf-dunkel); text-decoration:none; border:none; cursor:pointer;
+  border-radius:28px; padding:14px 26px; font-family:var(--serif); font-size:1.05rem; font-weight:500;
+  transition:transform .2s ease, box-shadow .2s ease;
+}
+.knopf.dunkel{background:var(--flaeche-dunkel);}
+.knopf.leicht{background:transparent; color:var(--pflaume); border:1px solid var(--linie);}
+@media (hover:hover){ .knopf:hover{transform:translateY(-2px); box-shadow:0 12px 28px -16px rgba(92,58,70,.6);} }
+.knopf.breit{width:100%;}
+
+/* ---------- Raster & Karten ---------- */
+.raster{display:grid; gap:16px; grid-template-columns:repeat(auto-fit, minmax(min(100%, 260px), 1fr));}
+.raster.vier{grid-template-columns:repeat(auto-fit, minmax(min(100%, 220px), 1fr));}
+.raster.zwei{grid-template-columns:repeat(auto-fit, minmax(min(100%, 320px), 1fr));}
+.karte{
+  background:var(--papier); border:1px solid var(--linie); border-radius:18px; padding:22px;
+  display:flex; flex-direction:column; gap:10px;
+}
+.sand .karte, .blush .karte{background:var(--papier);}
+.karte h3{font-size:1.2rem;}
+.karte p{color:var(--gedaempft); font-size:.95rem;}
+.karte .zeile{font-size:.82rem; letter-spacing:.06em; color:var(--rose); text-transform:uppercase; font-weight:400;}
+.karte a.weiter{margin-top:auto; padding-top:6px; text-decoration:none; font-weight:400;}
+.karte a.weiter::after{content:" →";}
+a.karte{text-decoration:none; color:inherit; transition:transform .2s ease, box-shadow .2s ease;}
+@media (hover:hover){ a.karte:hover{transform:translateY(-2px); box-shadow:0 14px 30px -20px rgba(92,58,70,.55);} }
+.karte.hervor{background:var(--flaeche-dunkel); border-color:var(--flaeche-dunkel);}
+.karte.hervor h3, .karte.hervor .weiter{color:var(--auf-dunkel);}
+.karte.hervor p{color:var(--auf-dunkel-leise);}
+.karte.hervor .zeile{color:var(--auf-dunkel-leise);}
+.preis{font-family:var(--serif); font-size:1.05rem; color:var(--pflaume);}
+.karte.hervor .preis{color:var(--auf-dunkel);}
+
+/* ---------- Phasen ---------- */
+.phase{border-radius:18px; padding:24px; background:var(--papier); border:1px solid var(--linie); display:flex; flex-direction:column; gap:10px;}
+.phase .nummer{font-family:var(--serif); font-style:italic; color:var(--rose); font-size:1.05rem;}
+.phase h3{font-size:1.35rem;}
+.phase p{color:var(--gedaempft); font-size:.95rem;}
+.phase ul{margin:4px 0 0; padding:0; list-style:none; display:grid; gap:6px;}
+.phase li a{text-decoration:none;}
+.phase li a::before{content:"→ "; color:var(--rose);}
+
+/* ---------- Listen ---------- */
+.punkte{list-style:none; margin:0; padding:0; display:grid; gap:14px;}
+.punkte li{display:grid; grid-template-columns:22px 1fr; gap:10px; align-items:start;}
+.punkte li::before{content:""; width:8px; height:8px; border-radius:50%; background:var(--rose); margin:11px 0 0 6px;}
+.haken li::before{
+  content:""; width:12px; height:7px; border-radius:0; background:none;
+  border-left:1.6px solid var(--beere); border-bottom:1.6px solid var(--beere);
+  transform:rotate(-45deg); margin:9px 0 0 4px;
+}
+.zitate{display:grid; gap:12px;}
+.zitat{
+  font-family:var(--serif); font-style:italic; font-size:1.12rem; line-height:1.5;
+  padding:16px 20px; border-left:2px solid var(--rose); background:var(--papier); border-radius:0 14px 14px 0;
+}
+
+/* ---------- Schritte ---------- */
+.schritte{list-style:none; margin:0; padding:0; display:grid; gap:16px; counter-reset:schritt;}
+.schritte li{
+  counter-increment:schritt; display:grid; grid-template-columns:44px 1fr; gap:14px; align-items:start;
+}
+.schritte li::before{
+  content:counter(schritt); width:44px; height:44px; border-radius:50%; display:grid; place-items:center;
+  background:var(--blush); color:var(--beere); font-family:var(--serif); font-size:1.1rem;
+}
+.schritte h3{font-size:1.1rem; margin:8px 0 4px;}
+.schritte p{color:var(--gedaempft); font-size:.95rem;}
+
+/* ---------- Wochen / Zeitachse ---------- */
+.wochen{display:grid; gap:12px; grid-template-columns:repeat(auto-fit, minmax(min(100%, 200px), 1fr));}
+.woche{border-radius:16px; padding:18px; background:var(--papier); border:1px solid var(--linie);}
+.woche .zeile{font-size:.75rem; letter-spacing:.14em; text-transform:uppercase; color:var(--rose);}
+.woche h3{font-size:1.1rem; margin:4px 0 6px;}
+.woche p{font-size:.9rem; color:var(--gedaempft);}
+
+/* ---------- Preisbox ---------- */
+.preisbox{
+  max-width:520px; margin:0 auto; background:var(--papier); border:1px solid var(--linie); border-radius:22px;
+  padding:30px 26px; display:grid; gap:16px; text-align:left; box-shadow:0 24px 60px -40px rgba(92,58,70,.6);
+}
+.preisbox .titel{font-family:var(--serif); font-size:1.4rem;}
+.preisbox .betrag{font-family:var(--serif); font-size:2.6rem; line-height:1;}
+.preisbox .betrag small{font-family:var(--sans); font-size:.95rem; color:var(--gedaempft); font-weight:300;}
+.preisbox .punkte{gap:10px; font-size:.95rem;}
+.preisbox .fein{font-size:.84rem; color:var(--gedaempft); text-align:center;}
+.warteliste{font-size:.9rem; color:var(--gedaempft); text-align:center;}
+
+/* ---------- Für wen ---------- */
+.fuer-wen{display:grid; gap:16px; grid-template-columns:repeat(auto-fit, minmax(min(100%, 300px), 1fr));}
+.fuer-wen .karte h3{font-size:1.1rem;}
+.fuer-wen .nicht h3{color:var(--gedaempft);}
+
+/* ---------- Fragen ---------- */
+.fragen{display:grid; gap:10px;}
+.fragen details{background:var(--papier); border:1px solid var(--linie); border-radius:14px; padding:0 18px;}
+.fragen summary{
+  cursor:pointer; list-style:none; padding:16px 28px 16px 0; position:relative;
+  font-family:var(--serif); font-size:1.05rem;
+}
+.fragen summary::-webkit-details-marker{display:none;}
+.fragen summary::after{content:"+"; position:absolute; right:0; top:14px; color:var(--rose); font-size:1.3rem; font-family:var(--sans);}
+.fragen details[open] summary::after{content:"–";}
+.fragen details p{padding:0 0 16px; color:var(--gedaempft); font-size:.95rem;}
+
+/* ---------- Brief / Über ---------- */
+.brief{display:grid; gap:14px; font-size:1.02rem;}
+.unterschrift{font-family:var(--serif); font-style:italic; color:var(--beere); font-size:1.1rem;}
+
+/* ---------- Sicherheit ---------- */
+.sicher{
+  border-radius:18px; padding:22px; background:var(--blush); display:grid; gap:8px;
+}
+.sicher h3{font-size:1.15rem;}
+.sicher p{font-size:.95rem; color:var(--gedaempft);}
+
+/* ---------- Fuß ---------- */
+.fuss{padding:40px 16px 24px; border-top:1px solid var(--linie); text-align:center;}
+.fuss .innen{display:grid; gap:14px; justify-items:center;}
+.fuss nav{display:flex; flex-wrap:wrap; gap:6px 18px; justify-content:center; font-size:.9rem;}
+.fuss nav a{color:var(--gedaempft); text-decoration:none;}
+.fuss .hinweis{font-size:.82rem; color:var(--gedaempft); max-width:52ch;}
+.fuss .handle{font-family:var(--serif); font-size:.62rem; letter-spacing:.42em; text-transform:uppercase; color:var(--mikro);}
+.krise{
+  text-align:center; font-size:.76rem; color:var(--gedaempft); line-height:1.55;
+  padding:10px 16px calc(10px + env(safe-area-inset-bottom, 0px)); background:var(--blush); border-top:1px solid var(--linie);
+}
+.krise b{color:var(--pflaume); font-weight:500;}
+
+/* ---------- Mail-Fenster für die kostenlosen Werkzeuge ---------- */
+.tor{
+  width:min(100% - 32px, 420px); margin:auto; border:none; border-radius:20px;
+  padding:28px 24px 22px; background:var(--papier); color:var(--pflaume);
+  box-shadow:0 24px 60px -24px rgba(92,58,70,.55);
+}
+.tor::backdrop{background:rgba(42,26,32,.45);}
+.tor h2{font-size:1.35rem; margin-bottom:8px; padding-right:24px;}
+.tor p{font-size:.92rem; color:var(--gedaempft); line-height:1.6;}
+.tor input[type="email"]{
+  width:100%; margin-top:14px; font:inherit; font-size:16px; color:var(--pflaume); background:var(--papier);
+  border:1px solid var(--linie); border-radius:12px; padding:12px 14px;
+}
+.tor .check{display:flex; gap:10px; align-items:flex-start; font-size:.84rem; color:var(--gedaempft); line-height:1.5; margin-top:12px;}
+.tor .check input{margin-top:4px; accent-color:var(--beere); flex-shrink:0;}
+.tor .knopf{width:100%; margin-top:14px;}
+.tor .knopf:disabled{opacity:.6; cursor:default;}
+.tor .status{font-size:.9rem; color:var(--beere); margin-top:8px; min-height:1.4em;}
+.tor .zu{position:absolute; top:12px; right:14px; background:none; border:none; cursor:pointer; font-size:24px; line-height:1; color:var(--gedaempft); padding:4px 8px;}
+
+/* ---------- Mobile Kaufleiste ---------- */
+.kaufleiste{
+  position:fixed; left:0; right:0; bottom:0; z-index:9; display:none;
+  padding:10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
+  background:var(--papier); border-top:1px solid var(--linie);
+  align-items:center; justify-content:space-between; gap:12px;
+}
+.kaufleiste .preis{font-size:1.1rem;}
+.kaufleiste .knopf{padding:11px 20px; font-size:.98rem;}
+@media (max-width:720px){ .kaufleiste.sichtbar{display:flex;} body.mit-kaufleiste{padding-bottom:72px;} }
+
+@keyframes auftauchen{from{opacity:0; transform:translateY(12px);}to{opacity:1; transform:none;}}
+.held .innen > *{animation:auftauchen .8s ease both;}
+.held .innen > *:nth-child(2){animation-delay:.08s;}
+.held .innen > *:nth-child(3){animation-delay:.16s;}
+.held .innen > *:nth-child(4){animation-delay:.24s;}
+.held .innen > *:nth-child(5){animation-delay:.32s;}
+@media (prefers-reduced-motion: reduce){
+  *{animation:none !important; transition:none !important;}
+  html{scroll-behavior:auto;}
+}

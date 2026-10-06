@@ -55,10 +55,11 @@ Viele Frauen wissen selbst nicht, in welcher Phase sie sind. Darum gilt: **Die E
 
 ## Offene Punkte
 
+- Website und Salespages (`start.html`, `angebot-*.html`) sind gebaut. Kauf-Links in `assets/seite.js` (`KAUF`) eintragen, sobald die Tentary-Produkte stehen; beim Kreis zusätzlich `KAUF_URL` in `kreis.html`. Vor dem Livegang: Impressum und Datenschutzerklärung anlegen und im Fuß verlinken, eigene Domain.
+- Salespages versprechen „Audios für schwere Tage“ (Programm) und eine Code-Freischaltung (Tagebuch): beides vor dem Verkaufsstart fertigstellen.
 - Kaufweg für Mira, Programm und Kreis: Tentary-Produkt → Code erzeugen → Mail mit Code (Make und MailerLite). Für Mira und den Kreis kann Make die Codes über `/api/zugang/admin` anlegen; beim Kreis zusätzlich: Kündigung → sperren. Bis dahin Codes von Hand in `zugang-admin.html`.
 - Antwort-Helfer live schalten: `ANTWORT_HELFER_CODES` in Netlify anlegen, Code in die Erste-Hilfe-Set-Mail aufnehmen.
 - MailerLite für die Ergebnis-Mail einrichten (Gruppe, Felder, Double-Opt-in, Automatisierung) und Datenschutzerklärung verlinken.
 - Audios für schwere Tage aufnehmen (Dateinamen in `bonus/LIESMICH.md`), nicht mehr einzeln verkaufen.
 - Shop-Links der Einzel-PDFs für die „Du hast schon …?“-Hinweise im Programm.
 - Preise vereinheitlichen (Entwurf nennt Selbstwert-Paket 59 € und E-Book 24 €, live stehen 49 € und 29 €).
-- Tagline auf alle drei Gruppen öffnen, z. B. „Zurück zu dir – egal, wo du gerade stehst.“
