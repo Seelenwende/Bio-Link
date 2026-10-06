@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Red-Flag-Radar · Seelenwende</title>
+<meta name="description" content="Passiert mir das wieder? Ein sanfter Check für neue Bekanntschaften – 18 Situationen, vier Minuten, kostenlos und anonym.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --papier:#FAF6F4;
+    --sand:#F3ECE9;
+    --rose:#B5808F;
+    --beere:#8C5A69;
+    --pflaume:#5C3A46;
+    --gedaempft:#8E7079;
+    --linie:#E4D8D8;
+    --mikro:#C3AEB2;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    background:var(--papier);
+    color:var(--pflaume);
+    font-family:"Jost",sans-serif;
+    font-weight:300;
+    line-height:1.75;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    padding:44px 22px 36px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .page{width:100%;max-width:460px;text-align:center;}
+  [hidden]{display:none !important;}
+
+  .back{
+    display:inline-block;
+    font-family:"Playfair Display",serif;
+    font-size:10.5px;letter-spacing:.36em;text-transform:uppercase;
+    color:var(--rose);text-decoration:none;margin-bottom:26px;
+  }
+  .back:hover{color:var(--beere);}
+
+  .butterfly{width:52px;height:52px;margin:0 auto 16px;display:block;}
+  .butterfly path,.butterfly ellipse{
+    fill:none;stroke:var(--rose);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;
+  }
+  .butterfly .dot,.butterfly .body{fill:var(--rose);stroke:none;}
+
+  h1{
+    font-family:"Playfair Display",serif;font-weight:500;
+    font-size:28px;line-height:1.3;letter-spacing:.01em;
+  }
+  .kicker{
+    font-family:"Playfair Display",serif;font-size:10.5px;letter-spacing:.4em;
+    text-transform:uppercase;color:var(--rose);margin-bottom:10px;
+  }
+  .lead{
+    font-family:"Playfair Display",serif;font-style:italic;
+    font-size:19px;line-height:1.5;margin-top:20px;
+  }
+  .text{font-size:15px;color:var(--gedaempft);margin-top:14px;}
+  .small{font-size:12.5px;color:var(--gedaempft);line-height:1.65;}
+
+  .eyebrow{display:flex;align-items:center;gap:14px;margin:34px 0 16px;}
+  .eyebrow::before,.eyebrow::after{content:"";flex:1;height:1px;background:var(--linie);}
+  .eyebrow span{
+    font-family:"Playfair Display",serif;font-size:10.5px;letter-spacing:.4em;
+    text-transform:uppercase;color:var(--rose);white-space:nowrap;
+  }
+
+  .btn{
+    display:block;width:100%;border:0;cursor:pointer;
+    border-radius:16px;padding:16px 20px;margin-top:26px;
+    background:var(--beere);color:var(--papier);
+    font-family:"Playfair Display",serif;font-size:17px;font-weight:500;letter-spacing:.01em;
+    text-decoration:none;
+    transition:transform .25s ease, box-shadow .25s ease, background-color .25s ease;
+  }
+  .btn .meta{
+    display:block;font-family:"Jost",sans-serif;font-weight:300;
+    font-size:12.5px;color:#EBD9DD;margin-top:3px;
+  }
+  .btn--dark{background:var(--pflaume);}
+  .btn--dark .meta{color:#D9C4CB;}
+  .btn--soft{background:var(--papier);border:1px solid var(--linie);color:var(--pflaume);}
+  .btn--soft .meta{color:var(--gedaempft);}
+  @media (hover:hover){
+    .btn:hover{transform:translateY(-2px);box-shadow:0 10px 26px -14px rgba(92,58,70,.5);}
+    .btn--soft:hover{background:var(--sand);}
+  }
+  .btn:focus-visible,.option:focus-visible,.link-btn:focus-visible,.back:focus-visible{
+    outline:2px solid var(--rose);outline-offset:3px;
+  }
+
+  .steps{list-style:none;text-align:left;margin-top:8px;}
+  .steps li{
+    display:flex;gap:14px;align-items:baseline;
+    font-size:14.5px;color:var(--gedaempft);padding:6px 0;
+  }
+  .steps b{
+    font-family:"Playfair Display",serif;font-weight:500;color:var(--rose);
+    font-size:15px;min-width:1.2em;
+  }
+
+  /* --- Fragen --- */
+  .progress{height:3px;background:var(--linie);border-radius:3px;overflow:hidden;margin-bottom:10px;}
+  .progress i{display:block;height:100%;width:0;background:var(--rose);transition:width .4s ease;}
+  .count{
+    font-family:"Playfair Display",serif;font-size:10.5px;letter-spacing:.36em;
+    text-transform:uppercase;color:var(--rose);
+  }
+  .area-label{font-size:12.5px;color:var(--gedaempft);margin-top:4px;}
+  .statement{
+    font-family:"Playfair Display",serif;font-size:21px;line-height:1.45;
+    margin:30px 0 28px;min-height:5.8em;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .fade{animation:rise .5s ease;}
+  .options{display:flex;flex-direction:column;gap:10px;}
+  .option{
+    width:100%;cursor:pointer;
+    background:var(--papier);border:1px solid var(--linie);border-radius:14px;
+    padding:13px 18px;
+    font-family:"Jost",sans-serif;font-weight:300;font-size:15px;color:var(--pflaume);
+    transition:background-color .2s ease,border-color .2s ease,color .2s ease;
+  }
+  .option--open{border-style:dashed;color:var(--gedaempft);}
+  @media (hover:hover){.option:hover{background:var(--sand);}}
+  .option[aria-pressed="true"]{background:var(--beere);border-color:var(--beere);color:var(--papier);}
+  .link-btn{
+    background:none;border:0;cursor:pointer;margin-top:22px;
+    font-family:"Playfair Display",serif;font-size:10.5px;letter-spacing:.36em;
+    text-transform:uppercase;color:var(--rose);
+  }
+  .link-btn:disabled{visibility:hidden;}
+
+  /* --- Ergebnis --- */
+  .radar{width:120px;height:120px;margin:4px auto 18px;display:block;}
+  .radar circle{fill:none;stroke:var(--linie);stroke-width:1.2;}
+  .radar .ring{stroke:var(--rose);stroke-width:1.6;opacity:0;}
+  .radar .core{fill:var(--rose);stroke:none;}
+  .radar[data-state="calm"] .r1{opacity:1;}
+  .radar[data-state="watch"] .r1,.radar[data-state="watch"] .r2{opacity:1;}
+  .radar[data-state="strong"] .ring{opacity:1;}
+  .radar[data-state="strong"] .ring,.radar[data-state="strong"] .core{stroke:var(--beere);}
+  .radar[data-state="strong"] .core{fill:var(--beere);}
+
+  .card{
+    text-align:left;background:#fff;border:1px solid var(--linie);border-radius:18px;
+    padding:22px 22px 20px;margin-bottom:16px;
+  }
+  .card .rank{
+    font-family:"Playfair Display",serif;font-size:10px;letter-spacing:.34em;
+    text-transform:uppercase;color:var(--rose);
+  }
+  .card h3{
+    font-family:"Playfair Display",serif;font-style:italic;font-weight:500;
+    font-size:21px;line-height:1.35;margin:6px 0 10px;
+  }
+  .card h4{
+    font-family:"Playfair Display",serif;font-weight:500;font-size:13.5px;
+    margin-top:14px;letter-spacing:.02em;
+  }
+  .card p,.card li{font-size:14.5px;color:var(--gedaempft);line-height:1.7;}
+  .card ul{list-style:none;}
+  .card ul li{position:relative;padding-left:16px;margin-top:4px;}
+  .card ul li::before{content:"";position:absolute;left:2px;top:.72em;width:6px;height:6px;border-radius:50%;background:var(--rose);}
+  .card .neu{
+    background:var(--sand);border-radius:12px;padding:12px 14px;margin-top:6px;
+    font-family:"Playfair Display",serif;font-style:italic;font-size:16px;color:var(--pflaume);
+  }
+  .level{
+    display:inline-block;font-size:11.5px;letter-spacing:.06em;
+    border-radius:20px;padding:1px 10px;background:var(--sand);color:var(--beere);
+  }
+
+  .list{text-align:left;list-style:none;}
+  .list li{
+    font-size:14.5px;color:var(--gedaempft);padding:9px 0 9px 26px;position:relative;
+    border-bottom:1px solid var(--linie);
+  }
+  .list li:last-child{border-bottom:0;}
+  .list li b{font-weight:400;color:var(--pflaume);}
+  .list--green li::before{
+    content:"";position:absolute;left:4px;top:17px;width:10px;height:6px;
+    border-left:1.5px solid var(--rose);border-bottom:1.5px solid var(--rose);transform:rotate(-45deg);
+  }
+  .list--open li::before{
+    content:"?";position:absolute;left:3px;top:8px;
+    font-family:"Playfair Display",serif;color:var(--rose);font-size:15px;
+  }
+
+  .bars{text-align:left;}
+  .bar{margin-bottom:14px;}
+  .bar .row{display:flex;justify-content:space-between;gap:12px;font-size:14px;}
+  .bar .row span:last-child{color:var(--gedaempft);font-size:12.5px;white-space:nowrap;}
+  .bar .track{height:6px;background:var(--linie);border-radius:6px;overflow:hidden;margin-top:5px;}
+  .bar .fill{height:100%;background:var(--rose);border-radius:6px;width:0;transition:width .8s ease;}
+
+  .safety{
+    text-align:left;background:var(--sand);border-radius:16px;padding:16px 18px;margin-top:22px;
+    font-size:13.5px;color:var(--pflaume);line-height:1.65;
+  }
+  .safety b{font-weight:400;}
+  .safety strong{font-family:"Playfair Display",serif;font-weight:500;display:block;margin-bottom:4px;font-size:15px;}
+
+  .note{
+    font-size:12px;color:var(--gedaempft);margin-top:30px;line-height:1.65;
+    max-width:36ch;margin-left:auto;margin-right:auto;
+  }
+  .footer{
+    font-family:"Playfair Display",serif;font-size:9px;letter-spacing:.42em;
+    text-transform:uppercase;color:var(--mikro);margin-top:24px;
+  }
+
+  @keyframes rise{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none !important;transition:none !important;}
+  }
+  @media print{
+    body{padding:0;}
+    .no-print{display:none !important;}
+    .card{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+  <main class="page">
+
+    <a class="back no-print" href="index.html">← Seelenwende</a>
+
+    <svg class="butterfly" viewBox="0 0 100 100" aria-hidden="true">
+      <ellipse cx="38" cy="40" rx="13" ry="18" transform="rotate(-35 38 40)"/>
+      <ellipse cx="62" cy="40" rx="13" ry="18" transform="rotate(35 62 40)"/>
+      <ellipse cx="41" cy="61" rx="9" ry="13" transform="rotate(-20 41 61)"/>
+      <ellipse cx="59" cy="61" rx="9" ry="13" transform="rotate(20 59 61)"/>
+      <ellipse class="body" cx="50" cy="50" rx="1.5" ry="16"/>
+      <path d="M50 36 C47 30 45 27 43 24"/>
+      <path d="M50 36 C53 30 55 27 57 24"/>
+      <circle class="dot" cx="43" cy="23.5" r="1.5"/>
+      <circle class="dot" cx="57" cy="23.5" r="1.5"/>
+    </svg>
+
+    <!-- START -->
+    <section id="intro">
+      <div class="kicker">Red-Flag-Radar</div>
+      <h1>Passiert mir das wieder?</h1>
+      <p class="lead">Nach dem, was du erlebt hast, ist Vorsicht kein Misstrauen. Sie ist Schutz.</p>
+      <p class="text">
+        Du lernst jemanden kennen – und irgendwo in dir fragt eine leise Stimme, ob es wieder so beginnt wie damals.
+        Dieser Check hilft dir, Gefühl und Beobachtung zu sortieren: Was sind echte Warnzeichen, und was ist die alte Angst?
+      </p>
+
+      <div class="eyebrow"><span>So funktioniert's</span></div>
+      <ul class="steps">
+        <li><b>1</b><span>18 kurze Situationen aus der Kennenlernzeit, etwa vier Minuten.</span></li>
+        <li><b>2</b><span>Denk an eine bestimmte Person. Wenn du etwas noch nicht einschätzen kannst, wähle „Weiß ich noch nicht“ – das ist am Anfang ganz normal.</span></li>
+        <li><b>3</b><span>Du siehst, wo dein Radar anschlägt, woran sich Sicherheit erkennen lässt und wie du sanft prüfen kannst, ohne dich zu verbiegen.</span></li>
+      </ul>
+      <p class="small" style="margin-top:14px">
+        Wir schreiben „er“. Der Check gilt genauso für jede andere Person – und auch für Freundschaften.
+      </p>
+
+      <button class="btn" id="start" type="button">
+        Check beginnen
+        <span class="meta">Kostenlos · anonym · deine Antworten bleiben auf deinem Gerät</span>
+      </button>
+    </section>
+
+    <!-- FRAGEN -->
+    <section id="quiz" hidden>
+      <div class="progress" aria-hidden="true"><i id="bar"></i></div>
+      <div class="count" id="count" aria-live="polite"></div>
+      <div class="area-label" id="area"></div>
+      <p class="statement" id="statement"></p>
+      <div class="options" id="options" role="group" aria-label="Erlebst du das mit ihm?"></div>
+      <button class="link-btn" id="prev" type="button">← Zurück</button>
+    </section>
+
+    <!-- ERGEBNIS -->
+    <section id="result" hidden>
+      <div class="kicker">Dein Ergebnis</div>
+      <svg class="radar" id="radar" viewBox="0 0 120 120" aria-hidden="true">
+        <circle cx="60" cy="60" r="56"/>
+        <circle cx="60" cy="60" r="40"/>
+        <circle cx="60" cy="60" r="24"/>
+        <circle class="ring r3" cx="60" cy="60" r="56"/>
+        <circle class="ring r2" cx="60" cy="60" r="40"/>
+        <circle class="ring r1" cx="60" cy="60" r="24"/>
+        <circle class="core" cx="60" cy="60" r="5"/>
+      </svg>
+      <h1 id="headline"></h1>
+      <p class="text" id="summary"></p>
+
+      <div id="detailBlock">
+        <div class="eyebrow"><span>Wo dein Radar anschlägt</span></div>
+        <div id="top"></div>
+      </div>
+
+      <div id="safety" class="safety" hidden>
+        <strong>Wenn du dich bedroht fühlst</strong>
+        Kontrolle, Druck und Eifersucht können sich steigern. Du musst nicht warten, bis „etwas Richtiges“ passiert,
+        um dir Rat zu holen. Beratung ist kostenlos und anonym:
+        Gewalt gegen Frauen <b>DE 116 016</b> · <b>AT 0800 222 555</b> · <b>CH</b> Opferhilfe-Beratungsstellen deines Kantons.
+        In akuter Gefahr: <b>112</b> (CH Polizei <b>117</b>).
+      </div>
+
+      <div id="openBlock">
+        <div class="eyebrow"><span>Noch offen</span></div>
+        <p class="text" style="margin-top:0;margin-bottom:10px">
+          Das konntest du noch nicht einschätzen. Kein Problem – nimm es als Beobachtungspunkte für die nächsten Wochen mit.
+        </p>
+        <ul class="list list--open" id="open"></ul>
+      </div>
+
+      <div class="eyebrow"><span>Alle Bereiche</span></div>
+      <div class="bars" id="bars"></div>
+
+      <div class="eyebrow"><span>Woran du Sicherheit erkennst</span></div>
+      <p class="text" style="margin-top:0;margin-bottom:10px">
+        Red Flags zu kennen ist die eine Hälfte. Die andere: zu wissen, wie es sich anfühlt, wenn es gut ist.
+      </p>
+      <ul class="list list--green" id="green"></ul>
+
+      <div class="eyebrow"><span>Wie weiter?</span></div>
+      <p class="text" style="margin-top:0">
+        Du musst nichts sofort entscheiden. Nimm dir Zeit, beobachte in Ruhe – und erinnere dich: Dein Tempo ist nicht verhandelbar.
+        Wer es ernst mit dir meint, kann warten.
+      </p>
+
+      <a class="btn no-print" href="https://seelenwende.mytentary.com/p/Mi6HH3" target="_blank" rel="noopener">
+        Du bist genug
+        <span class="meta">Impulsbuch in acht Schritten zu deinem Selbstwert — 29 €</span>
+      </a>
+      <a class="btn btn--dark no-print" href="https://seelenwende.mytentary.com/p/Mi6HH3" target="_blank" rel="noopener" style="margin-top:13px">
+        Das Bundle – Zurück zu dir
+        <span class="meta">E-Book · Vision Board · Journal — 49 €</span>
+      </a>
+      <a class="btn btn--soft no-print" href="werte-finder.html" style="margin-top:13px">
+        Was ist dir wirklich wichtig?
+        <span class="meta">Kostenloser Werte-Finder · wer seine Werte kennt, erkennt schneller, was nicht passt</span>
+      </a>
+      <button class="btn btn--soft no-print" id="share" type="button" style="margin-top:13px">
+        An eine Freundin schicken
+        <span class="meta">Teilt nur den Link zum Check – nicht dein Ergebnis</span>
+      </button>
+      <button class="btn btn--soft no-print" id="print" type="button" style="margin-top:13px">
+        Ergebnis speichern
+        <span class="meta">Drucken oder als PDF sichern</span>
+      </button>
+      <button class="link-btn no-print" id="restart" type="button">Check neu starten</button>
+    </section>
+
+    <p class="note">
+      Dieser Check ist ein Impuls zur Selbstreflexion – keine Diagnose über dich oder ihn.
+      Seelenwende ist Selbsthilfe und ersetzt keine Therapie oder Beratung.
+    </p>
+    <div class="footer">@_seelenwende</div>
+  </main>
+
+<script>
+(function(){
+  // Sechs Bereiche, je drei Situationen. Punkte pro Situation: Nein 0, Ein wenig 1, Ja deutlich 2.
+  // „Weiß ich noch nicht“ zählt nicht, wird aber als offener Beobachtungspunkt gezeigt.
+  var AREAS = [
+    {
+      id:"tempo", area:"Tempo",
+      titel:"Zu schnell, zu viel",
+      items:[
+        "Er sagt schon nach kurzer Zeit Dinge wie „So etwas habe ich noch nie gefühlt“ oder plant eure gemeinsame Zukunft.",
+        "Mal meldet er sich ständig und sehr intensiv, dann tagelang kaum – und du weißt nicht, warum.",
+        "Er drängt auf schnelle Schritte – Exklusivität, deine Familie kennenlernen, zusammenziehen –, bevor du so weit bist."
+      ],
+      dahinter:"Echte Nähe wächst mit der Zeit. Wenn jemand sehr früh sehr viel gibt, kann das Begeisterung sein. Es kann aber auch ein Weg sein, dich schnell an sich zu binden, bevor du genauer hinschaust. Fachleute nennen das Love Bombing. Der Wechsel zwischen ganz nah und plötzlich kühl hält dich zusätzlich im Warten.",
+      gesund:"Er ist interessiert und verlässlich – und lässt dir trotzdem Zeit. Dein Tempo ist für ihn kein Hindernis.",
+      pruefen:"Bremse bewusst ein wenig: Verschieb ein Treffen oder antworte erst am nächsten Tag. Wie reagiert er – gelassen, oder gekränkt und drängend?",
+      frage:"Woran würde ich merken, dass es mir zu schnell geht – und was würde ich dann tun?"
+    },
+    {
+      id:"perfekt", area:"Zu perfekt",
+      titel:"Fast zu schön, um wahr zu sein",
+      items:[
+        "Er scheint in fast allem genau so zu sein wie du – gleiche Träume, gleiche Wunden, gleicher Humor.",
+        "Er hat sehr früh nach deinen verletzlichen Stellen gefragt – nach deinem Ex, deiner Familie, deinen Ängsten.",
+        "Seine Geschichten passen nicht ganz zusammen; Details ändern sich, je nachdem, wann er erzählt."
+      ],
+      dahinter:"Wenn sich jemand anfühlt wie die Antwort auf alles, was dir gefehlt hat, lohnt sich ein zweiter Blick. Manchmal spiegelt dich jemand so genau, weil er herausfinden will, was dich berührt. Und was er über deine Wunden weiß, kann er später nutzen.",
+      gesund:"Ihr habt Gemeinsamkeiten und Unterschiede. Er erzählt stimmig von sich – nicht nur über dich.",
+      pruefen:"Erzähl Persönliches erst, wenn auch er Persönliches erzählt hat. Achte darauf, ob er Anvertrautes später gegen dich verwendet – auch „nur im Scherz“.",
+      frage:"Was würde ich sehen, wenn ich ihn ohne die Sehnsucht anschaue, endlich angekommen zu sein?"
+    },
+    {
+      id:"grenzen", area:"Grenzen",
+      titel:"Dein Nein zählt nicht ganz",
+      items:[
+        "Wenn du Nein sagst oder um mehr Zeit bittest, ist er gekränkt, schmollt oder fragt so lange nach, bis du nachgibst.",
+        "Er macht Witze über Dinge, die dir wichtig sind – und sagt dann, du seist zu empfindlich.",
+        "Wenn du etwas ansprichst, hast du hinterher das Gefühl, du hättest übertrieben."
+      ],
+      dahinter:"Wie jemand mit deinem Nein umgeht, zeigt mehr als jedes Kompliment. Wer Grenzen übergeht, kleinredet oder dich an deiner Wahrnehmung zweifeln lässt, tut das in einer Beziehung selten weniger – eher mehr.",
+      gesund:"Ein Nein ist für ihn eine Information, kein Angriff. Er nimmt deine Gefühle ernst, auch wenn er sie nicht teilt.",
+      pruefen:"Setz eine kleine, klare Grenze – „Heute nicht, ich brauche einen Abend für mich.“ Ohne lange Begründung. Beobachte, was danach passiert.",
+      frage:"Bei welcher Grenze ist mir gerade mulmig, sie auszusprechen – und warum?"
+    },
+    {
+      id:"verantwortung", area:"Verantwortung",
+      titel:"Schuld sind immer die anderen",
+      items:[
+        "Über frühere Partnerinnen spricht er abwertend – sie waren „verrückt“, „krank“ oder an allem schuld.",
+        "Wenn etwas schiefgeht, liegt es fast nie an ihm.",
+        "Seine Entschuldigungen klingen so, dass du dich am Ende schuldig fühlst."
+      ],
+      dahinter:"Nicht jede Trennung war fair, und jeder darf verletzt sein. Aber wenn in seinen Geschichten immer die anderen schuld sind, bist du in seiner nächsten Geschichte vielleicht die Nächste. Wer keine Verantwortung übernehmen kann, kann auch schwer etwas ändern.",
+      gesund:"Er kann über Vergangenes sprechen, ohne andere schlechtzumachen, und sagt auch mal: „Da lag ich falsch.“",
+      pruefen:"Frag ruhig: „Was hast du aus deiner letzten Beziehung über dich gelernt?“ Hör auf die Antwort – und auf das, was fehlt.",
+      frage:"Wie fühlt es sich für mich an, wenn er über andere Menschen spricht?"
+    },
+    {
+      id:"kontrolle", area:"Kontrolle",
+      titel:"Fürsorge, die enger macht",
+      items:[
+        "Er will genau wissen, wo du bist und mit wem – und nennt das Fürsorge.",
+        "Er reagiert eifersüchtig oder abfällig auf deine Freundinnen, deine Familie oder deine Kollegen.",
+        "Er hat schon Meinungen dazu, wie du dich kleiden, was du essen oder wofür du dein Geld ausgeben solltest."
+      ],
+      dahinter:"Kontrolle beginnt selten laut. Am Anfang klingt sie oft wie Liebe: „Ich mache mir doch nur Sorgen.“ Wenn er dein Leben enger machen möchte, statt es zu bereichern, ist das eines der wichtigsten Signale überhaupt.",
+      gesund:"Er freut sich, dass du ein eigenes Leben hast, und möchte deine Menschen kennenlernen, statt sie schlechtzureden.",
+      pruefen:"Plane bewusst Zeit mit Freundinnen und erzähl es ihm ganz selbstverständlich. Achte darauf, ob sich danach etwas in seinem Ton ändert.",
+      frage:"Wer in meinem Leben ist mir wichtig – und wie spricht er über diese Menschen?"
+    },
+    {
+      id:"bauch", area:"Bauchgefühl",
+      titel:"Dein Körper meldet sich",
+      items:[
+        "Nach einem Treffen oder Gespräch bist du eher verwirrt oder angespannt als froh.",
+        "Du überlegst dir genau, wie du etwas formulierst, damit er nicht verstimmt ist.",
+        "Du erzählst Freundinnen nur einen Teil – oder beschönigst, was passiert ist."
+      ],
+      dahinter:"Dein Körper hat aus der Vergangenheit gelernt. Manchmal meldet er sich, weil etwas wirklich nicht stimmt – manchmal, weil etwas nur an früher erinnert. Beides verdient deine Aufmerksamkeit, nicht dein Wegschieben.",
+      gesund:"In seiner Nähe kannst du durchatmen. Du musst dich nicht vorbereiten, nichts übersetzen und nichts verstecken.",
+      pruefen:"Erzähl einer Freundin, der du vertraust, alles – ungefiltert. Hör dir dabei selbst zu: Wie klingt es, wenn du es laut sagst?",
+      frage:"Was spüre ich in meinem Körper, wenn ich an ihn denke – Weite oder Enge?"
+    }
+  ];
+
+  var OPEN = -1;
+  var SCALE = [
+    { label:"Nein", value:0 },
+    { label:"Ein wenig", value:1 },
+    { label:"Ja, deutlich", value:2 },
+    { label:"Weiß ich noch nicht", value:OPEN, open:true }
+  ];
+  var MAX = 6;
+
+  // Situationen reihum mischen, damit die Bereiche nicht gebündelt auftauchen.
+  var QUESTIONS = [];
+  for (var r = 0; r < 3; r++) {
+    AREAS.forEach(function(a){ QUESTIONS.push({ area:a, text:a.items[r] }); });
+  }
+
+  var $ = function(id){ return document.getElementById(id); };
+  var answers = [];
+  var current = 0;
+
+  function show(section){
+    ["intro","quiz","result"].forEach(function(id){ $(id).hidden = id !== section; });
+    window.scrollTo(0,0);
+  }
+
+  function renderQuestion(){
+    var q = QUESTIONS[current];
+    $("bar").style.width = (current / QUESTIONS.length * 100) + "%";
+    $("count").textContent = "Situation " + (current + 1) + " von " + QUESTIONS.length;
+    $("area").textContent = "Erlebst du das mit ihm?";
+    var st = $("statement");
+    st.textContent = q.text;
+    st.classList.remove("fade"); void st.offsetWidth; st.classList.add("fade");
+
+    var box = $("options");
+    box.innerHTML = "";
+    SCALE.forEach(function(s){
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "option" + (s.open ? " option--open" : "");
+      b.textContent = s.label;
+      b.setAttribute("aria-pressed", answers[current] === s.value ? "true" : "false");
+      b.addEventListener("click", function(){ choose(s.value); });
+      box.appendChild(b);
+    });
+    $("prev").disabled = current === 0;
+  }
+
+  function choose(value){
+    answers[current] = value;
+    var buttons = $("options").querySelectorAll(".option");
+    buttons.forEach(function(b, i){ b.setAttribute("aria-pressed", SCALE[i].value === value ? "true" : "false"); });
+    setTimeout(function(){
+      if (current < QUESTIONS.length - 1) { current++; renderQuestion(); }
+      else { renderResult(); }
+    }, 220);
+  }
+
+  function level(score){
+    if (score >= 4) return "deutliches Signal";
+    if (score >= 2) return "hinschauen";
+    return "ruhig";
+  }
+
+  function el(tag, cls, text){
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+
+  function renderResult(){
+    var scores = {}, marked = {}, open = [];
+    AREAS.forEach(function(a){ scores[a.id] = 0; marked[a.id] = []; });
+    QUESTIONS.forEach(function(q, i){
+      var v = answers[i];
+      if (v === OPEN) { open.push(q.text); return; }
+      scores[q.area.id] += v || 0;
+      if (v > 0) marked[q.area.id].push({ text:q.text, strong:v === 2 });
+    });
+
+    var total = 0;
+    AREAS.forEach(function(a){ total += scores[a.id]; });
+    var ranked = AREAS.slice().sort(function(a, b){ return scores[b.id] - scores[a.id]; });
+    var flagged = ranked.filter(function(a){ return scores[a.id] >= 2; });
+    var strongAreas = ranked.filter(function(a){ return scores[a.id] >= 4; });
+
+    var state = (strongAreas.length || total >= 12) ? "strong" : (flagged.length ? "watch" : "calm");
+    $("radar").setAttribute("data-state", state);
+
+    if (state === "strong") {
+      $("headline").textContent = "Dein Radar schlägt deutlich an";
+      $("summary").textContent =
+        "Mehrere Zeichen sind klar da. Dass du sie bemerkst, ist kein Misstrauen – es ist dein Schutz, der wieder funktioniert. " +
+        "Du schuldest niemandem eine zweite, dritte oder vierte Chance, nur weil der Anfang so schön war.";
+    } else if (state === "watch") {
+      $("headline").textContent = "Dein Radar meldet sich";
+      $("summary").textContent =
+        "Einige Signale sind da. Das heißt nicht, dass er gefährlich ist – aber es lohnt sich, Tempo rauszunehmen und genauer hinzuschauen, bevor du dich weiter öffnest.";
+    } else {
+      $("headline").textContent = "Dein Radar ist ruhig";
+      $("summary").textContent =
+        "Gerade zeigt sich wenig, was auf ein ungesundes Muster hindeutet. Das ist schön – und du darfst trotzdem in deinem Tempo bleiben. " +
+        "Wenn du dennoch Angst spürst, kann das die alte Erfahrung sein, die sich meldet, nicht der neue Mensch. Auch sie darf da sein.";
+    }
+
+    // Bereiche, in denen das Radar anschlägt
+    var topBox = $("top");
+    topBox.innerHTML = "";
+    flagged.slice(0, 3).forEach(function(a, i){
+      var c = el("article", "card");
+      c.appendChild(el("div", "rank", (i + 1) + ". · " + a.area));
+      c.appendChild(el("h3", null, a.titel));
+      c.appendChild(el("span", "level", level(scores[a.id]) + " · " + scores[a.id] + " von " + MAX));
+      c.appendChild(el("h4", null, "Was dir aufgefallen ist"));
+      var ul = el("ul");
+      marked[a.id].forEach(function(m){
+        ul.appendChild(el("li", null, m.text + (m.strong ? "" : " (ein wenig)")));
+      });
+      c.appendChild(ul);
+      c.appendChild(el("h4", null, "Was dahinterstecken kann"));
+      c.appendChild(el("p", null, a.dahinter));
+      c.appendChild(el("h4", null, "So sieht es gesund aus"));
+      c.appendChild(el("p", "neu", a.gesund));
+      c.appendChild(el("h4", null, "Sanft prüfen"));
+      c.appendChild(el("p", null, a.pruefen));
+      c.appendChild(el("h4", null, "Deine Journal-Frage"));
+      c.appendChild(el("p", null, a.frage));
+      topBox.appendChild(c);
+    });
+    $("detailBlock").hidden = !flagged.length;
+
+    $("safety").hidden = !(scores.kontrolle >= 4 || state === "strong");
+
+    var openList = $("open");
+    openList.innerHTML = "";
+    open.forEach(function(t){ openList.appendChild(el("li", null, t)); });
+    $("openBlock").hidden = !open.length;
+
+    var green = $("green");
+    green.innerHTML = "";
+    AREAS.forEach(function(a){
+      var li = el("li");
+      li.appendChild(el("b", null, a.area + ": "));
+      li.appendChild(document.createTextNode(a.gesund));
+      green.appendChild(li);
+    });
+
+    var bars = $("bars");
+    bars.innerHTML = "";
+    var fills = [];
+    ranked.forEach(function(a){
+      var row = el("div", "bar");
+      var head = el("div", "row");
+      head.appendChild(el("span", null, a.area));
+      head.appendChild(el("span", null, level(scores[a.id])));
+      var track = el("div", "track");
+      var fill = el("div", "fill");
+      track.appendChild(fill);
+      row.appendChild(head);
+      row.appendChild(track);
+      bars.appendChild(row);
+      fills.push([fill, scores[a.id] / MAX * 100]);
+    });
+
+    show("result");
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){
+        fills.forEach(function(f){ f[0].style.width = Math.max(f[1], 3) + "%"; });
+      });
+    });
+  }
+
+  function share(){
+    var url = location.href.split("#")[0].split("?")[0];
+    var data = {
+      title:"Red-Flag-Radar · Seelenwende",
+      text:"Passiert mir das wieder? Ein sanfter Check für neue Bekanntschaften – kostenlos und anonym.",
+      url:url
+    };
+    var btn = $("share");
+    var label = btn.firstChild;
+    function done(msg){
+      var old = label.nodeValue;
+      label.nodeValue = msg + " ";
+      setTimeout(function(){ label.nodeValue = old; }, 2200);
+    }
+    if (navigator.share) {
+      navigator.share(data).catch(function(){});
+    } else if (navigator.clipboard) {
+      navigator.clipboard.writeText(url).then(function(){ done("Link kopiert"); }, function(){ done(url); });
+    } else {
+      done(url);
+    }
+  }
+
+  $("start").addEventListener("click", function(){
+    answers = []; current = 0; show("quiz"); renderQuestion();
+  });
+  $("prev").addEventListener("click", function(){
+    if (current > 0) { current--; renderQuestion(); }
+  });
+  $("restart").addEventListener("click", function(){ show("intro"); });
+  $("print").addEventListener("click", function(){ window.print(); });
+  $("share").addEventListener("click", share);
+
+  document.addEventListener("keydown", function(e){
+    if ($("quiz").hidden) return;
+    var n = parseInt(e.key, 10);
+    if (n >= 1 && n <= SCALE.length) choose(SCALE[n - 1].value);
+    if (e.key === "Backspace" && current > 0) { e.preventDefault(); current--; renderQuestion(); }
+  });
+})();
+</script>
+</body>
+</html>
