@@ -94,53 +94,89 @@
   .error{color:var(--beere); font-size:.88rem; min-height:1.3em;}
 
   /* Mitgliederbereich */
-  .month h1{font-size:1.85rem; margin-top:4px;}
-  .month .sub{font-family:var(--serif); font-style:italic; font-size:1.05rem; margin-top:6px;}
-  .letter{display:grid; gap:12px; font-size:.97rem;}
-  .letter-toggle{justify-self:start; background:none; border:none; color:var(--beere); cursor:pointer; padding:0; font-size:.9rem; text-decoration:underline; text-underline-offset:3px;}
-  .tabs{display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:6px;}
-  .tab{
-    background:var(--papier); border:1px solid var(--linie); border-radius:12px; padding:8px 4px; cursor:pointer;
-    color:var(--gedaempft); font-size:.78rem; line-height:1.3;
+  #screen-home{gap:22px;}
+  section[id^="sec-"], #archive-section{scroll-margin-top:72px;}
+  .section-head{display:flex; align-items:center; gap:12px;}
+  .section-head h2{font-size:1.3rem;}
+  .icon{
+    width:40px; height:40px; border-radius:50%; flex-shrink:0; display:grid; place-items:center;
+    background:var(--blush); color:var(--beere);
   }
-  .tab b{display:block; font-weight:500; color:var(--pflaume); font-size:.9rem;}
-  .tab[aria-selected="true"]{background:var(--pflaume); border-color:var(--pflaume); color:var(--auf-beere);}
-  .tab[aria-selected="true"] b{color:var(--auf-beere);}
-  .week{display:grid; gap:16px;}
-  .week h2{font-size:1.4rem;}
-  .week .body{display:grid; gap:12px;}
-  .block{border-left:3px solid var(--rose); padding:2px 0 2px 14px; display:grid; gap:4px;}
-  .block .label{font-size:.68rem; letter-spacing:.16em; text-transform:uppercase; color:var(--rose); font-weight:500;}
-  .block.frage p{font-family:var(--serif); font-style:italic; font-size:1.05rem;}
+  .icon svg{width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round;}
 
-  .mira .row{display:flex; justify-content:space-between; gap:12px; align-items:baseline; flex-wrap:wrap;}
-  .mira h3{font-size:1.2rem;}
+  .month-hero{
+    border-radius:20px; padding:24px 20px 20px; display:grid; gap:8px;
+    background:linear-gradient(140deg, var(--blush), var(--sand));
+  }
+  .month-hero h1{font-size:1.9rem;}
+  .month-hero .sub{font-family:var(--serif); font-style:italic; font-size:1.05rem;}
+  .timeline{list-style:none; margin:14px 0 0; padding:0; display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:6px;}
+  .timeline button{
+    width:100%; background:var(--papier); border:1px solid var(--linie); border-radius:14px; padding:9px 4px 8px; cursor:pointer;
+    color:var(--gedaempft); font-size:.74rem; line-height:1.35; display:grid; gap:1px; justify-items:center;
+  }
+  .timeline button b{font-weight:500; color:var(--pflaume); font-size:.88rem;}
+  .timeline button .now{font-size:.62rem; letter-spacing:.12em; text-transform:uppercase; color:var(--beere); font-weight:500;}
+  .timeline button[aria-pressed="true"]{background:var(--pflaume); border-color:var(--pflaume); color:var(--papier);}
+  .timeline button[aria-pressed="true"] b, .timeline button[aria-pressed="true"] .now{color:var(--papier);}
+
+  .jump{display:flex; gap:8px; overflow-x:auto; padding-bottom:2px; scrollbar-width:none;}
+  .jump::-webkit-scrollbar{display:none;}
+  .jump a{
+    flex-shrink:0; text-decoration:none; color:var(--pflaume); background:var(--papier); border:1px solid var(--linie);
+    border-radius:20px; padding:6px 13px; font-size:.84rem; white-space:nowrap;
+  }
+  @media (hover:hover){ .jump a:hover{background:var(--sand);} }
+
+  .letter{display:grid; gap:14px;}
+  .letter-text{display:grid; gap:12px; font-size:.98rem;}
+  .signature{font-family:var(--serif); font-style:italic; color:var(--beere);}
+
+  .week{display:grid; gap:12px;}
+  .week-head{display:grid; gap:4px; padding:0 2px;}
+  .week-head h2{font-size:1.45rem;}
+  .step{display:grid; gap:12px; background:var(--papier); border:1px solid var(--linie); border-radius:16px; padding:16px;}
+  .step-head{display:flex; align-items:center; gap:10px;}
+  .step-head .icon{width:34px; height:34px;}
+  .step-head .icon svg{width:18px; height:18px;}
+  .step .body{display:grid; gap:10px;}
+  .step-label{font-size:.7rem; letter-spacing:.16em; text-transform:uppercase; color:var(--rose); font-weight:500;}
+  .step.frage{background:var(--sand); border-color:transparent;}
+  .step.frage p{font-family:var(--serif); font-style:italic; font-size:1.1rem; line-height:1.5;}
+
+  .mira{background:linear-gradient(140deg, var(--sand), var(--blush));}
+  .mira .row{display:flex; justify-content:space-between; gap:12px; align-items:center; flex-wrap:wrap;}
+  .mira h2{font-size:1.25rem;}
   .meter{height:6px; background:var(--papier); border-radius:6px; overflow:hidden;}
   .meter span{display:block; height:100%; background:var(--beere); border-radius:6px;}
-
-  .links{display:grid; gap:10px;}
-  .links a{
-    display:block; text-decoration:none; color:var(--pflaume); border:1px solid var(--linie); border-radius:14px; padding:12px 16px;
-  }
-  .links a b{display:block; font-family:var(--serif); font-weight:500; font-size:1.02rem;}
-  .links a span{font-size:.85rem; color:var(--gedaempft);}
-  @media (hover:hover){ .links a:hover{background:var(--sand);} }
-
   .mira .actions-row{display:flex; gap:8px; flex-wrap:wrap;}
   .mira .actions-row .btn{flex:1 1 200px;}
-  .next{display:grid; gap:4px;}
-  .next .title{font-family:var(--serif); font-size:1.15rem;}
-  .tool-group{display:grid; gap:8px;}
-  .tool-group h4{margin:6px 0 0; font-size:.68rem; letter-spacing:.18em; text-transform:uppercase; color:var(--rose); font-weight:500; font-family:var(--sans);}
-  .links a .tag{display:inline-block; margin-left:6px; font-family:var(--sans); font-size:.62rem; letter-spacing:.12em; text-transform:uppercase; color:var(--beere); border:1px solid var(--linie); border-radius:20px; padding:0 7px; vertical-align:2px;}
+
+  .next{display:grid; grid-template-columns:40px minmax(0,1fr); gap:14px; align-items:center;}
+  .next .title{font-family:var(--serif); font-size:1.12rem; display:block;}
+
+  .tools{display:grid; gap:14px;}
+  .tool-group{background:var(--papier); border:1px solid var(--linie); border-radius:16px; padding:16px; display:grid; gap:12px;}
+  .tool-group .section-head h3{font-size:1.1rem;}
+  .tool-group .section-head p{font-size:.84rem; color:var(--gedaempft);}
+  .links{display:grid; gap:8px; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));}
+  .links a{
+    display:block; text-decoration:none; color:var(--pflaume); background:var(--sand); border-radius:12px; padding:11px 14px;
+  }
+  .links a b{display:block; font-family:var(--serif); font-weight:500; font-size:1rem;}
+  .links a span{font-size:.84rem; color:var(--gedaempft);}
+  .links a .tag{display:inline-block; margin-left:4px; font-family:var(--sans); font-size:.6rem; letter-spacing:.12em; text-transform:uppercase; color:var(--beere); border:1px solid var(--rose); border-radius:20px; padding:0 7px; vertical-align:2px;}
+  @media (hover:hover){ .links a:hover{background:var(--blush);} }
+
   .preview-note{background:var(--blush); border-radius:12px; padding:10px 14px; font-size:.85rem; color:var(--beere);}
   .archive{display:grid; gap:8px;}
   .archive button{
-    text-align:left; background:var(--papier); border:1px solid var(--linie); border-radius:12px; padding:10px 14px; cursor:pointer; color:var(--pflaume);
-    display:flex; justify-content:space-between; gap:10px; font-size:.92rem;
+    text-align:left; background:var(--papier); border:1px solid var(--linie); border-radius:14px; padding:12px 14px; cursor:pointer; color:var(--pflaume);
+    display:grid; gap:2px; font-size:.95rem;
   }
-  .archive button span{color:var(--gedaempft); white-space:nowrap;}
-  .archive button[aria-current="true"]{border-color:var(--beere);}
+  .archive button b{font-family:var(--serif); font-weight:500; font-size:1.02rem;}
+  .archive button span{color:var(--gedaempft); font-size:.8rem; letter-spacing:.08em; text-transform:uppercase;}
+  .archive button[aria-current="true"]{border-color:var(--beere); background:var(--blush);}
 
   footer.crisis-bar{
     text-align:center; font-size:.74rem; color:var(--gedaempft); line-height:1.5;
@@ -211,47 +247,67 @@
 </main>
 
 <main id="screen-home" hidden>
-  <section class="month">
+  <section class="month-hero" aria-labelledby="month-title">
     <span class="eyebrow" id="month-label"></span>
     <h1 id="month-title"></h1>
     <p class="sub" id="month-sub"></p>
+    <ol class="timeline" id="tabs" aria-label="Die vier Wochen dieses Monats"></ol>
   </section>
 
-  <section class="card outline letter" aria-label="Brief zum Monat">
-    <div class="letter" id="letter-text"></div>
-    <button class="letter-toggle" id="letter-toggle" aria-expanded="false">Weiterlesen</button>
+  <nav class="jump" aria-label="Auf dieser Seite">
+    <a href="#sec-brief">Brief</a>
+    <a href="#sec-woche">Diese Woche</a>
+    <a href="#sec-mira">Mira</a>
+    <a href="#sec-tools">Werkzeuge</a>
+    <a href="#archive-section" id="jump-archive">Alle Monate</a>
+  </nav>
+
+  <section class="card outline letter" id="sec-brief" aria-labelledby="brief-title">
+    <div class="section-head"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5 12 13l8.5-6.5"/></svg></span><h2 id="brief-title">Ein Brief zum Monat</h2></div>
+    <div class="letter-text" id="letter-text"></div>
+    <p class="signature">Von Herzen,<br>Seelenwende</p>
   </section>
 
-  <section class="week" aria-labelledby="week-title">
-    <div class="tabs" role="tablist" id="tabs"></div>
-    <h2 id="week-title"></h2>
-    <div class="body" id="week-text"></div>
-    <div class="block"><span class="label">Kleine Übung</span><p id="week-uebung"></p></div>
-    <div class="block frage"><span class="label">Frage für dein Journal</span><p id="week-frage"></p></div>
+  <section class="week" id="sec-woche" aria-labelledby="week-title">
+    <div class="week-head">
+      <span class="eyebrow" id="week-label"></span>
+      <h2 id="week-title"></h2>
+    </div>
+    <article class="step">
+      <div class="step-head"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 21c-4-3-7-6.5-7-10.5A7 7 0 0 1 12 4a7 7 0 0 1 7 6.5C19 14.5 16 18 12 21Z"/><path d="M12 9v6M9 12h6"/></svg></span><span class="step-label">Impuls</span></div>
+      <div class="body" id="week-text"></div>
+    </article>
+    <article class="step">
+      <div class="step-head"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 19c6 0 12-5 14-14-9 2-14 8-14 14Z"/><path d="M5 19 13 11"/></svg></span><span class="step-label">Kleine Übung</span></div>
+      <p id="week-uebung"></p>
+    </article>
+    <article class="step frage">
+      <div class="step-head"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 20l1.2-3.6A8 8 0 1 1 8 19.2Z"/><path d="M10 9.5a2 2 0 1 1 2.8 1.8c-.5.3-.8.7-.8 1.2v.5"/><path d="M12 15.5v.1"/></svg></span><span class="step-label">Frage für dein Journal</span></div>
+      <p id="week-frage"></p>
+    </article>
   </section>
 
-  <section class="card mira" aria-labelledby="mira-title">
-    <div class="row"><h3 id="mira-title">Mit Mira weiterdenken</h3><span class="muted" id="mira-count" style="font-size:.88rem"></span></div>
+  <section class="card mira" id="sec-mira" aria-labelledby="mira-title">
+    <div class="row">
+      <div class="section-head"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4Z"/><path d="M8 9.5h8M8 12.5h5"/></svg></span><h2 id="mira-title">Mit Mira weiterdenken</h2></div>
+      <span class="muted" id="mira-count" style="font-size:.86rem"></span>
+    </div>
     <div class="meter" aria-hidden="true"><span id="mira-meter" style="width:0"></span></div>
     <p id="mira-text" style="font-size:.95rem"></p>
     <div class="actions-row">
       <button class="btn" id="mira-week-btn">Über diese Woche sprechen</button>
       <button class="btn soft" id="mira-btn">Einfach losschreiben</button>
     </div>
-    <p class="muted" id="mira-reset" style="font-size:.85rem"></p>
+    <p class="muted" id="mira-reset" style="font-size:.84rem"></p>
   </section>
 
-  <section class="card outline next" id="next-card" hidden aria-label="Nächster Monat">
-    <span class="eyebrow" id="next-label"></span>
-    <span class="title" id="next-title"></span>
-    <span class="muted" id="next-sub" style="font-size:.92rem"></span>
-  </section>
-
-  <section aria-labelledby="tools-title" style="display:grid; gap:12px">
-    <h3 id="tools-title" style="font-size:1.2rem">Werkzeuge</h3>
-    <p class="muted" style="font-size:.9rem">Alle Werkzeuge laufen in deinem Browser. Was du eingibst, bleibt auf deinem Gerät.</p>
+  <section class="tools" id="sec-tools" aria-labelledby="tools-title">
+    <div style="display:grid; gap:4px; padding:0 2px">
+      <h2 id="tools-title" style="font-size:1.45rem">Deine Werkzeuge</h2>
+      <p class="muted" style="font-size:.9rem">Alle laufen in deinem Browser. Was du eingibst, bleibt auf deinem Gerät.</p>
+    </div>
     <div class="tool-group">
-      <h4>Klarheit</h4>
+      <div class="section-head"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"/></svg></span><div><h3>Klarheit</h3><p>Wenn du sortieren willst, was passiert.</p></div></div>
       <div class="links">
         <a href="muster-check.html"><b>Muster-Check</b><span>Ist das noch normal? 20 Situationen aus dem Alltag.</span></a>
         <a href="glaubenssaetze.html"><b>Glaubenssätze-Test</b><span>Welche alten Sätze halten dich fest?</span></a>
@@ -259,24 +315,33 @@
       </div>
     </div>
     <div class="tool-group">
-      <h4>Schutz</h4>
+      <div class="section-head"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.5 3 8 7 10 4-2 7-5.5 7-10V6Z"/></svg></span><div><h3>Schutz</h3><p>Wenn du sicher planen oder neu vertrauen willst.</p></div></div>
       <div class="links">
         <a href="planer.html"><b>Ausstiegs-Planer</b><span>Sicherheitsplan Schritt für Schritt, mit Beratungsstellen für CH, DE und AT.</span></a>
         <a href="red-flag-radar.html"><b>Red-Flag-Radar</b><span>Passiert mir das wieder? Ein Check für neue Bekanntschaften.</span></a>
       </div>
     </div>
     <div class="tool-group">
-      <h4>Stärkung</h4>
+      <div class="section-head"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.3-7-9.5A4 4 0 0 1 12 8a4 4 0 0 1 7 2.5C19 15.7 12 20 12 20Z"/></svg></span><div><h3>Stärkung</h3><p>Wenn du wieder zu dir finden willst.</p></div></div>
       <div class="links">
         <a href="affirmationen.html"><b>Sei sanft mit dir</b><span>Freundliche Sätze für die harte Stimme in dir.</span></a>
         <a href="werte-finder.html"><b>Werte-Finder</b><span>Was ist dir wirklich wichtig?</span></a>
-        <a href="neuer-satz-kompass.html"><b>Neuer-Satz-Kompass <span class="tag">im Kreis enthalten</span></b><span>30 Tage vom alten zum neuen Satz. Dein Kreis-Code öffnet ihn.</span></a>
+        <a href="neuer-satz-kompass.html"><b>Neuer-Satz-Kompass <span class="tag">im Kreis</span></b><span>30 Tage vom alten zum neuen Satz. Dein Kreis-Code öffnet ihn.</span></a>
       </div>
     </div>
   </section>
 
+  <section class="card outline next" id="next-card" hidden aria-label="Nächster Monat">
+    <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span>
+    <div>
+      <span class="eyebrow" id="next-label"></span>
+      <span class="title" id="next-title"></span>
+      <span class="muted" id="next-sub" style="font-size:.9rem"></span>
+    </div>
+  </section>
+
   <section id="archive-section" aria-labelledby="archive-title" style="display:grid; gap:12px" hidden>
-    <h3 id="archive-title" style="font-size:1.2rem">Alle Monatsthemen</h3>
+    <h2 id="archive-title" style="font-size:1.45rem; padding:0 2px">Alle Monatsthemen</h2>
     <p class="preview-note" id="preview-note" hidden>Testansicht: Hier siehst du auch kommende Monate. Mitglieder sehen einen Monat erst ab seinem Ersten.</p>
     <div class="archive" id="archive"></div>
   </section>
@@ -383,25 +448,32 @@
   }
   function aktuelleWoche(){ return Math.min(3, Math.floor((state.data.heute.day - 1) / 7)); }
 
+  function tageImMonat(monat){ var p = monat.split("-"); return new Date(Date.UTC(Number(p[0]), Number(p[1]), 0)).getUTCDate(); }
+  // Woche 1: 1.–7., Woche 2: 8.–14., Woche 3: 15.–21., Woche 4: 22. bis Monatsende.
+  function wochenTage(monat, i){ return { von: 7 * i + 1, bis: i === 3 ? tageImMonat(monat) : 7 * i + 7 }; }
+
   function showThema(thema, woche){
     state.thema = thema;
     var istAktuell = thema.monat === state.data.aktuell;
-    var label = istAktuell ? "Thema im " : (thema.monat > state.data.aktuell ? "Vorschau · " : "Aus dem Archiv · ");
+    var label = istAktuell ? "Dein Thema im " : (thema.monat > state.data.aktuell ? "Vorschau · " : "Aus dem Archiv · ");
     $("month-label").textContent = label + monatName(thema.monat);
     $("month-title").textContent = thema.titel;
     $("month-sub").textContent = thema.untertitel;
     paragraphs($("letter-text"), thema.brief);
-    setLetter(false);
 
     var tabs = $("tabs");
     tabs.innerHTML = "";
     thema.wochen.forEach(function(w, i){
+      var li = document.createElement("li");
       var b = document.createElement("button");
-      b.className = "tab"; b.setAttribute("role", "tab");
-      b.innerHTML = "<b>Woche " + (i + 1) + "</b>";
-      if (istAktuell && i === aktuelleWoche()) b.appendChild(document.createTextNode("diese Woche"));
+      var t = wochenTage(thema.monat, i);
+      var name = document.createElement("b"); name.textContent = "Woche " + (i + 1);
+      b.appendChild(name);
+      b.appendChild(document.createTextNode(t.von + ".–" + t.bis + "."));
+      if (istAktuell && i === aktuelleWoche()) { var n = document.createElement("span"); n.className = "now"; n.textContent = "jetzt"; b.appendChild(n); }
       b.addEventListener("click", function(){ showWoche(i); });
-      tabs.appendChild(b);
+      li.appendChild(b);
+      tabs.appendChild(li);
     });
     showWoche(woche);
     document.querySelectorAll("#archive button").forEach(function(b){ b.setAttribute("aria-current", String(b.dataset.monat === thema.monat)); });
@@ -410,23 +482,16 @@
   function showWoche(i){
     state.woche = i;
     var w = state.thema.wochen[i];
-    Array.prototype.forEach.call($("tabs").children, function(b, j){ b.setAttribute("aria-selected", String(j === i)); });
+    Array.prototype.forEach.call($("tabs").querySelectorAll("button"), function(b, j){ b.setAttribute("aria-pressed", String(j === i)); });
+    var t = wochenTage(state.thema.monat, i);
+    var monat = monatName(state.thema.monat).split(" ")[0];
+    $("week-label").textContent = "Woche " + (i + 1) + " · " + t.von + ".–" + t.bis + ". " + monat;
     $("week-title").textContent = w.titel;
     paragraphs($("week-text"), w.text);
     $("week-uebung").textContent = w.uebung;
     $("week-frage").textContent = w.frage;
     $("mira-text").textContent = "Magst du über „" + w.titel + "“ sprechen? Mira bekommt den Einstieg schon mit, du kannst ihn vor dem Senden noch ändern.";
   }
-
-  // Brief zum Monat: erst nur der erste Absatz, der Rest auf Wunsch.
-  function setLetter(open){
-    var ps = $("letter-text").children;
-    for (var i = 1; i < ps.length; i++) ps[i].hidden = !open;
-    $("letter-toggle").hidden = ps.length < 2;
-    $("letter-toggle").textContent = open ? "Weniger anzeigen" : "Weiterlesen";
-    $("letter-toggle").setAttribute("aria-expanded", String(open));
-  }
-  $("letter-toggle").addEventListener("click", function(){ setLetter(this.getAttribute("aria-expanded") !== "true"); });
 
   function renderMira(m){
     var left = Math.max(0, m.limit - m.used);
@@ -451,16 +516,20 @@
   function renderArchive(){
     var alte = state.data.themen;
     $("archive-section").hidden = alte.length < 2;
+    $("jump-archive").hidden = alte.length < 2;
     $("preview-note").hidden = !state.data.vorschau;
     var box = $("archive");
     box.innerHTML = "";
     alte.forEach(function(t){
       var b = document.createElement("button");
       b.dataset.monat = t.monat;
-      b.textContent = t.titel;
       var s = document.createElement("span"); s.textContent = (t.monat > state.data.aktuell ? "Vorschau · " : "") + monatName(t.monat);
-      b.appendChild(s);
-      b.addEventListener("click", function(){ showThema(t, 0); window.scrollTo(0, 0); });
+      var title = document.createElement("b"); title.textContent = t.titel;
+      b.appendChild(s); b.appendChild(title);
+      b.addEventListener("click", function(){
+        showThema(t, t.monat === state.data.aktuell ? aktuelleWoche() : 0);
+        window.scrollTo(0, 0);
+      });
       box.appendChild(b);
     });
   }
