@@ -9,7 +9,7 @@ export default async (req: Request, _context: Context) => {
   if (!isAntwortHelferConfigured()) return json({ error: "Der Antwort-Helfer ist noch nicht eingerichtet." }, 503);
 
   const body = await req.json().catch(() => null);
-  if (!isValidCode(body?.code)) return json({ error: "Dieser Zugangscode ist ungültig.", reason: "zugang" }, 401);
+  if (!(await isValidCode(body?.code))) return json({ error: "Dieser Zugangscode ist ungültig.", reason: "zugang" }, 401);
 
   const eingabe = parseEingabe(body);
   if (!eingabe) return json({ error: "Bitte füge seine Nachricht ein (höchstens 4000 Zeichen)." }, 400);

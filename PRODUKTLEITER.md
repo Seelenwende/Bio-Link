@@ -50,12 +50,13 @@ Viele Frauen wissen selbst nicht, in welcher Phase sie sind. Darum gilt: **Die E
 - **Der Weg nach draußen**, **Erste-Hilfe-Set** – für den Stups und die ersten Tage danach.
 - **Ausstiegs-Planer** (`planer.html`, gebaut) – Sicherheitsplan als Checkliste mit Beratungsstellen für CH, DE und AT. Gratis, ohne Code, läuft komplett im Browser. Diskret: neutraler Tab-Titel, „Schnell weg“, speichert nur mit PIN und nur verschlüsselt auf dem Gerät.
 - **Self Care Journal**, **Du bist genug**, **Das Bundle** – Selbstwert und Neuanfang.
+- **Seelenwende Kreis** (`kreis.html`) – Mitgliedschaft für alle drei Phasen: ein Thema pro Monat mit vier Wochen-Impulsen, Archiv, Mira mit 150 Nachrichten pro Monat, alle Werkzeuge an einem Ort und der Neuer-Satz-Kompass inklusive. Diskret: keine App, kein Gruppenchat. Gebaut; es fehlen der Tentary-Abo-Link und die Automatik für Code-Mails.
 - **Klarheits-Analyse** – schriftliche Außensicht, ohne Telefonat (sicherer für Frauen, die noch drin sind).
 
 ## Offene Punkte
 
+- Kaufweg für Mira, Programm und Kreis: Tentary-Produkt → Code erzeugen → Mail mit Code (Make und MailerLite). Für Mira und den Kreis kann Make die Codes über `/api/zugang/admin` anlegen; beim Kreis zusätzlich: Kündigung → sperren. Bis dahin Codes von Hand in `zugang-admin.html`.
 - Antwort-Helfer live schalten: `ANTWORT_HELFER_CODES` in Netlify anlegen, Code in die Erste-Hilfe-Set-Mail aufnehmen.
-- Kaufweg für Mira und Programm: Tentary-Produkt → Code erzeugen → Mail mit Code (Make und MailerLite).
 - MailerLite für die Ergebnis-Mail einrichten (Gruppe, Felder, Double-Opt-in, Automatisierung) und Datenschutzerklärung verlinken.
 - Audios für schwere Tage aufnehmen (Dateinamen in `bonus/LIESMICH.md`), nicht mehr einzeln verkaufen.
 - Shop-Links der Einzel-PDFs für die „Du hast schon …?“-Hinweise im Programm.

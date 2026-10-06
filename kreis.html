@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="referrer" content="no-referrer">
+<title>Seelenwende Kreis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  /* Layout: eine ruhige Spalte. Ohne Code: was der Kreis ist + Code-Eingabe. Mit Code: Monatsthema, Woche, Mira, Archiv. */
+  :root{
+    --papier:#FAF6F4; --sand:#F3ECE9; --blush:#F6E9EC;
+    --rose:#B5808F; --beere:#8C5A69; --pflaume:#5C3A46;
+    --gedaempft:#8E7079; --linie:#E4D8D8; --ok:#5C7A5C; --ok-soft:#E4EDE4;
+    --auf-beere:#FAF6F4;
+    --serif:"Playfair Display",Georgia,serif;
+    --sans:"Jost",system-ui,-apple-system,"Segoe UI",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --papier:#1B1417; --sand:#241B1F; --blush:#2A1E22;
+      --rose:#D9A6B3; --beere:#9E6478; --pflaume:#F3E4E7;
+      --gedaempft:#C0A2AA; --linie:#3D2C31; --ok:#8FBFA0; --ok-soft:#20302A;
+      --auf-beere:#FBF1F3; color-scheme:dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --papier:#1B1417; --sand:#241B1F; --blush:#2A1E22;
+    --rose:#D9A6B3; --beere:#9E6478; --pflaume:#F3E4E7;
+    --gedaempft:#C0A2AA; --linie:#3D2C31; --ok:#8FBFA0; --ok-soft:#20302A;
+    --auf-beere:#FBF1F3; color-scheme:dark;
+  }
+  *{box-sizing:border-box;}
+  [hidden]{display:none !important;}
+  body{
+    margin:0; background:var(--papier); color:var(--pflaume);
+    font-family:var(--sans); font-weight:300; font-size:16px; line-height:1.65;
+    -webkit-font-smoothing:antialiased; min-height:100vh; display:flex; flex-direction:column;
+  }
+  button, input{font-family:inherit;}
+  button:focus-visible, input:focus-visible, a:focus-visible{outline:2px solid var(--rose); outline-offset:2px;}
+  a{color:var(--beere);}
+  h1,h2,h3{font-family:var(--serif); font-weight:500; margin:0; line-height:1.25; text-wrap:balance;}
+  p{margin:0;}
+
+  header{
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    padding:12px 16px; border-bottom:1px solid var(--linie); position:sticky; top:0; background:var(--papier); z-index:2;
+  }
+  .brand{display:flex; align-items:center; gap:10px; min-width:0;}
+  .brand .word{font-family:var(--serif); letter-spacing:.2em; text-transform:uppercase; font-size:12px; color:var(--gedaempft); white-space:nowrap;}
+  .butterfly{width:24px; height:24px; flex-shrink:0;}
+  .butterfly .w1{fill:var(--beere);} .butterfly .w2{fill:var(--rose);} .butterfly .w3{fill:var(--linie);} .butterfly .k{fill:var(--pflaume);}
+  .actions{display:flex; gap:8px; flex-shrink:0; align-items:center;}
+  .ghost{background:none; border:none; color:var(--gedaempft); font-size:.8rem; cursor:pointer; padding:7px 4px;}
+  .exit{
+    background:var(--sand); color:var(--pflaume); border:1px solid var(--linie);
+    border-radius:20px; padding:7px 14px; font-size:.8rem; font-weight:500; cursor:pointer; white-space:nowrap;
+  }
+
+  main{flex:1; width:100%; max-width:640px; margin:0 auto; padding:28px 16px 40px; display:grid; gap:28px; align-content:start;}
+  .eyebrow{font-size:.68rem; letter-spacing:.2em; text-transform:uppercase; color:var(--rose); font-weight:500;}
+  .muted{color:var(--gedaempft);}
+  .card{background:var(--sand); border-radius:16px; padding:20px; display:grid; gap:12px;}
+  .card.outline{background:var(--papier); border:1px solid var(--linie);}
+  .btn{
+    display:inline-flex; justify-content:center; align-items:center; background:var(--pflaume); color:var(--papier);
+    border:none; border-radius:24px; padding:13px 22px; font-weight:500; font-size:.95rem; cursor:pointer; text-decoration:none; text-align:center;
+  }
+  .btn.soft{background:var(--papier); color:var(--pflaume); border:1px solid var(--linie);}
+  .btn:disabled{opacity:.5; cursor:not-allowed;}
+
+  /* Einladung */
+  .hero{text-align:center; display:grid; gap:12px; padding-top:6px;}
+  .hero h1{font-size:2rem;}
+  .hero .lead{font-family:var(--serif); font-style:italic; font-size:1.1rem;}
+  .includes{list-style:none; margin:0; padding:0; display:grid; gap:12px;}
+  .includes li{display:grid; grid-template-columns:22px 1fr; gap:10px; align-items:start;}
+  .includes li::before{content:""; width:8px; height:8px; border-radius:50%; background:var(--rose); margin:9px 0 0 6px;}
+  .includes b{font-weight:500;}
+  .price{display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap;}
+  .price .amount{font-family:var(--serif); font-size:1.6rem;}
+  .gate{display:grid; gap:10px;}
+  .gate label.field{font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; color:var(--gedaempft);}
+  .gate input[type="text"]{
+    width:100%; border:1px solid var(--linie); background:var(--papier); color:var(--pflaume);
+    border-radius:12px; padding:13px 15px; font-size:1rem; font-weight:400; letter-spacing:.04em;
+  }
+  .gate .remember{display:flex; gap:8px; align-items:flex-start; font-size:.84rem; color:var(--gedaempft);}
+  .gate .remember input{margin-top:4px; accent-color:var(--beere);}
+  .error{color:var(--beere); font-size:.88rem; min-height:1.3em;}
+
+  /* Mitgliederbereich */
+  #screen-home{gap:22px;}
+  section[id^="sec-"], #archive-section{scroll-margin-top:72px;}
+  .section-head{display:flex; align-items:center; gap:12px;}
+  .section-head h2{font-size:1.3rem;}
+  .icon{
+    width:40px; height:40px; border-radius:50%; flex-shrink:0; display:grid; place-items:center;
+    background:var(--blush); color:var(--beere);
+  }
+  .icon svg{width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round;}
+
+  .month-hero{
+    border-radius:20px; padding:24px 20px 20px; display:grid; gap:8px;
+    background:linear-gradient(140deg, var(--blush), var(--sand));
+  }
+  .month-hero h1{font-size:1.9rem;}
+  .month-hero .sub{font-family:var(--serif); font-style:italic; font-size:1.05rem;}
+  .timeline{list-style:none; margin:14px 0 0; padding:0; display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:6px;}
+  .timeline button{
+    width:100%; background:var(--papier); border:1px solid var(--linie); border-radius:14px; padding:9px 4px 8px; cursor:pointer;
+    color:var(--gedaempft); font-size:.74rem; line-height:1.35; display:grid; gap:1px; justify-items:center;
+  }
+  .timeline button b{font-weight:500; color:var(--pflaume); font-size:.88rem;}
+  .timeline button .now{font-size:.62rem; letter-spacing:.12em; text-transform:uppercase; color:var(--beere); font-weight:500;}
+  .timeline button[aria-pressed="true"]{background:var(--pflaume); border-color:var(--pflaume); color:var(--papier);}
+  .timeline button[aria-pressed="true"] b, .timeline button[aria-pressed="true"] .now{color:var(--papier);}
+
+  .jump{display:flex; gap:8px; overflow-x:auto; padding-bottom:2px; scrollbar-width:none;}
+  .jump::-webkit-scrollbar{display:none;}
+  .jump a{
+    flex-shrink:0; text-decoration:none; color:var(--pflaume); background:var(--papier); border:1px solid var(--linie);
+    border-radius:20px; padding:6px 13px; font-size:.84rem; white-space:nowrap;
+  }
+  @media (hover:hover){ .jump a:hover{background:var(--sand);} }
+
+  .letter{display:grid; gap:14px;}
+  .letter-text{display:grid; gap:12px; font-size:.98rem;}
+  .signature{font-family:var(--serif); font-style:italic; color:var(--beere);}
+
+  .week{display:grid; gap:12px;}
+  .week-head{display:grid; gap:4px; padding:0 2px;}
+  .week-head h2{font-size:1.45rem;}
+  .step{display:grid; gap:12px; background:var(--papier); border:1px solid var(--linie); border-radius:16px; padding:16px;}
+  .step-head{display:flex; align-items:center; gap:10px;}
+  .step-head .icon{width:34px; height:34px;}
+  .step-head .icon svg{width:18px; height:18px;}
+  .step .body{display:grid; gap:10px;}
+  .step-label{font-size:.7rem; letter-spacing:.16em; text-transform:uppercase; color:var(--rose); font-weight:500;}
+  .step.frage{background:var(--sand); border-color:transparent;}
+  .step.frage p{font-family:var(--serif); font-style:italic; font-size:1.1rem; line-height:1.5;}
+
+  .mira{background:linear-gradient(140deg, var(--sand), var(--blush));}
+  .mira .row{display:flex; justify-content:space-between; gap:12px; align-items:center; flex-wrap:wrap;}
+  .mira h2{font-size:1.25rem;}
+  .meter{height:6px; background:var(--papier); border-radius:6px; overflow:hidden;}
+  .meter span{display:block; height:100%; background:var(--beere); border-radius:6px;}
+  .mira .actions-row{display:flex; gap:8px; flex-wrap:wrap;}
+  .mira .actions-row .btn{flex:1 1 200px;}
+
+  .next{display:grid; grid-template-columns:40px minmax(0,1fr); gap:14px; align-items:center;}
+  .next .title{font-family:var(--serif); font-size:1.12rem; display:block;}
+
+  .tools{display:grid; gap:14px;}
+  .tool-group{background:var(--papier); border:1px solid var(--linie); border-radius:16px; padding:16px; display:grid; gap:12px;}
+  .tool-group .section-head h3{font-size:1.1rem;}
+  .tool-group .section-head p{font-size:.84rem; color:var(--gedaempft);}
+  .links{display:grid; gap:8px; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));}
+  .links a{
+    display:block; text-decoration:none; color:var(--pflaume); background:var(--sand); border-radius:12px; padding:11px 14px;
+  }
+  .links a b{display:block; font-family:var(--serif); font-weight:500; font-size:1rem;}
+  .links a span{font-size:.84rem; color:var(--gedaempft);}
+  .links a .tag{display:inline-block; margin-left:4px; font-family:var(--sans); font-size:.6rem; letter-spacing:.12em; text-transform:uppercase; color:var(--beere); border:1px solid var(--rose); border-radius:20px; padding:0 7px; vertical-align:2px;}
+  @media (hover:hover){ .links a:hover{background:var(--blush);} }
+
+  .preview-note{background:var(--blush); border-radius:12px; padding:10px 14px; font-size:.85rem; color:var(--beere);}
+  .archive{display:grid; gap:8px;}
+  .archive button{
+    text-align:left; background:var(--papier); border:1px solid var(--linie); border-radius:14px; padding:12px 14px; cursor:pointer; color:var(--pflaume);
+    display:grid; gap:2px; font-size:.95rem;
+  }
+  .archive button b{font-family:var(--serif); font-weight:500; font-size:1.02rem;}
+  .archive button span{color:var(--gedaempft); font-size:.8rem; letter-spacing:.08em; text-transform:uppercase;}
+  .archive button[aria-current="true"]{border-color:var(--beere); background:var(--blush);}
+
+  footer.crisis-bar{
+    text-align:center; font-size:.74rem; color:var(--gedaempft); line-height:1.5;
+    padding:9px 16px calc(9px + env(safe-area-inset-bottom, 0px)); border-top:1px solid var(--linie); background:var(--blush);
+  }
+  footer.crisis-bar b{color:var(--pflaume); font-weight:500;}
+
+  @media (prefers-reduced-motion: reduce){ *{transition:none !important;} }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <svg class="butterfly" viewBox="0 0 100 100" aria-hidden="true">
+      <path class="w1" d="M50 30 C46 14 30 6 18 12 C6 18 8 38 22 44 C32 48 44 42 50 30 Z"/>
+      <path class="w2" d="M50 30 C54 14 70 6 82 12 C94 18 92 38 78 44 C68 48 56 42 50 30 Z"/>
+      <path class="w3" d="M50 46 C47 36 36 32 28 37 C20 42 22 54 32 57 C40 59 47 54 50 46 Z"/>
+      <path class="w3" d="M50 46 C53 36 64 32 72 37 C80 42 78 54 68 57 C60 59 53 54 50 46 Z"/>
+      <rect class="k" x="48.7" y="26" width="2.6" height="34" rx="1.3"/>
+    </svg>
+    <span class="word">Kreis</span>
+  </div>
+  <div class="actions">
+    <button class="ghost" id="logout-btn" hidden>Abmelden</button>
+    <button class="exit" id="exit-btn" title="Verlässt die Seite sofort (auch: zweimal Esc)">Schnell weg</button>
+  </div>
+</header>
+
+<main id="screen-intro">
+  <section class="hero">
+    <span class="eyebrow">Seelenwende Kreis</span>
+    <h1>Ein Ort, der bleibt.</h1>
+    <p class="lead">Egal, ob du noch drin bist, gerade gehst oder schon draußen bist.</p>
+    <p class="muted">Heilung verläuft nicht gerade. Der Kreis begleitet dich Monat für Monat, in deinem Tempo, ohne dass du wissen musst, wo du gerade stehst.</p>
+  </section>
+
+  <section class="card" aria-labelledby="drin">
+    <h2 id="drin" style="font-size:1.3rem">Das ist drin</h2>
+    <ul class="includes">
+      <li><span><b>Ein Thema pro Monat.</b> Jede Woche ein kurzer Impuls, eine kleine Übung für den Alltag und eine Frage für dein Journal.</span></li>
+      <li><span><b>Mira, jeden Monat neu.</b> Deine KI-Begleiterin mit <span id="limit-text">150</span> Nachrichten pro Monat. Das Kontingent füllt sich am Monatsersten wieder auf.</span></li>
+      <li><span><b>Alle Werkzeuge an einem Ort.</b> Muster-Check, Klarheits-Tagebuch, Ausstiegs-Planer und mehr, dazu der Antwort-Helfer und der Neuer-Satz-Kompass.</span></li>
+      <li><span><b>Diskret.</b> Keine App, kein Gruppenchat, kein Profil. Niemand sieht, dass du dabei bist. Mit „Schnell weg“-Knopf.</span></li>
+      <li><span><b>Alles bisherige bleibt.</b> Frühere Monatsthemen findest du im Archiv.</span></li>
+    </ul>
+    <div class="price">
+      <span><span class="amount">19 €</span> <span class="muted">pro Monat</span></span>
+      <span class="muted">jederzeit kündbar</span>
+    </div>
+    <a class="btn" id="join-btn" href="#" target="_blank" rel="noopener">Mitglied werden</a>
+    <p class="muted" id="join-note" style="font-size:.85rem" hidden>Der Kreis öffnet bald. Schreib <b>KREIS</b> an <a href="https://www.instagram.com/_seelenwende/" target="_blank" rel="noopener">@_seelenwende</a>, dann bist du unter den Ersten.</p>
+  </section>
+
+  <section class="card outline" aria-labelledby="schon">
+    <form class="gate" id="gate-form" novalidate>
+      <h2 id="schon" style="font-size:1.2rem">Schon dabei?</h2>
+      <p class="muted" style="font-size:.92rem">Gib deinen Zugangscode aus der Willkommens-Mail ein.</p>
+      <label class="field" for="code-input">Zugangscode</label>
+      <input type="text" id="code-input" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="WENDE-XXXX-XXXX" required>
+      <label class="remember"><input type="checkbox" id="remember-input"> Code auf diesem Gerät merken. Lass das aus, wenn jemand anderes dein Handy benutzt oder kontrolliert.</label>
+      <button type="submit" class="btn" id="gate-submit">Kreis öffnen</button>
+      <div class="error" id="gate-error" role="alert"></div>
+    </form>
+  </section>
+
+  <p class="muted" style="font-size:.8rem; text-align:center">Der Kreis ist Selbsthilfe und ersetzt keine Therapie oder Beratung.</p>
+</main>
+
+<main id="screen-home" hidden>
+  <section class="month-hero" aria-labelledby="month-title">
+    <span class="eyebrow" id="month-label"></span>
+    <h1 id="month-title"></h1>
+    <p class="sub" id="month-sub"></p>
+    <ol class="timeline" id="tabs" aria-label="Die vier Wochen dieses Monats"></ol>
+  </section>
+
+  <nav class="jump" aria-label="Auf dieser Seite">
+    <a href="#sec-brief">Brief</a>
+    <a href="#sec-woche">Diese Woche</a>
+    <a href="#sec-mira">Mira</a>
+    <a href="#sec-tools">Werkzeuge</a>
+    <a href="#archive-section" id="jump-archive">Alle Monate</a>
+  </nav>
+
+  <section class="card outline letter" id="sec-brief" aria-labelledby="brief-title">
+    <div class="section-head"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5 12 13l8.5-6.5"/></svg></span><h2 id="brief-title">Ein Brief zum Monat</h2></div>
+    <div class="letter-text" id="letter-text"></div>
+    <p class="signature">Von Herzen,<br>Seelenwende</p>
+  </section>
+
+  <section class="week" id="sec-woche" aria-labelledby="week-title">
+    <div class="week-head">
+      <span class="eyebrow" id="week-label"></span>
+      <h2 id="week-title"></h2>
+    </div>
+    <article class="step">
+      <div class="step-head"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 21c-4-3-7-6.5-7-10.5A7 7 0 0 1 12 4a7 7 0 0 1 7 6.5C19 14.5 16 18 12 21Z"/><path d="M12 9v6M9 12h6"/></svg></span><span class="step-label">Impuls</span></div>
+      <div class="body" id="week-text"></div>
+    </article>
+    <article class="step">
+      <div class="step-head"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 19c6 0 12-5 14-14-9 2-14 8-14 14Z"/><path d="M5 19 13 11"/></svg></span><span class="step-label">Kleine Übung</span></div>
+      <p id="week-uebung"></p>
+    </article>
+    <article class="step frage">
+      <div class="step-head"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 20l1.2-3.6A8 8 0 1 1 8 19.2Z"/><path d="M10 9.5a2 2 0 1 1 2.8 1.8c-.5.3-.8.7-.8 1.2v.5"/><path d="M12 15.5v.1"/></svg></span><span class="step-label">Frage für dein Journal</span></div>
+      <p id="week-frage"></p>
+    </article>
+  </section>
+
+  <section class="card mira" id="sec-mira" aria-labelledby="mira-title">
+    <div class="row">
+      <div class="section-head"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4Z"/><path d="M8 9.5h8M8 12.5h5"/></svg></span><h2 id="mira-title">Mit Mira weiterdenken</h2></div>
+      <span class="muted" id="mira-count" style="font-size:.86rem"></span>
+    </div>
+    <div class="meter" aria-hidden="true"><span id="mira-meter" style="width:0"></span></div>
+    <p id="mira-text" style="font-size:.95rem"></p>
+    <div class="actions-row">
+      <button class="btn" id="mira-week-btn">Über diese Woche sprechen</button>
+      <button class="btn soft" id="mira-btn">Einfach losschreiben</button>
+    </div>
+    <p class="muted" id="mira-reset" style="font-size:.84rem"></p>
+  </section>
+
+  <section class="tools" id="sec-tools" aria-labelledby="tools-title">
+    <div style="display:grid; gap:4px; padding:0 2px">
+      <h2 id="tools-title" style="font-size:1.45rem">Deine Werkzeuge</h2>
+      <p class="muted" style="font-size:.9rem">Alle laufen in deinem Browser. Was du eingibst, bleibt auf deinem Gerät.</p>
+    </div>
+    <div class="tool-group">
+      <div class="section-head"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"/></svg></span><div><h3>Klarheit</h3><p>Wenn du sortieren willst, was passiert.</p></div></div>
+      <div class="links">
+        <a href="muster-check.html"><b>Muster-Check</b><span>Ist das noch normal? 20 Situationen aus dem Alltag.</span></a>
+        <a href="glaubenssaetze.html"><b>Glaubenssätze-Test</b><span>Welche alten Sätze halten dich fest?</span></a>
+        <a href="notizen.html"><b>Klarheits-Tagebuch</b><span>Vorfälle festhalten, mit PIN geschützt. Heißt im Browser nur „Notizen“.</span></a>
+      </div>
+    </div>
+    <div class="tool-group">
+      <div class="section-head"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.5 3 8 7 10 4-2 7-5.5 7-10V6Z"/></svg></span><div><h3>Schutz</h3><p>Wenn du sicher planen oder neu vertrauen willst.</p></div></div>
+      <div class="links">
+        <a href="planer.html"><b>Ausstiegs-Planer</b><span>Sicherheitsplan Schritt für Schritt, mit Beratungsstellen für CH, DE und AT.</span></a>
+        <a href="antwort-helfer.html"><b>Antwort-Helfer <span class="tag">im Kreis</span></b><span>Seine Nachricht einordnen und ruhig antworten, oder gar nicht. Dein Kreis-Code öffnet ihn.</span></a>
+        <a href="red-flag-radar.html"><b>Red-Flag-Radar</b><span>Passiert mir das wieder? Ein Check für neue Bekanntschaften.</span></a>
+      </div>
+    </div>
+    <div class="tool-group">
+      <div class="section-head"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.3-7-9.5A4 4 0 0 1 12 8a4 4 0 0 1 7 2.5C19 15.7 12 20 12 20Z"/></svg></span><div><h3>Stärkung</h3><p>Wenn du wieder zu dir finden willst.</p></div></div>
+      <div class="links">
+        <a href="affirmationen.html"><b>Sei sanft mit dir</b><span>Freundliche Sätze für die harte Stimme in dir.</span></a>
+        <a href="werte-finder.html"><b>Werte-Finder</b><span>Was ist dir wirklich wichtig?</span></a>
+        <a href="neuer-satz-kompass.html"><b>Neuer-Satz-Kompass <span class="tag">im Kreis</span></b><span>30 Tage vom alten zum neuen Satz. Dein Kreis-Code öffnet ihn.</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="card outline next" id="next-card" hidden aria-label="Nächster Monat">
+    <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span>
+    <div>
+      <span class="eyebrow" id="next-label"></span>
+      <span class="title" id="next-title"></span>
+      <span class="muted" id="next-sub" style="font-size:.9rem"></span>
+    </div>
+  </section>
+
+  <section id="archive-section" aria-labelledby="archive-title" style="display:grid; gap:12px" hidden>
+    <h2 id="archive-title" style="font-size:1.45rem; padding:0 2px">Alle Monatsthemen</h2>
+    <p class="preview-note" id="preview-note" hidden>Testansicht: Hier siehst du auch kommende Monate. Mitglieder sehen einen Monat erst ab seinem Ersten.</p>
+    <div class="archive" id="archive"></div>
+  </section>
+
+  <p class="muted" style="font-size:.8rem; text-align:center">Kündigen oder Fragen zum Abo: schreib an <a href="https://www.instagram.com/_seelenwende/" target="_blank" rel="noopener">@_seelenwende</a>.<br>Der Kreis ist Selbsthilfe und ersetzt keine Therapie oder Beratung.</p>
+</main>
+
+<footer class="crisis-bar">
+  In Gefahr: <b>Notruf 112</b> (CH Polizei <b>117</b>) · Gewalt gegen Frauen: <b>DE 116 016</b> · <b>AT 0800 222 555</b> · CH Opferhilfe <b>142</b> · Seelsorge: <b>CH 143</b> · <b>DE 0800 111 0 111</b> · <b>AT 142</b>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  // Link zum Kauf (z. B. Tentary). Solange er leer ist, steht da der Hinweis auf die Warteliste.
+  var KAUF_URL = "";
+  var CODE_KEY = "sw_kreis_code";
+  var EXIT_URL = "https://www.google.com/search?q=wetter";
+  var MONATE = ["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"];
+
+  var state = { code:null, data:null, thema:null, woche:0, escCount:0, escTimer:null };
+
+  function $(id){ return document.getElementById(id); }
+  function show(id){
+    ["screen-intro","screen-home"].forEach(function(s){ $(s).hidden = (s !== id); });
+    $("logout-btn").hidden = (id !== "screen-home");
+    window.scrollTo(0, 0);
+  }
+  function monatName(monat){
+    var p = monat.split("-");
+    return MONATE[Number(p[1]) - 1] + " " + p[0];
+  }
+  function paragraphs(el, text){
+    el.innerHTML = "";
+    text.split(/\n\n+/).forEach(function(t){ var p = document.createElement("p"); p.textContent = t; el.appendChild(p); });
+  }
+
+  /* ---------- Einladung ---------- */
+  if (KAUF_URL) { $("join-btn").href = KAUF_URL; }
+  else { $("join-btn").hidden = true; $("join-note").hidden = false; }
+
+  /* ---------- Zugang ---------- */
+  try { var saved = localStorage.getItem(CODE_KEY); if (saved) { $("code-input").value = saved; $("remember-input").checked = true; } } catch(e){}
+
+  function open(code, remember){
+    $("gate-submit").disabled = true;
+    $("gate-error").textContent = "";
+    return fetch("/api/kreis/inhalt", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({code: code}) })
+      .then(function(r){ return r.json().then(function(d){ return {ok:r.ok, data:d}; }); })
+      .then(function(res){
+        if (!res.ok) {
+          $("gate-error").textContent = res.data.error || "Das hat nicht geklappt. Versuch es noch einmal.";
+          if (res.data.reason === "mira") {
+            var a = document.createElement("a"); a.href = "begleiterin.html"; a.textContent = " Zu Mira";
+            $("gate-error").appendChild(a);
+          }
+          return;
+        }
+        state.code = code;
+        if (remember !== undefined) {
+          try { if (remember) localStorage.setItem(CODE_KEY, code); else localStorage.removeItem(CODE_KEY); } catch(e){}
+        }
+        state.data = res.data;
+        render();
+      })
+      .catch(function(){ $("gate-error").textContent = "Keine Verbindung. Prüf dein Internet und versuch es noch einmal."; })
+      .then(function(){ $("gate-submit").disabled = false; });
+  }
+
+  $("gate-form").addEventListener("submit", function(e){
+    e.preventDefault();
+    var code = $("code-input").value.trim();
+    if (!code) { $("gate-error").textContent = "Bitte gib deinen Zugangscode ein."; return; }
+    open(code, $("remember-input").checked);
+  });
+
+  $("logout-btn").addEventListener("click", function(){
+    state.code = null; state.data = null;
+    try { localStorage.removeItem(CODE_KEY); } catch(e){}
+    $("code-input").value = ""; $("remember-input").checked = false;
+    show("screen-intro");
+  });
+
+  /* ---------- Mitgliederbereich ---------- */
+  function render(){
+    var d = state.data;
+    if (!d.themen.length) {
+      $("gate-error").textContent = "Das erste Monatsthema ist noch nicht freigeschaltet. Schau bald wieder vorbei.";
+      return;
+    }
+    renderMira(d.mira);
+    renderNext(d.naechstes);
+    renderArchive();
+    showThema(aktuellesThema(), aktuelleWoche());
+    show("screen-home");
+  }
+
+  // Das Thema dieses Monats (in der Testansicht kommen auch spätere Monate mit).
+  function aktuellesThema(){
+    var d = state.data;
+    for (var i = 0; i < d.themen.length; i++) if (d.themen[i].monat <= d.aktuell) return d.themen[i];
+    return d.themen[d.themen.length - 1];
+  }
+  function aktuelleWoche(){ return Math.min(3, Math.floor((state.data.heute.day - 1) / 7)); }
+
+  function tageImMonat(monat){ var p = monat.split("-"); return new Date(Date.UTC(Number(p[0]), Number(p[1]), 0)).getUTCDate(); }
+  // Woche 1: 1.–7., Woche 2: 8.–14., Woche 3: 15.–21., Woche 4: 22. bis Monatsende.
+  function wochenTage(monat, i){ return { von: 7 * i + 1, bis: i === 3 ? tageImMonat(monat) : 7 * i + 7 }; }
+
+  function showThema(thema, woche){
+    state.thema = thema;
+    var istAktuell = thema.monat === state.data.aktuell;
+    var label = istAktuell ? "Dein Thema im " : (thema.monat > state.data.aktuell ? "Vorschau · " : "Aus dem Archiv · ");
+    $("month-label").textContent = label + monatName(thema.monat);
+    $("month-title").textContent = thema.titel;
+    $("month-sub").textContent = thema.untertitel;
+    paragraphs($("letter-text"), thema.brief);
+
+    var tabs = $("tabs");
+    tabs.innerHTML = "";
+    thema.wochen.forEach(function(w, i){
+      var li = document.createElement("li");
+      var b = document.createElement("button");
+      var t = wochenTage(thema.monat, i);
+      var name = document.createElement("b"); name.textContent = "Woche " + (i + 1);
+      b.appendChild(name);
+      b.appendChild(document.createTextNode(t.von + ".–" + t.bis + "."));
+      if (istAktuell && i === aktuelleWoche()) { var n = document.createElement("span"); n.className = "now"; n.textContent = "jetzt"; b.appendChild(n); }
+      b.addEventListener("click", function(){ showWoche(i); });
+      li.appendChild(b);
+      tabs.appendChild(li);
+    });
+    showWoche(woche);
+    document.querySelectorAll("#archive button").forEach(function(b){ b.setAttribute("aria-current", String(b.dataset.monat === thema.monat)); });
+  }
+
+  function showWoche(i){
+    state.woche = i;
+    var w = state.thema.wochen[i];
+    Array.prototype.forEach.call($("tabs").querySelectorAll("button"), function(b, j){ b.setAttribute("aria-pressed", String(j === i)); });
+    var t = wochenTage(state.thema.monat, i);
+    var monat = monatName(state.thema.monat).split(" ")[0];
+    $("week-label").textContent = "Woche " + (i + 1) + " · " + t.von + ".–" + t.bis + ". " + monat;
+    $("week-title").textContent = w.titel;
+    paragraphs($("week-text"), w.text);
+    $("week-uebung").textContent = w.uebung;
+    $("week-frage").textContent = w.frage;
+    $("mira-text").textContent = "Magst du über „" + w.titel + "“ sprechen? Mira bekommt den Einstieg schon mit, du kannst ihn vor dem Senden noch ändern.";
+  }
+
+  function renderMira(m){
+    var left = Math.max(0, m.limit - m.used);
+    $("mira-count").textContent = "noch " + left + " von " + m.limit + " Nachrichten";
+    $("mira-meter").style.width = Math.round(100 * left / m.limit) + "%";
+    var reset = m.resetsOn ? new Date(m.resetsOn + "T12:00:00Z").toLocaleDateString("de-CH", { day:"numeric", month:"long" }) : "";
+    $("mira-reset").textContent = left > 0
+      ? (reset ? "Am " + reset + " wird dein Kontingent wieder voll." : "")
+      : "Dein Kontingent für diesen Monat ist aufgebraucht." + (reset ? " Am " + reset + " geht es weiter." : "");
+    $("mira-btn").disabled = left === 0;
+    $("mira-week-btn").disabled = left === 0;
+  }
+
+  function renderNext(n){
+    $("next-card").hidden = !n;
+    if (!n) return;
+    $("next-label").textContent = "Ab 1. " + monatName(n.monat).split(" ")[0];
+    $("next-title").textContent = n.titel;
+    $("next-sub").textContent = n.untertitel;
+  }
+
+  function renderArchive(){
+    var alte = state.data.themen;
+    $("archive-section").hidden = alte.length < 2;
+    $("jump-archive").hidden = alte.length < 2;
+    $("preview-note").hidden = !state.data.vorschau;
+    var box = $("archive");
+    box.innerHTML = "";
+    alte.forEach(function(t){
+      var b = document.createElement("button");
+      b.dataset.monat = t.monat;
+      var s = document.createElement("span"); s.textContent = (t.monat > state.data.aktuell ? "Vorschau · " : "") + monatName(t.monat);
+      var title = document.createElement("b"); title.textContent = t.titel;
+      b.appendChild(s); b.appendChild(title);
+      b.addEventListener("click", function(){
+        showThema(t, t.monat === state.data.aktuell ? aktuelleWoche() : 0);
+        window.scrollTo(0, 0);
+      });
+      box.appendChild(b);
+    });
+  }
+
+  /* ---------- Weiter zu Mira ---------- */
+  // Wie beim Programm: Code und Einstiegssatz nur für diesen Tab (sessionStorage); Mira liest beides einmal und löscht es.
+  function toMira(text){
+    try {
+      sessionStorage.setItem("sw_mira_code", state.code);
+      if (text) sessionStorage.setItem("sw_mira_start", text); else sessionStorage.removeItem("sw_mira_start");
+    } catch(e){}
+    window.location.href = "begleiterin.html";
+  }
+  $("mira-btn").addEventListener("click", function(){ toMira(""); });
+  $("mira-week-btn").addEventListener("click", function(){ toMira(state.thema.wochen[state.woche].miraSatz); });
+
+  /* ---------- Gemerkten Code direkt öffnen ---------- */
+  if ($("code-input").value) open($("code-input").value);
+
+  /* ---------- Schnell weg ---------- */
+  function quickExit(){
+    try { sessionStorage.clear(); } catch(e){}
+    document.body.innerHTML = "";
+    document.title = "Wetter";
+    window.location.replace(EXIT_URL);
+  }
+  $("exit-btn").addEventListener("click", quickExit);
+  document.addEventListener("keydown", function(e){
+    if (e.key !== "Escape") return;
+    state.escCount++;
+    clearTimeout(state.escTimer);
+    state.escTimer = setTimeout(function(){ state.escCount = 0; }, 800);
+    if (state.escCount >= 2) { state.escCount = 0; quickExit(); }
+  });
+})();
+</script>
+</body>
+</html>

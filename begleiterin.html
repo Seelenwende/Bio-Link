@@ -228,7 +228,7 @@
         try {
           if ($("remember-input").checked) localStorage.setItem(CODE_KEY, code); else localStorage.removeItem(CODE_KEY);
         } catch(e){}
-        setCounter(res.data.used, res.data.limit);
+        setCounter(res.data);
         startChat();
         if (vomProgramm.start) {
           var i = $("chat-input"); i.value = vomProgramm.start; autosize(i); i.focus();
@@ -239,10 +239,10 @@
       .then(function(){ $("gate-submit").disabled = false; });
   });
 
-  function setCounter(used, limit){
-    if (typeof used !== "number" || typeof limit !== "number") return;
-    var left = Math.max(0, limit - used);
-    $("chat-counter").textContent = left <= 30 ? ("Noch " + left + " Nachrichten in diesem Zugang") : "";
+  function setCounter(d){
+    if (typeof d.used !== "number" || typeof d.limit !== "number") return;
+    var left = Math.max(0, d.limit - d.used);
+    $("chat-counter").textContent = left > 30 ? "" : "Noch " + left + " Nachrichten " + (d.resetsOn ? "in diesem Monat" : "in diesem Zugang");
   }
 
   /* ---------- Gespräch ---------- */
@@ -333,7 +333,7 @@
           fail(res.data.error);
           return;
         }
-        setCounter(res.data.used, res.data.limit);
+        setCounter(res.data);
         state.jobId = res.data.id;
         poll(res.data.id, bubble, 0);
       })

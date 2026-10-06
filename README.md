@@ -8,6 +8,8 @@
 - `neuer-satz-kompass.html` – **Neuer-Satz-Kompass** (bezahlt, mit Zugangscode): 30 Tage, ein Impuls pro Tag (Impuls, kleine Aufgabe, Frage, eigene Notiz). Baut auf dem lautesten Satz aus dem Glaubenssätze-Test und drei Werten aus dem Werte-Finder auf – beide werden automatisch übernommen, wenn sie auf dem Gerät gemacht wurden, sonst wählt sie die Frau selbst. Woche 1 Bemerken, Woche 2 Der neue Satz, Woche 3 Werte leben, Woche 4 Verankern. Die Startseite bietet zwei Wege: **Weg 1 (empfohlen)** über Glaubenssätze-Test → Werte-Finder → Kompass, wobei sich jeder Schritt erst nach dem vorherigen öffnet, oder **Weg 2** direkt starten (Satz und Werte selbst wählen, nichts wird übernommen). Die Einrichtung ist frei; die 30 Impulse liefert der Server erst nach gültigem Code (siehe unten). Jeden Kalendertag öffnet sich ein neuer Tag, verpasste bleiben offen. Optional Kalender-Erinnerung (.ics). Notizen bleiben auf dem Gerät. Die Weiter-Knöpfe aus Test und Werte-Finder öffnen `neuer-satz-kompass.html#neu`: Dann erscheint immer ein neuer, leerer Kompass zum Einrichten (ein laufender bleibt über „Zu deinem bisherigen Kompass“ erreichbar, bis der neue gestartet wird). Vorschau mit allen Tagen: `neuer-satz-kompass.html?alle` oder `#alle`.
 - `red-flag-radar.html` – Red-Flag-Radar: „Passiert mir das wieder?“ – Check für neue Bekanntschaften mit 18 Situationen in sechs Bereichen (Tempo, zu perfekt, Grenzen, Verantwortung, Kontrolle, Bauchgefühl). Antwort „Weiß ich noch nicht“ wird als offener Beobachtungspunkt gezeigt. Ergebnis mit Was-dahinterstecken-kann, gesundem Gegenstück, „Sanft prüfen“ und Journal-Frage; bei deutlichen Signalen Beratungsnummern (CH/DE/AT). Läuft komplett im Browser, Antworten bleiben auf dem Gerät.
 - `begleiterin.html` – **Mira**, die Seelenwende-Begleiterin: KI-Gesprächsbegleitung mit Zugangscode. Ein offenes Gespräch ohne Kategorien – die Begleiterin erkennt selbst, was gerade gebraucht wird. Krisenerkennung mit Notrufnummern (CH/DE/AT), „Schnell weg“-Knopf, Gespräche werden nicht gespeichert.
+- `kreis.html` – **Seelenwende Kreis**: Mitgliedschaft (19 €/Monat). Ohne Code eine Einladungsseite, mit Code der Mitgliederbereich: ein Thema pro Monat mit vier Wochen-Impulsen (Text, Übung, Journal-Frage, Einstieg für Mira), Archiv, Mira mit Monatskontingent.
+- `zugang-admin.html` – internes Werkzeug: Zugangscodes für Mira und den Kreis anlegen, sperren, nachschlagen.
 - `antwort-helfer.html` – **Antwort-Helfer** mit Zugangscode: Sie fügt seine Nachricht ein und bekommt eine ruhige Einordnung – ob sie überhaupt antworten sollte, was wirklich eine Antwort braucht, welche Sätze nur Köder sind, und bei Bedarf ein bis zwei kurze, sachliche Antworten (BIFF/Grey Rock) zum Kopieren. Besonders für Co-Parenting. Erkennt Drohungen und zeigt dann Notrufnummern statt Antwortvorschlägen, „Schnell weg“-Knopf, Nachrichten werden nicht gespeichert.
 - `programm.html` – **„Wieder bei dir“**, das 6-Wochen-Programm mit Zugangscode: sechs Wochen mit Impulsen zum Lesen, Schreibübungen, sieben Tagesankern pro Woche und Gesprächsanstößen für Mira. Die Inhalte liegen nur auf dem Server und kommen erst nach dem Code. Notizen bleiben auf dem Gerät (dauerhaft nur mit Häkchen, sonst nur im offenen Tab). Mit „Schnell weg“ und Krisenleiste.
 - `planer.html` – **Ausstiegs-Planer** (gratis, ohne Code): Sicherheitsplan als Checkliste in neun Abschnitten (Handy und Spuren, Notfall, Dokumente, Geld, Notfalltasche, Menschen, Schutz und Recht, der Tag selbst, die ersten Wochen) mit Hinweisen und Beratungsstellen für die Schweiz, Deutschland und Österreich. Bewusst neutraler Tab-Titel („Checkliste“), „Schnell weg“-Knopf. Ohne PIN wird nichts gespeichert, mit PIN bleibt der Plan verschlüsselt (AES-GCM) nur auf dem Gerät. Läuft komplett im Browser, ohne Server und ohne Kosten. Der Inhalt (Punkte, Tipps, Hinweise je Land, Beratungsstellen) steht oben im Skript als `INHALT`. **Nummern und Stellen vor jeder Änderung fachlich prüfen lassen** (Stand: Oktober 2026).
@@ -46,11 +48,43 @@ Die Anweisungen der Begleiterin stehen in `netlify/lib/begleiterin.mts`.
 | Variable | Inhalt |
 |---|---|
 | `ANTHROPIC_API_KEY` | derselbe Schlüssel wie beim Profil-Check |
-| `BEGLEITERIN_CODES` | gültige Zugangscodes, kommagetrennt, Groß-/Kleinschreibung egal, z. B. `Wendepunkt, WENDE-AB12-CD34` |
-| `BEGLEITERIN_LIMIT` | optional, Nachrichten pro Code (Standard 300) |
+| `BEGLEITERIN_CODES` | optional, Mira-Codes von Hand, kommagetrennt, Groß-/Kleinschreibung egal, z. B. `Wendepunkt, WENDE-AB12-CD34` |
+| `BEGLEITERIN_LIMIT` | optional, Nachrichten pro Mira-Code insgesamt (Standard 300) |
+| `KREIS_CODES` | optional, Kreis-Codes von Hand, kommagetrennt |
+| `KREIS_LIMIT` | optional, Mira-Nachrichten pro Kreis-Code **pro Monat** (Standard 150) |
+| `SEELENWENDE_ADMIN_KEY` | langer, zufälliger Schlüssel (mind. 16 Zeichen) für `zugang-admin.html` und Make |
 | `BEGLEITERIN_MODEL` | optional, Standard `claude-opus-5-5` |
 
-Neuer Code für eine Käuferin: an `BEGLEITERIN_CODES` anhängen, danach neu deployen. Kosten: grob 0,01–0,04 $ pro Nachricht.
+Kosten: grob 0,01–0,04 $ pro Nachricht, also höchstens etwa 6 $ pro Kreis-Mitglied und Monat bei vollem Kontingent.
+
+## Zugangscodes (Mira und Kreis)
+
+Codes kommen aus zwei Quellen (`netlify/lib/zugang.mts`):
+
+1. **Code-Register** (empfohlen): Codes über `zugang-admin.html` oder per API anlegen. Sie gelten sofort, ohne neues Deployment, und lassen sich wieder sperren, etwa wenn ein Kreis-Abo gekündigt wird. Gespeichert wird nur ein Hash des Codes.
+2. **Umgebungsvariablen** `BEGLEITERIN_CODES` / `KREIS_CODES`: von Hand, nach jeder Änderung neu deployen.
+
+Ein Kreis-Code öffnet auch Mira, ein Programm-Code ebenfalls (Kontingent `PROGRAMM_MIRA_LIMIT`, insgesamt). Das Kontingent zählt pro Kalendermonat (Schweizer Zeit) und ist am Monatsersten wieder voll. Ein Mira-Code öffnet den Kreis nicht.
+
+API für Make (z. B. Tentary-Kauf → Code anlegen → MailerLite-Mail; Tentary-Kündigung → sperren):
+
+```
+POST /api/zugang/admin
+Authorization: Bearer <SEELENWENDE_ADMIN_KEY>
+
+{ "aktion": "erstellen", "plan": "kreis", "ref": "<Bestellnummer>" }   → { "code": "WENDE-XXXX-XXXX", … }
+{ "aktion": "sperren",   "ref": "<Bestellnummer>" }                    → { "ok": true, "active": false }
+{ "aktion": "entsperren" | "info", "code": "WENDE-…" }
+```
+
+## Kreis-Inhalte
+
+Die Monatsthemen stehen in `netlify/lib/kreis-inhalte.mts` und werden nur mit gültigem Kreis-Code ausgeliefert (`/api/kreis/inhalt`). Ein Monat wird an seinem ersten Tag sichtbar, ältere bleiben im Archiv. Vom nächsten Monat zeigt die Seite vorab nur Titel und Untertitel. In Netlify-Vorschauen (Deploy Previews) kommen alle Monate mit, damit man sie prüfen kann. Ein Kreis-Code öffnet auch den Neuer-Satz-Kompass (`kompass-tage`) und den Antwort-Helfer (wie alle Codes, die Mira öffnen). Angelegt sind Oktober, November und Dezember 2026. Den Kauf-Link trägst du in `kreis.html` bei `KAUF_URL` ein; solange er leer ist, zeigt die Seite den Hinweis „Schreib KREIS an @_seelenwende“.
+
+
+### Kreis in einer Netlify-Vorschau testen
+
+In Netlify `KREIS_CODES` (z. B. `KREIS-TEST`) und `SEELENWENDE_ADMIN_KEY` mit dem Kontext *Deploy Previews* anlegen. Netlify übernimmt geänderte Variablen erst beim nächsten Build, also danach die Vorschau neu bauen lassen. Mira antwortet in Vorschauen nur, wenn `ANTHROPIC_API_KEY` auch dort gesetzt ist. Achtung: Das Code-Register ist für Vorschau und Live-Seite dasselbe; Test-Codes aus `zugang-admin.html` danach sperren.
 
 ## So funktioniert das 6-Wochen-Programm „Wieder bei dir“ (Netlify)
 

@@ -3,6 +3,7 @@ import { betaZodOutputFormat } from "@anthropic-ai/sdk/helpers/beta/zod";
 import { z } from "zod";
 import { getStore } from "@netlify/blobs";
 import { hashCode, isCodeInList } from "./codes.mts";
+import { resolveAccess } from "./zugang.mts";
 
 export const ANTWORT_STORE = "antwort-helfer";
 const DEFAULT_MODEL = "claude-opus-5-5";
@@ -13,17 +14,15 @@ const MAX_ANLIEGEN_CHARS = 600;
 
 /* ---------- Zugangscodes ---------- */
 
-// Eigene Codes (z. B. aus dem Erste-Hilfe-Set). Mira- und Programm-Codes gelten auch, mit eigenem Zähler.
-const CODE_ENVS = ["ANTWORT_HELFER_CODES", "BEGLEITERIN_CODES", "PROGRAMM_CODES"];
-
-export function isValidCode(given: unknown): given is string {
-  let ok = false;
-  for (const env of CODE_ENVS) ok = isCodeInList(env, given) || ok;
-  return ok;
+// Eigene Codes (z. B. aus dem Erste-Hilfe-Set). Alle Codes, die Mira öffnen (Mira, Programm, Kreis,
+// auch aus dem Code-Register), gelten auch, mit eigenem Zähler.
+export async function isValidCode(given: unknown): Promise<boolean> {
+  if (isCodeInList("ANTWORT_HELFER_CODES", given)) return true;
+  return (await resolveAccess(given)) !== null;
 }
 
 export function isAntwortHelferConfigured(): boolean {
-  return Boolean(Netlify.env.get("ANTHROPIC_API_KEY")) && CODE_ENVS.some((env) => Boolean(Netlify.env.get(env)?.trim()));
+  return Boolean(Netlify.env.get("ANTHROPIC_API_KEY"));
 }
 
 export function checkLimit(): number {

@@ -1,11 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk";
-import { getStore } from "@netlify/blobs";
-import { hashCode, isCodeInList } from "./codes.mts";
 
 export const BEGLEITERIN_STORE = "begleiterin";
 const DEFAULT_MODEL = "claude-opus-5-5";
-const DEFAULT_LIMIT = 300;
-const DEFAULT_PROGRAMM_LIMIT = 1000;
 
 export const MAX_TURNS = 30;
 const MAX_MESSAGE_CHARS = 4000;
@@ -49,50 +45,6 @@ Sicherheit – hat immer Vorrang:
 Das Gespräch hat mit dieser Begrüßung von dir begonnen: "Hallo, ich bin Mira. Schön, dass du da bist. Schreib einfach los, was dich gerade beschäftigt – ganz egal, wie durcheinander es sich anfühlt. Du musst nichts einordnen."`;
 
 const REFUSAL_REPLY = `Darauf kann ich so leider nicht antworten. Wenn du gerade in Gefahr bist oder an dir zweifelst, ob du das hier schaffst: Bitte ruf an – Notruf 112 (Schweiz 117), Hilfetelefon Deutschland 116 016, Frauenhelpline Österreich 0800 222 555, Opferhilfe Schweiz 142, Die Dargebotene Hand 143. Magst du mir mit anderen Worten erzählen, was gerade los ist?`;
-
-/* ---------- Zugangscodes ---------- */
-
-/* Mira lässt sich mit einem eigenen Mira-Code öffnen oder mit dem Code des 6-Wochen-Programms
-   (darin ist ein größeres Mira-Kontingent enthalten). Jede Art hat ihr eigenes Nachrichten-Limit. */
-type CodeArt = "begleiterin" | "programm";
-
-function codeArt(given: unknown): CodeArt | null {
-  if (isCodeInList("BEGLEITERIN_CODES", given)) return "begleiterin";
-  if (isCodeInList("PROGRAMM_CODES", given)) return "programm";
-  return null;
-}
-
-export function isValidCode(given: unknown): given is string {
-  return codeArt(given) !== null;
-}
-
-export function isBegleiterinConfigured(): boolean {
-  return Boolean(Netlify.env.get("ANTHROPIC_API_KEY") && (Netlify.env.get("BEGLEITERIN_CODES") || Netlify.env.get("PROGRAMM_CODES")));
-}
-
-function limitFromEnv(name: string, fallback: number): number {
-  const n = Number(Netlify.env.get(name));
-  return Number.isFinite(n) && n > 0 ? Math.floor(n) : fallback;
-}
-
-export function messageLimit(code: string): number {
-  return codeArt(code) === "programm"
-    ? limitFromEnv("PROGRAMM_MIRA_LIMIT", DEFAULT_PROGRAMM_LIMIT)
-    : limitFromEnv("BEGLEITERIN_LIMIT", DEFAULT_LIMIT);
-}
-
-function usageKey(code: string): string {
-  return "usage/" + hashCode(code).toString("hex");
-}
-
-export async function getUsage(code: string): Promise<number> {
-  const data = (await getStore(BEGLEITERIN_STORE).get(usageKey(code), { type: "json" })) as { used?: number } | null;
-  return data?.used ?? 0;
-}
-
-export async function addUsage(code: string, used: number): Promise<void> {
-  await getStore(BEGLEITERIN_STORE).setJSON(usageKey(code), { used, updatedAt: Date.now() });
-}
 
 /* ---------- Gesprächsverlauf prüfen ---------- */
 

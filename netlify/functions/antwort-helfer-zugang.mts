@@ -8,7 +8,7 @@ export default async (req: Request, _context: Context) => {
   if (!isAntwortHelferConfigured()) return json({ error: "Der Antwort-Helfer ist noch nicht eingerichtet." }, 503);
 
   const body = await req.json().catch(() => null);
-  if (!isValidCode(body?.code)) return json({ error: "Dieser Zugangscode ist ungültig. Prüf ihn in deiner Bestätigungs-Mail." }, 401);
+  if (!(await isValidCode(body?.code))) return json({ error: "Dieser Zugangscode ist ungültig. Prüf ihn in deiner Bestätigungs-Mail." }, 401);
 
   const limit = checkLimit();
   const used = await getUsage(body.code);

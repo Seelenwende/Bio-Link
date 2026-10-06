@@ -7,7 +7,7 @@ import { ANTWORT_STORE, isValidCode, parseEingabe, runAntwortHelfer } from "../l
 export default async (req: Request, _context: Context) => {
   const body = await req.json().catch(() => null);
   if (!body || typeof body.id !== "string" || !ID_PATTERN.test(body.id)) return;
-  if (!isValidCode(body.code)) return;
+  if (!(await isValidCode(body.code))) return;
   const eingabe = parseEingabe(body);
   if (!eingabe) return;
 
