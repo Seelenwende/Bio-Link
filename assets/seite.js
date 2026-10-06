@@ -123,6 +123,37 @@
     }
   }
 
+
+  /* ---------- Bewegung: Einblenden beim Scrollen, Lesefortschritt ---------- */
+  (function(){
+    var ruhig = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var balken = document.createElement("div");
+    balken.className = "fortschritt";
+    document.body.appendChild(balken);
+    var tick = false;
+    window.addEventListener("scroll", function(){
+      if (tick) return; tick = true;
+      requestAnimationFrame(function(){
+        var h = document.documentElement.scrollHeight - innerHeight;
+        balken.style.transform = "scaleX(" + (h > 0 ? Math.min(1, scrollY / h) : 0) + ")";
+        tick = false;
+      });
+    }, { passive: true });
+    if (ruhig || !("IntersectionObserver" in window)) return;
+    document.documentElement.classList.add("js-anim");
+    var ziele = document.querySelectorAll(".abschnitt h2, .karte, .leistung, .angebot, .woche, .schritt-karte, .sicher, .zitat, .stimmung, .persoenlich, .preisbox, .fragen details, .zitat-karte, .gruppen-kopf, .bild-band blockquote");
+    var io = new IntersectionObserver(function(eintraege){
+      eintraege.forEach(function(e){ if (e.isIntersecting) { e.target.classList.add("da"); io.unobserve(e.target); } });
+    }, { rootMargin: "0px 0px -8% 0px" });
+    ziele.forEach(function(el){
+      if (el.closest(".held")) return;
+      var geschwister = el.parentElement ? Array.prototype.indexOf.call(el.parentElement.children, el) : 0;
+      el.style.transitionDelay = Math.min(geschwister, 5) * 70 + "ms";
+      el.classList.add("enthuellen");
+      io.observe(el);
+    });
+  })();
+
   /* ---------- Mail-Fenster vor den kostenlosen Werkzeugen ---------- */
   var freiLinks = document.querySelectorAll("a[data-ziel]");
   if (!freiLinks.length) return;

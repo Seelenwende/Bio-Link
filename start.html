@@ -35,8 +35,10 @@
       <div class="bild-seite">
         <div class="foto-buehne quadrat">
           <div class="foto"><img src="assets/bilder/ich-portrait.jpg" alt="Die Gründerin von Seelenwende" width="900" height="900"></div>
-          <div class="schwebe-karte oben-rechts" aria-hidden="true"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#chat"/></svg></span><div><small>Mira, 3:12 Uhr</small><b>„Du bildest dir das nicht ein.“</b></div></div>
-          <div class="schwebe-karte unten-links" aria-hidden="true"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#herz"/></svg></span><div><b>15 Jahre selbst erlebt</b><small>Seit letztem Jahr draußen</small></div></div>
+          <div class="schwebe-reihe">
+            <div class="schwebe-karte" aria-hidden="true"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#chat"/></svg></span><div><small>Mira, 3:12 Uhr</small><b>„Du bildest dir das nicht ein.“</b></div></div>
+            <div class="schwebe-karte" aria-hidden="true"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#schild"/></svg></span><div><b>Diskret &amp; sicher</b><small>Schnell-weg-Knopf auf jeder Seite</small></div></div>
+          </div>
         </div>
       </div>
     </div>
@@ -56,20 +58,23 @@
     <div class="innen">
       <span class="ueber">Woran du eine toxische Beziehung erkennst</span>
       <h2>Kommt dir das bekannt vor?</h2>
-      <p class="einleitung">Narzisstische und toxische Beziehungen fangen selten mit Gewalt an. Sie fangen mit Liebe an. Und dann, ganz langsam, mit diesen Mustern:</p>
+      <p class="einleitung">Narzisstische und toxische Beziehungen fangen selten mit Gewalt an. Sie fangen mit Liebe an. Und dann, ganz langsam, mit diesen Mustern. Tippe an, was du kennst:</p>
       <div class="leistungen drei">
-        <div class="leistung"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#auge"/></svg></span><div><h3>Er verdreht, was passiert ist</h3><p>„Das hab ich nie gesagt.“ Du zweifelst an deiner eigenen Erinnerung (Gaslighting).</p></div></div>
-        <div class="leistung"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#chat"/></svg></span><div><h3>Du bist immer schuld</h3><p>Egal, was passiert: Am Ende entschuldigst du dich.</p></div></div>
-        <div class="leistung"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#herz"/></svg></span><div><h3>Heiß und kalt</h3><p>Auf Zuneigung folgen Kälte und Schweigen. Und du wartest auf den guten Tag.</p></div></div>
-        <div class="leistung"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#schloss"/></svg></span><div><h3>Kontrolle und Rückzug</h3><p>Du siehst deine Freundinnen seltener und erklärst dich ständig.</p></div></div>
-        <div class="leistung"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#stern"/></svg></span><div><h3>Du wirst kleiner</h3><p>Zu empfindlich, zu viel, nie genug. Du erkennst dich selbst kaum wieder.</p></div></div>
-        <div class="leistung"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#tuer"/></svg></span><div><h3>Gehen fühlt sich unmöglich an</h3><p>Du weißt, dass es dir nicht guttut, und kommst trotzdem nicht los.</p></div></div>
+        <div class="leistung muster" role="button" tabindex="0" aria-pressed="false"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#auge"/></svg></span><div><h3>Er verdreht, was passiert ist</h3><p>„Das hab ich nie gesagt.“ Du zweifelst an deiner eigenen Erinnerung (Gaslighting).</p></div></div>
+        <div class="leistung muster" role="button" tabindex="0" aria-pressed="false"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#chat"/></svg></span><div><h3>Du bist immer schuld</h3><p>Egal, was passiert: Am Ende entschuldigst du dich.</p></div></div>
+        <div class="leistung muster" role="button" tabindex="0" aria-pressed="false"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#herz"/></svg></span><div><h3>Heiß und kalt</h3><p>Auf Zuneigung folgen Kälte und Schweigen. Und du wartest auf den guten Tag.</p></div></div>
+        <div class="leistung muster" role="button" tabindex="0" aria-pressed="false"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#schloss"/></svg></span><div><h3>Kontrolle und Rückzug</h3><p>Du siehst deine Freundinnen seltener und erklärst dich ständig.</p></div></div>
+        <div class="leistung muster" role="button" tabindex="0" aria-pressed="false"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#stern"/></svg></span><div><h3>Du wirst kleiner</h3><p>Zu empfindlich, zu viel, nie genug. Du erkennst dich selbst kaum wieder.</p></div></div>
+        <div class="leistung muster" role="button" tabindex="0" aria-pressed="false"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#tuer"/></svg></span><div><h3>Gehen fühlt sich unmöglich an</h3><p>Du weißt, dass es dir nicht guttut, und kommst trotzdem nicht los.</p></div></div>
       </div>
-      <div class="knopf-reihe" style="margin-top:28px">
-        <a class="knopf" href="#erkennen" data-ziel="muster-check.html">Kostenlosen Muster-Check machen</a>
-        <a class="knopf leicht" href="#phasen">Wo stehe ich?</a>
+      <div class="muster-ergebnis" aria-live="polite">
+        <div class="zaehler"><span class="zahl" id="muster-zahl">0 von 6</span><span class="balken"><span id="muster-balken"></span></span></div>
+        <p id="muster-text">Tippe die Muster an, die du aus deiner Beziehung kennst. Niemand sieht deine Auswahl, sie bleibt nur hier auf der Seite.</p>
+        <div class="knopf-reihe">
+          <a class="knopf" href="#erkennen" data-ziel="muster-check.html">Kostenlosen Muster-Check machen</a>
+          <a class="knopf leicht" href="#phasen" id="muster-weiter">Wo stehe ich?</a>
+        </div>
       </div>
-      <p class="leise klein" style="margin-top:14px">Wenn du dich wiedererkennst: Du bildest dir das nicht ein. Und du bist nicht allein.</p>
     </div>
   </section>
 
@@ -98,7 +103,7 @@
         <div class="gruppen-kopf"><span class="gruppen-nr">1</span><div><h3>In der Beziehung</h3><p>Klarheit gewinnen und dir selbst wieder glauben.</p></div></div>
         <div class="angebote">
         <article class="angebot">
-          <div class="vorschau"><span class="badge leise">Sofort da</span><svg class="ic"><use href="assets/icons.svg#chat"/></svg></div>
+          <div class="vorschau foto"><img src="assets/bilder/karten/mira.jpg" alt="" width="720" height="450" loading="lazy"><span class="badge leise">Sofort da</span><span class="vorschau-ic"><svg class="ic"><use href="assets/icons.svg#chat"/></svg></span></div>
           <div class="koerper">
             <span class="frage">„Ich brauche jetzt jemanden.“</span>
             <h3>Mira, deine Begleiterin</h3>
@@ -111,7 +116,7 @@
           </div>
         </article>
         <article class="angebot">
-          <div class="vorschau"><span class="badge leise">Gegen Gaslighting</span><svg class="ic"><use href="assets/icons.svg#tagebuch"/></svg></div>
+          <div class="vorschau foto"><img src="assets/bilder/karten/tagebuch.jpg" alt="" width="720" height="450" loading="lazy"><span class="badge leise">Gegen Gaslighting</span><span class="vorschau-ic"><svg class="ic"><use href="assets/icons.svg#tagebuch"/></svg></span></div>
           <div class="koerper">
             <span class="frage">„Hab ich mir das eingebildet?“</span>
             <h3>Klarheits-Tagebuch</h3>
@@ -130,7 +135,7 @@
         <div class="gruppen-kopf"><span class="gruppen-nr">2</span><div><h3>Vor der Trennung</h3><p>Sicher gehen und ruhig bleiben, wenn er Druck macht.</p></div></div>
         <div class="angebote">
         <article class="angebot">
-          <div class="vorschau"><span class="badge leise">Für den Ernstfall</span><svg class="ic"><use href="assets/icons.svg#nachricht"/></svg></div>
+          <div class="vorschau foto"><img src="assets/bilder/karten/antwort.jpg" alt="" width="720" height="450" loading="lazy"><span class="badge leise">Für den Ernstfall</span><span class="vorschau-ic"><svg class="ic"><use href="assets/icons.svg#nachricht"/></svg></span></div>
           <div class="koerper">
             <span class="frage">„Was antworte ich ihm?“</span>
             <h3>Erste-Hilfe-Set mit Antwort-Helfer</h3>
@@ -143,7 +148,7 @@
           </div>
         </article>
         <article class="angebot">
-          <div class="vorschau"><span class="badge leise">Kostenlos</span><svg class="ic"><use href="assets/icons.svg#tuer"/></svg></div>
+          <div class="vorschau foto"><img src="assets/bilder/karten/planer.jpg" alt="" width="720" height="450" loading="lazy"><span class="badge leise">Kostenlos</span><span class="vorschau-ic"><svg class="ic"><use href="assets/icons.svg#tuer"/></svg></span></div>
           <div class="koerper">
             <span class="frage">„Wie gehe ich sicher?“</span>
             <h3>Ausstiegs-Planer</h3>
@@ -162,7 +167,7 @@
         <div class="gruppen-kopf"><span class="gruppen-nr">3</span><div><h3>Nach der Trennung</h3><p>Heilen, alte Sätze loslassen und neu vertrauen.</p></div></div>
         <div class="angebote">
         <article class="angebot top">
-          <div class="vorschau"><span class="badge">Herzstück</span><svg class="ic"><use href="assets/icons.svg#blatt"/></svg></div>
+          <div class="vorschau foto"><img src="assets/bilder/karten/programm.jpg" alt="" width="720" height="450" loading="lazy"><span class="badge">Herzstück</span><span class="vorschau-ic"><svg class="ic"><use href="assets/icons.svg#blatt"/></svg></span></div>
           <div class="koerper">
             <span class="frage">„Wie komme ich wirklich zu mir zurück?“</span>
             <h3>„Wieder bei dir“ – 6 Wochen</h3>
@@ -175,7 +180,7 @@
           </div>
         </article>
         <article class="angebot">
-          <div class="vorschau"><span class="badge leise">30 Tage</span><svg class="ic"><use href="assets/icons.svg#kompass"/></svg></div>
+          <div class="vorschau foto"><img src="assets/bilder/karten/kompass.jpg" alt="" width="720" height="450" loading="lazy"><span class="badge leise">30 Tage</span><span class="vorschau-ic"><svg class="ic"><use href="assets/icons.svg#kompass"/></svg></span></div>
           <div class="koerper">
             <span class="frage">„Wie werde ich die alten Sätze los?“</span>
             <h3>Werte-Finder + Kompass</h3>
@@ -188,7 +193,7 @@
           </div>
         </article>
         <article class="angebot">
-          <div class="vorschau"><span class="badge leise">Nach der Trennung</span><svg class="ic"><use href="assets/icons.svg#schild"/></svg></div>
+          <div class="vorschau foto"><img src="assets/bilder/karten/radar.jpg" alt="" width="720" height="450" loading="lazy"><span class="badge leise">Nach der Trennung</span><span class="vorschau-ic"><svg class="ic"><use href="assets/icons.svg#schild"/></svg></span></div>
           <div class="koerper">
             <span class="frage">„Passiert mir das wieder?“</span>
             <h3>Red-Flag-Radar</h3>
@@ -207,7 +212,7 @@
         <div class="gruppen-kopf"><span class="gruppen-nr">∞</span><div><h3>Für jede Phase</h3><p>Selbstwert stärken und dauerhaft begleitet sein.</p></div></div>
         <div class="angebote">
         <article class="angebot">
-          <div class="vorschau"><span class="badge leise">Mitgliedschaft</span><svg class="ic"><use href="assets/icons.svg#kreis"/></svg></div>
+          <div class="vorschau foto"><img src="assets/bilder/karten/kreis.jpg" alt="" width="720" height="450" loading="lazy"><span class="badge leise">Mitgliedschaft</span><span class="vorschau-ic"><svg class="ic"><use href="assets/icons.svg#kreis"/></svg></span></div>
           <div class="koerper">
             <span class="frage">„Wie halte ich das?“</span>
             <h3>Seelenwende Kreis</h3>
@@ -220,7 +225,7 @@
           </div>
         </article>
         <article class="angebot">
-          <div class="vorschau"><span class="badge leise">Selbstwert</span><svg class="ic"><use href="assets/icons.svg#buch"/></svg></div>
+          <div class="vorschau foto"><img src="assets/bilder/karten/bundle.jpg" alt="" width="720" height="450" loading="lazy"><span class="badge leise">Selbstwert</span><span class="vorschau-ic"><svg class="ic"><use href="assets/icons.svg#buch"/></svg></span></div>
           <div class="koerper">
             <span class="frage">„Warum fühle ich mich so klein?“</span>
             <h3>Das Bundle – Zurück zu dir</h3>
@@ -233,7 +238,7 @@
           </div>
         </article>
         <article class="angebot">
-          <div class="vorschau"><span class="badge leise">E-Book</span><svg class="ic"><use href="assets/icons.svg#stern"/></svg></div>
+          <div class="vorschau foto"><img src="assets/bilder/karten/genug.jpg" alt="" width="720" height="450" loading="lazy"><span class="badge leise">E-Book</span><span class="vorschau-ic"><svg class="ic"><use href="assets/icons.svg#stern"/></svg></span></div>
           <div class="koerper">
             <span class="frage">„Bin ich zu viel?“</span>
             <h3>Du bist genug</h3>
@@ -245,7 +250,7 @@
           </div>
         </article>
         <article class="angebot">
-          <div class="vorschau"><span class="badge leise">Selbstwert</span><svg class="ic"><use href="assets/icons.svg#herz"/></svg></div>
+          <div class="vorschau foto"><img src="assets/bilder/karten/sanft.jpg" alt="" width="720" height="450" loading="lazy"><span class="badge leise">Selbstwert</span><span class="vorschau-ic"><svg class="ic"><use href="assets/icons.svg#herz"/></svg></span></div>
           <div class="koerper">
             <span class="frage">„Warum bin ich so hart zu mir?“</span>
             <h3>Sei sanft mit dir</h3>
@@ -258,7 +263,7 @@
           </div>
         </article>
         <article class="angebot">
-          <div class="vorschau"><span class="badge leise">PDF</span><svg class="ic"><use href="assets/icons.svg#stift"/></svg></div>
+          <div class="vorschau foto"><img src="assets/bilder/karten/journal.jpg" alt="" width="720" height="450" loading="lazy"><span class="badge leise">PDF</span><span class="vorschau-ic"><svg class="ic"><use href="assets/icons.svg#stift"/></svg></span></div>
           <div class="koerper">
             <span class="frage">„Wo fange ich an?“</span>
             <h3>Self Care Journal</h3>
@@ -277,6 +282,12 @@
   </section>
 
   <!-- Über mich (Kurzfassung) -->
+  <section class="bild-band" aria-label="Du bist nicht allein">
+    <blockquote>„Du bist nicht verrückt. Du bist nicht zu empfindlich. Und du bist nicht allein.“</blockquote>
+    <p>Über 15 Jahre habe ich selbst gebraucht, um das zu glauben. Du musst nicht so lange warten.</p>
+    <a class="knopf" href="ueber-mich.html">Meine Geschichte lesen</a>
+  </section>
+
   <section class="abschnitt" id="ueber">
     <div class="innen">
       <div class="ueber-mich">
@@ -359,6 +370,35 @@
 
 <div id="fuss"></div>
 <script>
+/* Muster zum Antippen: zählt, was sie wiedererkennt, und schlägt den passenden nächsten Schritt vor */
+(function(){
+  var kacheln = document.querySelectorAll(".muster");
+  if (!kacheln.length) return;
+  var zahl = document.getElementById("muster-zahl"), balken = document.getElementById("muster-balken"),
+      text = document.getElementById("muster-text"), weiter = document.getElementById("muster-weiter");
+  function auswerten(){
+    var n = document.querySelectorAll('.muster[aria-pressed="true"]').length;
+    zahl.textContent = n + " von 6";
+    balken.style.width = (n / 6 * 100) + "%";
+    if (n === 0) {
+      text.textContent = "Tippe die Muster an, die du aus deiner Beziehung kennst. Niemand sieht deine Auswahl, sie bleibt nur hier auf der Seite.";
+      weiter.textContent = "Wo stehe ich?"; weiter.href = "#phasen";
+    } else if (n <= 2) {
+      text.textContent = "Du erkennst " + (n === 1 ? "ein Muster" : "zwei Muster") + " wieder. Schon einzelne Muster, die sich wiederholen, sind ein Warnsignal. Der kostenlose Muster-Check zeigt dir in fünf Minuten genauer, was los ist.";
+      weiter.textContent = "Ich bin unsicher"; weiter.href = "#unsicher";
+    } else {
+      text.textContent = "Du erkennst " + n + " von 6 Mustern. Das ist kein Zufall und keine Einbildung: So sehen toxische, narzisstische Beziehungen aus. Du musst nichts sofort entscheiden, aber du darfst dir Unterstützung holen.";
+      weiter.textContent = "Was hilft mir jetzt?"; weiter.href = "#drin";
+    }
+  }
+  kacheln.forEach(function(k){
+    function umschalten(){ k.setAttribute("aria-pressed", k.getAttribute("aria-pressed") === "true" ? "false" : "true"); auswerten(); }
+    k.addEventListener("click", umschalten);
+    k.addEventListener("keydown", function(e){ if (e.key === " " || e.key === "Enter") { e.preventDefault(); umschalten(); } });
+  });
+})();
+</script>
+<script>
 /* Phasen-Wegweiser: Reiter umschalten, #drin / #gehen / #draussen / #unsicher öffnet direkt die Phase */
 (function(){
   var tabs = document.querySelectorAll('.phasen-tabs [role="tab"]');
@@ -375,6 +415,7 @@
   tabs.forEach(function(t){ t.addEventListener("click", function(){ waehle(t.id.slice(4), false); }); });
   var h = location.hash.slice(1);
   if (h) waehle(h, true);
+  window.addEventListener("hashchange", function(){ waehle(location.hash.slice(1), true); });
 })();
 </script>
 <script src="assets/seite.js"></script>

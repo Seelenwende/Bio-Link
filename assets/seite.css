@@ -852,3 +852,78 @@ h1, h2, h3{letter-spacing:-.015em;}
 @media (min-width:900px){ .angebots-gruppe .angebote{grid-template-columns:repeat(3, 1fr);} }
 @media (min-width:600px) and (max-width:899px){ .angebots-gruppe .angebote{grid-template-columns:repeat(2, 1fr);} }
 @media (max-width:599px){ .angebots-gruppe .angebote{grid-template-columns:1fr;} }
+
+/* =====================================================================
+   Bilder in Angebotskarten, Bild-Band, Interaktion, Einblenden
+   ===================================================================== */
+.angebot .vorschau.foto{height:170px; background:#3a2630; border-radius:20px 20px 0 0;}
+.angebot .vorschau.foto img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform .6s ease;}
+.angebot .vorschau.foto::after{content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(53,32,42,.05) 40%, rgba(53,32,42,.45));}
+.angebot .vorschau.foto .badge{z-index:2;}
+.angebot .vorschau-ic{
+  position:absolute; z-index:2; left:14px; bottom:-20px; width:44px; height:44px; border-radius:14px;
+  display:grid; place-items:center; background:var(--karte); box-shadow:var(--s2);
+}
+.angebot .vorschau-ic .ic{width:22px; height:22px; color:var(--beere); filter:none;}
+.angebot .vorschau.foto{overflow:visible;}
+.angebot .vorschau.foto img{border-radius:20px 20px 0 0;}
+.angebot .vorschau.foto::after{border-radius:20px 20px 0 0;}
+.angebot.top .vorschau.foto::after{background:linear-gradient(180deg, rgba(110,65,82,.15) 30%, rgba(74,45,56,.6));}
+.angebot .vorschau.foto + .koerper{padding-top:30px;}
+.angebot{overflow:visible;}
+@media (hover:hover){ .angebot:hover .vorschau.foto img{transform:scale(1.04);} }
+
+/* Info-Karten am quadratischen Porträt: weg vom Gesicht */
+.foto-buehne.quadrat .schwebe-karte.oben-rechts{top:auto; bottom:-30px; right:-34px;}
+.foto-buehne.quadrat .schwebe-karte.unten-links{bottom:auto; top:26px; left:-48px;}
+@media (max-width:520px){
+  .foto-buehne.quadrat .schwebe-karte.oben-rechts{bottom:-26px; right:-8px;}
+  .foto-buehne.quadrat .schwebe-karte.unten-links{top:14px; left:-10px;}
+}
+.foto-buehne.quadrat{margin-bottom:56px;}
+
+/* Bild-Band mit Zitat */
+.bild-band{
+  position:relative; padding:120px 16px; text-align:center; color:#fff; overflow:hidden;
+  background:linear-gradient(180deg, rgba(53,32,42,.55), rgba(53,32,42,.75)), url("bilder/band-weite.jpg") center 60% / cover no-repeat;
+}
+@media (min-width:900px) and (hover:hover){ .bild-band{background-attachment:fixed, fixed;} }
+.bild-band blockquote{margin:0 auto; max-width:760px; font-family:var(--serif); font-size:clamp(1.6rem, 4.4vw, 2.6rem); line-height:1.25;}
+.bild-band p{margin-top:16px; color:#F3E4E7;}
+.bild-band .knopf{margin-top:26px; background:#fff; color:#5C3A46;}
+
+/* Muster zum Antippen */
+.muster{cursor:pointer; position:relative; user-select:none; -webkit-tap-highlight-color:transparent;}
+.muster::after{
+  content:""; position:absolute; top:14px; right:14px; width:22px; height:22px; border-radius:50%;
+  border:1.5px solid var(--linie); background:var(--karte); transition:all .2s ease;
+}
+.muster[aria-pressed="true"]{border-color:var(--beere); box-shadow:0 0 0 2px var(--beere), var(--s2);}
+.muster[aria-pressed="true"]::after{
+  background:var(--beere) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12.5 4.5 4.5L19 7.5'/%3E%3C/svg%3E") center/14px no-repeat;
+  border-color:var(--beere);
+}
+.muster:focus-visible{outline:2px solid var(--rose); outline-offset:3px;}
+.muster-ergebnis{
+  margin-top:22px; padding:20px 22px; border-radius:20px; background:var(--verlauf-rose); box-shadow:var(--s1);
+  display:grid; gap:12px; transition:background .3s ease;
+}
+.muster-ergebnis .zaehler{display:flex; align-items:center; gap:14px;}
+.muster-ergebnis .balken{flex:1; height:8px; border-radius:8px; background:rgba(255,255,255,.7); overflow:hidden;}
+.muster-ergebnis .balken span{display:block; height:100%; width:0; border-radius:8px; background:var(--verlauf-beere); transition:width .5s ease;}
+.muster-ergebnis .zahl{font-family:var(--serif); font-size:1.3rem; color:var(--beere); white-space:nowrap;}
+.muster-ergebnis p{color:var(--pflaume); font-size:.98rem;}
+.muster-ergebnis .knopf-reihe{margin-top:2px;}
+
+/* Lesefortschritt */
+.fortschritt{position:fixed; left:0; top:0; height:3px; width:100%; z-index:11; transform-origin:0 50%; transform:scaleX(0); background:linear-gradient(90deg, #B5808F, #8C5A69, #5C3A46); pointer-events:none;}
+
+/* Einblenden beim Scrollen (nur mit JS aktiv) */
+.js-anim .enthuellen{opacity:0; transform:translateY(22px); transition:opacity .7s ease, transform .7s ease;}
+.js-anim .enthuellen.da{opacity:1; transform:none;}
+@media (prefers-reduced-motion: reduce){ .js-anim .enthuellen{opacity:1; transform:none;} }
+/* Info-Karten unter dem Porträt statt darauf */
+.foto-buehne.quadrat{margin-bottom:24px;}
+.schwebe-reihe{position:relative; z-index:3; display:flex; gap:12px; justify-content:center; margin:-34px -30px 0;}
+.schwebe-reihe .schwebe-karte{position:static; flex:1 1 0; max-width:250px;}
+@media (max-width:520px){ .schwebe-reihe{margin:-28px -6px 0; gap:8px;} .schwebe-reihe .schwebe-karte{padding:9px 10px 9px 9px;} .schwebe-reihe .schwebe-karte .ic-rund{width:34px; height:34px;} .schwebe-reihe .schwebe-karte b{font-size:.84rem;} .schwebe-reihe .schwebe-karte small{font-size:.7rem;} }
