@@ -52,7 +52,7 @@ Die Anweisungen der Begleiterin stehen in `netlify/lib/begleiterin.mts`.
 | `BEGLEITERIN_LIMIT` | optional, Nachrichten pro Mira-Code insgesamt (Standard 300) |
 | `KREIS_CODES` | optional, Kreis-Codes von Hand, kommagetrennt |
 | `KREIS_LIMIT` | optional, Mira-Nachrichten pro Kreis-Code **pro Monat** (Standard 150) |
-| `SEELENWENDE_ADMIN_KEY` | langer, zufälliger Schlüssel (mind. 16 Zeichen) für `zugang-admin.html` und Make |
+| `SEELENWENDE_ADMIN_KEY` | langer, zufälliger Schlüssel (mind. 16 Zeichen) für `zugang-admin.html` und Make; für Live und Vorschauen je ein eigener Wert |
 | `BEGLEITERIN_MODEL` | optional, Standard `claude-opus-5-5` |
 
 Kosten: grob 0,01–0,04 $ pro Nachricht, also höchstens etwa 6 $ pro Kreis-Mitglied und Monat bei vollem Kontingent.
