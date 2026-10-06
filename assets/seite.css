@@ -529,3 +529,166 @@ a.karte{text-decoration:none; color:inherit; transition:transform .2s ease, box-
 
 .held.split .warteliste{text-align:left;}
 .stapel .b{align-items:flex-end; text-align:right;}
+
+/* =====================================================================
+   Farbe, Tiefe, Vertrauen: Weiß, Rosé, Sand und Dunkelbeere im Wechsel,
+   weiße Karten mit weichen Beere-Schatten. (Überschreibt Regeln oben.)
+   ===================================================================== */
+:root{
+  --weiss:#FFFFFF; --karte:#FFFFFF;
+  --beere-tief:#4A2D38; --beere-nacht:#35202A;
+  --verlauf-beere:linear-gradient(135deg, #8C5A69 0%, #6E4152 45%, #4A2D38 100%);
+  --verlauf-rose:linear-gradient(135deg, #F6E9EC 0%, #F3DDE2 50%, #EFD3DA 100%);
+  --s1:0 1px 2px rgba(74,45,56,.06), 0 2px 8px -2px rgba(74,45,56,.08);
+  --s2:0 2px 4px rgba(74,45,56,.05), 0 12px 28px -10px rgba(74,45,56,.22);
+  --s3:0 4px 10px rgba(74,45,56,.06), 0 28px 60px -22px rgba(74,45,56,.38);
+  --s-knopf:0 8px 20px -8px rgba(110,65,82,.65);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --weiss:#211A1D; --karte:#2A2024;
+    --verlauf-rose:linear-gradient(135deg, #2A1E22 0%, #2F2127 100%);
+    --s1:0 1px 2px rgba(0,0,0,.3); --s2:0 12px 28px -10px rgba(0,0,0,.55); --s3:0 28px 60px -22px rgba(0,0,0,.7);
+    --s-knopf:0 8px 20px -8px rgba(0,0,0,.6);
+  }
+}
+:root[data-theme="dark"]{
+  --weiss:#211A1D; --karte:#2A2024;
+  --verlauf-rose:linear-gradient(135deg, #2A1E22 0%, #2F2127 100%);
+  --s1:0 1px 2px rgba(0,0,0,.3); --s2:0 12px 28px -10px rgba(0,0,0,.55); --s3:0 28px 60px -22px rgba(0,0,0,.7);
+  --s-knopf:0 8px 20px -8px rgba(0,0,0,.6);
+}
+
+/* Abschnitte: Standard ist jetzt Weiß */
+.abschnitt{background:var(--weiss); padding:80px 16px; position:relative;}
+.abschnitt.sand{background:var(--sand);}
+.abschnitt.blush{background:var(--verlauf-rose);}
+@media (max-width:640px){ .abschnitt{padding:60px 16px;} }
+
+/* Dunkelbeere: Kaufbereich und Abschluss */
+.abschnitt.beere, .abschnitt.dunkel{background:var(--verlauf-beere); color:#FAF6F4; overflow:hidden;}
+.abschnitt.beere::before, .abschnitt.dunkel::before{
+  content:""; position:absolute; width:520px; height:520px; right:-160px; top:-200px; border-radius:50%;
+  background:radial-gradient(circle, rgba(217,166,179,.28), transparent 65%); pointer-events:none;
+}
+.abschnitt.beere::after, .abschnitt.dunkel::after{
+  content:""; position:absolute; width:420px; height:420px; left:-160px; bottom:-220px; border-radius:50%;
+  background:radial-gradient(circle, rgba(246,233,236,.14), transparent 65%); pointer-events:none;
+}
+.abschnitt.beere > .innen, .abschnitt.dunkel > .innen{position:relative; z-index:1;}
+.abschnitt.beere h2, .abschnitt.dunkel h2{color:#FFFFFF;}
+.abschnitt.beere > .innen > .leise, .abschnitt.beere > .innen > p, .abschnitt.dunkel p{color:#EBD9DD;}
+.abschnitt.beere > .innen > .leise a, .abschnitt.beere > .innen > p a{color:#FFFFFF;}
+.abschnitt.beere .ueber, .abschnitt.dunkel .ueber{color:#E6C3CC;}
+.abschnitt.dunkel .knopf{background:#FFFFFF; color:#5C3A46; box-shadow:0 10px 26px -10px rgba(0,0,0,.5);}
+.abschnitt.dunkel .knopf.leicht{background:transparent; color:#FFFFFF; border-color:rgba(255,255,255,.45); box-shadow:none;}
+.abschnitt.beere .sicher{background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.14); box-shadow:none;}
+.abschnitt.beere .sicher h3{color:#FFFFFF;} .abschnitt.beere .sicher p{color:#EBD9DD;}
+.abschnitt.beere .leistung{background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.14); box-shadow:none;}
+.abschnitt.beere .leistung h3{color:#FFFFFF;} .abschnitt.beere .leistung p{color:#EBD9DD;}
+.abschnitt.beere .ic-rund{background:rgba(255,255,255,.14);} .abschnitt.beere .ic-rund .ic{color:#FFFFFF;}
+
+/* Held: Rosé-Verlauf mit weichen Farbflächen */
+.held{background:var(--verlauf-rose); position:relative; overflow:hidden;}
+.held::before{
+  content:""; position:absolute; width:620px; height:620px; right:-180px; top:-240px; border-radius:50%;
+  background:radial-gradient(circle, rgba(181,128,143,.30), transparent 65%); pointer-events:none;
+}
+.held::after{
+  content:""; position:absolute; width:480px; height:480px; left:-200px; bottom:-260px; border-radius:50%;
+  background:radial-gradient(circle, rgba(255,255,255,.75), transparent 65%); pointer-events:none;
+}
+.held > .innen{position:relative; z-index:1;}
+.held.split{padding-bottom:110px;}
+
+/* Vertrauensleiste schwebt als weiße Karte über der Kante */
+.vertrauen{background:transparent; border:none; padding:0 16px; margin-top:-56px; position:relative; z-index:2;}
+.vertrauen ul{background:var(--karte); border-radius:22px; padding:22px 24px; box-shadow:var(--s3);}
+
+/* Knöpfe */
+.knopf{background:linear-gradient(135deg, #9A6476, #7A4B5B); color:#FFFFFF; box-shadow:var(--s-knopf);}
+.knopf.dunkel{background:var(--verlauf-beere);}
+.knopf.leicht{background:var(--karte); color:var(--pflaume); border:1px solid var(--linie); box-shadow:var(--s1);}
+@media (hover:hover){
+  .knopf:hover{transform:translateY(-2px); box-shadow:0 14px 30px -10px rgba(110,65,82,.7);}
+  .knopf.leicht:hover{box-shadow:var(--s2);}
+}
+.badge{background:var(--verlauf-beere); box-shadow:var(--s1);}
+.badge.leise{background:var(--karte); color:var(--beere); box-shadow:var(--s1);}
+
+/* Karten: weiß mit Schatten statt Linie */
+.karte, .leistung, .woche, .phase, .wegweiser a, .fragen details, .angebot, .sicher{
+  background:var(--karte); border:1px solid rgba(228,216,216,.6); box-shadow:var(--s1);
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .karte, :root:not([data-theme="light"]) .leistung, :root:not([data-theme="light"]) .woche, :root:not([data-theme="light"]) .wegweiser a, :root:not([data-theme="light"]) .fragen details, :root:not([data-theme="light"]) .angebot, :root:not([data-theme="light"]) .sicher{border-color:var(--linie);} }
+.sand .karte, .blush .karte, .sand .leistung, .blush .leistung, .sand .woche, .blush .woche{background:var(--karte);}
+.leistung, .karte, .woche, .wegweiser a{transition:transform .2s ease, box-shadow .2s ease;}
+@media (hover:hover){
+  .leistung:hover, .woche:hover, .wegweiser a:hover, a.karte:hover{transform:translateY(-3px); box-shadow:var(--s2);}
+  .angebot:hover{transform:translateY(-4px); box-shadow:var(--s3);}
+}
+.sicher{background:var(--karte);}
+.blush .sicher{background:var(--karte);}
+.karte.hervor{background:var(--verlauf-beere); border:none; box-shadow:var(--s2);}
+.ic-rund{background:var(--verlauf-rose); box-shadow:inset 0 0 0 1px rgba(181,128,143,.18);}
+.karte.hervor .ic-rund{background:rgba(255,255,255,.14); box-shadow:none;}
+
+/* Wochen: Nummer als farbige Kante */
+.woche{border-top:3px solid var(--rose);}
+.woche:nth-child(even){border-top-color:var(--beere);}
+
+/* Zitate */
+.zitat{background:var(--karte); box-shadow:var(--s1); border-left:3px solid var(--beere);}
+
+/* Angebotskarten: abwechselnde Farbflächen */
+.angebot{box-shadow:var(--s2); border:none;}
+.angebot .vorschau{background:var(--verlauf-rose);}
+.angebot:nth-child(3n+2) .vorschau{background:linear-gradient(135deg, #F3ECE9, #E8DAD3);}
+.angebot:nth-child(3n) .vorschau{background:linear-gradient(135deg, #EFD3DA, #DDB9BD);}
+.angebot.top{box-shadow:0 0 0 2px var(--beere), var(--s3);}
+.angebot.top .vorschau{background:var(--verlauf-beere);}
+.angebot .vorschau .ic{filter:drop-shadow(0 6px 10px rgba(74,45,56,.18));}
+
+/* Preisbox: weiß auf Dunkelbeere, mit farbiger Kante */
+.preisbox{
+  background:var(--karte); border:none; box-shadow:0 40px 80px -30px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.12);
+  position:relative; overflow:hidden; padding-top:36px;
+}
+.preisbox::before{content:""; position:absolute; left:0; right:0; top:0; height:6px; background:linear-gradient(90deg, #B5808F, #8C5A69, #5C3A46);}
+.preisbox .betrag{color:var(--beere);}
+.preisbox .knopf{padding:16px 26px; font-size:1.1rem;}
+
+/* Persönliche Note */
+.persoenlich{background:var(--karte); border:none; box-shadow:var(--s3); position:relative; overflow:hidden;}
+.persoenlich::before{content:""; position:absolute; left:0; top:0; bottom:0; width:6px; background:var(--verlauf-beere);}
+.portrait{border:5px solid var(--karte); box-shadow:var(--s2);}
+.portrait.gross{border-width:8px; box-shadow:var(--s3);}
+
+/* Wegweiser */
+.wegweiser a{border:none; box-shadow:var(--s1);}
+.wegweiser a:nth-child(odd) .ic-rund{background:linear-gradient(135deg, #EFD3DA, #DDB9BD);}
+
+/* Fragen */
+.fragen details{border:none; box-shadow:var(--s1);}
+.fragen details[open]{box-shadow:var(--s2);}
+
+/* Mockups: mehr Tiefe */
+.handy, .tablet{background:linear-gradient(160deg, #6E4152, #3E2530); box-shadow:0 50px 80px -30px rgba(53,32,42,.7), 0 0 0 1px rgba(255,255,255,.06) inset;}
+.handy .bildschirm, .tablet .bildschirm{background:#FFFFFF;}
+.beigabe{background:#FFFFFF; border:none; box-shadow:var(--s3);}
+.monat-karte{box-shadow:var(--s3);}
+.monat-karte:nth-child(1){background:#FFFFFF;}
+.buch{box-shadow:inset 8px 0 0 rgba(0,0,0,.14), 0 40px 60px -26px rgba(53,32,42,.7);}
+
+/* Kopf mit Glas-Effekt */
+.kopf{background:rgba(250,246,244,.86); backdrop-filter:saturate(1.4) blur(12px); -webkit-backdrop-filter:saturate(1.4) blur(12px); box-shadow:0 1px 0 var(--linie);}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .kopf{background:rgba(27,20,23,.86);} }
+.kaufleiste{box-shadow:0 -10px 30px -12px rgba(74,45,56,.35); border-top:none;}
+
+/* Fuß */
+.fuss{background:var(--weiss);}
+.preisbox{color:var(--pflaume);}
+.preisbox .badge{justify-self:start;}
+.preisbox .ueber{color:var(--rose);}
+@media (min-width:760px){ .wochen:has(> :nth-child(6)){grid-template-columns:repeat(3, 1fr);} }
+.vertrauen{background:linear-gradient(var(--weiss), var(--weiss)) 0 56px / 100% 100% no-repeat;}
