@@ -1,0 +1,117 @@
+{
+  "hinweis": "Texte des Glaubenssätze-Tests. Wird von glaubenssaetze.html und der Funktion test-ergebnis-mail genutzt.",
+  "saetze": [
+    {
+      "id": "genug",
+      "area": "Selbstwert",
+      "satz": "Ich bin nicht genug.",
+      "items": [
+        "Egal, wie viel ich schaffe – es fühlt sich selten genug an.",
+        "Wenn andere mich wirklich kennen würden, wären sie enttäuscht.",
+        "Ich vergleiche mich oft mit anderen und schneide dabei schlecht ab."
+      ],
+      "zeigt": "Du leistest viel und spürst trotzdem kaum Zufriedenheit. Lob prallt ab, Kritik bleibt hängen.",
+      "herkunft": "Oft aus Zeiten, in denen Anerkennung an Leistung geknüpft war oder du dich neben anderen übersehen gefühlt hast.",
+      "neu": "Ich bin genug – auch an Tagen, an denen ich wenig schaffe.",
+      "frage": "Wessen Stimme höre ich, wenn ich mir sage, dass ich nicht genug bin?"
+    },
+    {
+      "id": "liebe",
+      "area": "Liebe & Beziehung",
+      "satz": "Liebe muss ich mir verdienen.",
+      "items": [
+        "Ich habe das Gefühl, mich anstrengen zu müssen, damit man mich mag.",
+        "Wenn ich nichts gebe, bin ich für andere uninteressant.",
+        "Ich bleibe lieber in etwas, das mir nicht guttut, als allein zu sein."
+      ],
+      "zeigt": "Du gibst mehr, als du bekommst, und hältst an Beziehungen fest, obwohl sie dich erschöpfen.",
+      "herkunft": "Häufig dort, wo Zuneigung unberechenbar war oder nur floss, wenn du „brav“, hilfreich oder unkompliziert warst.",
+      "neu": "Ich bin liebenswert, einfach weil ich bin – nicht für das, was ich gebe.",
+      "frage": "Wie würde ich mich in Beziehungen verhalten, wenn ich mir Liebe nicht verdienen müsste?"
+    },
+    {
+      "id": "beduerfnisse",
+      "area": "Grenzen & Bedürfnisse",
+      "satz": "Meine Bedürfnisse sind nicht so wichtig.",
+      "items": [
+        "Es fällt mir schwer, Nein zu sagen, ohne mich schuldig zu fühlen.",
+        "Ich stelle die Wünsche anderer fast automatisch über meine eigenen.",
+        "Um Hilfe zu bitten fühlt sich an, als würde ich zur Last fallen."
+      ],
+      "zeigt": "Du merkst oft erst spät, was du selbst brauchst – und sagst Ja, obwohl alles in dir Nein ruft.",
+      "herkunft": "Oft aus einem Umfeld, in dem für deine Wünsche kein Platz war oder du früh für andere sorgen musstest.",
+      "neu": "Meine Bedürfnisse zählen. Ein Nein zu anderen kann ein Ja zu mir sein.",
+      "frage": "Was brauche ich heute – und was hält mich davon ab, es mir zu nehmen?"
+    },
+    {
+      "id": "perfekt",
+      "area": "Perfektionismus",
+      "satz": "Ich darf keine Fehler machen.",
+      "items": [
+        "Fehler beschäftigen mich noch lange, nachdem sie passiert sind.",
+        "Ich fange Dinge manchmal gar nicht erst an, weil sie nicht perfekt werden könnten.",
+        "Kritik trifft mich, als ginge es um meinen ganzen Wert."
+      ],
+      "zeigt": "Du bist streng mit dir, zögerst Neues hinaus und fühlst dich schnell beschämt.",
+      "herkunft": "Oft aus Erfahrungen, in denen Fehler bestraft, belächelt oder mit Liebesentzug beantwortet wurden.",
+      "neu": "Fehler gehören zum Wachsen. Ich darf lernen, statt perfekt zu sein.",
+      "frage": "Was würde ich ausprobieren, wenn ein Fehler nichts über meinen Wert aussagen würde?"
+    },
+    {
+      "id": "schuld",
+      "area": "Verantwortung & Schuld",
+      "satz": "Ich bin dafür verantwortlich, dass es allen gut geht.",
+      "items": [
+        "Wenn jemand in meiner Nähe schlecht gelaunt ist, frage ich mich, was ich falsch gemacht habe.",
+        "Ich entschuldige mich oft – auch für Dinge, die nicht meine Schuld sind.",
+        "Ich fühle mich egoistisch, wenn ich zuerst an mich denke."
+      ],
+      "zeigt": "Du scannst ständig die Stimmung anderer und trägst Gefühle, die nicht deine sind.",
+      "herkunft": "Oft aus der frühen Rolle, für Frieden sorgen zu müssen, oder aus Beziehungen, in denen dir die Schuld für die Launen anderer gegeben wurde.",
+      "neu": "Ich bin für meine Gefühle verantwortlich – nicht für die aller anderen.",
+      "frage": "Welche Last trage ich gerade, die eigentlich jemand anderem gehört?"
+    },
+    {
+      "id": "vertrauen",
+      "area": "Vertrauen",
+      "satz": "Ich kann mich auf niemanden verlassen.",
+      "items": [
+        "Ich rechne eher damit, enttäuscht zu werden, als dass jemand für mich da ist.",
+        "Ich zeige meine Gefühle lieber nicht, weil sie gegen mich verwendet werden könnten.",
+        "Nähe macht mich schnell misstrauisch oder unruhig."
+      ],
+      "zeigt": "Du hältst andere auf Abstand, regelst alles allein und bist innerlich oft in Alarmbereitschaft.",
+      "herkunft": "Häufig aus Erfahrungen von Vertrauensbruch, Unzuverlässigkeit oder emotionaler Verletzung.",
+      "neu": "Ich darf vorsichtig sein – und trotzdem Menschen finden, die sicher für mich sind.",
+      "frage": "Bei wem fühle ich mich ein kleines Stück sicherer – und woran merke ich das?"
+    },
+    {
+      "id": "kraft",
+      "area": "Selbstvertrauen",
+      "satz": "Ich schaffe das nicht allein.",
+      "items": [
+        "Große Entscheidungen traue ich mir allein kaum zu.",
+        "Ich glaube oft, dass andere besser wissen, was gut für mich ist.",
+        "Wenn ich an einen Neuanfang denke, fühle ich mich vor allem hilflos."
+      ],
+      "zeigt": "Du zweifelst an deinem eigenen Urteil und wartest auf Erlaubnis, bevor du losgehst.",
+      "herkunft": "Oft dort, wo dir wenig zugetraut wurde oder deine Wahrnehmung immer wieder infrage gestellt wurde.",
+      "neu": "Ich habe schon so viel getragen. Ich kann mir selbst vertrauen – Schritt für Schritt.",
+      "frage": "Welche schwere Situation habe ich schon gemeistert – und was sagt das über mich?"
+    },
+    {
+      "id": "erlaubnis",
+      "area": "Freude & Leichtigkeit",
+      "satz": "Ich darf nicht einfach glücklich sein.",
+      "items": [
+        "Wenn es mir richtig gut geht, warte ich darauf, dass etwas schiefgeht.",
+        "Ich habe das Gefühl, mir Ruhe und Freude erst verdienen zu müssen.",
+        "Ein leichtes, schönes Leben ist für andere gedacht, nicht für mich."
+      ],
+      "zeigt": "Pausen fühlen sich unverdient an, Glück fühlt sich gefährlich an – als müsstest du dafür bezahlen.",
+      "herkunft": "Oft aus einem Umfeld, in dem Leichtigkeit keinen Platz hatte oder Freude schnell wieder zerstört wurde.",
+      "neu": "Ich darf Freude empfangen, ohne sie mir vorher verdient zu haben.",
+      "frage": "Was würde ich mir heute gönnen, wenn Glück für mich erlaubt wäre?"
+    }
+  ]
+}
