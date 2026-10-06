@@ -182,6 +182,39 @@
     opacity:0;animation:rise .8s ease forwards;
   }
 
+  /* --- Freischalten per Mail --- */
+  .gate{
+    width:min(100% - 32px, 400px);
+    margin:auto;
+    border:none;border-radius:20px;
+    padding:28px 24px 22px;
+    background:var(--papier);color:var(--pflaume);
+    text-align:left;
+    box-shadow:0 24px 60px -24px rgba(92,58,70,.55);
+  }
+  .gate::backdrop{background:rgba(92,58,70,.38);}
+  .gate h2{font-family:"Playfair Display",serif;font-weight:500;font-size:21px;line-height:1.35;margin-bottom:8px;padding-right:24px;}
+  .gate p{font-size:14px;color:var(--gedaempft);line-height:1.6;}
+  .gate input[type="email"]{width:100%;margin-top:14px;font:inherit;font-size:16px;color:var(--pflaume);background:#fff;border:1px solid var(--linie);border-radius:12px;padding:12px 14px;}
+  .gate input[type="email"]:focus-visible{outline:2px solid var(--rose);outline-offset:1px;}
+  .gate .check{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--gedaempft);line-height:1.5;margin-top:12px;}
+  .gate .check input{margin-top:3px;accent-color:var(--beere);flex-shrink:0;}
+  .gate .safe{font-size:12.5px;margin-top:8px;}
+  .gate .senden{
+    width:100%;margin-top:14px;border:none;border-radius:14px;cursor:pointer;
+    background:var(--beere);color:var(--papier);
+    font-family:"Playfair Display",serif;font-size:16px;font-weight:500;padding:13px 18px;
+  }
+  .gate .senden:disabled{opacity:.6;cursor:default;}
+  .gate .senden:focus-visible{outline:2px solid var(--rose);outline-offset:3px;}
+  .gate .status{font-size:14px;color:var(--beere);margin-top:8px;min-height:1.4em;}
+  .gate .zu{
+    position:absolute;top:12px;right:14px;
+    background:none;border:none;cursor:pointer;
+    font-size:24px;line-height:1;color:var(--gedaempft);padding:4px 8px;
+  }
+  .sr,.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;}
+
   @keyframes rise{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
 
   @media (prefers-reduced-motion:reduce){
@@ -216,21 +249,35 @@
     <div class="eyebrow" style="animation-delay:.62s"><span>Dein erster Schritt</span></div>
 
     <!-- Self Care Journal · Tentary -->
-    <a class="link link--hero" href="https://seelenwende.mytentary.com/p/niaKY4" target="_blank" rel="noopener" style="animation-delay:.68s">
+    <a class="link link--hero" href="#freischalten" data-ziel="https://seelenwende.mytentary.com/p/niaKY4" style="animation-delay:.68s">
       <span class="title">Self Care Journal</span>
       <span class="meta">Kostenlos · dein sanfter Anfang</span>
     </a>
 
+    <!-- Muster-Check · eigene Seite -->
+    <a class="link link--soft" href="#freischalten" data-ziel="muster-check.html" style="animation-delay:.71s">
+      <span class="title">Ist das noch normal?</span>
+      <span class="meta">Kostenloser Muster-Check · 5 Minuten</span>
+    </a>
+
     <!-- Glaubenssätze-Test · eigene Seite -->
-    <a class="link link--soft" href="glaubenssaetze.html" style="animation-delay:.74s">
+    <a class="link link--soft" href="#freischalten" data-ziel="glaubenssaetze.html" style="animation-delay:.74s">
       <span class="title">Welche Glaubenssätze tragen dich?</span>
       <span class="meta">Kostenloser Selbsttest · 5 Minuten</span>
     </a>
 
+    <!-- Klarheits-Tagebuch (notizen.html, ~14 €) kommt hierher, sobald Zugangscode und Kaufweg stehen -->
+
     <!-- Werte-Finder · eigene Seite -->
-    <a class="link link--soft" href="werte-finder.html" style="animation-delay:.78s">
+    <a class="link link--soft" href="#freischalten" data-ziel="werte-finder.html" style="animation-delay:.78s">
       <span class="title">Was ist dir wirklich wichtig?</span>
       <span class="meta">Kostenloser Werte-Finder · 10 Minuten</span>
+    </a>
+
+    <!-- Sei sanft mit dir · eigene Seite -->
+    <a class="link link--soft" href="#freischalten" data-ziel="affirmationen.html" style="animation-delay:.81s">
+      <span class="title">Sei sanft mit dir</span>
+      <span class="meta">Persönliche Affirmationen bei Selbstzweifeln · 5 Minuten</span>
     </a>
 
     <!-- BEGLEITUNG -->
@@ -242,6 +289,8 @@
       <span class="title">Das Bundle – Zurück zu dir</span>
       <span class="meta">E-Book · Vision Board · Journal — 49 €</span>
     </a>
+
+    <!-- Neuer-Satz-Kompass (neuer-satz-kompass.html, 19 €) kommt hierher, sobald der Kaufweg steht -->
 
     <!-- Du bist genug E-Book · Tentary (gleiche Seite wie Bundle) -->
     <a class="link link--soft" href="https://seelenwende.mytentary.com/p/Mi6HH3" target="_blank" rel="noopener" style="animation-delay:.9s">
@@ -259,7 +308,7 @@
     <div class="eyebrow" style="animation-delay:1.06s"><span>Mehr</span></div>
 
     <!-- Mini-Guide · Tentary -->
-    <a class="link link--soft" href="https://seelenwende.mytentary.com/p/WPedba" target="_blank" rel="noopener" style="animation-delay:1.12s">
+    <a class="link link--soft" href="#freischalten" data-ziel="https://seelenwende.mytentary.com/p/WPedba" style="animation-delay:1.12s">
       <span class="title">Der Weg nach draußen</span>
       <span class="meta">Kostenloser Mini-Guide</span>
     </a>
@@ -272,5 +321,78 @@
     <div class="footer" style="animation-delay:1.34s">@_seelenwende</div>
 
   </main>
+  <!-- Freischalten: die kostenlosen Werkzeuge gibt es gegen die Mail-Adresse -->
+  <dialog class="gate" id="gate" aria-labelledby="gate-titel">
+    <button class="zu" type="button" id="gate-zu" aria-label="Schließen">&times;</button>
+    <form id="gate-form" novalidate>
+      <h2 id="gate-titel">Schön, dass du da bist.</h2>
+      <p>Trag deine Mail-Adresse ein, dann öffnen sich alle kostenlosen Angebote für dich.</p>
+      <label class="sr" for="gate-email">Deine Mail-Adresse</label>
+      <input type="email" id="gate-email" autocomplete="email" placeholder="Deine Mail-Adresse" required>
+      <input type="text" name="website" id="gate-website" tabindex="-1" autocomplete="off" class="hp" aria-hidden="true">
+      <label class="check"><input type="checkbox" id="gate-ok"> Ich möchte gelegentlich Impulse von Seelenwende per Mail bekommen. Abmelden kann ich mich jederzeit mit einem Klick.</label>
+      <p class="safe">Nutze eine Adresse, die nur du liest. Die Mails kommen von Seelenwende.</p>
+      <button class="senden" type="submit" id="gate-senden">Jetzt öffnen</button>
+      <p class="status" id="gate-status" role="status"></p>
+    </form>
+  </dialog>
+
+<script>
+(function(){
+  var SCHLUESSEL = "seelenwende_werkzeuge_frei";
+  var $ = function(id){ return document.getElementById(id); };
+  var dialog = $("gate");
+  var ziel = null;
+
+  function istFrei(){
+    try { return localStorage.getItem(SCHLUESSEL) === "1"; } catch (e) { return false; }
+  }
+  function merken(){
+    try { localStorage.setItem(SCHLUESSEL, "1"); } catch (e) {}
+  }
+
+  document.querySelectorAll("a[data-ziel]").forEach(function(link){
+    link.addEventListener("click", function(e){
+      e.preventDefault();
+      ziel = link.getAttribute("data-ziel");
+      if (istFrei()) { location.href = ziel; return; }
+      $("gate-status").textContent = "";
+      if (dialog.showModal) dialog.showModal(); else dialog.setAttribute("open", "");
+      $("gate-email").focus();
+    });
+  });
+
+  $("gate-zu").addEventListener("click", function(){
+    if (dialog.close) dialog.close(); else dialog.removeAttribute("open");
+  });
+  dialog.addEventListener("click", function(e){ if (e.target === dialog && dialog.close) dialog.close(); });
+
+  $("gate-form").addEventListener("submit", function(e){
+    e.preventDefault();
+    var status = $("gate-status");
+    var email = $("gate-email").value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { status.textContent = "Bitte prüf deine Mail-Adresse."; return; }
+    if (!$("gate-ok").checked) { status.textContent = "Bitte bestätige, dass du Mails von Seelenwende bekommen möchtest."; return; }
+    $("gate-senden").disabled = true;
+    status.textContent = "Einen Moment …";
+    fetch("/api/werkzeuge/anmelden", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ email: email, einwilligung: true, website: $("gate-website").value })
+    })
+      .then(function(res){ return res.json().catch(function(){ return {}; }).then(function(data){ return { ok: res.ok, data: data }; }); })
+      .then(function(r){
+        if (!r.ok) throw new Error(r.data.error || "Das hat gerade nicht geklappt. Versuch es bitte später noch einmal.");
+        merken();
+        status.textContent = "Danke! Es öffnet sich gleich …";
+        location.href = ziel;
+      })
+      .catch(function(err){
+        status.textContent = err.message || "Das hat gerade nicht geklappt. Versuch es bitte später noch einmal.";
+        $("gate-senden").disabled = false;
+      });
+  });
+})();
+</script>
 </body>
 </html>

@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seelenwende · Neuer-Satz-Kompass</title>
+<meta name="description" content="30 Tage, ein Impuls pro Tag: Vom alten Glaubenssatz zu deinem neuen Satz – aufgebaut auf deinem Testergebnis und deinen Werten.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --papier:#FAF6F4;
+    --sand:#F3ECE9;
+    --rose:#B5808F;
+    --beere:#8C5A69;
+    --pflaume:#5C3A46;
+    --gedaempft:#8E7079;
+    --linie:#E4D8D8;
+    --mikro:#C3AEB2;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    background:var(--papier);
+    color:var(--pflaume);
+    font-family:"Jost",sans-serif;
+    font-weight:300;
+    line-height:1.7;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    padding:44px 18px 60px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .page{width:100%;max-width:540px;}
+  [hidden]{display:none !important;}
+
+  /* --- Kopf --- */
+  header{text-align:center;}
+  .back{
+    display:inline-block;font-family:"Playfair Display",serif;font-size:10.5px;letter-spacing:.36em;
+    text-transform:uppercase;color:var(--rose);text-decoration:none;margin-bottom:22px;
+  }
+  .back:hover{color:var(--beere);}
+  .butterfly{width:52px;height:52px;margin:0 auto 14px;display:block;}
+  .butterfly path,.butterfly ellipse{
+    fill:none;stroke:var(--rose);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;
+  }
+  .butterfly .dot,.butterfly .body{fill:var(--rose);stroke:none;}
+  .handle{
+    font-family:"Playfair Display",serif;font-size:11px;letter-spacing:.36em;text-transform:uppercase;color:var(--rose);
+  }
+  h1{font-family:"Playfair Display",serif;font-weight:500;font-size:32px;line-height:1.2;margin-top:10px;}
+  h2{font-family:"Playfair Display",serif;font-weight:500;font-size:24px;line-height:1.3;text-align:center;}
+  .intro{font-size:15px;color:var(--gedaempft);max-width:42ch;margin:14px auto 0;text-align:center;}
+  .question{font-size:15px;color:var(--gedaempft);text-align:center;max-width:44ch;margin:10px auto 0;}
+
+  .view{display:none;}
+  .view.show{display:block;animation:rise .5s ease;}
+  .step__label{
+    font-family:"Playfair Display",serif;font-size:10.5px;letter-spacing:.4em;text-transform:uppercase;
+    color:var(--rose);text-align:center;margin:30px 0 8px;
+  }
+
+  /* --- Einstieg: zwei Wege --- */
+  .weg{background:#fff;border:1px solid var(--linie);border-radius:18px;padding:18px;margin-top:24px;display:flex;flex-direction:column;gap:12px;}
+  .weg__label{font-family:"Playfair Display",serif;font-size:10.5px;letter-spacing:.32em;text-transform:uppercase;color:var(--rose);}
+  .weg h2{text-align:left;font-size:21px;margin-top:-6px;}
+  .weg p{font-size:14px;color:var(--gedaempft);}
+  .weg .hint{margin-top:0;min-height:0;}
+  .oder{text-align:center;font-family:"Playfair Display",serif;font-style:italic;color:var(--gedaempft);margin-top:14px;}
+  .steps{display:flex;flex-direction:column;gap:10px;}
+  .step-btn{
+    display:flex;align-items:center;gap:12px;width:100%;text-align:left;cursor:pointer;text-decoration:none;
+    border:1px solid var(--linie);border-radius:14px;padding:12px 16px;background:var(--papier);color:var(--pflaume);
+    font-family:"Playfair Display",serif;font-size:16.5px;font-weight:500;
+  }
+  .step-btn small{margin-left:auto;font-family:"Jost",sans-serif;font-weight:300;font-size:12.5px;color:var(--gedaempft);white-space:nowrap;}
+  .step-btn .nr{
+    flex:none;width:28px;height:28px;border-radius:50%;border:1px solid var(--rose);
+    display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--rose);
+  }
+  .step-btn.ok .nr{background:var(--rose);color:var(--papier);}
+  .step-btn.jetzt{background:var(--beere);border-color:var(--beere);color:var(--papier);}
+  .step-btn.jetzt small{color:#EBD9DD;}
+  .step-btn.jetzt .nr{border-color:var(--papier);color:var(--papier);}
+  .step-btn.zu{opacity:.5;cursor:not-allowed;background:var(--sand);}
+  .step-btn.zu .nr{border-style:dashed;}
+  .step-btn:focus-visible{outline:2px solid var(--rose);outline-offset:3px;}
+  .price-line{font-size:13.5px;color:var(--gedaempft);text-align:center;margin-top:22px;}
+
+  /* --- Auswahl --- */
+  .found{
+    background:var(--sand);border-radius:14px;padding:10px 14px;margin-top:16px;
+    font-size:13.5px;color:var(--gedaempft);text-align:center;
+  }
+  .found a{color:var(--beere);}
+  .choices{display:flex;flex-direction:column;gap:8px;margin-top:16px;}
+  .choice{
+    font:inherit;text-align:left;cursor:pointer;width:100%;
+    background:#fff;border:1px solid var(--linie);border-radius:14px;padding:11px 16px;color:var(--pflaume);
+    transition:background-color .2s ease,color .2s ease,border-color .2s ease;
+  }
+  .choice b{display:block;font-family:"Playfair Display",serif;font-weight:500;font-size:16.5px;line-height:1.4;}
+  .choice small{display:block;font-size:12px;color:var(--gedaempft);}
+  .choice .badge{
+    display:inline-block;font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+    background:var(--rose);color:var(--papier);border-radius:20px;padding:1px 9px;margin-left:6px;vertical-align:2px;
+  }
+  .choice[aria-pressed="true"]{background:var(--beere);border-color:var(--beere);color:var(--papier);}
+  .choice[aria-pressed="true"] small{color:#EBD9DD;}
+  .code{margin-top:14px;}
+  .code input{text-transform:uppercase;letter-spacing:.04em;}
+  .buy{font-size:13.5px;color:var(--gedaempft);margin-top:8px;}
+  .buy a{color:var(--beere);}
+  .own{background:#fff;border:1px solid var(--linie);border-radius:16px;padding:14px 16px;margin-top:10px;}
+
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;justify-content:center;}
+  .chip{
+    font:inherit;font-size:14.5px;color:var(--pflaume);
+    background:#fff;border:1px solid var(--linie);border-radius:20px;
+    padding:8px 15px;cursor:pointer;text-align:left;
+    transition:background-color .2s ease,color .2s ease,border-color .2s ease;
+  }
+  .chip small{display:block;font-size:11.5px;color:var(--gedaempft);line-height:1.35;max-width:26ch;}
+  .chip[aria-pressed="true"]{background:var(--beere);border-color:var(--beere);color:var(--papier);}
+  .chip[aria-pressed="true"] small{color:#EBD9DD;}
+  .chip:disabled{opacity:.45;cursor:not-allowed;}
+  .counter{text-align:center;font-size:14px;color:var(--gedaempft);margin-top:14px;}
+  .counter b{font-weight:400;color:var(--pflaume);}
+
+  label.field{display:block;font-family:"Playfair Display",serif;font-size:16px;font-weight:500;margin-top:14px;}
+  label.field:first-child{margin-top:0;}
+  label.field span{font-family:"Jost",sans-serif;font-weight:300;font-size:12.5px;color:var(--gedaempft);display:block;}
+  textarea,input[type="text"],input[type="time"]{
+    width:100%;margin-top:6px;font:inherit;font-size:16px;line-height:1.5;color:var(--pflaume);
+    background:var(--papier);border:1px solid var(--linie);border-radius:12px;padding:10px 12px;
+  }
+  textarea{resize:vertical;min-height:64px;}
+  input[type="time"]{width:auto;}
+  textarea:focus,input:focus{outline:2px solid var(--rose);outline-offset:1px;}
+
+  .pair{background:#fff;border:1px solid var(--linie);border-radius:18px;padding:18px;margin-top:18px;text-align:center;}
+  .pair__old{font-family:"Playfair Display",serif;font-style:italic;font-size:17px;color:var(--gedaempft);text-decoration:line-through;text-decoration-color:var(--mikro);}
+  .pair__arrow{color:var(--rose);margin:4px 0;}
+  .pair__new{font-family:"Playfair Display",serif;font-style:italic;font-size:20px;line-height:1.4;}
+  .pair__values{font-size:13px;color:var(--gedaempft);margin-top:10px;}
+
+  /* --- Buttons --- */
+  .actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:26px;}
+  .btn{
+    font-family:"Playfair Display",serif;font-size:16px;font-weight:500;
+    border:none;border-radius:16px;padding:14px 22px;cursor:pointer;
+    background:var(--beere);color:var(--papier);text-decoration:none;display:inline-block;text-align:center;
+    transition:transform .2s ease,box-shadow .2s ease,opacity .2s ease,background-color .2s ease;
+  }
+  .btn .meta{display:block;font-family:"Jost",sans-serif;font-weight:300;font-size:12.5px;color:#EBD9DD;margin-top:2px;}
+  .btn--dark{background:var(--pflaume);}
+  .btn--soft{background:var(--papier);color:var(--pflaume);border:1px solid var(--linie);}
+  .btn--soft .meta{color:var(--gedaempft);}
+  .btn--link{background:none;color:var(--gedaempft);font-family:"Jost",sans-serif;font-size:14px;padding:8px 10px;text-decoration:underline;text-underline-offset:3px;}
+  .btn--done{background:var(--sand);color:var(--beere);border:1px solid var(--rose);}
+  .btn--block{display:block;width:100%;}
+  @media (hover:hover){.btn:not(:disabled):not(.btn--link):hover{transform:translateY(-2px);box-shadow:0 10px 26px -14px rgba(92,58,70,.5);}}
+  .btn:focus-visible,.chip:focus-visible,.choice:focus-visible,.dot-btn:focus-visible,.back:focus-visible{outline:2px solid var(--rose);outline-offset:3px;}
+
+  .hint{font-size:14px;color:var(--beere);text-align:center;margin-top:10px;min-height:1.4em;}
+  .hint.pulse{animation:pulse .5s ease;}
+  @keyframes pulse{0%,100%{transform:none;}25%{transform:translateX(-4px);}75%{transform:translateX(4px);}}
+
+  /* --- Tageskarte --- */
+  .today-head{text-align:center;margin-top:26px;}
+  .today-head .week{
+    font-family:"Playfair Display",serif;font-size:10.5px;letter-spacing:.4em;text-transform:uppercase;color:var(--rose);
+  }
+  .today-head .day{font-family:"Playfair Display",serif;font-size:15px;color:var(--gedaempft);margin-top:2px;}
+  .card{background:#fff;border:1px solid var(--linie);border-radius:20px;padding:22px 20px 20px;margin-top:14px;}
+  .card h3{font-family:"Playfair Display",serif;font-weight:500;font-size:23px;line-height:1.3;text-align:center;}
+  .card .impuls{font-size:15px;line-height:1.7;margin-top:14px;}
+  .card .impuls p + p{margin-top:8px;}
+  .card .impuls q,.quote{font-family:"Playfair Display",serif;font-style:italic;color:var(--beere);}
+  .card h4{
+    font-family:"Playfair Display",serif;font-size:10.5px;letter-spacing:.32em;text-transform:uppercase;
+    color:var(--rose);font-weight:400;margin-top:18px;
+  }
+  .card .task{background:var(--sand);border-radius:12px;padding:11px 14px;margin-top:6px;font-size:14.5px;line-height:1.6;}
+  .card .frage{font-family:"Playfair Display",serif;font-style:italic;font-size:17px;line-height:1.45;margin-top:6px;}
+  .card textarea{min-height:90px;}
+  .saved{font-size:11.5px;color:var(--gedaempft);text-align:right;min-height:1.3em;}
+  .slider{margin-top:6px;}
+  .slider__top{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;color:var(--gedaempft);}
+  .slider__val{font-family:"Playfair Display",serif;font-size:20px;color:var(--beere);}
+  .slider input{width:100%;accent-color:var(--beere);}
+
+  .rest{
+    background:var(--sand);border-radius:16px;padding:16px 18px;margin-top:14px;text-align:center;font-size:14.5px;color:var(--gedaempft);
+  }
+  .rest b{font-family:"Playfair Display",serif;font-weight:500;color:var(--pflaume);font-size:17px;display:block;margin-bottom:2px;}
+
+  /* --- 30 Tage --- */
+  .eyebrow{display:flex;align-items:center;gap:14px;margin:30px 0 14px;}
+  .eyebrow::before,.eyebrow::after{content:"";flex:1;height:1px;background:var(--linie);}
+  .eyebrow span{
+    font-family:"Playfair Display",serif;font-size:10.5px;letter-spacing:.4em;text-transform:uppercase;color:var(--rose);white-space:nowrap;
+  }
+  .grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;max-width:330px;margin:0 auto;}
+  .dot-btn{
+    aspect-ratio:1;border-radius:50%;border:1px solid var(--linie);background:#fff;cursor:pointer;
+    font-family:"Playfair Display",serif;font-size:13px;color:var(--pflaume);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .dot-btn.done{background:var(--rose);border-color:var(--rose);color:var(--papier);}
+  .dot-btn.open{border-color:var(--rose);}
+  .dot-btn.current{box-shadow:0 0 0 2px var(--papier),0 0 0 4px var(--beere);}
+  .dot-btn:disabled{cursor:default;color:var(--mikro);background:transparent;border-style:dashed;}
+  .legend{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--gedaempft);margin-top:12px;}
+  .legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:-1px;border:1px solid var(--rose);}
+  .legend i.f{background:var(--rose);}
+  .legend i.l{border:1px dashed var(--mikro);}
+
+  .settings{background:#fff;border:1px solid var(--linie);border-radius:18px;padding:16px 18px;margin-top:18px;}
+  .settings p{font-size:13.5px;color:var(--gedaempft);}
+  .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:10px;}
+
+  /* --- Abschluss --- */
+  .hero{text-align:center;background:var(--pflaume);color:var(--papier);border-radius:20px;padding:26px 20px;margin-top:24px;}
+  .hero__eyebrow{font-family:"Playfair Display",serif;font-size:10.5px;letter-spacing:.4em;text-transform:uppercase;color:#D9C4CB;}
+  .hero__satz{font-family:"Playfair Display",serif;font-style:italic;font-size:24px;line-height:1.4;margin-top:10px;}
+  .hero__text{font-size:14px;color:#E3CFD5;margin-top:10px;max-width:40ch;margin-left:auto;margin-right:auto;}
+  .insight{background:var(--sand);border-radius:16px;padding:16px 18px;font-size:14.5px;line-height:1.6;}
+  .insight p + p{margin-top:8px;}
+  .notes{list-style:none;}
+  .notes li{background:#fff;border:1px solid var(--linie);border-radius:14px;padding:12px 14px;margin-bottom:8px;font-size:14px;}
+  .notes li b{font-family:"Playfair Display",serif;font-weight:500;display:block;font-size:14px;color:var(--beere);}
+  .notes li span{white-space:pre-wrap;}
+  .next{background:#fff;border:1px solid var(--linie);border-radius:20px;padding:20px;text-align:center;margin-top:26px;}
+  .next p{font-size:14.5px;color:var(--gedaempft);max-width:38ch;margin:0 auto 14px;}
+
+  .note{font-size:12px;color:var(--gedaempft);text-align:center;margin-top:30px;line-height:1.65;}
+  .footer{
+    font-family:"Playfair Display",serif;font-size:9px;letter-spacing:.42em;text-transform:uppercase;
+    color:var(--mikro);text-align:center;margin-top:24px;
+  }
+
+  @keyframes rise{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+  @media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important;}}
+  @media (max-width:380px){.grid{gap:6px;}h1{font-size:28px;}}
+
+  @media print{
+    body{padding:0;}
+    .actions,.next,.btn,.back,.settings{display:none !important;}
+    .hero,.notes li,.insight{break-inside:avoid;}
+    .hero{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  }
+</style>
+</head>
+<body>
+<main class="page">
+
+  <header>
+    <a class="back" href="index.html">← Seelenwende</a>
+    <svg class="butterfly" viewBox="0 0 100 100" aria-hidden="true">
+      <ellipse cx="38" cy="40" rx="13" ry="18" transform="rotate(-35 38 40)"/>
+      <ellipse cx="62" cy="40" rx="13" ry="18" transform="rotate(35 62 40)"/>
+      <ellipse cx="41" cy="61" rx="9" ry="13" transform="rotate(-20 41 61)"/>
+      <ellipse cx="59" cy="61" rx="9" ry="13" transform="rotate(20 59 61)"/>
+      <ellipse class="body" cx="50" cy="50" rx="1.5" ry="16"/>
+      <path d="M50 36 C47 30 45 27 43 24"/>
+      <path d="M50 36 C53 30 55 27 57 24"/>
+      <circle class="dot" cx="43" cy="23.5" r="1.5"/>
+      <circle class="dot" cx="57" cy="23.5" r="1.5"/>
+    </svg>
+    <div class="handle">@_seelenwende</div>
+    <h1>Neuer-Satz-Kompass</h1>
+    <p class="intro" id="headIntro">30 Tage, ein kleiner Impuls pro Tag: vom alten Satz, der dich klein gehalten hat, zu einem neuen, der zu dir passt.</p>
+  </header>
+
+  <!-- Einstieg: zwei Wege -->
+  <section class="view" id="v-intro">
+    <section class="weg" aria-labelledby="t-weg1">
+      <div class="weg__label">Weg 1 · empfohlen</div>
+      <h2 id="t-weg1">Mit Test und Werte-Finder</h2>
+      <p>Der Kompass übernimmt deinen lautesten Satz und deine Werte und wird ganz persönlich. Jeder Schritt öffnet sich, wenn der vorherige abgeschlossen ist.</p>
+      <div class="steps" id="steps"></div>
+      <p class="hint" id="stepHint" role="status"></p>
+    </section>
+
+    <div class="oder">oder</div>
+
+    <section class="weg" aria-labelledby="t-weg2">
+      <div class="weg__label">Weg 2</div>
+      <h2 id="t-weg2">Direkt starten</h2>
+      <p>Du wählst deinen alten Satz und drei Werte selbst aus. Das dauert etwa zwei Minuten.</p>
+      <button class="btn btn--soft btn--block" type="button" id="start">Kompass einrichten</button>
+    </section>
+
+    <p class="price-line">19 € einmalig · Einrichten ist frei, die 30 Tage öffnen sich mit deinem Zugangscode.</p>
+    <p class="intro">Woche 1: den alten Satz bemerken. Woche 2: den neuen Satz kennenlernen. Woche 3: deine Werte leben. Woche 4: alles verankern.</p>
+    <div class="actions" id="resumeBox" hidden style="margin-top:8px">
+      <button class="btn btn--link" type="button" id="resumeBtn">Zu deinem bisherigen Kompass</button>
+    </div>
+  </section>
+
+  <!-- 1 · Alter Satz -->
+  <section class="view" id="v-satz" aria-labelledby="t-satz">
+    <div class="step__label">Einrichten · 1 von 3</div>
+    <h2 id="t-satz">Welcher Satz ist bei dir am lautesten?</h2>
+    <p class="question">Wähle den Satz, der sich gerade am meisten nach dir anfühlt. Du kannst ihn später ändern.</p>
+    <div class="found" id="foundTest" hidden></div>
+    <div class="choices" id="beliefList"></div>
+    <div class="own" id="ownBox" hidden>
+      <label class="field" for="ownAlt">Dein alter Satz <span>so, wie er in deinem Kopf klingt</span></label>
+      <input type="text" id="ownAlt" maxlength="140" placeholder="z. B. Ich bin zu viel.">
+    </div>
+    <div class="actions">
+      <button class="btn btn--soft" type="button" data-view="intro">Zurück</button>
+      <button class="btn" type="button" id="next1">Weiter</button>
+    </div>
+    <p class="hint" id="hint1" role="status"></p>
+  </section>
+
+  <!-- 2 · Werte -->
+  <section class="view" id="v-werte" aria-labelledby="t-werte">
+    <div class="step__label">Einrichten · 2 von 3</div>
+    <h2 id="t-werte">Welche drei Werte sollen dich begleiten?</h2>
+    <p class="question">Dein neuer Satz wird stärker, wenn er mit dem verbunden ist, was dir wirklich wichtig ist.</p>
+    <div class="found" id="foundWerte" hidden></div>
+    <div class="chips" id="valueChips"></div>
+    <div class="counter" id="counter2" role="status"></div>
+    <div class="actions">
+      <button class="btn btn--soft" type="button" data-view="satz">Zurück</button>
+      <button class="btn" type="button" id="next2">Weiter</button>
+    </div>
+    <p class="hint" id="hint2" role="status"></p>
+  </section>
+
+  <!-- 3 · Neuer Satz & Start -->
+  <section class="view" id="v-start" aria-labelledby="t-start">
+    <div class="step__label">Einrichten · 3 von 3</div>
+    <h2 id="t-start">Dein neuer Satz</h2>
+    <p class="question">Er muss sich noch nicht wahr anfühlen – nur ein kleines bisschen möglich. Schreib ihn gern in deine Worte um.</p>
+    <div class="own">
+      <label class="field" for="newSatz">Mein neuer Satz</label>
+      <textarea id="newSatz" rows="2" maxlength="200"></textarea>
+      <div id="meaningFields"></div>
+    </div>
+    <div class="own code">
+      <label class="field" for="codeInput">Dein Zugangscode <span>steht in deiner Bestätigungs-Mail nach dem Kauf</span></label>
+      <input type="text" id="codeInput" maxlength="64" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="z. B. KOMPASS-AB12-CD34">
+      <p class="buy">Noch keinen Code? <a href="https://seelenwende.mytentary.com/" id="buyLink" target="_blank" rel="noopener">Den Kompass für 19 € holen</a> – einmalig, kein Abo.</p>
+    </div>
+    <div class="actions">
+      <button class="btn btn--soft" type="button" data-view="werte">Zurück</button>
+      <button class="btn" type="button" id="begin">Fertig – Tag 1 beginnen</button>
+    </div>
+    <p class="hint" id="hint3" role="status"></p>
+  </section>
+
+  <!-- Tagesansicht -->
+  <section class="view" id="v-tag" aria-live="polite">
+    <div class="today-head">
+      <div class="week" id="dWeek"></div>
+      <div class="day" id="dDay"></div>
+    </div>
+    <article class="card" id="dCard"></article>
+    <div class="rest" id="dRest" hidden></div>
+
+    <div class="eyebrow"><span>Deine 30 Tage</span></div>
+    <div class="grid" id="grid"></div>
+    <div class="legend"><span><i class="f"></i>geschafft</span><span><i></i>offen</span><span><i class="l"></i>kommt noch</span></div>
+    <p class="note" style="margin-top:12px">Jeden Tag öffnet sich ein neuer Impuls. Verpasste Tage bleiben offen – du kannst sie in Ruhe nachholen.</p>
+
+    <div class="eyebrow"><span>Dein Kompass</span></div>
+    <div class="pair" id="pairBox"></div>
+
+    <div class="settings">
+      <p>Möchtest du jeden Tag erinnert werden? Lade dir eine Erinnerung für deinen Kalender herunter – sie meldet sich 30 Tage lang zur gewählten Uhrzeit.</p>
+      <div class="row">
+        <label for="remTime" style="font-size:14px">Uhrzeit</label>
+        <input type="time" id="remTime" value="20:00">
+        <button class="btn btn--soft" type="button" id="icsBtn">Erinnerung speichern</button>
+      </div>
+      <div class="row">
+        <button class="btn btn--link" type="button" id="editBtn">Satz oder Werte ändern</button>
+        <button class="btn btn--link" type="button" id="resetBtn">Alles löschen</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Abschluss -->
+  <section class="view" id="v-ende" aria-labelledby="t-ende">
+    <h2 id="t-ende" style="margin-top:26px">30 Tage. Du hast es getan.</h2>
+    <div class="hero">
+      <div class="hero__eyebrow">Dein neuer Satz</div>
+      <div class="hero__satz" id="eSatz"></div>
+      <p class="hero__text" id="eText"></p>
+    </div>
+
+    <div class="eyebrow"><span>Was sich verändert hat</span></div>
+    <div class="insight" id="eInsight"></div>
+
+    <div class="eyebrow"><span>Deine Notizen</span></div>
+    <ul class="notes" id="eNotes"></ul>
+
+    <div class="actions">
+      <button class="btn btn--soft" type="button" id="copyBtn">Notizen kopieren</button>
+      <button class="btn btn--soft" type="button" id="printBtn">Drucken / als PDF</button>
+      <button class="btn btn--soft" type="button" id="toDays">Zu den 30 Tagen</button>
+    </div>
+
+    <div class="next">
+      <p>Ein neuer Satz braucht Menschen, die ihn mit dir halten. Mira, die Seelenwende-Begleiterin, ist da, wenn der alte Satz wieder laut wird – anonym und jederzeit.</p>
+      <a class="btn btn--block" href="begleiterin.html">Mira kennenlernen
+        <span class="meta">Mit Zugangscode · Gespräche werden nicht gespeichert</span></a>
+      <a class="btn btn--dark btn--block" href="https://seelenwende.mytentary.com/p/Mi6HH3" target="_blank" rel="noopener" style="margin-top:10px">Das Bundle – Zurück zu dir
+        <span class="meta">E-Book · Vision Board · Journal — 49 €</span></a>
+      <div class="actions" style="margin-top:12px">
+        <button class="btn btn--link" type="button" id="againBtn">Neue 30 Tage mit einem anderen Satz</button>
+      </div>
+    </div>
+  </section>
+
+  <p class="note">
+    Deine Antworten und Notizen bleiben nur auf diesem Gerät. Seelenwende ist Selbsthilfe und ersetzt keine Therapie.<br>
+    Wenn es gerade zu schwer wird: Telefonseelsorge rund um die Uhr – Schweiz 143 · Deutschland 0800 111 0 111 · Österreich 142.
+  </p>
+  <div class="footer">Seelenwende · Neuer-Satz-Kompass</div>
+</main>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const esc = v => String(v ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+  /* ---------- Glaubenssätze (wie im Glaubenssätze-Test; die Impulse dazu liefert der Server) ---------- */
+  const BELIEFS = [
+    {id:"genug", satz:"Ich bin nicht genug.", neu:"Ich bin genug – auch an Tagen, an denen ich wenig schaffe."},
+    {id:"liebe", satz:"Liebe muss ich mir verdienen.", neu:"Ich bin liebenswert, einfach weil ich bin – nicht für das, was ich gebe."},
+    {id:"beduerfnisse", satz:"Meine Bedürfnisse sind nicht so wichtig.", neu:"Meine Bedürfnisse zählen. Ein Nein zu anderen kann ein Ja zu mir sein."},
+    {id:"perfekt", satz:"Ich darf keine Fehler machen.", neu:"Fehler gehören zum Wachsen. Ich darf lernen, statt perfekt zu sein."},
+    {id:"schuld", satz:"Ich bin dafür verantwortlich, dass es allen gut geht.", neu:"Ich bin für meine Gefühle verantwortlich – nicht für die aller anderen."},
+    {id:"vertrauen", satz:"Ich kann mich auf niemanden verlassen.", neu:"Ich darf vorsichtig sein – und trotzdem Menschen finden, die sicher für mich sind."},
+    {id:"kraft", satz:"Ich schaffe das nicht allein.", neu:"Ich habe schon so viel getragen. Ich kann mir selbst vertrauen – Schritt für Schritt."},
+    {id:"erlaubnis", satz:"Ich darf nicht einfach glücklich sein.", neu:"Ich darf Freude empfangen, ohne sie mir vorher verdient zu haben."},
+  ];
+  const OWN = {id:"eigen", satz:"", neu:""};
+  const beliefById = id => BELIEFS.find(b => b.id === id) || OWN;
+
+  /* ---------- Werte (Auswahl, falls kein Werte-Finder-Ergebnis da ist) ---------- */
+  const VALUE_CHOICES = [
+    ["Selbstachtung","mich selbst wertschätzen"],["Freiheit","selbst entscheiden, wie ich lebe"],
+    ["Ruhe","innerer Frieden, Stille"],["Sicherheit","Stabilität, Planbarkeit"],
+    ["Selbstfürsorge","gut für mich sorgen"],["Ehrlichkeit","Wahrheit sagen und hören"],
+    ["Respekt","auf Augenhöhe begegnen"],["Unabhängigkeit","auf eigenen Beinen stehen"],
+    ["Mut","trotz Angst handeln"],["Leichtigkeit","Freude, Spiel, Humor"],
+    ["Verbundenheit","dazugehören, nicht allein sein"],["Authentizität","echt sein, ohne Maske"],
+    ["Geborgenheit","gehalten sein, Wärme"],["Wachstum","mich weiterentwickeln"],
+    ["Selbstbestimmung","mein eigener Weg"],["Liebe","lieben und geliebt werden"],
+  ];
+  const PICK = 3;
+
+  /* ---------- Ergebnisse der anderen Tools (nur lesen) ---------- */
+  const readJSON = k => { try{ return JSON.parse(localStorage.getItem(k) || "null"); }catch(e){ return null; } };
+  function fromTest(){
+    const d = readJSON("seelenwende-glaubenssaetze-v1");
+    if(!d || !Array.isArray(d.ranked)) return null;
+    const top = d.ranked.filter(id => BELIEFS.some(b => b.id === id));
+    return top.length ? {top: top.slice(0, 3), scores: d.scores || {}} : null;
+  }
+  function fromWerte(){
+    const d = readJSON("seelenwende-wertefinder-v1");
+    if(!d || !d.doneAt || !Array.isArray(d.top) || d.top.length < PICK) return null;
+    return d.top.map((n, i) => ({name: String(n), meaning: String((d.meaning || {})[n] || "").trim(), lived: (d.lived || {})[n] ?? 5, i}));
+  }
+
+  /* ---------- Zugang ---------- */
+  const API = "/api/kompass/tage";
+  const CODE_KEY = "seelenwende-kompass-code";
+
+  /* ---------- Zustand ---------- */
+  const KEY = "seelenwende-kompass-v1";
+  const fresh = () => ({beliefId:null, alt:"", neu:"", values:[], tage:null, start:null, done:{}, notes:{}, glaube:{}, reminder:"20:00", finishedSeen:false});
+  let s = fresh();
+  const save = () => { try{ localStorage.setItem(KEY, JSON.stringify(s)); }catch(e){} };
+  const load = () => {
+    const d = readJSON(KEY);
+    return d && typeof d === "object" ? Object.assign(fresh(), d) : null;
+  };
+
+  /* ---------- Datum ---------- */
+  const ymd = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  const parseYmd = t => { const [y, m, d] = t.split("-").map(Number); return new Date(y, m - 1, d); };
+  const ALL = new URLSearchParams(location.search).has("alle") || location.hash === "#alle"; // Vorschau: alle Tage offen
+  function unlocked(){
+    if(ALL) return 30;
+    if(!s.start) return 1;
+    const today = parseYmd(ymd(new Date()));
+    const diff = Math.round((today - parseYmd(s.start)) / 864e5);
+    return Math.max(1, Math.min(30, diff + 1));
+  }
+  const doneCount = () => Object.keys(s.done).filter(k => s.done[k]).length;
+
+  /* ---------- 30 Impulse (vom Server, nach Zugangscode) ---------- */
+  const WEEKS = ["Woche 1 · Bemerken", "Woche 2 · Der neue Satz", "Woche 3 · Werte leben", "Woche 4 · Verankern"];
+  const weekOf = n => n <= 7 ? 0 : n <= 14 ? 1 : n <= 21 ? 2 : 3;
+  /* ---------- Ansichten ---------- */
+  function view(name){
+    document.querySelectorAll(".view").forEach(v => v.classList.toggle("show", v.id === "v-" + name));
+    $("headIntro").hidden = name !== "intro";
+    ({intro: renderIntro, satz: renderSatz, werte: renderWerte, start: renderStart, tag: () => renderTag(), ende: renderEnde})[name]?.();
+    window.scrollTo({top: 0, behavior: "smooth"});
+  }
+
+  /* Einstieg: Hinweis auf Test und Werte-Finder */
+  const LOCK = '<svg width="12" height="13" viewBox="0 0 12 13" aria-hidden="true"><rect x="1.5" y="5.5" width="9" height="6.5" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M3.5 5.5V4a2.5 2.5 0 0 1 5 0v1.5" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>';
+  function renderIntro(){
+    // Weg 1 (empfohlen): Test → Werte-Finder → Kompass; jeder Schritt öffnet sich erst nach dem vorherigen
+    const t = !!fromTest(), w = !!fromWerte();
+    const steps = [
+      {nr: 1, name: "Glaubenssätze-Test", zeit: "5 Min.", href: "glaubenssaetze.html", ok: t, zu: false},
+      {nr: 2, name: "Werte-Finder", zeit: "10 Min.", href: "werte-finder.html", ok: w, zu: !t, vorher: "den Glaubenssätze-Test"},
+      {nr: 3, name: "Kompass einrichten", zeit: "2 Min.", ok: false, zu: !(t && w), vorher: "den Werte-Finder"},
+    ];
+    const jetzt = steps.find(x => !x.ok && !x.zu);
+    $("steps").innerHTML = steps.map(x => {
+      const cls = ["step-btn", x.ok ? "ok" : "", x.zu ? "zu" : "", x === jetzt ? "jetzt" : ""].join(" ");
+      const nr = x.ok ? "✓" : x.zu ? LOCK : x.nr;
+      const inner = `<span class="nr">${nr}</span>${x.name}<small>${x.ok ? "erledigt" : x.zeit}</small>`;
+      const label = `Schritt ${x.nr}: ${x.name}${x.ok ? ", erledigt" : x.zu ? ", gesperrt" : ""}`;
+      if(x.zu) return `<button class="${cls}" type="button" aria-disabled="true" data-locked="${x.vorher}" aria-label="${label}">${inner}</button>`;
+      if(x.href) return `<a class="${cls}" href="${x.href}" aria-label="${label}">${inner}</a>`;
+      return `<button class="${cls}" type="button" id="start2" aria-label="${label}">${inner}</button>`;
+    }).join("");
+    $("stepHint").textContent = "";
+    // Ein bereits laufender Kompass bleibt erreichbar, bis ein neuer gestartet wird
+    const running = !!(s.start && s.alt);
+    $("resumeBox").hidden = !running;
+    if(running) $("resumeBtn").textContent = `Zu deinem bisherigen Kompass (${doneCount()} von 30 Tagen geschafft)`;
+  }
+
+  /* 1 · Alter Satz */
+  let draft = null; // Einrichtung wird erst beim Start übernommen
+  function renderSatz(){
+    const t = draft.direct ? null : fromTest();
+    const found = $("foundTest");
+    if(t){
+      found.hidden = false;
+      found.textContent = "Aus deinem Glaubenssätze-Test: Deine lautesten Sätze sind markiert.";
+      if(!draft.beliefId) draft.beliefId = t.top[0];
+    }else{
+      found.hidden = !!draft.direct;
+      found.innerHTML = `Du weißt nicht, welcher Satz am lautesten ist? <a href="glaubenssaetze.html">Mach zuerst den Glaubenssätze-Test</a> (5 Minuten).`;
+    }
+    const tops = t ? t.top : [];
+    $("beliefList").innerHTML = BELIEFS.map(b => `
+      <button class="choice" type="button" data-belief="${b.id}" aria-pressed="${draft.beliefId === b.id}">
+        <b>„${esc(b.satz)}“${tops[0] === b.id ? `<span class="badge">dein lautester</span>` : tops.includes(b.id) ? `<span class="badge">laut</span>` : ""}</b>
+      </button>`).join("") + `
+      <button class="choice" type="button" data-belief="eigen" aria-pressed="${draft.beliefId === "eigen"}">
+        <b>Ein anderer Satz</b><small>Du schreibst deinen alten Satz selbst</small>
+      </button>`;
+    $("ownBox").hidden = draft.beliefId !== "eigen";
+    $("ownAlt").value = draft.beliefId === "eigen" ? draft.alt : "";
+    $("hint1").textContent = "";
+  }
+
+  /* 2 · Werte */
+  let wfValues = null;
+  function renderWerte(){
+    wfValues = draft.direct ? null : fromWerte();
+    const found = $("foundWerte");
+    found.hidden = !!draft.direct;
+    let options;
+    if(wfValues){
+      found.textContent = "Aus deinem Werte-Finder. Vorausgewählt sind die drei, die gerade am wenigsten Raum in deinem Leben haben.";
+      options = wfValues.map(v => [v.name, v.meaning ? `heißt für mich: ${v.meaning}` : `gelebt: ${v.lived}/10`]);
+      if(!draft.values.length){
+        draft.values = [...wfValues].sort((a, b) => a.lived - b.lived || a.i - b.i).slice(0, PICK)
+          .sort((a, b) => a.i - b.i).map(v => ({name: v.name, meaning: v.meaning}));
+      }
+    }else{
+      found.innerHTML = `Du kennst deine Werte noch nicht? <a href="werte-finder.html">Der Werte-Finder</a> hilft dir in zehn Minuten. Oder wähl hier spontan drei.`;
+      options = VALUE_CHOICES;
+    }
+    // Bereits gewählte Werte, die nicht in der Liste stehen, trotzdem zeigen
+    draft.values.forEach(v => { if(!options.some(o => o[0] === v.name)) options = [[v.name, v.meaning || ""], ...options]; });
+    const picked = n => draft.values.some(v => v.name === n);
+    $("valueChips").innerHTML = options.map(([n, d]) =>
+      `<button class="chip" type="button" data-value="${esc(n)}" data-mean="${esc(wfValues ? (wfValues.find(v => v.name === n)?.meaning || "") : "")}" aria-pressed="${picked(n)}">${esc(n)}${d ? `<small>${esc(d)}</small>` : ""}</button>`).join("");
+    updateWerte();
+  }
+  function updateWerte(){
+    const n = draft.values.length;
+    document.querySelectorAll("[data-value]").forEach(b => b.disabled = n >= PICK && b.getAttribute("aria-pressed") !== "true");
+    $("counter2").innerHTML = n < PICK ? `<b>${n}</b> von ${PICK} gewählt` : `<b>${PICK}</b> von ${PICK} gewählt · schön`;
+    $("hint2").textContent = "";
+  }
+
+  /* 3 · Neuer Satz */
+  function renderStart(){
+    const b = beliefById(draft.beliefId);
+    if(!draft.neu) draft.neu = b.neu;
+    $("newSatz").value = draft.neu;
+    $("newSatz").placeholder = "z. B. Ich darf Raum einnehmen.";
+    // Fehlende Bedeutungen der Werte hier ergänzen lassen
+    $("meaningFields").innerHTML = draft.values.map((v, i) => `
+      <label class="field" for="mean-${i}">${esc(v.name)} <span>heißt für mich … (optional)</span></label>
+      <input type="text" id="mean-${i}" data-mean-i="${i}" maxlength="160" value="${esc(v.meaning)}" placeholder="in deinen Worten">`).join("");
+    try{ if(!$("codeInput").value) $("codeInput").value = localStorage.getItem(CODE_KEY) || ""; }catch(e){}
+    $("hint3").textContent = "";
+  }
+
+  /* Tagesansicht */
+  let shown = null;
+  function pickDay(){
+    const u = unlocked();
+    for(let n = 1; n <= u; n++) if(!s.done[n]) return n;
+    return u;
+  }
+  function renderTag(day){
+    const u = unlocked();
+    shown = day || pickDay();
+    const d = s.tage[shown - 1];
+    $("dWeek").textContent = WEEKS[weekOf(shown)];
+    $("dDay").textContent = `Tag ${shown} von 30`;
+    const isDone = !!s.done[shown];
+    const g = s.glaube[shown] ?? 50;
+    $("dCard").innerHTML = `
+      <h3>${d.t}</h3>
+      <div class="impuls">${d.i}</div>
+      <h4>Deine Aufgabe</h4>
+      <div class="task">${d.a}</div>
+      <h4>Deine Frage</h4>
+      <p class="frage">${d.f}</p>
+      ${d.slider ? `<h4>Wie sehr glaubst du deinen neuen Satz heute?</h4>
+        <div class="slider"><div class="slider__top"><span>gar nicht</span><span class="slider__val" id="gVal">${g} %</span><span>ganz</span></div>
+        <input type="range" min="0" max="100" step="5" value="${g}" id="gRange" aria-label="Wie sehr glaubst du deinen neuen Satz, in Prozent"></div>` : ""}
+      <h4><label for="note">Deine Notiz</label></h4>
+      <textarea id="note" maxlength="2000" placeholder="Was dir dazu einfällt – ein Wort reicht.">${esc(s.notes[shown] || "")}</textarea>
+      <div class="saved" id="savedTag"></div>
+      <div class="actions" style="margin-top:12px">
+        <button class="btn ${isDone ? "btn--done" : ""}" type="button" id="doneBtn" aria-pressed="${isDone}">${isDone ? "Geschafft ✓" : "Für heute geschafft"}</button>
+      </div>`;
+    if(d.slider && s.glaube[shown] == null){ s.glaube[shown] = g; save(); }
+
+    // Hinweis, wenn alles Offene erledigt ist
+    const rest = $("dRest");
+    const allOpenDone = [...Array(u).keys()].every(i => s.done[i + 1]);
+    if(allOpenDone && u < 30){
+      rest.hidden = false;
+      rest.innerHTML = `<b>Für heute ist alles getan.</b>Morgen wartet Tag ${u + 1} auf dich. Lass den Satz bis dahin einfach wirken.`;
+    }else rest.hidden = true;
+
+    $("grid").innerHTML = Array.from({length: 30}, (_, i) => {
+      const n = i + 1, open = n <= u;
+      const cls = [s.done[n] ? "done" : open ? "open" : "", n === shown ? "current" : ""].join(" ");
+      const label = `Tag ${n}${s.done[n] ? ", geschafft" : open ? ", offen" : ", noch nicht freigeschaltet"}`;
+      return `<button class="dot-btn ${cls}" type="button" data-day="${n}" ${open ? "" : "disabled"} aria-label="${label}"${n === shown ? ` aria-current="true"` : ""}>${n}</button>`;
+    }).join("");
+
+    $("pairBox").innerHTML = `
+      <div class="pair__old">„${esc(s.alt)}“</div>
+      <div class="pair__arrow" aria-hidden="true">↓</div>
+      <div class="pair__new">„${esc(s.neu)}“</div>
+      <div class="pair__values">Deine Werte: ${s.values.map(w => esc(w.name)).join(" · ")}</div>`;
+    $("remTime").value = s.reminder || "20:00";
+  }
+
+  /* Abschluss */
+  function renderEnde(){
+    s.finishedSeen = true; save();
+    $("eSatz").textContent = `„${s.neu}“`;
+    $("eText").textContent = `Getragen von ${s.values.map(v => v.name).join(", ")}.`;
+    const g8 = s.glaube[8], g30 = s.glaube[30];
+    const parts = [];
+    parts.push(`<p>Dein alter Satz war: <i>„${esc(s.alt)}“</i></p>`);
+    if(g8 != null && g30 != null){
+      const diff = g30 - g8;
+      parts.push(`<p>An Tag 8 hast du deinem neuen Satz <b>${g8} %</b> geglaubt, heute <b>${g30} %</b>. ${
+        diff > 0 ? "Das ist echte Veränderung – erarbeitet von dir, Tag für Tag."
+        : diff === 0 ? "Die Zahl ist gleich geblieben – und doch hast du 30 Tage lang neue Erfahrungen gesammelt. Manchmal wirkt das erst mit etwas Abstand."
+        : "Heute fühlt er sich weniger wahr an als damals. Auch das ist eine ehrliche Antwort. Vielleicht braucht der Satz neue Worte – oder einfach mehr Zeit."}</p>`);
+    }
+    parts.push(`<p>Wie geht es weiter? Lies deinen Satz weiterhin jeden Morgen. Und wenn der alte zurückkommt, weißt du jetzt, was du tun kannst.</p>`);
+    $("eInsight").innerHTML = parts.join("");
+    const items = s.tage.map((d, i) => ({n: i + 1, t: d.t, note: (s.notes[i + 1] || "").trim()})).filter(x => x.note);
+    $("eNotes").innerHTML = items.length
+      ? items.map(x => `<li><b>Tag ${x.n} · ${x.t}</b><span>${esc(x.note)}</span></li>`).join("")
+      : `<li>Du hast keine Notizen geschrieben – und bist trotzdem 30 Tage drangeblieben.</li>`;
+  }
+
+  function notesText(){
+    return [
+      "Mein Neuer-Satz-Kompass (Seelenwende)",
+      `Alter Satz: ${s.alt}`,
+      `Neuer Satz: ${s.neu}`,
+      `Meine Werte: ${s.values.map(v => v.name + (v.meaning ? ` – ${v.meaning}` : "")).join("; ")}`,
+      ...s.tage.map((d, i) => (s.notes[i + 1] || "").trim() ? `Tag ${i + 1} · ${d.t.replace(/<[^>]+>/g, "")}\n${s.notes[i + 1].trim()}` : null).filter(Boolean),
+    ].join("\n\n").replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"');
+  }
+
+  /* Kalender-Erinnerung (.ics, 30 Tage) */
+  function downloadIcs(){
+    const time = ($("remTime").value || "20:00").replace(":", "");
+    s.reminder = $("remTime").value || "20:00"; save();
+    const start = (s.start || ymd(new Date())).replace(/-/g, "");
+    const now = new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d+/, "");
+    const url = /^https?:/.test(location.protocol) ? location.href.split(/[?#]/)[0] : "";
+    const lines = [
+      "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Seelenwende//Neuer-Satz-Kompass//DE", "CALSCALE:GREGORIAN",
+      "BEGIN:VEVENT",
+      `UID:kompass-${start}-${Math.random().toString(36).slice(2)}@seelenwende`,
+      `DTSTAMP:${now}`,
+      `DTSTART:${start}T${time}00`,
+      "DURATION:PT5M",
+      "RRULE:FREQ=DAILY;COUNT=30",
+      "SUMMARY:Seelenwende · 2 Minuten für dich",
+      `DESCRIPTION:Dein Impuls für heute wartet.${url ? "\\n" + url : ""}`,
+      ...(url ? [`URL:${url}`] : []),
+      "BEGIN:VALARM", "TRIGGER:PT0M", "ACTION:DISPLAY", "DESCRIPTION:Seelenwende · 2 Minuten für dich", "END:VALARM",
+      "END:VEVENT", "END:VCALENDAR", "",
+    ];
+    const blob = new Blob([lines.join("\r\n")], {type: "text/calendar;charset=utf-8"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "seelenwende-kompass.ics";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  }
+
+  /* ---------- Ereignisse ---------- */
+  const nudge = id => { const h = $(id); h.classList.remove("pulse"); void h.offsetWidth; h.classList.add("pulse"); };
+  // direct: Weg 2 (direkt starten) – nichts aus Test und Werte-Finder übernehmen
+  const beginSetup = (keep, direct = false) => {
+    draft = keep
+      ? {beliefId: s.beliefId, alt: s.alt, neu: s.neu, values: s.values.map(v => ({...v}))}
+      : {beliefId: null, alt: "", neu: "", values: [], fresh: true, direct};
+    view("satz");
+  };
+
+  document.addEventListener("click", e => {
+    const t = e.target.closest("button");
+    if(!t) return;
+    if(t.dataset.view){ view(t.dataset.view); return; }
+    if(t.id === "start2"){ beginSetup(false); return; }
+    if(t.dataset.locked){ $("stepHint").textContent = `Schließ zuerst ${t.dataset.locked} ab – dann öffnet sich dieser Schritt.`; nudge("stepHint"); return; }
+    if(t.dataset.belief){
+      const id = t.dataset.belief;
+      if(draft.beliefId !== id){
+        // Neuer Satz passt zum gewählten alten Satz
+        const prev = beliefById(draft.beliefId);
+        if(!draft.neu || draft.neu === prev.neu) draft.neu = "";
+        draft.beliefId = id;
+      }
+      document.querySelectorAll("[data-belief]").forEach(b => b.setAttribute("aria-pressed", String(b === t)));
+      $("ownBox").hidden = id !== "eigen";
+      if(id === "eigen") $("ownAlt").focus();
+      $("hint1").textContent = "";
+      return;
+    }
+    if(t.dataset.value){
+      const n = t.dataset.value, on = draft.values.some(v => v.name === n);
+      if(!on && draft.values.length >= PICK) return;
+      draft.values = on ? draft.values.filter(v => v.name !== n) : [...draft.values, {name: n, meaning: t.dataset.mean || ""}];
+      t.setAttribute("aria-pressed", String(!on));
+      updateWerte(); return;
+    }
+    if(t.dataset.day){ renderTag(+t.dataset.day); $("dWeek").scrollIntoView({behavior: "smooth", block: "center"}); return; }
+    if(t.id === "doneBtn"){
+      s.done[shown] = !s.done[shown]; save();
+      if(s.done[30] && doneCount() === 30 && !s.finishedSeen){ view("ende"); return; }
+      renderTag(s.done[shown] ? undefined : shown);
+      return;
+    }
+  });
+
+  document.addEventListener("input", e => {
+    const el = e.target;
+    if(el.id === "ownAlt"){ draft.alt = el.value; return; }
+    if(el.id === "newSatz"){ draft.neu = el.value; return; }
+    if(el.dataset.meanI != null){ draft.values[+el.dataset.meanI].meaning = el.value.trim(); return; }
+    if(el.id === "note"){
+      s.notes[shown] = el.value; save();
+      $("savedTag").textContent = "Gespeichert – nur auf diesem Gerät";
+      return;
+    }
+    if(el.id === "gRange"){ s.glaube[shown] = +el.value; $("gVal").textContent = el.value + " %"; save(); }
+  });
+
+  $("start").addEventListener("click", () => beginSetup(false, true));
+  $("next1").addEventListener("click", () => {
+    if(!draft.beliefId){ $("hint1").textContent = "Wähle einen Satz, dann geht es weiter."; nudge("hint1"); return; }
+    if(draft.beliefId === "eigen"){
+      draft.alt = $("ownAlt").value.trim();
+      if(!draft.alt){ $("hint1").textContent = "Schreib deinen alten Satz in das Feld."; nudge("hint1"); return; }
+    }else draft.alt = beliefById(draft.beliefId).satz;
+    view("werte");
+  });
+  $("next2").addEventListener("click", () => {
+    if(draft.values.length !== PICK){ $("hint2").textContent = `Wähle genau ${PICK} Werte, dann geht es weiter.`; nudge("hint2"); return; }
+    view("start");
+  });
+  let loading = false;
+  $("begin").addEventListener("click", async () => {
+    if(loading) return;
+    draft.neu = $("newSatz").value.trim();
+    const code = $("codeInput").value.trim();
+    const hint = msg => { $("hint3").textContent = msg; nudge("hint3"); };
+    if(!draft.neu) return hint("Schreib deinen neuen Satz in das Feld.");
+    if(!code) return hint("Gib deinen Zugangscode ein. Du findest ihn in deiner Bestätigungs-Mail.");
+    // Die 30 Impulse kommen vom Server, fertig mit Satz und Werten
+    loading = true;
+    const btn = $("begin"), label = btn.textContent;
+    btn.disabled = true; btn.textContent = "Einen Moment …"; $("hint3").textContent = "";
+    let res = null, data = null;
+    try{
+      res = await fetch(API, {method: "POST", headers: {"content-type": "application/json"},
+        body: JSON.stringify({code, beliefId: draft.beliefId, alt: draft.alt, neu: draft.neu, values: draft.values})});
+      data = await res.json().catch(() => null);
+    }catch(e){}
+    loading = false; btn.disabled = false; btn.textContent = label;
+    if(!res || !res.ok || !Array.isArray(data?.tage) || data.tage.length !== 30){
+      return hint(data?.error || "Gerade keine Verbindung. Prüf dein Internet und versuch es noch einmal.");
+    }
+    try{ localStorage.setItem(CODE_KEY, code); }catch(e){}
+    // Neuer Kompass: alter Fortschritt wird erst jetzt ersetzt
+    if(draft.fresh){ const reminder = s.reminder; s = fresh(); s.reminder = reminder; }
+    const keepProgress = !!s.start;
+    Object.assign(s, {beliefId: draft.beliefId, alt: draft.alt, neu: draft.neu, values: draft.values, tage: data.tage});
+    if(!keepProgress){ s.start = ymd(new Date()); s.createdAt = Date.now(); }
+    save(); view("tag");
+  });
+  $("editBtn").addEventListener("click", () => beginSetup(true));
+  $("resumeBtn").addEventListener("click", () => view(doneCount() === 30 ? "ende" : "tag"));
+  $("icsBtn").addEventListener("click", downloadIcs);
+  $("remTime").addEventListener("change", () => { s.reminder = $("remTime").value; save(); });
+
+  const armed = {};
+  function confirmTwice(btn, label, ask, action){
+    if(!armed[btn.id]){
+      btn.textContent = ask;
+      armed[btn.id] = setTimeout(() => { armed[btn.id] = null; btn.textContent = label; }, 4000);
+      return;
+    }
+    clearTimeout(armed[btn.id]); armed[btn.id] = null; btn.textContent = label;
+    action();
+  }
+  const wipe = () => { s = fresh(); try{ localStorage.removeItem(KEY); localStorage.removeItem(CODE_KEY); }catch(e){} };
+  $("resetBtn").addEventListener("click", e => confirmTwice(e.currentTarget, "Alles löschen",
+    "Wirklich löschen? Tippe noch einmal", () => { wipe(); view("intro"); }));
+  $("againBtn").addEventListener("click", e => confirmTwice(e.currentTarget, "Neue 30 Tage mit einem anderen Satz",
+    "Deine Notizen werden gelöscht. Noch einmal tippen", () => { wipe(); beginSetup(false); }));
+  $("toDays").addEventListener("click", () => view("tag"));
+
+  let framed = true; try{ framed = window.self !== window.top; }catch(e){}
+  if(framed) $("printBtn").hidden = true;
+  else $("printBtn").addEventListener("click", () => window.print());
+  $("copyBtn").addEventListener("click", async e => {
+    const text = notesText(), btn = e.currentTarget;
+    try{ await navigator.clipboard.writeText(text); }
+    catch(err){ const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); try{ document.execCommand("copy"); }catch(_){} ta.remove(); }
+    btn.textContent = "Kopiert ✓";
+    setTimeout(() => btn.textContent = "Notizen kopieren", 1400);
+  });
+
+  /* ---------- Start ---------- */
+  // #neu: kommt vom Glaubenssätze-Test oder Werte-Finder und richtet einen neuen Kompass ein
+  const wantsNew = location.hash === "#neu";
+  if(wantsNew){ try{ history.replaceState(null, "", location.pathname + location.search); }catch(e){} }
+  const saved = load();
+  const valid = saved && saved.start && saved.alt && saved.neu && saved.values.length === PICK && Array.isArray(saved.tage) && saved.tage.length === 30;
+  if(valid) s = saved;
+  if(valid && !wantsNew) view(doneCount() === 30 ? "ende" : "tag");
+  else view("intro");
+})();
+</script>
+</body>
+</html>

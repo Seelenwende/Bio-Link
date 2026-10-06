@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<!-- Seelenwende · Klarheits-Tagebuch. Bewusst neutral benannt („Notizen“), damit Tab, Verlauf und Sperrbildschirm nichts verraten. -->
+<title>Notizen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --papier:#FAF6F4;
+    --sand:#F3ECE9;
+    --rose:#B5808F;
+    --beere:#8C5A69;
+    --pflaume:#5C3A46;
+    --gedaempft:#8E7079;
+    --linie:#E4D8D8;
+    --mikro:#C3AEB2;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    background:var(--papier);
+    color:var(--pflaume);
+    font-family:"Jost",sans-serif;
+    font-weight:300;
+    line-height:1.7;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    padding:44px 18px 60px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .page{width:100%;max-width:560px;}
+  [hidden]{display:none !important;}
+
+  /* --- Kopf (nur auf der Einführung) --- */
+  header{text-align:center;}
+  .butterfly{width:52px;height:52px;margin:0 auto 14px;display:block;}
+  .butterfly path,.butterfly ellipse{
+    fill:none;stroke:var(--rose);stroke-width:1.5;
+    stroke-linecap:round;stroke-linejoin:round;
+  }
+  .butterfly .dot,.butterfly .body{fill:var(--rose);stroke:none;}
+  .handle{
+    font-family:"Playfair Display",serif;
+    font-size:11px;letter-spacing:.36em;text-transform:uppercase;color:var(--rose);
+  }
+  h1{font-family:"Playfair Display",serif;font-weight:500;font-size:32px;line-height:1.2;margin-top:10px;}
+  h2{font-family:"Playfair Display",serif;font-weight:500;font-size:24px;line-height:1.3;text-align:center;}
+  h3{font-family:"Playfair Display",serif;font-weight:500;font-size:17px;line-height:1.35;}
+  .intro{font-size:15px;color:var(--gedaempft);max-width:42ch;margin:14px auto 0;text-align:center;}
+
+  .screen{animation:rise .5s ease;}
+
+  .box{background:#fff;border:1px solid var(--linie);border-radius:20px;padding:20px 22px;margin-top:22px;}
+  .box ul,.box ol{padding-left:20px;font-size:14.5px;line-height:1.6;}
+  .box li{margin-bottom:6px;}
+  .box li b{font-weight:400;}
+  .box h3{margin-bottom:8px;}
+  .box p{font-size:14.5px;line-height:1.6;}
+  .box p + p{margin-top:8px;}
+  .box--sand{background:var(--sand);border-color:transparent;}
+
+  .eyebrow{display:flex;align-items:center;gap:14px;margin:30px 0 14px;}
+  .eyebrow::before,.eyebrow::after{content:"";flex:1;height:1px;background:var(--linie);}
+  .eyebrow span{
+    font-family:"Playfair Display",serif;
+    font-size:10.5px;letter-spacing:.4em;text-transform:uppercase;color:var(--rose);white-space:nowrap;
+  }
+
+  /* --- Formulare --- */
+  label.field{display:block;margin-top:18px;}
+  .field__title{display:block;font-family:"Playfair Display",serif;font-size:17px;font-weight:500;line-height:1.35;}
+  .field__help{display:block;font-size:13px;color:var(--gedaempft);line-height:1.45;margin-top:2px;}
+  input[type=password],input[type=text],input[type=datetime-local],textarea{
+    width:100%;margin-top:8px;font:inherit;font-size:16px;line-height:1.5;color:var(--pflaume);
+    background:#fff;border:1px solid var(--linie);border-radius:12px;padding:10px 12px;
+  }
+  textarea{resize:vertical;min-height:84px;}
+  input:focus,textarea:focus{outline:2px solid var(--rose);outline-offset:1px;}
+  .pin{font-size:24px !important;letter-spacing:.4em;text-align:center;}
+
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;}
+  .chip{
+    font:inherit;font-size:14px;color:var(--pflaume);
+    background:#fff;border:1px solid var(--linie);border-radius:20px;
+    padding:7px 14px;cursor:pointer;text-align:left;line-height:1.35;
+    transition:background-color .2s ease,color .2s ease,border-color .2s ease;
+  }
+  .chip small{display:block;font-size:11.5px;color:var(--gedaempft);line-height:1.35;}
+  .chip[aria-pressed="true"]{background:var(--beere);border-color:var(--beere);color:var(--papier);}
+  .chip[aria-pressed="true"] small{color:#EBD9DD;}
+  .chip--danger[aria-pressed="true"]{background:var(--pflaume);border-color:var(--pflaume);}
+
+  /* --- Buttons --- */
+  .actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:26px;}
+  .btn{
+    font-family:"Playfair Display",serif;font-size:16px;font-weight:500;
+    border:none;border-radius:16px;padding:14px 22px;cursor:pointer;
+    background:var(--beere);color:var(--papier);text-decoration:none;display:inline-block;
+    transition:transform .2s ease,box-shadow .2s ease,opacity .2s ease;
+  }
+  .btn--soft{background:var(--papier);color:var(--pflaume);border:1px solid var(--linie);}
+  .btn--link{background:none;color:var(--gedaempft);font-family:"Jost",sans-serif;font-size:14px;padding:8px 10px;text-decoration:underline;text-underline-offset:3px;}
+  .btn--small{font-size:14px;padding:9px 14px;border-radius:12px;}
+  .btn:disabled{opacity:.45;cursor:not-allowed;}
+  @media (hover:hover){.btn:not(:disabled):not(.btn--link):hover{transform:translateY(-2px);box-shadow:0 10px 26px -14px rgba(92,58,70,.5);}}
+  .btn:focus-visible,.chip:focus-visible,.tab:focus-visible,.entry:focus-visible{outline:2px solid var(--rose);outline-offset:3px;}
+
+  .hint{font-size:14px;color:var(--beere);text-align:center;margin-top:10px;min-height:1.4em;}
+  .hint.pulse{animation:pulse .5s ease;}
+
+  /* --- Sperrbildschirm: absichtlich schlicht und ohne Marke --- */
+  .lock{max-width:320px;margin:12vh auto 0;text-align:center;}
+  .lock h2{font-size:26px;}
+  .lock p{font-size:14px;color:var(--gedaempft);margin-top:6px;}
+
+  /* --- App-Leiste --- */
+  .bar{
+    position:sticky;top:0;z-index:5;background:var(--papier);
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    padding:8px 0 10px;border-bottom:1px solid var(--linie);
+  }
+  .bar__title{font-family:"Playfair Display",serif;font-size:20px;font-weight:500;}
+  .bar__actions{display:flex;gap:8px;}
+  .exit{
+    font:inherit;font-size:13px;font-weight:400;background:var(--sand);color:var(--pflaume);
+    border:1px solid var(--linie);border-radius:20px;padding:6px 13px;cursor:pointer;white-space:nowrap;
+  }
+  .tabs{display:flex;gap:6px;margin:14px 0 4px;}
+  .tab{
+    flex:1;font:inherit;font-size:14px;color:var(--gedaempft);background:none;
+    border:1px solid var(--linie);border-radius:12px;padding:8px 6px;cursor:pointer;
+  }
+  .tab[aria-selected="true"]{background:var(--pflaume);border-color:var(--pflaume);color:var(--papier);}
+
+  /* --- Einträge --- */
+  .entry{
+    display:block;width:100%;text-align:left;font:inherit;color:inherit;cursor:pointer;
+    background:#fff;border:1px solid var(--linie);border-radius:16px;padding:14px 16px;margin-top:12px;
+  }
+  .entry__date{font-size:12.5px;color:var(--gedaempft);letter-spacing:.02em;}
+  .entry__what{font-family:"Playfair Display",serif;font-size:17px;line-height:1.4;margin-top:2px;
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+  .tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;}
+  .tag{font-size:11.5px;background:var(--sand);border-radius:12px;padding:2px 9px;color:var(--pflaume);}
+  .tag--danger{background:var(--pflaume);color:var(--papier);}
+  .empty{text-align:center;color:var(--gedaempft);font-size:14.5px;margin-top:34px;}
+  .filter{font-size:13.5px;color:var(--gedaempft);text-align:center;margin-top:12px;}
+
+  .detail h3{margin-top:18px;}
+  .detail h3:first-of-type{margin-top:6px;}
+  .detail .txt{font-size:15px;white-space:pre-wrap;margin-top:2px;}
+  .quote{font-family:"Playfair Display",serif;font-style:italic;font-size:17px;line-height:1.45;border-left:3px solid var(--rose);padding-left:12px;margin-top:4px;white-space:pre-wrap;}
+  .anchor{background:var(--pflaume);color:var(--papier);border-radius:16px;padding:16px 18px;margin-top:18px;}
+  .anchor small{display:block;font-family:"Playfair Display",serif;font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:#D9C4CB;}
+  .anchor p{font-family:"Playfair Display",serif;font-style:italic;font-size:18px;line-height:1.45;margin-top:6px;white-space:pre-wrap;}
+
+  /* --- Muster --- */
+  .stat{display:flex;gap:10px;margin-top:6px;}
+  .stat div{flex:1;background:#fff;border:1px solid var(--linie);border-radius:16px;padding:12px 10px;text-align:center;}
+  .stat b{display:block;font-family:"Playfair Display",serif;font-weight:500;font-size:26px;line-height:1.2;}
+  .stat span{font-size:12px;color:var(--gedaempft);}
+  .row{margin-top:12px;}
+  .row__top{display:flex;justify-content:space-between;gap:10px;font-size:14.5px;}
+  .row__top b{font-weight:400;color:var(--beere);}
+  .meter{height:6px;border-radius:6px;background:var(--sand);margin-top:4px;overflow:hidden;}
+  .meter span{display:block;height:100%;border-radius:6px;background:var(--rose);}
+  .mirror{font-size:14.5px;line-height:1.6;}
+  .mirror p + p{margin-top:8px;}
+
+  /* --- Krisen-Hinweis --- */
+  .crisis{background:var(--pflaume);color:var(--papier);border-radius:16px;padding:16px 18px;margin-top:16px;font-size:14px;line-height:1.6;}
+  .crisis b{font-weight:400;color:#fff;}
+  .crisis h3{color:#fff;margin-bottom:4px;}
+
+  .note{font-size:12px;color:var(--gedaempft);text-align:center;margin-top:30px;line-height:1.65;}
+  .footer{
+    font-family:"Playfair Display",serif;font-size:9px;letter-spacing:.42em;text-transform:uppercase;
+    color:var(--mikro);text-align:center;margin-top:24px;
+  }
+  .sr-only{position:absolute;left:-9999px;}
+
+  .mira{background:var(--sand);border-radius:16px;padding:16px 18px;margin-top:22px;}
+  .mira h3{margin-bottom:4px;}
+  .mira p{font-size:14px;line-height:1.6;}
+  .mira p + p{margin-top:6px;}
+  .mira ul{font-size:13.5px;line-height:1.55;padding-left:18px;margin-top:8px;color:var(--gedaempft);}
+
+  #printout{display:none;}
+
+  @keyframes rise{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+  @keyframes pulse{0%,100%{transform:none;}25%{transform:translateX(-4px);}75%{transform:translateX(4px);}}
+  @media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important;}}
+
+  @media print{
+    body{padding:0;display:block;}
+    .page{display:none !important;}
+    #printout{display:block !important;font-size:12pt;line-height:1.5;color:#000;}
+    #printout h1{font-size:18pt;margin:0 0 4pt;}
+    #printout .p-meta{font-size:10pt;margin-bottom:14pt;}
+    #printout .p-entry{border-top:1px solid #999;padding:10pt 0;break-inside:avoid;}
+    #printout .p-entry h2{font-size:12pt;text-align:left;font-family:inherit;font-weight:600;}
+    #printout dt{font-weight:600;margin-top:5pt;}
+    #printout dd{margin:0;white-space:pre-wrap;}
+  }
+</style>
+</head>
+<body>
+<main class="page" id="page">
+
+  <!-- 0 · Kein Browser-Krypto (z. B. ohne HTTPS) -->
+  <section class="screen" id="s-nocrypto" hidden>
+    <div class="box">
+      <h3>Hier kann leider nichts sicher gespeichert werden.</h3>
+      <p>Dein Browser bietet die Verschlüsselung nicht an, die dieses Tagebuch braucht. Öffne die Seite bitte über die normale Adresse (mit https) in einem aktuellen Browser.</p>
+    </div>
+  </section>
+
+  <!-- 1 · Einführung (nur, solange noch kein Tagebuch auf dem Gerät liegt) -->
+  <section class="screen" id="s-intro" hidden>
+    <header>
+      <svg class="butterfly" viewBox="0 0 100 100" aria-hidden="true">
+        <ellipse cx="38" cy="40" rx="13" ry="18" transform="rotate(-35 38 40)"/>
+        <ellipse cx="62" cy="40" rx="13" ry="18" transform="rotate(35 62 40)"/>
+        <ellipse cx="41" cy="61" rx="9" ry="13" transform="rotate(-20 41 61)"/>
+        <ellipse cx="59" cy="61" rx="9" ry="13" transform="rotate(20 59 61)"/>
+        <ellipse class="body" cx="50" cy="50" rx="1.5" ry="16"/>
+        <path d="M50 36 C47 30 45 27 43 24"/>
+        <path d="M50 36 C53 30 55 27 57 24"/>
+        <circle class="dot" cx="43" cy="23.5" r="1.5"/>
+        <circle class="dot" cx="57" cy="23.5" r="1.5"/>
+      </svg>
+      <div class="handle">@_seelenwende</div>
+      <h1>Klarheits-Tagebuch</h1>
+      <p class="intro">„Hab ich mir das nur eingebildet?“ Halte fest, was passiert ist – mit Datum, in deinen Worten. Damit du dir selbst wieder glauben kannst.</p>
+    </header>
+
+    <div class="box">
+      <h3>Wofür es da ist</h3>
+      <p>Wenn dir später gesagt wird „Das habe ich nie gesagt“ oder „Du übertreibst“, verschwimmt die Erinnerung. Dein Tagebuch hält dagegen: Was ist passiert, was wurde gesagt, wie ging es dir – und was weißt du sicher.</p>
+      <p>Mit der Zeit zeigt dir die Übersicht, was sich wiederholt. Nicht, um dich zu etwas zu drängen. Nur, damit du klarer siehst.</p>
+    </div>
+
+    <div class="box">
+      <h3>So bleibt es bei dir</h3>
+      <ul>
+        <li><b>Nur auf diesem Gerät.</b> Nichts wird hochgeladen, es gibt kein Konto und keinen Server.</li>
+        <li><b>Verschlüsselt mit deiner PIN.</b> Ohne PIN sieht niemand den Inhalt – auch wir nicht.</li>
+        <li><b>Unauffällig.</b> Die Seite heißt im Browser nur „Notizen“ und sperrt sich von selbst.</li>
+        <li><b>Schnell weg:</b> Ein Knopf (oder zweimal Esc) sperrt sofort und wechselt zur Wetterseite.</li>
+      </ul>
+    </div>
+
+    <div class="box box--sand">
+      <h3>Bevor du startest</h3>
+      <ul>
+        <li>Nutze ein Gerät, auf das nur du Zugriff hast. Wenn jemand dein Handy kontrolliert, ist ein anderes Gerät sicherer (z. B. bei einer Freundin oder bei der Arbeit).</li>
+        <li>Wähle eine PIN, die niemand errät – kein Geburtstag. Mindestens 6 Ziffern.</li>
+        <li><b>Vergisst du die PIN, ist das Tagebuch verloren.</b> Es gibt keinen Weg, es wiederherzustellen. Das ist Absicht.</li>
+        <li>Im privaten Modus wird nichts dauerhaft gespeichert. Und wenn du die Browserdaten löschst, ist das Tagebuch weg – mach ab und zu eine Sicherung.</li>
+      </ul>
+    </div>
+
+    <div class="actions">
+      <button class="btn" type="button" id="toSetPin">PIN festlegen</button>
+    </div>
+
+    <p class="note">Das Tagebuch ist Selbsthilfe und ersetzt keine Beratung oder Therapie.<br>In Gefahr: Notruf 112 · CH Polizei 117</p>
+    <div class="footer">@_seelenwende</div>
+  </section>
+
+  <!-- 2 · PIN festlegen / ändern -->
+  <section class="screen" id="s-setpin" hidden>
+    <h2 id="setpinTitle">Deine PIN</h2>
+    <p class="intro" id="setpinIntro">6 bis 12 Ziffern. Schreib sie nirgends auf, wo sie jemand findet.</p>
+    <form id="setpinForm" autocomplete="off">
+      <label class="field">
+        <span class="field__title">PIN</span>
+        <input class="pin" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="12" id="pin1" autocomplete="new-password">
+      </label>
+      <label class="field">
+        <span class="field__title">PIN wiederholen</span>
+        <input class="pin" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="12" id="pin2" autocomplete="new-password">
+      </label>
+      <div class="actions">
+        <button class="btn btn--soft" type="button" id="setpinBack">Zurück</button>
+        <button class="btn" type="submit" id="setpinSave">Speichern</button>
+      </div>
+      <p class="hint" id="setpinHint" role="status"></p>
+    </form>
+  </section>
+
+  <!-- 3 · Gesperrt -->
+  <section class="screen lock" id="s-lock" hidden>
+    <h2>Notizen</h2>
+    <p>PIN eingeben</p>
+    <form id="unlockForm" autocomplete="off">
+      <input class="pin" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="12" id="pinIn" aria-label="PIN" autocomplete="current-password">
+      <div class="actions"><button class="btn" type="submit" id="unlockBtn">Öffnen</button></div>
+      <p class="hint" id="unlockHint" role="status"></p>
+    </form>
+    <div class="actions" style="margin-top:40px"><button class="btn btn--link" type="button" id="forgot">PIN vergessen?</button></div>
+    <div class="box box--sand" id="forgotBox" hidden style="text-align:left">
+      <p>Ohne PIN lässt sich der Inhalt nicht öffnen – auch nicht von uns. Du kannst nur alles löschen und neu beginnen.</p>
+      <div class="actions"><button class="btn btn--soft btn--small" type="button" id="wipeFromLock">Alles löschen</button></div>
+    </div>
+  </section>
+
+  <!-- 4 · Geöffnet -->
+  <section class="screen" id="s-app" hidden>
+    <div class="bar">
+      <span class="bar__title">Notizen</span>
+      <span class="bar__actions">
+        <button class="exit" type="button" id="lockBtn">Sperren</button>
+        <button class="exit" type="button" id="exitBtn" title="Sperrt sofort und verlässt die Seite (auch: zweimal Esc)">Schnell weg</button>
+      </span>
+    </div>
+
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" type="button" data-tab="list" aria-selected="true">Einträge</button>
+      <button class="tab" role="tab" type="button" data-tab="patterns" aria-selected="false">Muster</button>
+      <button class="tab" role="tab" type="button" data-tab="more" aria-selected="false">Mehr</button>
+    </div>
+
+    <!-- Einträge -->
+    <div id="v-list">
+      <div class="actions" style="margin-top:16px"><button class="btn" type="button" id="newBtn">Neuer Eintrag</button></div>
+      <p class="filter" id="filterInfo" hidden></p>
+      <div id="entryList"></div>
+    </div>
+
+    <!-- Eintrag schreiben -->
+    <div id="v-edit" hidden>
+      <h2 id="editTitle" style="margin-top:18px">Was ist passiert?</h2>
+      <p class="intro">Schreib so sachlich, wie es gerade geht. Alles ist freiwillig – ein Satz reicht.</p>
+      <form id="editForm" autocomplete="off">
+        <label class="field">
+          <span class="field__title">Wann?</span>
+          <input type="datetime-local" id="fWhen">
+        </label>
+        <label class="field">
+          <span class="field__title">Was ist passiert?</span>
+          <span class="field__help">Wer, wo, was – wie für jemanden, der nicht dabei war.</span>
+          <textarea id="fWhat" rows="4"></textarea>
+        </label>
+        <label class="field">
+          <span class="field__title">Was wurde gesagt?</span>
+          <span class="field__help">Möglichst wörtlich, auch wenn es wehtut. Genau diese Sätze werden später oft bestritten.</span>
+          <textarea id="fSaid" rows="3"></textarea>
+        </label>
+
+        <div class="field">
+          <span class="field__title">Was davon kennst du?</span>
+          <span class="field__help">Tippe an, was passt. So erkennst du später Muster.</span>
+          <div class="chips" id="fPatterns"></div>
+        </div>
+
+        <div class="crisis" id="editCrisis" hidden>
+          <h3>Bist du gerade sicher?</h3>
+          Wenn du in Gefahr bist: <b>Notruf 112</b> (Schweiz Polizei <b>117</b>).<br>
+          Gewalt gegen Frauen, rund um die Uhr und anonym: <b>DE 116 016</b> · <b>AT 0800 222 555</b> · <b>CH</b> Opferhilfe (opferhilfe-schweiz.ch) und Dargebotene Hand <b>143</b>.<br>
+          Bei Verletzungen: Lass sie ärztlich ansehen und dokumentieren – das zählt später mehr als jeder Eintrag hier.
+        </div>
+
+        <div class="field" style="margin-top:18px">
+          <span class="field__title">Wie ging es dir?</span>
+          <div class="chips" id="fFelt"></div>
+        </div>
+        <label class="field">
+          <span class="field__title">Was ist danach passiert?</span>
+          <span class="field__help">Z. B. Entschuldigung, Schweigen, so tun als wäre nichts, Geschenke.</span>
+          <textarea id="fAfter" rows="2"></textarea>
+        </label>
+        <label class="field">
+          <span class="field__title">Gibt es Belege oder Zeugen?</span>
+          <span class="field__help">Nur ein Hinweis, wo etwas liegt – z. B. „Screenshot in der Mail an mich selbst“, „Nachbarin hat es gehört“.</span>
+          <input type="text" id="fEvidence">
+        </label>
+        <label class="field">
+          <span class="field__title">Was weißt du sicher?</span>
+          <span class="field__help">Ein Satz an dich, für den Moment, in dem du später zweifelst. Z. B. „Er hat mich angeschrien. Ich habe ruhig gesprochen.“</span>
+          <textarea id="fAnchor" rows="2"></textarea>
+        </label>
+
+        <div class="actions">
+          <button class="btn btn--soft" type="button" id="editCancel">Abbrechen</button>
+          <button class="btn" type="submit" id="editSave">Speichern</button>
+        </div>
+        <p class="hint" id="editHint" role="status"></p>
+      </form>
+    </div>
+
+    <!-- Eintrag ansehen -->
+    <div id="v-detail" hidden>
+      <div class="detail" id="detailBody"></div>
+      <div class="mira">
+        <h3>Mit Mira einordnen</h3>
+        <p>Mira, die Seelenwende-Begleiterin, hilft dir zu verstehen, was in diesem Moment passiert ist – ohne Urteil und ohne Druck.</p>
+        <div id="miraInfo" hidden>
+          <ul>
+            <li>Dein Eintrag wird bei Mira ins Textfeld eingefügt. Du liest ihn und schickst ihn selbst ab – oder löschst, was du nicht teilen willst.</li>
+            <li>Belege und Zeugen werden nicht mitgeschickt.</li>
+            <li>Mira speichert keine Gespräche. Dein Tagebuch sperrt sich, sobald du wechselst.</li>
+            <li>Für Mira brauchst du einen Zugangscode.</li>
+          </ul>
+        </div>
+        <div class="actions" style="justify-content:flex-start;margin-top:12px">
+          <button class="btn btn--small" type="button" id="miraBtn">Mit Mira einordnen</button>
+          <button class="btn btn--link" type="button" id="miraMore">Wie funktioniert das?</button>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn btn--soft" type="button" id="detailBack">Zurück</button>
+        <button class="btn btn--soft" type="button" id="detailEdit">Bearbeiten</button>
+        <button class="btn btn--link" type="button" id="detailDelete">Löschen</button>
+      </div>
+    </div>
+
+    <!-- Muster -->
+    <div id="v-patterns" hidden>
+      <div id="patternsBody"></div>
+    </div>
+
+    <!-- Mehr -->
+    <div id="v-more" hidden>
+      <div class="box">
+        <h3>Für eine Beratung oder Anwältin</h3>
+        <p>Alle Einträge chronologisch als Ausdruck oder PDF. Bewahre die Datei so auf, dass sie niemand findet.</p>
+        <div class="actions" style="justify-content:flex-start;margin-top:12px">
+          <button class="btn btn--soft btn--small" type="button" id="printBtn">Drucken / als PDF</button>
+          <button class="btn btn--soft btn--small" type="button" id="copyBtn">Als Text kopieren</button>
+        </div>
+        <p class="hint" id="copyHint" role="status" style="text-align:left"></p>
+      </div>
+
+      <div class="box">
+        <h3>Sicherung</h3>
+        <p>Die Sicherungsdatei ist mit deiner aktuellen PIN verschlüsselt. Damit kannst du dein Tagebuch auf ein anderes Gerät mitnehmen oder nach dem Löschen der Browserdaten zurückholen.</p>
+        <div class="actions" style="justify-content:flex-start;margin-top:12px">
+          <button class="btn btn--soft btn--small" type="button" id="backupBtn">Sicherung herunterladen</button>
+          <button class="btn btn--soft btn--small" type="button" id="restoreBtn">Sicherung einlesen</button>
+          <input type="file" id="restoreFile" accept=".json,application/json" hidden>
+        </div>
+        <div id="restorePinBox" hidden>
+          <label class="field">
+            <span class="field__title">PIN dieser Sicherung</span>
+            <input class="pin" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="12" id="restorePin" autocomplete="off">
+          </label>
+          <div class="actions" style="justify-content:flex-start;margin-top:12px">
+            <button class="btn btn--small" type="button" id="restoreGo">Einträge übernehmen</button>
+            <button class="btn btn--link" type="button" id="restoreCancel">Abbrechen</button>
+          </div>
+        </div>
+        <p class="hint" id="backupHint" role="status" style="text-align:left"></p>
+      </div>
+
+      <div class="box">
+        <h3>Einstellungen</h3>
+        <div class="actions" style="justify-content:flex-start;margin-top:4px">
+          <button class="btn btn--soft btn--small" type="button" id="changePinBtn">PIN ändern</button>
+          <button class="btn btn--soft btn--small" type="button" id="wipeBtn">Alles löschen</button>
+        </div>
+        <p class="hint" id="moreHint" role="status" style="text-align:left"></p>
+      </div>
+
+      <div class="box box--sand">
+        <h3>Wenn du darüber sprechen magst</h3>
+        <p>Mira, die Seelenwende-Begleiterin, hört zu und hilft dir einzuordnen, was du hier festhältst – anonym und ohne Telefonat.</p>
+        <div class="actions" style="justify-content:flex-start;margin-top:12px">
+          <a class="btn btn--soft btn--small" href="begleiterin.html">Zu Mira</a>
+        </div>
+      </div>
+
+      <div class="crisis">
+        <h3>Hilfe, rund um die Uhr</h3>
+        In Gefahr: <b>Notruf 112</b> (CH Polizei <b>117</b>)<br>
+        Gewalt gegen Frauen: <b>DE 116 016</b> · <b>AT 0800 222 555</b> · <b>CH</b> Opferhilfe (opferhilfe-schweiz.ch)<br>
+        Seelsorge: <b>CH 143</b> · <b>DE 0800 111 0 111</b> · <b>AT 142</b>
+      </div>
+      <p class="note">Selbsthilfe von Seelenwende, ersetzt keine Beratung oder Therapie.</p>
+    </div>
+  </section>
+
+</main>
+
+<div id="printout" aria-hidden="true"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- Konstanten ---------- */
+  const VAULT_KEY = "nz_vault";      // verschlüsselter Inhalt
+  const TRIES_KEY = "nz_tries";      // Fehlversuche (ohne Inhalt)
+  const EXIT_URL = "https://www.google.com/search?q=wetter";
+  const ITERATIONS = 310000;
+  const IDLE_LOCK_MS = 5 * 60 * 1000;    // nach 5 Min. ohne Eingabe sperren
+  const HIDDEN_LOCK_MS = 30 * 1000;      // nach 30 Sek. im Hintergrund sperren
+
+  const PATTERNS = [
+    {id:"leugnen",    name:"Leugnen",           help:"„Das habe ich nie gesagt.“"},
+    {id:"umdeuten",   name:"Kleinreden",        help:"„Du übertreibst, bist zu empfindlich.“"},
+    {id:"schuld",     name:"Schuld umgedreht",  help:"Am Ende warst du schuld."},
+    {id:"abwerten",   name:"Abwerten",          help:"Spott, Kritik, Beleidigung – auch „als Witz“."},
+    {id:"schweigen",  name:"Schweigen als Strafe", help:"Ignorieren, Liebesentzug."},
+    {id:"kontrolle",  name:"Kontrolle",         help:"Handy, Geld, wohin du gehst."},
+    {id:"isolieren",  name:"Isolieren",         help:"Gegen Freundinnen oder Familie."},
+    {id:"grenze",     name:"Grenze übergangen", help:"Dein Nein zählte nicht."},
+    {id:"drohen",     name:"Drohen",            help:"Mit Gehen, Kindern, Geld, Folgen."},
+    {id:"lieb",       name:"Plötzlich lieb",    help:"Versprechen, Geschenke nach dem Streit."},
+    {id:"gewalt",     name:"Gewalt / Angst",    help:"Schubsen, Schlagen, Festhalten, Dinge werfen.", danger:true}
+  ];
+  const FEELINGS = ["verwirrt","schuldig","klein","ängstlich","traurig","wütend","beschämt","leer","wie verrückt","erleichtert"];
+
+  const $ = id => document.getElementById(id);
+  const esc = v => String(v ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const PNAME = Object.fromEntries(PATTERNS.map(p => [p.id, p.name]));
+
+  /* ---------- Zustand (nur im Speicher, nie im Klartext abgelegt) ---------- */
+  let key = null;        // CryptoKey, solange geöffnet
+  let salt = null;       // Uint8Array
+  let data = null;       // {v, entries:[...]}
+  let editingId = null;
+  let viewingId = null;
+  let filterPattern = null;
+  let pendingRestore = null;
+  let pinMode = "new";   // "new" | "change"
+  let idleTimer = null;
+  let hiddenAt = 0;
+
+  /* ---------- Krypto ---------- */
+  const enc = new TextEncoder(), dec = new TextDecoder();
+  const b64 = buf => { let s = ""; const a = new Uint8Array(buf); for (let i = 0; i < a.length; i++) s += String.fromCharCode(a[i]); return btoa(s); };
+  const unb64 = str => Uint8Array.from(atob(str), c => c.charCodeAt(0));
+
+  async function deriveKey(pin, saltBytes, iterations){
+    const base = await crypto.subtle.importKey("raw", enc.encode(pin), "PBKDF2", false, ["deriveKey"]);
+    return crypto.subtle.deriveKey(
+      {name:"PBKDF2", salt:saltBytes, iterations, hash:"SHA-256"},
+      base, {name:"AES-GCM", length:256}, false, ["encrypt","decrypt"]
+    );
+  }
+  async function seal(obj, k, saltBytes){
+    const iv = crypto.getRandomValues(new Uint8Array(12));
+    const ct = await crypto.subtle.encrypt({name:"AES-GCM", iv}, k, enc.encode(JSON.stringify(obj)));
+    return {v:1, it:ITERATIONS, salt:b64(saltBytes), iv:b64(iv), ct:b64(ct)};
+  }
+  async function open(vault, pin){
+    const s = unb64(vault.salt);
+    const k = await deriveKey(pin, s, vault.it || ITERATIONS);
+    const pt = await crypto.subtle.decrypt({name:"AES-GCM", iv:unb64(vault.iv)}, k, unb64(vault.ct));
+    return {key:k, salt:s, data:JSON.parse(dec.decode(pt))};
+  }
+
+  const readVault = () => { try{ return JSON.parse(localStorage.getItem(VAULT_KEY) || "null"); }catch(e){ return null; } };
+  async function persist(){
+    const vault = await seal(data, key, salt);
+    localStorage.setItem(VAULT_KEY, JSON.stringify(vault));
+  }
+
+  /* ---------- Fehlversuche bremsen ---------- */
+  const readTries = () => { try{ return JSON.parse(localStorage.getItem(TRIES_KEY) || "null") || {n:0, until:0}; }catch(e){ return {n:0, until:0}; } };
+  const writeTries = t => { try{ localStorage.setItem(TRIES_KEY, JSON.stringify(t)); }catch(e){} };
+
+  /* ---------- Bildschirme ---------- */
+  function show(id){
+    ["s-nocrypto","s-intro","s-setpin","s-lock","s-app"].forEach(s => { $(s).hidden = s !== id; });
+    window.scrollTo(0, 0);
+  }
+  function view(id){
+    ["v-list","v-edit","v-detail","v-patterns","v-more"].forEach(v => { $(v).hidden = v !== id; });
+    const tab = {"v-list":"list","v-edit":"list","v-detail":"list","v-patterns":"patterns","v-more":"more"}[id];
+    document.querySelectorAll(".tab").forEach(t => t.setAttribute("aria-selected", String(t.dataset.tab === tab)));
+    window.scrollTo(0, 0);
+  }
+  function hint(el, text){
+    el.textContent = text;
+    el.classList.remove("pulse"); void el.offsetWidth; el.classList.add("pulse");
+  }
+
+  function start(){
+    if (!window.crypto || !crypto.subtle){ show("s-nocrypto"); return; }
+    if (readVault()) toLock(); else show("s-intro");
+  }
+
+  /* ---------- PIN festlegen ---------- */
+  function toSetPin(mode){
+    pinMode = mode;
+    $("pin1").value = ""; $("pin2").value = ""; $("setpinHint").textContent = "";
+    $("setpinTitle").textContent = mode === "change" ? "Neue PIN" : "Deine PIN";
+    show("s-setpin");
+    $("pin1").focus();
+  }
+  $("toSetPin").addEventListener("click", () => toSetPin("new"));
+  $("setpinBack").addEventListener("click", () => {
+    if (pinMode === "change"){ show("s-app"); view("v-more"); } else show("s-intro");
+  });
+  $("setpinForm").addEventListener("submit", async e => {
+    e.preventDefault();
+    const p1 = $("pin1").value, p2 = $("pin2").value;
+    if (!/^\d{6,12}$/.test(p1)) return hint($("setpinHint"), "Bitte 6 bis 12 Ziffern.");
+    if (/^(\d)\1+$/.test(p1) || "0123456789012".includes(p1) || "9876543210987".includes(p1))
+      return hint($("setpinHint"), "Diese PIN ist zu leicht zu erraten.");
+    if (p1 !== p2) return hint($("setpinHint"), "Die beiden PINs sind nicht gleich.");
+    $("setpinSave").disabled = true;
+    try{
+      salt = crypto.getRandomValues(new Uint8Array(16));
+      key = await deriveKey(p1, salt, ITERATIONS);
+      if (pinMode === "new") data = {v:1, entries:[]};
+      await persist();
+      writeTries({n:0, until:0});
+      $("pin1").value = ""; $("pin2").value = "";
+      show("s-app");
+      if (pinMode === "change"){ view("v-more"); hint($("moreHint"), "Deine PIN ist geändert. Alte Sicherungen brauchen weiter die alte PIN."); }
+      else { renderList(); view("v-list"); }
+      armIdle();
+    }catch(err){
+      hint($("setpinHint"), "Speichern hat nicht geklappt. Ist der private Modus an oder der Speicher voll?");
+    }finally{
+      $("setpinSave").disabled = false;
+    }
+  });
+
+  /* ---------- Sperren / Öffnen ---------- */
+  function wipeMemory(){
+    key = null; salt = null; data = null; editingId = null; viewingId = null; pendingRestore = null; filterPattern = null;
+    ["entryList","detailBody","patternsBody","printout"].forEach(id => { $(id).innerHTML = ""; });
+    $("editForm").reset();
+    ["restorePin","pinIn","pin1","pin2"].forEach(id => { $(id).value = ""; });
+    $("restorePinBox").hidden = true;
+    clearTimeout(idleTimer);
+  }
+  function toLock(){
+    wipeMemory();
+    $("unlockHint").textContent = ""; $("forgotBox").hidden = true;
+    show("s-lock");
+    setTimeout(() => $("pinIn").focus(), 50);
+  }
+  $("lockBtn").addEventListener("click", toLock);
+
+  $("unlockForm").addEventListener("submit", async e => {
+    e.preventDefault();
+    const t = readTries();
+    const wait = Math.ceil((t.until - Date.now()) / 1000);
+    if (wait > 0) return hint($("unlockHint"), `Zu viele Versuche. Bitte warte ${wait} Sekunden.`);
+    const vault = readVault();
+    if (!vault){ start(); return; }
+    $("unlockBtn").disabled = true;
+    try{
+      const r = await open(vault, $("pinIn").value);
+      key = r.key; salt = r.salt; data = r.data;
+      if (!Array.isArray(data.entries)) data.entries = [];
+      writeTries({n:0, until:0});
+      $("pinIn").value = "";
+      show("s-app"); renderList(); view("v-list"); armIdle();
+    }catch(err){
+      const n = t.n + 1;
+      const until = n >= 5 ? Date.now() + Math.min(30000 * Math.pow(2, n - 5), 30 * 60000) : 0;
+      writeTries({n, until});
+      $("pinIn").value = "";
+      hint($("unlockHint"), n >= 5 ? "Falsche PIN. Bitte warte kurz, bevor du es nochmal versuchst." : "Falsche PIN.");
+    }finally{
+      $("unlockBtn").disabled = false;
+    }
+  });
+
+  $("forgot").addEventListener("click", () => { $("forgotBox").hidden = !$("forgotBox").hidden; });
+  function wipeAll(){
+    if (!confirm("Wirklich alles löschen? Das lässt sich nicht rückgängig machen.")) return false;
+    try{ localStorage.removeItem(VAULT_KEY); localStorage.removeItem(TRIES_KEY); }catch(e){}
+    wipeMemory();
+    show("s-intro");
+    return true;
+  }
+  $("wipeFromLock").addEventListener("click", wipeAll);
+  $("wipeBtn").addEventListener("click", wipeAll);
+  $("changePinBtn").addEventListener("click", () => toSetPin("change"));
+
+  /* ---------- Schnell weg & automatisch sperren ---------- */
+  function quickExit(){
+    wipeMemory();
+    try{ sessionStorage.removeItem("sw_mira_prefill"); }catch(e){}
+    show("s-lock");
+    document.title = "Wetter";
+    window.location.replace(EXIT_URL);
+  }
+  $("exitBtn").addEventListener("click", quickExit);
+  let escCount = 0, escTimer = null;
+  document.addEventListener("keydown", e => {
+    if (e.key !== "Escape") return;
+    escCount++;
+    clearTimeout(escTimer);
+    escTimer = setTimeout(() => { escCount = 0; }, 800);
+    if (escCount >= 2){ escCount = 0; quickExit(); }
+  });
+
+  function armIdle(){
+    clearTimeout(idleTimer);
+    if (key) idleTimer = setTimeout(toLock, IDLE_LOCK_MS);
+  }
+  ["pointerdown","keydown","input","scroll"].forEach(ev => document.addEventListener(ev, armIdle, {passive:true}));
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) hiddenAt = Date.now();
+    else if (key && hiddenAt && Date.now() - hiddenAt > HIDDEN_LOCK_MS) toLock();
+  });
+  // Beim Verlassen (auch aus dem Zurück-Cache) gesperrt zurückkommen
+  window.addEventListener("pagehide", () => { if (key) wipeMemory(); });
+  window.addEventListener("pageshow", e => { if (e.persisted) start(); });
+
+  /* ---------- Tabs ---------- */
+  document.querySelectorAll(".tab").forEach(t => t.addEventListener("click", () => {
+    if (t.dataset.tab === "list"){ renderList(); view("v-list"); }
+    if (t.dataset.tab === "patterns"){ renderPatterns(); view("v-patterns"); }
+    if (t.dataset.tab === "more"){ $("copyHint").textContent = ""; $("backupHint").textContent = ""; $("moreHint").textContent = ""; view("v-more"); }
+  }));
+
+  /* ---------- Hilfsfunktionen für Daten ---------- */
+  const pad = n => String(n).padStart(2, "0");
+  const localNow = () => { const d = new Date(); return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`; };
+  const fmtDate = s => {
+    const d = new Date(s);
+    if (isNaN(d)) return "ohne Datum";
+    return d.toLocaleDateString("de-DE", {weekday:"short", day:"numeric", month:"long", year:"numeric"}) + ", " + d.toLocaleTimeString("de-DE", {hour:"2-digit", minute:"2-digit"}) + " Uhr";
+  };
+  const sorted = () => [...data.entries].sort((a, b) => String(b.when).localeCompare(String(a.when)));
+  const uid = () => b64(crypto.getRandomValues(new Uint8Array(9))).replace(/[+/=]/g, "");
+
+  /* ---------- Liste ---------- */
+  function renderList(){
+    const all = sorted();
+    const list = filterPattern ? all.filter(e => (e.patterns || []).includes(filterPattern)) : all;
+    $("filterInfo").hidden = !filterPattern;
+    if (filterPattern){
+      $("filterInfo").innerHTML = `Nur „${esc(PNAME[filterPattern])}“ · ${list.length} ${list.length === 1 ? "Eintrag" : "Einträge"} · <button class="btn btn--link" type="button" id="clearFilter" style="padding:0">alle zeigen</button>`;
+      $("clearFilter").addEventListener("click", () => { filterPattern = null; renderList(); });
+    }
+    if (!all.length){
+      $("entryList").innerHTML = `<p class="empty">Noch keine Einträge.<br>Wenn etwas passiert, das dich verunsichert: Schreib es auf, solange es frisch ist.</p>`;
+      return;
+    }
+    $("entryList").innerHTML = list.map(e => `
+      <button class="entry" type="button" data-id="${esc(e.id)}">
+        <span class="entry__date">${esc(fmtDate(e.when))}</span>
+        <span class="entry__what">${esc(e.what || e.said || "(ohne Beschreibung)")}</span>
+        ${(e.patterns || []).length ? `<span class="tags">${e.patterns.map(p => `<span class="tag${p === "gewalt" ? " tag--danger" : ""}">${esc(PNAME[p] || p)}</span>`).join("")}</span>` : ""}
+      </button>`).join("");
+    $("entryList").querySelectorAll(".entry").forEach(b => b.addEventListener("click", () => openDetail(b.dataset.id)));
+  }
+
+  /* ---------- Schreiben ---------- */
+  function chipRow(container, items, selected){
+    container.innerHTML = items.map(it => {
+      const id = typeof it === "string" ? it : it.id;
+      const label = typeof it === "string" ? esc(it) : `${esc(it.name)}<small>${esc(it.help)}</small>`;
+      const danger = typeof it !== "string" && it.danger ? " chip--danger" : "";
+      return `<button class="chip${danger}" type="button" data-v="${esc(id)}" aria-pressed="${selected.includes(id)}">${label}</button>`;
+    }).join("");
+    container.querySelectorAll(".chip").forEach(c => c.addEventListener("click", () => {
+      c.setAttribute("aria-pressed", String(c.getAttribute("aria-pressed") !== "true"));
+      updateCrisis();
+    }));
+  }
+  const picked = container => [...container.querySelectorAll('.chip[aria-pressed="true"]')].map(c => c.dataset.v);
+  function updateCrisis(){ $("editCrisis").hidden = !picked($("fPatterns")).includes("gewalt"); }
+
+  function openEditor(id){
+    editingId = id || null;
+    const e = id ? data.entries.find(x => x.id === id) : null;
+    $("editTitle").textContent = e ? "Eintrag bearbeiten" : "Was ist passiert?";
+    $("fWhen").value = e ? e.when : localNow();
+    $("fWhat").value = e ? e.what || "" : "";
+    $("fSaid").value = e ? e.said || "" : "";
+    $("fAfter").value = e ? e.after || "" : "";
+    $("fEvidence").value = e ? e.evidence || "" : "";
+    $("fAnchor").value = e ? e.anchor || "" : "";
+    chipRow($("fPatterns"), PATTERNS, e ? e.patterns || [] : []);
+    chipRow($("fFelt"), FEELINGS, e ? e.felt || [] : []);
+    updateCrisis();
+    $("editHint").textContent = "";
+    view("v-edit");
+  }
+  $("newBtn").addEventListener("click", () => openEditor(null));
+  $("editCancel").addEventListener("click", () => { if (editingId) openDetail(editingId); else { renderList(); view("v-list"); } });
+
+  $("editForm").addEventListener("submit", async ev => {
+    ev.preventDefault();
+    const entry = {
+      when: $("fWhen").value || localNow(),
+      what: $("fWhat").value.trim(),
+      said: $("fSaid").value.trim(),
+      patterns: picked($("fPatterns")),
+      felt: picked($("fFelt")),
+      after: $("fAfter").value.trim(),
+      evidence: $("fEvidence").value.trim(),
+      anchor: $("fAnchor").value.trim()
+    };
+    if (!entry.what && !entry.said && !entry.anchor && !entry.patterns.length)
+      return hint($("editHint"), "Schreib wenigstens einen Satz oder tippe an, was passt.");
+    const now = new Date().toISOString();
+    const before = JSON.stringify(data.entries);
+    if (editingId){
+      const i = data.entries.findIndex(x => x.id === editingId);
+      data.entries[i] = {...data.entries[i], ...entry, updated:now};
+    } else {
+      editingId = uid();
+      data.entries.push({id:editingId, ...entry, created:now});
+    }
+    $("editSave").disabled = true;
+    try{
+      await persist();
+      openDetail(editingId);
+    }catch(err){
+      data.entries = JSON.parse(before);
+      hint($("editHint"), "Speichern hat nicht geklappt. Ist der Speicher voll? Mach eine Sicherung und lösch alte Einträge.");
+    }finally{
+      $("editSave").disabled = false;
+    }
+  });
+
+  /* ---------- Ansehen ---------- */
+  function openDetail(id){
+    const e = data.entries.find(x => x.id === id);
+    if (!e){ renderList(); view("v-list"); return; }
+    viewingId = id; editingId = null;
+    const block = (title, body, cls) => body ? `<h3>${title}</h3><div class="${cls || "txt"}">${esc(body)}</div>` : "";
+    $("miraInfo").hidden = true;
+    $("detailBody").innerHTML = `
+      <p class="entry__date" style="margin-top:18px">${esc(fmtDate(e.when))}</p>
+      ${block("Was passiert ist", e.what)}
+      ${block("Was gesagt wurde", e.said, "quote")}
+      ${(e.patterns || []).length ? `<h3>Was du darin erkennst</h3><div class="tags">${e.patterns.map(p => `<span class="tag${p === "gewalt" ? " tag--danger" : ""}">${esc(PNAME[p] || p)}</span>`).join("")}</div>` : ""}
+      ${(e.felt || []).length ? `<h3>Wie es dir ging</h3><div class="txt">${esc(e.felt.join(", "))}</div>` : ""}
+      ${block("Danach", e.after)}
+      ${block("Belege / Zeugen", e.evidence)}
+      ${e.anchor ? `<div class="anchor"><small>Was du sicher weißt</small><p>${esc(e.anchor)}</p></div>` : ""}
+      ${(e.patterns || []).includes("gewalt") ? `<div class="crisis">Wenn du in Gefahr bist: <b>Notruf 112</b> (CH <b>117</b>) · <b>DE 116 016</b> · <b>AT 0800 222 555</b> · <b>CH 143</b>.</div>` : ""}`;
+    view("v-detail");
+  }
+  $("detailBack").addEventListener("click", () => { renderList(); view("v-list"); });
+  $("detailEdit").addEventListener("click", () => openEditor(viewingId));
+  $("detailDelete").addEventListener("click", async () => {
+    if (!confirm("Diesen Eintrag löschen?")) return;
+    data.entries = data.entries.filter(x => x.id !== viewingId);
+    await persist();
+    renderList(); view("v-list");
+  });
+
+  /* ---------- An Mira übergeben ---------- */
+  // Nur über sessionStorage (dieser Tab, wird beim Schließen gelöscht) – nie in der Adresse, damit nichts im Verlauf landet.
+  const MIRA_KEY = "sw_mira_prefill";
+  const MIRA_MAX = 3800;
+  function miraText(e){
+    const lines = ["Ich habe in meinen Notizen festgehalten, was passiert ist. Hilf mir bitte, das einzuordnen.", ""];
+    lines.push("Wann: " + fmtDate(e.when));
+    if (e.what) lines.push("Was passiert ist: " + e.what);
+    if (e.said) lines.push("Was gesagt wurde: „" + e.said + "“");
+    if ((e.patterns || []).length) lines.push("Was ich darin erkenne: " + e.patterns.map(p => PNAME[p] || p).join(", "));
+    if ((e.felt || []).length) lines.push("Wie es mir ging: " + e.felt.join(", "));
+    if (e.after) lines.push("Danach: " + e.after);
+    if (e.anchor) lines.push("Was ich sicher weiß: " + e.anchor);
+    let t = lines.join("\n");
+    if (t.length > MIRA_MAX) t = t.slice(0, MIRA_MAX - 1) + "…";
+    return t;
+  }
+  $("miraMore").addEventListener("click", () => { $("miraInfo").hidden = !$("miraInfo").hidden; });
+  $("miraBtn").addEventListener("click", () => {
+    const e = data && data.entries.find(x => x.id === viewingId);
+    if (!e) return;
+    try{ sessionStorage.setItem(MIRA_KEY, miraText(e)); }catch(err){}
+    window.location.href = "begleiterin.html";
+  });
+
+  /* ---------- Muster ---------- */
+  function renderPatterns(){
+    const all = data.entries;
+    if (!all.length){
+      $("patternsBody").innerHTML = `<p class="empty">Hier erscheinen deine Muster, sobald du ein paar Einträge geschrieben hast.</p>`;
+      return;
+    }
+    const DAY = 86400000, now = Date.now();
+    const within = days => all.filter(e => now - new Date(e.when).getTime() <= days * DAY).length;
+    const pCount = {}; const fCount = {};
+    all.forEach(e => {
+      (e.patterns || []).forEach(p => { pCount[p] = (pCount[p] || 0) + 1; });
+      (e.felt || []).forEach(f => { fCount[f] = (fCount[f] || 0) + 1; });
+    });
+    const pList = PATTERNS.filter(p => pCount[p.id]).sort((a, b) => pCount[b.id] - pCount[a.id]);
+    const fList = Object.entries(fCount).sort((a, b) => b[1] - a[1]).slice(0, 3);
+    const max = pList.length ? pCount[pList[0].id] : 1;
+    const dates = all.map(e => new Date(e.when).getTime()).filter(t => !isNaN(t));
+    const first = dates.length ? new Date(Math.min(...dates)) : null;
+    const anchors = sorted().filter(e => e.anchor).slice(0, 3);
+
+    // Spiegel-Sätze: nüchtern, ohne Urteil über ihn, ohne Druck
+    const mirror = [];
+    if (pList.length && pCount[pList[0].id] >= 2)
+      mirror.push(`„${esc(pList[0].name)}“ hast du ${pCount[pList[0].id]}-mal festgehalten. Das ist kein Zufall und keine Einbildung – es steht hier mit Datum.`);
+    if ((pCount.leugnen || 0) + (pCount.umdeuten || 0) >= 2)
+      mirror.push(`Wenn dir wieder gesagt wird, es sei nie passiert oder du übertreibst: Lies deine eigenen Einträge. Du warst dabei.`);
+    if ((pCount.lieb || 0) >= 1 && pList.length >= 2)
+      mirror.push(`Auf schwierige Momente folgt bei dir manchmal „Plötzlich lieb“. Das Wechselbad aus Kälte und Nähe ist genau das, was so verwirrt – und so schwer loszulassen ist.`);
+    if (fList.length)
+      mirror.push(`Am häufigsten hast du dich ${esc(fList.map(f => f[0]).join(", "))} gefühlt. Deine Gefühle sind Hinweise, keine Überreaktion.`);
+    if (pCount.gewalt)
+      mirror.push(`Du hast ${pCount.gewalt === 1 ? "einmal" : pCount.gewalt + "-mal"} Gewalt oder Angst festgehalten. Bitte nimm das ernst und hol dir Unterstützung – die Beratungsstellen unter „Mehr“ sind kostenlos und anonym.`);
+    if (!mirror.length)
+      mirror.push(`Jeder Eintrag ist ein Stück Klarheit. Je mehr du festhältst, desto deutlicher siehst du, was sich wiederholt.`);
+
+    $("patternsBody").innerHTML = `
+      <div class="stat" style="margin-top:18px">
+        <div><b>${all.length}</b><span>${all.length === 1 ? "Eintrag" : "Einträge"}</span></div>
+        <div><b>${within(30)}</b><span>letzte 30 Tage</span></div>
+        <div><b>${within(90)}</b><span>letzte 90 Tage</span></div>
+      </div>
+      ${first ? `<p class="filter">Erster Eintrag: ${esc(first.toLocaleDateString("de-DE", {day:"numeric", month:"long", year:"numeric"}))}</p>` : ""}
+
+      <div class="eyebrow"><span>Was sich wiederholt</span></div>
+      ${pList.length ? pList.map(p => `
+        <div class="row">
+          <div class="row__top"><span>${esc(p.name)}</span><b>${pCount[p.id]}×</b></div>
+          <div class="meter"><span style="width:${Math.round(pCount[p.id] / max * 100)}%"></span></div>
+        </div>`).join("") + `<div class="actions" style="margin-top:14px">${pList.map(p => `<button class="btn btn--link" type="button" data-filter="${esc(p.id)}" style="padding:2px 6px">${esc(p.name)} ansehen</button>`).join("")}</div>`
+        : `<p class="filter">Tippe beim Schreiben an, was du erkennst – dann siehst du hier, was sich wiederholt.</p>`}
+
+      <div class="eyebrow"><span>Was das heißt</span></div>
+      <div class="box box--sand mirror" style="margin-top:0">${mirror.map(m => `<p>${m}</p>`).join("")}</div>
+
+      ${anchors.length ? `<div class="eyebrow"><span>Für Zweifelsmomente</span></div>
+        ${anchors.map(e => `<div class="anchor" style="margin-top:10px"><small>${esc(fmtDate(e.when))}</small><p>${esc(e.anchor)}</p></div>`).join("")}` : ""}`;
+    $("patternsBody").querySelectorAll("[data-filter]").forEach(b => b.addEventListener("click", () => {
+      filterPattern = b.dataset.filter; renderList(); view("v-list");
+    }));
+  }
+
+  /* ---------- Export ---------- */
+  function asText(){
+    const lines = ["Notizen – chronologisch", `Erstellt am ${new Date().toLocaleDateString("de-DE")}`, ""];
+    [...data.entries].sort((a, b) => String(a.when).localeCompare(String(b.when))).forEach(e => {
+      lines.push("— " + fmtDate(e.when));
+      if (e.what) lines.push("Was passiert ist: " + e.what);
+      if (e.said) lines.push("Was gesagt wurde: " + e.said);
+      if ((e.patterns || []).length) lines.push("Muster: " + e.patterns.map(p => PNAME[p] || p).join(", "));
+      if ((e.felt || []).length) lines.push("Wie es mir ging: " + e.felt.join(", "));
+      if (e.after) lines.push("Danach: " + e.after);
+      if (e.evidence) lines.push("Belege / Zeugen: " + e.evidence);
+      if (e.anchor) lines.push("Was ich sicher weiß: " + e.anchor);
+      lines.push("");
+    });
+    return lines.join("\n");
+  }
+  $("copyBtn").addEventListener("click", async () => {
+    try{ await navigator.clipboard.writeText(asText()); hint($("copyHint"), "Kopiert. Füge es nur dort ein, wo es sicher ist – und leere danach die Zwischenablage."); }
+    catch(e){ hint($("copyHint"), "Kopieren hat nicht geklappt. Nutze „Drucken / als PDF“."); }
+  });
+  $("printBtn").addEventListener("click", () => {
+    const rows = (label, v) => v ? `<dt>${label}</dt><dd>${esc(v)}</dd>` : "";
+    $("printout").innerHTML = `<h1>Notizen – chronologisch</h1><p class="p-meta">${data.entries.length} Einträge · erstellt am ${esc(new Date().toLocaleDateString("de-DE"))}</p>` +
+      [...data.entries].sort((a, b) => String(a.when).localeCompare(String(b.when))).map(e => `
+        <div class="p-entry"><h2>${esc(fmtDate(e.when))}</h2><dl>
+          ${rows("Was passiert ist", e.what)}${rows("Was gesagt wurde", e.said)}
+          ${rows("Muster", (e.patterns || []).map(p => PNAME[p] || p).join(", "))}
+          ${rows("Wie es mir ging", (e.felt || []).join(", "))}
+          ${rows("Danach", e.after)}${rows("Belege / Zeugen", e.evidence)}${rows("Was ich sicher weiß", e.anchor)}
+        </dl></div>`).join("");
+    window.print();
+  });
+  window.addEventListener("afterprint", () => { $("printout").innerHTML = ""; });
+
+  /* ---------- Sicherung ---------- */
+  $("backupBtn").addEventListener("click", () => {
+    const vault = readVault();
+    if (!vault) return;
+    const blob = new Blob([JSON.stringify({type:"notizen-sicherung", ...vault})], {type:"application/json"});
+    const a = document.createElement("a");
+    const d = new Date();
+    a.href = URL.createObjectURL(blob);
+    a.download = `notizen-${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}.json`;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    hint($("backupHint"), "Sicherung gespeichert. Leg sie dort ab, wo niemand sucht – sie lässt sich nur mit deiner PIN öffnen.");
+  });
+  $("restoreBtn").addEventListener("click", () => { $("restoreFile").value = ""; $("restoreFile").click(); });
+  $("restoreFile").addEventListener("change", async () => {
+    const f = $("restoreFile").files[0];
+    if (!f) return;
+    try{
+      const v = JSON.parse(await f.text());
+      if (!v || !v.salt || !v.iv || !v.ct) throw new Error("format");
+      pendingRestore = v;
+      $("restorePinBox").hidden = false; $("restorePin").value = ""; $("restorePin").focus();
+      $("backupHint").textContent = "";
+    }catch(e){
+      hint($("backupHint"), "Diese Datei ist keine Sicherung aus diesem Tagebuch.");
+    }
+  });
+  $("restoreCancel").addEventListener("click", () => { pendingRestore = null; $("restorePinBox").hidden = true; });
+  $("restoreGo").addEventListener("click", async () => {
+    if (!pendingRestore) return;
+    $("restoreGo").disabled = true;
+    try{
+      const r = await open(pendingRestore, $("restorePin").value);
+      const incoming = Array.isArray(r.data.entries) ? r.data.entries : [];
+      const known = new Set(data.entries.map(e => e.id));
+      const fresh = incoming.filter(e => e && e.id && !known.has(e.id));
+      data.entries.push(...fresh);
+      await persist();
+      pendingRestore = null; $("restorePinBox").hidden = true; $("restorePin").value = "";
+      hint($("backupHint"), fresh.length ? `${fresh.length} ${fresh.length === 1 ? "Eintrag" : "Einträge"} übernommen. Ab jetzt gilt deine aktuelle PIN.` : "Alle Einträge aus der Sicherung waren schon da.");
+    }catch(e){
+      hint($("backupHint"), "Die PIN passt nicht zu dieser Sicherung.");
+    }finally{
+      $("restoreGo").disabled = false;
+    }
+  });
+
+  start();
+})();
+</script>
+</body>
+</html>

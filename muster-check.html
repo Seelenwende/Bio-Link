@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Muster-Check · Seelenwende</title>
+<meta name="description" content="Ist das noch normal? 20 Alltagssituationen aus deiner Beziehung – sanft, anonym und kostenlos. Finde heraus, ob sich ein Muster zeigt.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --papier:#FAF6F4;
+    --sand:#F3ECE9;
+    --rose:#B5808F;
+    --beere:#8C5A69;
+    --pflaume:#5C3A46;
+    --gedaempft:#8E7079;
+    --linie:#E4D8D8;
+    --mikro:#C3AEB2;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    background:var(--papier);
+    color:var(--pflaume);
+    font-family:"Jost",sans-serif;
+    font-weight:300;
+    line-height:1.75;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    padding:44px 22px 36px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .page{width:100%;max-width:460px;text-align:center;}
+  [hidden]{display:none !important;}
+
+  .back{
+    display:inline-block;
+    font-family:"Playfair Display",serif;
+    font-size:10.5px;letter-spacing:.36em;text-transform:uppercase;
+    color:var(--rose);text-decoration:none;margin-bottom:26px;
+  }
+  .back:hover{color:var(--beere);}
+
+  /* Schnell weg – immer sichtbar */
+  .exit{
+    position:fixed;top:12px;right:12px;z-index:10;cursor:pointer;
+    background:var(--sand);color:var(--pflaume);border:1px solid var(--linie);
+    border-radius:20px;padding:6px 14px;
+    font-family:"Jost",sans-serif;font-size:12.5px;font-weight:400;
+  }
+  @media (hover:hover){.exit:hover{background:var(--linie);}}
+
+  .butterfly{width:52px;height:52px;margin:0 auto 16px;display:block;}
+  .butterfly path,.butterfly ellipse{
+    fill:none;stroke:var(--rose);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;
+  }
+  .butterfly .dot,.butterfly .body{fill:var(--rose);stroke:none;}
+
+  h1{
+    font-family:"Playfair Display",serif;font-weight:500;
+    font-size:28px;line-height:1.3;letter-spacing:.01em;
+  }
+  .kicker{
+    font-family:"Playfair Display",serif;font-size:10.5px;letter-spacing:.4em;
+    text-transform:uppercase;color:var(--rose);margin-bottom:10px;
+  }
+  .lead{
+    font-family:"Playfair Display",serif;font-style:italic;
+    font-size:19px;line-height:1.5;margin-top:20px;
+  }
+  .text{font-size:15px;color:var(--gedaempft);margin-top:14px;}
+  .small{font-size:12.5px;color:var(--gedaempft);line-height:1.65;}
+
+  .eyebrow{display:flex;align-items:center;gap:14px;margin:34px 0 16px;}
+  .eyebrow::before,.eyebrow::after{content:"";flex:1;height:1px;background:var(--linie);}
+  .eyebrow span{
+    font-family:"Playfair Display",serif;font-size:10.5px;letter-spacing:.4em;
+    text-transform:uppercase;color:var(--rose);white-space:nowrap;
+  }
+
+  .btn{
+    display:block;width:100%;border:0;cursor:pointer;
+    border-radius:16px;padding:16px 20px;margin-top:26px;
+    background:var(--beere);color:var(--papier);
+    font-family:"Playfair Display",serif;font-size:17px;font-weight:500;letter-spacing:.01em;
+    text-decoration:none;
+    transition:transform .25s ease, box-shadow .25s ease, background-color .25s ease;
+  }
+  .btn .meta{
+    display:block;font-family:"Jost",sans-serif;font-weight:300;
+    font-size:12.5px;color:#EBD9DD;margin-top:3px;
+  }
+  .btn--dark{background:var(--pflaume);}
+  .btn--dark .meta{color:#D9C4CB;}
+  .btn--soft{background:var(--papier);border:1px solid var(--linie);color:var(--pflaume);}
+  .btn--soft .meta{color:var(--gedaempft);}
+  @media (hover:hover){
+    .btn:hover{transform:translateY(-2px);box-shadow:0 10px 26px -14px rgba(92,58,70,.5);}
+    .btn--soft:hover{background:var(--sand);}
+  }
+  .btn:focus-visible,.option:focus-visible,.link-btn:focus-visible,.back:focus-visible,.exit:focus-visible{
+    outline:2px solid var(--rose);outline-offset:3px;
+  }
+
+  .steps{list-style:none;text-align:left;margin-top:8px;}
+  .steps li{
+    display:flex;gap:14px;align-items:baseline;
+    font-size:14.5px;color:var(--gedaempft);padding:6px 0;
+  }
+  .steps b{
+    font-family:"Playfair Display",serif;font-weight:500;color:var(--rose);
+    font-size:15px;min-width:1.2em;
+  }
+
+  /* Streit oder Muster? */
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:10px;text-align:left;}
+  .compare div{background:#fff;border:1px solid var(--linie);border-radius:14px;padding:14px 14px 12px;}
+  .compare h4{
+    font-family:"Playfair Display",serif;font-weight:500;font-size:13.5px;margin-bottom:4px;
+  }
+  .compare p{font-size:13.5px;color:var(--gedaempft);line-height:1.6;}
+  @media (max-width:360px){.compare{grid-template-columns:1fr;}}
+
+  /* --- Fragen --- */
+  .progress{height:3px;background:var(--linie);border-radius:3px;overflow:hidden;margin-bottom:10px;}
+  .progress i{display:block;height:100%;width:0;background:var(--rose);transition:width .4s ease;}
+  .count{
+    font-family:"Playfair Display",serif;font-size:10.5px;letter-spacing:.36em;
+    text-transform:uppercase;color:var(--rose);
+  }
+  .statement{
+    font-family:"Playfair Display",serif;font-size:21px;line-height:1.45;
+    margin:34px 0 30px;min-height:5.8em;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .fade{animation:rise .5s ease;}
+  .options{display:flex;flex-direction:column;gap:10px;}
+  .option{
+    width:100%;cursor:pointer;
+    background:var(--papier);border:1px solid var(--linie);border-radius:14px;
+    padding:13px 18px;
+    font-family:"Jost",sans-serif;font-weight:300;font-size:15px;color:var(--pflaume);
+    transition:background-color .2s ease,border-color .2s ease,color .2s ease;
+  }
+  @media (hover:hover){.option:hover{background:var(--sand);}}
+  .option[aria-pressed="true"]{background:var(--beere);border-color:var(--beere);color:var(--papier);}
+  .link-btn{
+    background:none;border:0;cursor:pointer;margin-top:22px;
+    font-family:"Playfair Display",serif;font-size:10.5px;letter-spacing:.36em;
+    text-transform:uppercase;color:var(--rose);
+  }
+  .link-btn:disabled{visibility:hidden;}
+
+  /* --- Ergebnis --- */
+  .card{
+    text-align:left;background:#fff;border:1px solid var(--linie);border-radius:18px;
+    padding:22px 22px 20px;margin-bottom:16px;
+  }
+  .card .rank{
+    font-family:"Playfair Display",serif;font-size:10px;letter-spacing:.34em;
+    text-transform:uppercase;color:var(--rose);
+  }
+  .card h3{
+    font-family:"Playfair Display",serif;font-style:italic;font-weight:500;
+    font-size:21px;line-height:1.35;margin:6px 0 10px;
+  }
+  .card h4{
+    font-family:"Playfair Display",serif;font-weight:500;font-size:13.5px;
+    margin-top:14px;letter-spacing:.02em;
+  }
+  .card p{font-size:14.5px;color:var(--gedaempft);line-height:1.7;}
+  .card .neu{
+    background:var(--sand);border-radius:12px;padding:12px 14px;margin-top:6px;
+    font-family:"Playfair Display",serif;font-style:italic;font-size:16px;color:var(--pflaume);
+  }
+  .card ul{list-style:none;margin-top:6px;}
+  .card li{font-size:14px;color:var(--gedaempft);line-height:1.6;padding:3px 0 3px 16px;position:relative;}
+  .card li::before{content:"·";position:absolute;left:4px;color:var(--rose);font-weight:400;}
+  .level{
+    display:inline-block;font-size:11.5px;letter-spacing:.06em;
+    border-radius:20px;padding:1px 10px;background:var(--sand);color:var(--beere);
+  }
+
+  .card--safety{background:var(--sand);border-color:var(--rose);}
+  .card--safety p{color:var(--pflaume);}
+  .card--safety b{font-weight:400;}
+
+  .bars{text-align:left;}
+  .bar{margin-bottom:14px;}
+  .bar .row{display:flex;justify-content:space-between;gap:12px;font-size:14px;}
+  .bar .row span:last-child{color:var(--gedaempft);font-size:12.5px;white-space:nowrap;}
+  .bar .track{height:6px;background:var(--linie);border-radius:6px;overflow:hidden;margin-top:5px;}
+  .bar .fill{height:100%;background:var(--rose);border-radius:6px;width:0;transition:width .8s ease;}
+
+  .note{
+    font-size:12px;color:var(--gedaempft);margin-top:30px;line-height:1.65;
+    max-width:36ch;margin-left:auto;margin-right:auto;
+  }
+  .footer{
+    font-family:"Playfair Display",serif;font-size:9px;letter-spacing:.42em;
+    text-transform:uppercase;color:var(--mikro);margin-top:24px;
+  }
+
+  @keyframes rise{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none !important;transition:none !important;}
+  }
+  @media print{
+    body{padding:0;}
+    .no-print{display:none !important;}
+    .card{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+  <button class="exit no-print" id="exit" type="button" title="Verlässt die Seite sofort (auch: zweimal Esc)">Schnell weg</button>
+
+  <main class="page">
+
+    <a class="back no-print" href="index.html">← Seelenwende</a>
+
+    <svg class="butterfly" viewBox="0 0 100 100" aria-hidden="true">
+      <ellipse cx="38" cy="40" rx="13" ry="18" transform="rotate(-35 38 40)"/>
+      <ellipse cx="62" cy="40" rx="13" ry="18" transform="rotate(35 62 40)"/>
+      <ellipse cx="41" cy="61" rx="9" ry="13" transform="rotate(-20 41 61)"/>
+      <ellipse cx="59" cy="61" rx="9" ry="13" transform="rotate(20 59 61)"/>
+      <ellipse class="body" cx="50" cy="50" rx="1.5" ry="16"/>
+      <path d="M50 36 C47 30 45 27 43 24"/>
+      <path d="M50 36 C53 30 55 27 57 24"/>
+      <circle class="dot" cx="43" cy="23.5" r="1.5"/>
+      <circle class="dot" cx="57" cy="23.5" r="1.5"/>
+    </svg>
+
+    <!-- START -->
+    <section id="intro">
+      <div class="kicker">Muster-Check</div>
+      <h1>Ist das noch normal?</h1>
+      <p class="lead">Wenn du dir diese Frage stellst, hast du meistens schon einen Grund dafür.</p>
+      <p class="text">
+        Einzelne Situationen lassen sich immer erklären: ein schlechter Tag, Stress, ein Missverständnis.
+        Erst wenn man sie nebeneinanderlegt, wird sichtbar, ob sich etwas wiederholt.
+        Genau das macht dieser Check.
+      </p>
+
+      <div class="eyebrow"><span>Streit oder Muster?</span></div>
+      <div class="compare">
+        <div>
+          <h4>Gesunder Streit</h4>
+          <p>Ihr seid euch uneinig, aber du darfst deine Sicht haben. Danach wird geredet, und beide übernehmen ihren Teil.</p>
+        </div>
+        <div>
+          <h4>Ein Muster</h4>
+          <p>Es passiert immer wieder, am Ende bist du schuld, und du wirst vorsichtiger, leiser und unsicherer.</p>
+        </div>
+      </div>
+
+      <div class="eyebrow"><span>So funktioniert's</span></div>
+      <ul class="steps">
+        <li><b>1</b><span>20 konkrete Situationen aus dem Beziehungsalltag, etwa fünf Minuten.</span></li>
+        <li><b>2</b><span>Antworte, wie oft du sie erlebst. Wenn du schon getrennt bist, denk an die letzte Beziehung.</span></li>
+        <li><b>3</b><span>Du siehst, in welchen Bereichen sich ein Muster zeigt, wie es in einer gesunden Beziehung aussähe und was du jetzt tun kannst.</span></li>
+      </ul>
+
+      <button class="btn" id="start" type="button">
+        Check beginnen
+        <span class="meta">Kostenlos · anonym · nichts wird gespeichert</span>
+      </button>
+      <p class="small" style="margin-top:14px">
+        Oben rechts findest du „Schnell weg“. Er bringt dich sofort auf eine harmlose Seite (auch: zweimal Esc drücken).
+      </p>
+    </section>
+
+    <!-- FRAGEN -->
+    <section id="quiz" hidden>
+      <div class="progress" aria-hidden="true"><i id="bar"></i></div>
+      <div class="count" id="count" aria-live="polite"></div>
+      <p class="statement" id="statement"></p>
+      <div class="options" id="options" role="group" aria-label="Wie oft erlebst du das?"></div>
+      <button class="link-btn" id="prev" type="button">← Zurück</button>
+    </section>
+
+    <!-- ERGEBNIS -->
+    <section id="result" hidden>
+      <div class="kicker">Dein Ergebnis</div>
+      <h1 id="headline"></h1>
+      <p class="text" id="summary"></p>
+
+      <div id="safety"></div>
+
+      <div class="eyebrow" id="top-eyebrow"><span>Im Detail</span></div>
+      <div id="top"></div>
+
+      <div class="eyebrow"><span>Alle Bereiche</span></div>
+      <div class="bars" id="bars"></div>
+
+      <div class="eyebrow"><span>Wie weiter?</span></div>
+      <p class="text" style="margin-top:0" id="next"></p>
+
+      <a class="btn no-print" href="glaubenssaetze.html">
+        Warum bleibe ich trotzdem?
+        <span class="meta">Kostenloser Glaubenssätze-Test · 5 Minuten</span>
+      </a>
+      <a class="btn btn--dark no-print" href="https://seelenwende.mytentary.com/p/WPedba" target="_blank" rel="noopener" style="margin-top:13px">
+        Der Weg nach draußen
+        <span class="meta">Kostenloser Mini-Guide</span>
+      </a>
+      <button class="btn btn--soft no-print" id="print" type="button" style="margin-top:13px">
+        Ergebnis speichern
+        <span class="meta">Drucken oder als PDF sichern · nur, wenn dein Gerät sicher ist</span>
+      </button>
+      <button class="link-btn no-print" id="restart" type="button">Check neu starten</button>
+    </section>
+
+    <p class="note">
+      Dieser Check ist ein Impuls zur Selbstreflexion – keine Diagnose, weder über dich noch über ihn.
+      Seelenwende ist Selbsthilfe und ersetzt keine Therapie oder Beratung.
+    </p>
+    <p class="note" style="margin-top:12px">
+      In Gefahr: Notruf 112 (CH Polizei 117) · Gewalt gegen Frauen: DE 116 016 · AT 0800 222 555 ·
+      CH Opferhilfe (opferhilfe-schweiz.ch) · Seelsorge: CH 143 · DE 0800 111 0 111 · AT 142
+    </p>
+    <div class="footer">@_seelenwende</div>
+  </main>
+
+<script>
+(function(){
+  var EXIT_URL = "https://www.google.com/search?q=wetter";
+
+  // Fünf Bereiche mit je vier konkreten Situationen (0–3 Punkte pro Situation).
+  var AREAS = [
+    {
+      id:"wahrnehmung", area:"Wahrnehmung",
+      titel:"Er stellt deine Wahrnehmung infrage.",
+      items:[
+        "Ich spreche ihn auf etwas an, das er gesagt hat, und er behauptet, das habe er nie gesagt.",
+        "Wenn mich etwas verletzt, höre ich: „Du bist zu empfindlich“ oder „Du übertreibst“.",
+        "Ich zweifle inzwischen an meinem eigenen Gedächtnis.",
+        "Ich mache mir Notizen oder Screenshots, um mir selbst zu beweisen, was wirklich passiert ist."
+      ],
+      steckt:"Wenn deine Erinnerung und deine Gefühle immer wieder umgedeutet werden, verlierst du nach und nach das Vertrauen in dich selbst. Das hat einen Namen: Gaslighting. Es wirkt gerade deshalb, weil es leise ist.",
+      gesund:[
+        "Er kann sagen: „Ich sehe das anders“, ohne dass du an dir zweifeln musst.",
+        "Deine Gefühle dürfen da sein, auch wenn er sie nicht teilt.",
+        "Du brauchst keine Beweise, um ernst genommen zu werden."
+      ],
+      satz:"Ich darf mir glauben. Was ich erlebt habe, ist passiert.",
+      frage:"Woran habe ich in letzter Zeit gezweifelt, obwohl ich es eigentlich genau wusste?"
+    },
+    {
+      id:"abwertung", area:"Abwertung",
+      titel:"Er macht dich klein.",
+      items:[
+        "Er macht „Witze“ über mich vor anderen, und wenn ich nicht lache, bin ich humorlos.",
+        "Er kritisiert, wie ich aussehe, mich anziehe oder rede.",
+        "Was mir wichtig ist – Arbeit, Hobbys, Freundinnen –, tut er als unwichtig oder lächerlich ab.",
+        "In seiner Nähe fühle ich mich kleiner und unsicherer als früher."
+      ],
+      steckt:"Ständige kleine Abwertungen wirken wie Tropfen auf Stein. Einzeln wirken sie harmlos, zusammen verändern sie, wie du dich selbst siehst.",
+      gesund:[
+        "Kritik ist selten, konkret und respektvoll – nie über deinen Wert als Mensch.",
+        "Er freut sich über das, was dir wichtig ist, auch wenn er es nicht teilt.",
+        "Nach Zeit mit ihm fühlst du dich eher größer als kleiner."
+      ],
+      satz:"Wie jemand über mich spricht, sagt mehr über ihn als über mich.",
+      frage:"Wer war ich, bevor ich angefangen habe, mich so klein zu fühlen?"
+    },
+    {
+      id:"kontrolle", area:"Kontrolle & Rückzug",
+      titel:"Dein Leben wird enger.",
+      items:[
+        "Er will wissen, wo ich bin und mit wem, oder schaut in mein Handy.",
+        "Nach Treffen mit Freundinnen oder Familie gibt es Ärger, darum treffe ich sie seltener.",
+        "Er entscheidet über Geld, oder ich muss mich für Ausgaben rechtfertigen.",
+        "Selbst bei Kleinigkeiten überlege ich vorher, ob er es „erlauben“ würde."
+      ],
+      steckt:"Kontrolle kommt selten als Verbot daher. Meistens als Sorge, Eifersucht oder „schlechte Stimmung“. Das Ergebnis ist dasselbe: Dein Leben wird enger, und die Menschen, die dir eine Außensicht geben könnten, rücken weiter weg.",
+      gesund:[
+        "Ihr habt beide ein eigenes Leben, eigene Freundschaften und eigene Zeit.",
+        "Vertrauen heißt, nicht alles kontrollieren zu müssen.",
+        "Geld ist ein gemeinsames Thema, kein Druckmittel."
+      ],
+      satz:"Ich darf Menschen haben, die nur zu mir gehören.",
+      frage:"Welche Person fehlt mir gerade – und was würde ich ihr erzählen?"
+    },
+    {
+      id:"heisskalt", area:"Heiß & kalt",
+      titel:"Auf Nähe folgt Kälte.",
+      items:[
+        "Nach schlimmen Phasen kommen besonders liebevolle Tage, und ich hoffe jedes Mal, dass es jetzt so bleibt.",
+        "Wenn ihm etwas nicht passt, straft er mich mit Schweigen oder Rückzug, manchmal tagelang.",
+        "Er verspricht, dass sich etwas ändert, aber es bleibt, wie es ist.",
+        "Ich vermisse den Mann vom Anfang und versuche, ihn zurückzubekommen."
+      ],
+      steckt:"Der Wechsel zwischen Wärme und Kälte bindet stärker als dauerhafte Freundlichkeit. Dein Nervensystem wartet auf den nächsten guten Moment. Das ist keine Schwäche von dir, sondern eine ganz normale Reaktion auf Unberechenbarkeit.",
+      gesund:[
+        "Zuneigung ist verlässlich und hängt nicht von deinem Verhalten ab.",
+        "Nach einem Streit redet ihr, statt dass einer den anderen bestraft.",
+        "Versprechen zeigen sich in Taten, nicht nur in Worten."
+      ],
+      satz:"Liebe, die ich mir immer wieder neu verdienen muss, ist kein sicherer Ort.",
+      frage:"Woran würde ich merken, dass sich wirklich etwas verändert hat – nicht nur für ein paar Tage?"
+    },
+    {
+      id:"angst", area:"Schuld & Angst",
+      titel:"Du gehst auf Eierschalen.",
+      items:[
+        "Wenn ich ein Problem anspreche, reden wir am Ende über meine Fehler.",
+        "Ich überlege mir genau, wie ich etwas sage, damit er nicht wütend wird.",
+        "Ich entschuldige mich, obwohl eigentlich ich verletzt wurde.",
+        "Wenn er wütend ist, macht er mir Angst – er schreit mich an, wirft Dinge, droht oder wird körperlich."
+      ],
+      safety:3, // Index der Situation, die immer zu einem Sicherheitshinweis führt
+      steckt:"Wenn du ständig die Stimmung eines anderen Menschen scannst, ist dein Körper im Alarmmodus. Die Schuld landet bei dir, obwohl du nur reagierst. Das ist anstrengend, und es ist nicht deine Aufgabe.",
+      gesund:[
+        "Du kannst ein Problem ansprechen, ohne dass es gegen dich gedreht wird.",
+        "Du musst deine Worte nicht abwägen, um sicher zu sein.",
+        "Wut darf da sein, aber sie macht dir keine Angst."
+      ],
+      satz:"Ich bin nicht verantwortlich für seine Wut.",
+      frage:"Wann habe ich mich zuletzt in meinem eigenen Zuhause wirklich entspannt gefühlt?"
+    }
+  ];
+
+  var SCALE = ["Nie", "Selten", "Manchmal", "Oft"];
+  var MAX = 12;
+
+  // Situationen reihum mischen, damit die Bereiche nicht gebündelt auftauchen.
+  var QUESTIONS = [];
+  for (var r = 0; r < 4; r++) {
+    AREAS.forEach(function(a){ QUESTIONS.push({ area:a.id, index:r, text:a.items[r] }); });
+  }
+
+  var $ = function(id){ return document.getElementById(id); };
+  var answers = [];
+  var current = 0;
+
+  function show(section){
+    ["intro","quiz","result"].forEach(function(id){ $(id).hidden = id !== section; });
+    window.scrollTo(0,0);
+  }
+
+  function renderQuestion(){
+    var q = QUESTIONS[current];
+    $("bar").style.width = (current / QUESTIONS.length * 100) + "%";
+    $("count").textContent = "Situation " + (current + 1) + " von " + QUESTIONS.length;
+    var st = $("statement");
+    st.textContent = "„" + q.text + "“";
+    st.classList.remove("fade"); void st.offsetWidth; st.classList.add("fade");
+
+    var box = $("options");
+    box.innerHTML = "";
+    SCALE.forEach(function(label, value){
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "option";
+      b.textContent = label;
+      b.setAttribute("aria-pressed", answers[current] === value ? "true" : "false");
+      b.addEventListener("click", function(){ choose(value); });
+      box.appendChild(b);
+    });
+    $("prev").disabled = current === 0;
+  }
+
+  function choose(value){
+    answers[current] = value;
+    var buttons = $("options").querySelectorAll(".option");
+    buttons.forEach(function(b, i){ b.setAttribute("aria-pressed", i === value ? "true" : "false"); });
+    setTimeout(function(){
+      if (current < QUESTIONS.length - 1) { current++; renderQuestion(); }
+      else { renderResult(); }
+    }, 220);
+  }
+
+  function level(score){
+    if (score >= 7) return "deutlich";
+    if (score >= 4) return "spürbar";
+    if (score >= 1) return "vereinzelt";
+    return "kommt nicht vor";
+  }
+
+  function el(tag, cls, text){
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+
+  function answerFor(areaId, index){
+    for (var i = 0; i < QUESTIONS.length; i++) {
+      if (QUESTIONS[i].area === areaId && QUESTIONS[i].index === index) return answers[i] || 0;
+    }
+    return 0;
+  }
+
+  function renderSafety(phoneChecked){
+    var box = $("safety");
+    box.innerHTML = "";
+    var c = el("article", "card card--safety");
+    c.appendChild(el("div", "rank", "Zuerst das Wichtigste"));
+    c.appendChild(el("h3", null, "Deine Sicherheit geht vor."));
+    c.appendChild(el("p", null,
+      "Du hast angegeben, dass er dir Angst macht, wenn er wütend ist. Angst in der eigenen Beziehung ist ein ernstes Zeichen, " +
+      "auch wenn es „nur“ Schreien oder Drohen ist. Du musst das nicht allein einschätzen."));
+    c.appendChild(el("h4", null, "Hier bekommst du Hilfe – kostenlos und vertraulich"));
+    var ul = el("ul");
+    [
+      "Akute Gefahr: Notruf 112 · Schweiz Polizei 117",
+      "Deutschland: Hilfetelefon Gewalt gegen Frauen 116 016 (rund um die Uhr, auch Chat)",
+      "Österreich: Frauenhelpline 0800 222 555 (rund um die Uhr)",
+      "Schweiz: Opferhilfe-Beratungsstellen über opferhilfe-schweiz.ch · Die Dargebotene Hand 143"
+    ].forEach(function(t){ ul.appendChild(el("li", null, t)); });
+    c.appendChild(ul);
+    if (phoneChecked) {
+      c.appendChild(el("h4", null, "Falls er dein Handy kontrolliert"));
+      c.appendChild(el("p", null,
+        "Lösche nach diesem Check den Browser-Verlauf oder nutze ein privates Fenster. Der Knopf „Schnell weg“ oben rechts bringt dich sofort auf eine harmlose Seite."));
+    }
+    box.appendChild(c);
+  }
+
+  function renderResult(){
+    var scores = {};
+    AREAS.forEach(function(a){ scores[a.id] = 0; });
+    QUESTIONS.forEach(function(q, i){ scores[q.area] += answers[i] || 0; });
+
+    var total = 0;
+    AREAS.forEach(function(a){ total += scores[a.id]; });
+
+    var ranked = AREAS.slice().sort(function(a, b){ return scores[b.id] - scores[a.id]; });
+    var noticeable = ranked.filter(function(a){ return scores[a.id] >= 4; });
+    var top = noticeable.slice(0, 3);
+
+    // Sicherheitshinweis: Angst vor seiner Wut, egal wie selten.
+    var fear = answerFor("angst", 3) >= 1;
+    var phoneChecked = answerFor("kontrolle", 0) >= 1;
+
+    var headline, summary, next;
+    if (noticeable.length >= 3 || total >= 25) {
+      headline = "Das ist ein Muster.";
+      summary = "In " + noticeable.length + " von 5 Bereichen erlebst du immer wieder dasselbe. " +
+        "Das sind keine einzelnen schlechten Tage mehr. Was du erlebst, ist nicht normal – und es liegt nicht an dir.";
+      next = "Du musst heute nichts entscheiden. Der erste Schritt ist, dir selbst zu glauben. " +
+        "Schreib dir eine Situation auf, die dich besonders getroffen hat, und lies sie in einer Woche noch einmal. " +
+        "Und wenn du verstehen willst, warum es so schwer ist, trotzdem zu gehen: Der Glaubenssätze-Test zeigt dir, welche inneren Sätze dich halten.";
+    } else if (noticeable.length >= 1) {
+      headline = "Da ist etwas.";
+      summary = (noticeable.length === 1 ? "In einem Bereich" : "In " + noticeable.length + " Bereichen") +
+        " wiederholt sich etwas, das in einer gesunden Beziehung so nicht vorkommen sollte. " +
+        "Dein Gefühl, dass etwas nicht stimmt, hat einen Grund.";
+      next = "Beobachte die nächsten zwei Wochen genau diesen Bereich. Schreib kurz auf, wann es passiert und wie du dich danach fühlst. " +
+        "Muster werden sichtbar, wenn man sie notiert, statt sie wegzuerklären.";
+    } else {
+      headline = "Kaum etwas davon.";
+      summary = total
+        ? "Einzelne Situationen kennst du, aber sie wiederholen sich nicht so, dass sich ein Muster zeigt. Das ist eine gute Nachricht."
+        : "Keine dieser Situationen kommt bei dir vor. Das ist eine gute Nachricht.";
+      next = "Wenn sich trotzdem etwas falsch anfühlt, nimm das ernst. Nicht alles lässt sich mit 20 Fragen erfassen. " +
+        "Manchmal liegt der Grund woanders – auch der Glaubenssätze-Test kann helfen, ihn zu finden.";
+    }
+
+    $("headline").textContent = headline;
+    $("summary").textContent = summary;
+    $("next").textContent = next;
+
+    if (fear) renderSafety(phoneChecked); else $("safety").innerHTML = "";
+
+    var topBox = $("top");
+    topBox.innerHTML = "";
+    $("top-eyebrow").hidden = !top.length;
+    top.forEach(function(a, i){
+      var c = el("article", "card");
+      c.appendChild(el("div", "rank", (i + 1) + ". · " + a.area));
+      c.appendChild(el("h3", null, a.titel));
+      c.appendChild(el("span", "level", level(scores[a.id]) + " · " + scores[a.id] + " von " + MAX));
+      c.appendChild(el("h4", null, "Was dahintersteckt"));
+      c.appendChild(el("p", null, a.steckt));
+      c.appendChild(el("h4", null, "So sähe es in einer gesunden Beziehung aus"));
+      var ul = el("ul");
+      a.gesund.forEach(function(t){ ul.appendChild(el("li", null, t)); });
+      c.appendChild(ul);
+      c.appendChild(el("h4", null, "Ein Satz für dich"));
+      c.appendChild(el("p", "neu", "„" + a.satz + "“"));
+      c.appendChild(el("h4", null, "Deine Journal-Frage"));
+      c.appendChild(el("p", null, a.frage));
+      topBox.appendChild(c);
+    });
+
+    var bars = $("bars");
+    bars.innerHTML = "";
+    var fills = [];
+    ranked.forEach(function(a){
+      var row = el("div", "bar");
+      var head = el("div", "row");
+      head.appendChild(el("span", null, a.area));
+      head.appendChild(el("span", null, level(scores[a.id])));
+      var track = el("div", "track");
+      var fill = el("div", "fill");
+      track.appendChild(fill);
+      row.appendChild(head);
+      row.appendChild(track);
+      bars.appendChild(row);
+      fills.push([fill, scores[a.id] / MAX * 100]);
+    });
+
+    show("result");
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){
+        fills.forEach(function(f){ f[0].style.width = Math.max(f[1], 3) + "%"; });
+      });
+    });
+  }
+
+  function quickExit(){
+    answers = [];
+    document.body.innerHTML = "";
+    document.title = "Wetter";
+    window.location.replace(EXIT_URL);
+  }
+
+  $("start").addEventListener("click", function(){
+    answers = []; current = 0; show("quiz"); renderQuestion();
+  });
+  $("prev").addEventListener("click", function(){
+    if (current > 0) { current--; renderQuestion(); }
+  });
+  $("restart").addEventListener("click", function(){ answers = []; show("intro"); });
+  $("print").addEventListener("click", function(){ window.print(); });
+  $("exit").addEventListener("click", quickExit);
+
+  var escCount = 0, escTimer;
+  document.addEventListener("keydown", function(e){
+    if (e.key === "Escape") {
+      escCount++;
+      clearTimeout(escTimer);
+      escTimer = setTimeout(function(){ escCount = 0; }, 800);
+      if (escCount >= 2) { escCount = 0; quickExit(); }
+      return;
+    }
+    if ($("quiz").hidden) return;
+    var n = parseInt(e.key, 10);
+    if (n >= 1 && n <= 4) choose(n - 1);
+    if (e.key === "Backspace" && current > 0) { e.preventDefault(); current--; renderQuestion(); }
+  });
+})();
+</script>
+</body>
+</html>
