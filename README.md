@@ -13,29 +13,6 @@
 - `antwort-helfer.html` – **Antwort-Helfer** mit Zugangscode: Sie fügt seine Nachricht ein und bekommt eine ruhige Einordnung – ob sie überhaupt antworten sollte, was wirklich eine Antwort braucht, welche Sätze nur Köder sind, und bei Bedarf ein bis zwei kurze, sachliche Antworten (BIFF/Grey Rock) zum Kopieren. Besonders für Co-Parenting. Erkennt Drohungen und zeigt dann Notrufnummern statt Antwortvorschlägen, „Schnell weg“-Knopf, Nachrichten werden nicht gespeichert.
 - `programm.html` – **„Wieder bei dir“**, das 6-Wochen-Programm mit Zugangscode: sechs Wochen mit Impulsen zum Lesen, Schreibübungen, sieben Tagesankern pro Woche und Gesprächsanstößen für Mira. Die Inhalte liegen nur auf dem Server und kommen erst nach dem Code. Notizen bleiben auf dem Gerät (dauerhaft nur mit Häkchen, sonst nur im offenen Tab). Mit „Schnell weg“ und Krisenleiste.
 - `planer.html` – **Ausstiegs-Planer** (gratis, ohne Code): Sicherheitsplan als Checkliste in neun Abschnitten (Handy und Spuren, Notfall, Dokumente, Geld, Notfalltasche, Menschen, Schutz und Recht, der Tag selbst, die ersten Wochen) mit Hinweisen und Beratungsstellen für die Schweiz, Deutschland und Österreich. Bewusst neutraler Tab-Titel („Checkliste“), „Schnell weg“-Knopf. Ohne PIN wird nichts gespeichert, mit PIN bleibt der Plan verschlüsselt (AES-GCM) nur auf dem Gerät. Läuft komplett im Browser, ohne Server und ohne Kosten. Der Inhalt (Punkte, Tipps, Hinweise je Land, Beratungsstellen) steht oben im Skript als `INHALT`. **Nummern und Stellen vor jeder Änderung fachlich prüfen lassen** (Stand: Oktober 2026).
-- `profil-check.html` – KI-Profil-Check: Instagram-Namen eingeben, die KI liest Profil, Bio, Link-Seite und die letzten Posts (offizielle Instagram Graph API) und bewertet jeden Punkt des Profil-Checks mit konkretem Verbesserungsvorschlag.
-
-## So funktioniert der Profil-Check (Netlify)
-
-Die Analyse läuft über Netlify Functions (`netlify/functions/`), damit API-Schlüssel nie im Browser landen:
-
-1. `profil-check-start` prüft den Zugangscode, liest das Instagram-Profil und startet die Analyse.
-2. `profil-check-background` (Hintergrund-Funktion, bis 15 Min.) fragt Claude und speichert das Ergebnis in Netlify Blobs.
-3. `profil-check-status` liefert das Ergebnis; die Seite fragt alle paar Sekunden nach.
-
-In Netlify unter *Project configuration → Environment variables* anlegen und danach neu deployen:
-
-| Variable | Inhalt |
-|---|---|
-| `ANTHROPIC_API_KEY` | API-Schlüssel von https://platform.claude.com (Guthaben nötig) |
-| `HOOKCHECK_ACCESS_CODE` | Frei gewählter Zugangscode – ohne ihn startet keine Analyse |
-| `IG_USER_ID` | ID deines Instagram-Business-/Creator-Kontos |
-| `IG_ACCESS_TOKEN` | Langlebiger Token mit `instagram_basic` und `pages_read_engagement` |
-| `IG_GRAPH_VERSION` | optional, Standard `v23.0` |
-
-Der Profil-Check nutzt „Business Discovery“ der Instagram Graph API: Damit lassen sich öffentliche Creator-/Business-Profile per Namen lesen (Name, Bio, Link, Kennzahlen, letzte 12 Posts). Story-Highlights und angepinnte Beiträge liefert die API nicht – diese Punkte markiert die KI als „nicht prüfbar“.
-
-Kosten: grob 0,10–0,40 $ pro Analyse (Modell `claude-opus-5`, inkl. Bildern).
 
 ## So funktioniert Mira, die Begleiterin (Netlify)
 
@@ -47,7 +24,7 @@ Die Anweisungen der Begleiterin stehen in `netlify/lib/begleiterin.mts`.
 
 | Variable | Inhalt |
 |---|---|
-| `ANTHROPIC_API_KEY` | derselbe Schlüssel wie beim Profil-Check |
+| `ANTHROPIC_API_KEY` | API-Schlüssel von https://platform.claude.com (Guthaben nötig) |
 | `BEGLEITERIN_CODES` | optional, Mira-Codes von Hand, kommagetrennt, Groß-/Kleinschreibung egal, z. B. `Wendepunkt, WENDE-AB12-CD34` |
 | `BEGLEITERIN_LIMIT` | optional, Nachrichten pro Mira-Code insgesamt (Standard 300) |
 | `KREIS_CODES` | optional, Kreis-Codes von Hand, kommagetrennt |

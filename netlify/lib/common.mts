@@ -1,22 +1,6 @@
 import Anthropic from "@anthropic-ai/sdk";
-import { createHash, timingSafeEqual } from "node:crypto";
-
-export const STORE_NAME = "profil-check";
-export const MODEL = "claude-opus-5";
 
 /* ---------- Hilfsfunktionen ---------- */
-
-export function checkAccessCode(given: unknown): boolean {
-  const expected = Netlify.env.get("HOOKCHECK_ACCESS_CODE");
-  if (!expected || typeof given !== "string") return false;
-  const a = createHash("sha256").update(given.trim()).digest();
-  const b = createHash("sha256").update(expected.trim()).digest();
-  return timingSafeEqual(a, b);
-}
-
-export function isConfigured(): boolean {
-  return Boolean(Netlify.env.get("ANTHROPIC_API_KEY") && Netlify.env.get("HOOKCHECK_ACCESS_CODE"));
-}
 
 export const ID_PATTERN = /^[0-9a-f-]{36}$/;
 
