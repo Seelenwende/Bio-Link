@@ -97,7 +97,7 @@ const html = `<!doctype html><html lang="de"><head><meta charset="utf-8">${schri
     <p>Schreib kurz und ehrlich, nicht schön. Niemand außer dir liest mit.</p>
     <div class="hinweis">
       <p><b>Deine Sicherheit zuerst.</b> Wenn jemand deine Sachen durchsieht, bewahre dieses Heft an einem Ort auf, den nur du kennst, oder fülle die Übungen lieber online aus.</p>
-      <p><b>In Gefahr:</b> Notruf 112 (Schweiz Polizei 117) · Gewalt gegen Frauen: Deutschland 116 016 · Österreich 0800 222 555 · Schweiz: Opferhilfe (opferhilfe-schweiz.ch) · Seelsorge: Schweiz 143 · Deutschland 0800 111 0 111 · Österreich 142</p>
+      <p><b>In Gefahr:</b> Notruf 112 (Schweiz Polizei 117) · Gewalt gegen Frauen: Deutschland 116 016 · Österreich 0800 222 555 · Schweiz: Opferhilfe 142 (opferhilfe-schweiz.ch) · Seelsorge: Schweiz 143 · Deutschland 0800 111 0 111 · Österreich 142</p>
       <p style="margin:0">„Wieder bei dir“ ist ein Selbsthilfe-Programm und ersetzt keine Therapie.</p>
     </div>
   </section>

@@ -270,7 +270,7 @@
       <button class="btn" type="button" id="toSetPin">PIN festlegen</button>
     </div>
 
-    <p class="note">Das Tagebuch ist Selbsthilfe und ersetzt keine Beratung oder Therapie.<br>In Gefahr: Notruf 112 · CH Polizei 117</p>
+    <p class="note">Das Tagebuch ist Selbsthilfe und ersetzt keine Beratung oder Therapie.<br>In Gefahr: Notruf 112 · CH Polizei 117 · CH Opferhilfe 142</p>
     <div class="footer">@_seelenwende</div>
   </section>
 
@@ -363,7 +363,7 @@
         <div class="crisis" id="editCrisis" hidden>
           <h3>Bist du gerade sicher?</h3>
           Wenn du in Gefahr bist: <b>Notruf 112</b> (Schweiz Polizei <b>117</b>).<br>
-          Gewalt gegen Frauen, rund um die Uhr und anonym: <b>DE 116 016</b> · <b>AT 0800 222 555</b> · <b>CH</b> Opferhilfe (opferhilfe-schweiz.ch) und Dargebotene Hand <b>143</b>.<br>
+          Gewalt gegen Frauen, rund um die Uhr und anonym: <b>DE 116 016</b> · <b>AT 0800 222 555</b> · <b>CH</b> Opferhilfe <b>142</b> (opferhilfe-schweiz.ch) und Dargebotene Hand <b>143</b>.<br>
           Bei Verletzungen: Lass sie ärztlich ansehen und dokumentieren – das zählt später mehr als jeder Eintrag hier.
         </div>
 
@@ -479,7 +479,7 @@
       <div class="crisis">
         <h3>Hilfe, rund um die Uhr</h3>
         In Gefahr: <b>Notruf 112</b> (CH Polizei <b>117</b>)<br>
-        Gewalt gegen Frauen: <b>DE 116 016</b> · <b>AT 0800 222 555</b> · <b>CH</b> Opferhilfe (opferhilfe-schweiz.ch)<br>
+        Gewalt gegen Frauen: <b>DE 116 016</b> · <b>AT 0800 222 555</b> · <b>CH</b> Opferhilfe <b>142</b> (opferhilfe-schweiz.ch)<br>
         Seelsorge: <b>CH 143</b> · <b>DE 0800 111 0 111</b> · <b>AT 142</b>
       </div>
       <p class="note">Selbsthilfe von Seelenwende, ersetzt keine Beratung oder Therapie.</p>
@@ -838,7 +838,7 @@
       ${block("Danach", e.after)}
       ${block("Belege / Zeugen", e.evidence)}
       ${e.anchor ? `<div class="anchor"><small>Was du sicher weißt</small><p>${esc(e.anchor)}</p></div>` : ""}
-      ${(e.patterns || []).includes("gewalt") ? `<div class="crisis">Wenn du in Gefahr bist: <b>Notruf 112</b> (CH <b>117</b>) · <b>DE 116 016</b> · <b>AT 0800 222 555</b> · <b>CH 143</b>.</div>` : ""}`;
+      ${(e.patterns || []).includes("gewalt") ? `<div class="crisis">Wenn du in Gefahr bist: <b>Notruf 112</b> (CH <b>117</b>) · <b>DE 116 016</b> · <b>AT 0800 222 555</b> · CH Opferhilfe <b>142</b>.</div>` : ""}`;
     view("v-detail");
   }
   $("detailBack").addEventListener("click", () => { renderList(); view("v-list"); });
