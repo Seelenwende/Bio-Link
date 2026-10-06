@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="referrer" content="no-referrer">
+<title>Antwort-Helfer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  /* Layout: eine ruhige Spalte – Nachricht einfügen, Einordnung lesen; Krisenleiste immer unten */
+  :root{
+    --papier:#FAF6F4; --sand:#F3ECE9; --blush:#F6E9EC;
+    --rose:#B5808F; --beere:#8C5A69; --pflaume:#5C3A46;
+    --gedaempft:#8E7079; --linie:#E4D8D8; --ok:#5C7A5C; --ok-soft:#E4EDE4;
+    --auf-beere:#FAF6F4;
+    --serif:"Playfair Display",Georgia,serif;
+    --sans:"Jost",system-ui,-apple-system,"Segoe UI",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --papier:#1B1417; --sand:#241B1F; --blush:#2A1E22;
+      --rose:#D9A6B3; --beere:#9E6478; --pflaume:#F3E4E7;
+      --gedaempft:#C0A2AA; --linie:#3D2C31; --ok:#8FBFA0; --ok-soft:#20302A;
+      --auf-beere:#FBF1F3; color-scheme:dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --papier:#1B1417; --sand:#241B1F; --blush:#2A1E22;
+    --rose:#D9A6B3; --beere:#9E6478; --pflaume:#F3E4E7;
+    --gedaempft:#C0A2AA; --linie:#3D2C31; --ok:#8FBFA0; --ok-soft:#20302A;
+    --auf-beere:#FBF1F3; color-scheme:dark;
+  }
+  *{box-sizing:border-box;}
+  [hidden]{display:none !important;}
+  html,body{height:100%;}
+  body{
+    margin:0; background:var(--papier); color:var(--pflaume);
+    font-family:var(--sans); font-weight:300; font-size:16px; line-height:1.6;
+    -webkit-font-smoothing:antialiased; display:flex; flex-direction:column;
+  }
+  button{font-family:inherit;}
+  button:focus-visible, textarea:focus-visible, input:focus-visible{outline:2px solid var(--rose); outline-offset:2px;}
+
+  header{
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    padding:12px 16px; border-bottom:1px solid var(--linie); flex-shrink:0;
+  }
+  .brand{display:flex; align-items:center; gap:10px; min-width:0;}
+  .brand .word{font-family:var(--serif); letter-spacing:.2em; text-transform:uppercase; font-size:12px; color:var(--gedaempft); white-space:nowrap;}
+  .butterfly{width:24px; height:24px; flex-shrink:0;}
+  .butterfly .w1{fill:var(--beere);} .butterfly .w2{fill:var(--rose);} .butterfly .w3{fill:var(--linie);} .butterfly .k{fill:var(--pflaume);}
+  .exit{
+    background:var(--sand); color:var(--pflaume); border:1px solid var(--linie);
+    border-radius:20px; padding:7px 14px; font-size:.8rem; font-weight:500; cursor:pointer; white-space:nowrap;
+  }
+
+  main{flex:1; min-height:0; overflow-y:auto;}
+  .screen{max-width:620px; width:100%; margin:0 auto; padding:26px 16px 32px;}
+
+  h1{font-family:var(--serif); font-weight:500; font-size:1.6rem; margin:0 0 8px; line-height:1.25; text-wrap:balance;}
+  .lead{color:var(--gedaempft); font-size:.95rem; margin:0 0 20px;}
+  .field-label{display:block; font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; color:var(--gedaempft); font-weight:500; margin:18px 0 7px;}
+  .field-label .opt{text-transform:none; letter-spacing:0; font-weight:300;}
+  textarea, input[type="text"]{
+    width:100%; border:1px solid var(--linie); background:var(--sand); color:var(--pflaume);
+    border-radius:12px; padding:12px 14px; font-family:var(--sans); font-size:1rem; font-weight:400; line-height:1.5;
+  }
+  textarea{resize:vertical;}
+  .hint{font-size:.8rem; color:var(--gedaempft); margin:6px 0 0;}
+  .hint.right{text-align:right;}
+
+  .chips{display:flex; flex-wrap:wrap; gap:8px;}
+  .chip{position:relative;}
+  .chip input{position:absolute; opacity:0; pointer-events:none;}
+  .chip span{
+    display:inline-block; border:1px solid var(--linie); border-radius:18px; padding:7px 13px;
+    font-size:.86rem; cursor:pointer; background:var(--papier);
+  }
+  .chip input:checked + span{background:var(--beere); border-color:var(--beere); color:var(--auf-beere);}
+  .chip input:focus-visible + span{outline:2px solid var(--rose); outline-offset:2px;}
+
+  .btn{
+    background:var(--pflaume); color:var(--papier); border:none; border-radius:24px;
+    padding:13px 22px; font-weight:500; font-size:.95rem; cursor:pointer;
+  }
+  .btn:disabled{opacity:.5; cursor:not-allowed;}
+  .btn.soft{background:var(--sand); color:var(--pflaume); border:1px solid var(--linie);}
+  .row{display:flex; flex-wrap:wrap; gap:10px; margin-top:22px;}
+  .error{color:var(--beere); font-size:.88rem; min-height:1.3em; margin-top:10px;}
+  .counter{font-size:.76rem; color:var(--gedaempft); margin-top:12px;}
+
+  /* Zugang */
+  .gate{max-width:360px; margin:8vh auto 0; display:flex; flex-direction:column; gap:12px; text-align:center;}
+  .gate .lead{margin:0;}
+  .gate .field-label{text-align:left; margin:8px 0 0;}
+  .gate input[type="text"]{letter-spacing:.04em;}
+  .remember{display:flex; gap:8px; align-items:flex-start; text-align:left; font-size:.84rem; color:var(--gedaempft);}
+  .remember input{margin-top:4px; accent-color:var(--beere);}
+
+  /* Warten */
+  .waiting{text-align:center; margin-top:14vh; color:var(--gedaempft);}
+  .waiting p{font-family:var(--serif); font-style:italic; font-size:1.15rem; color:var(--pflaume); margin:0 0 8px;}
+  .dots span{display:inline-block; width:7px; height:7px; border-radius:50%; background:var(--rose); margin:0 3px; animation:pulse 1.4s ease-in-out infinite;}
+  .dots span:nth-child(2){animation-delay:.2s;} .dots span:nth-child(3){animation-delay:.4s;}
+  @keyframes pulse{0%,100%{opacity:.25;} 50%{opacity:1;}}
+
+  /* Ergebnis */
+  .card{background:var(--sand); border-radius:16px; padding:16px 18px; margin-top:14px;}
+  .card h2{font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; color:var(--rose); font-weight:500; margin:0 0 6px;}
+  .card p{margin:0; white-space:pre-wrap; overflow-wrap:anywhere;}
+  .verdict{background:var(--pflaume); color:var(--papier);}
+  .verdict h2{color:var(--linie);}
+  .verdict .big{font-family:var(--serif); font-size:1.4rem; line-height:1.3; margin:0 0 8px;}
+  .safety{background:var(--ok-soft); border:1px solid var(--ok);}
+  .safety h2{color:var(--ok);}
+  .haken{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:12px;}
+  .haken q{display:block; font-family:var(--serif); font-style:italic; quotes:"„" "“"; overflow-wrap:anywhere;}
+  .haken span{display:block; font-size:.92rem; color:var(--gedaempft);}
+  .reply{background:var(--papier); border:1px solid var(--linie); border-radius:12px; padding:12px 14px; margin-top:10px;}
+  .reply .art{font-size:.78rem; color:var(--gedaempft); margin-bottom:4px;}
+  .reply .text{white-space:pre-wrap; overflow-wrap:anywhere; margin:0 0 10px;}
+  .copy{background:none; border:1px solid var(--linie); color:var(--pflaume); border-radius:16px; padding:5px 12px; font-size:.8rem; cursor:pointer;}
+
+  footer.crisis-bar{
+    flex-shrink:0; text-align:center; font-size:.74rem; color:var(--gedaempft); line-height:1.5;
+    padding:9px 16px calc(9px + env(safe-area-inset-bottom, 0px)); border-top:1px solid var(--linie); background:var(--blush);
+  }
+  footer.crisis-bar b{color:var(--pflaume); font-weight:500;}
+
+  @media (prefers-reduced-motion: reduce){ *{animation:none !important; transition:none !important;} }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <svg class="butterfly" viewBox="0 0 100 100" aria-hidden="true">
+      <path class="w1" d="M50 30 C46 14 30 6 18 12 C6 18 8 38 22 44 C32 48 44 42 50 30 Z"/>
+      <path class="w2" d="M50 30 C54 14 70 6 82 12 C94 18 92 38 78 44 C68 48 56 42 50 30 Z"/>
+      <path class="w3" d="M50 46 C47 36 36 32 28 37 C20 42 22 54 32 57 C40 59 47 54 50 46 Z"/>
+      <path class="w3" d="M50 46 C53 36 64 32 72 37 C80 42 78 54 68 57 C60 59 53 54 50 46 Z"/>
+      <rect class="k" x="48.7" y="26" width="2.6" height="34" rx="1.3"/>
+    </svg>
+    <span class="word">Antwort-Helfer</span>
+  </div>
+  <button class="exit" id="exit-btn" title="Verlässt die Seite sofort (auch: zweimal Esc)">Schnell weg</button>
+</header>
+
+<main id="main">
+  <section id="screen-gate" class="screen">
+    <form class="gate" id="gate-form" novalidate>
+      <h1>Der Antwort-Helfer</h1>
+      <p class="lead">Er schreibt dir, und du weißt nicht, ob und wie du antworten sollst? Gib deinen Zugangscode ein – du findest ihn in deiner Bestätigungs-Mail.</p>
+      <label class="field-label" for="code-input">Zugangscode</label>
+      <input type="text" id="code-input" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Dein Zugangswort" required>
+      <label class="remember"><input type="checkbox" id="remember-input"> Code auf diesem Gerät merken. Lass das aus, wenn jemand anderes dein Handy benutzt oder kontrolliert.</label>
+      <button type="submit" class="btn" id="gate-submit">Zugang freischalten</button>
+      <div class="error" id="gate-error" role="alert"></div>
+    </form>
+  </section>
+
+  <section id="screen-form" class="screen" hidden>
+    <h1>Was hat er geschrieben?</h1>
+    <p class="lead">Füge seine Nachricht ein. Du bekommst eine ruhige Einordnung: was wirklich eine Antwort braucht, was du getrost überlesen darfst – und, wenn es passt, eine kurze, sachliche Antwort zum Kopieren.</p>
+
+    <label class="field-label" for="nachricht">Seine Nachricht</label>
+    <textarea id="nachricht" rows="7" maxlength="4000" placeholder="Hier einfügen …"></textarea>
+    <p class="hint right" id="nachricht-count">0 / 4000</p>
+    <p class="hint">Namen und Orte darfst du weglassen oder ersetzen. Nichts davon wird gespeichert.</p>
+
+    <span class="field-label" id="situation-label">Eure Situation</span>
+    <div class="chips" role="radiogroup" aria-labelledby="situation-label">
+      <label class="chip"><input type="radio" name="situation" value="kinder"><span>Getrennt, gemeinsame Kinder</span></label>
+      <label class="chip"><input type="radio" name="situation" value="ex"><span>Getrennt, keine Kinder</span></label>
+      <label class="chip"><input type="radio" name="situation" value="zusammen"><span>Noch zusammen</span></label>
+      <label class="chip"><input type="radio" name="situation" value="offen" checked><span>Sag ich lieber nicht</span></label>
+    </div>
+
+    <label class="field-label" for="anliegen">Was musst du klären? <span class="opt">(optional)</span></label>
+    <input type="text" id="anliegen" maxlength="600" placeholder="z. B. Nur die Übergabe am Samstag">
+
+    <div class="row">
+      <button class="btn" id="check-btn">Einordnen</button>
+    </div>
+    <div class="error" id="form-error" role="alert"></div>
+    <div class="counter" id="counter"></div>
+  </section>
+
+  <section id="screen-wait" class="screen" hidden>
+    <div class="waiting" aria-live="polite">
+      <p>Ich lese seine Nachricht in Ruhe.</p>
+      <div class="dots" aria-hidden="true"><span></span><span></span><span></span></div>
+      <div style="margin-top:14px; font-size:.9rem;">Atme währenddessen einmal länger aus als ein.<br>Du musst jetzt gar nichts entscheiden.</div>
+    </div>
+  </section>
+
+  <section id="screen-result" class="screen" hidden>
+    <div id="result" aria-live="polite"></div>
+    <div class="row">
+      <button class="btn" id="new-btn">Andere Nachricht prüfen</button>
+      <button class="btn soft" id="back-btn">Angaben ändern</button>
+    </div>
+  </section>
+</main>
+
+<footer class="crisis-bar">
+  In Gefahr: <b>Notruf 112</b> (CH Polizei <b>117</b>) · Gewalt gegen Frauen: <b>DE 116 016</b> · <b>AT 0800 222 555</b> · CH Opferhilfe <b>142</b> · Seelsorge: <b>CH 143</b> · <b>DE 0800 111 0 111</b> · <b>AT 142</b><br>
+  Der Antwort-Helfer ist eine KI und Selbsthilfe, keine Rechtsberatung. Nachrichten werden nicht gespeichert.
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  var CODE_KEY = "sw_antwort_code";
+  var EXIT_URL = "https://www.google.com/search?q=wetter";
+  var EMPFEHLUNG = {
+    nicht_antworten: { big:"Nicht antworten.", sub:"Schweigen ist auch eine Antwort – und oft die stärkste." },
+    kurz_antworten: { big:"Kurz und sachlich antworten.", sub:"Ein, zwei Sätze reichen. Mehr schuldest du ihm nicht." },
+    nur_sachfrage: { big:"Nur auf das Organisatorische antworten.", sub:"Alles andere darfst du überlesen." },
+    erst_beraten: { big:"Erst Rat holen, dann antworten.", sub:"Hier kann es um Rechte gehen. Lass dich zuerst beraten." }
+  };
+
+  var state = { code:null, busy:false, jobId:null, pollTimer:null, escCount:0, escTimer:null };
+
+  function $(id){ return document.getElementById(id); }
+  function show(id){
+    ["screen-gate","screen-form","screen-wait","screen-result"].forEach(function(s){ $(s).hidden = (s !== id); });
+    $("main").scrollTop = 0;
+  }
+  function el(tag, cls, text){
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+  function postJSON(url, body){
+    return fetch(url, { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify(body) })
+      .then(function(r){ return r.json().then(function(d){ return {ok:r.ok, data:d}; }); });
+  }
+
+  /* ---------- Zugang ---------- */
+  try { var saved = localStorage.getItem(CODE_KEY); if (saved) { $("code-input").value = saved; $("remember-input").checked = true; } } catch(e){}
+
+  $("gate-form").addEventListener("submit", function(e){
+    e.preventDefault();
+    var code = $("code-input").value.trim();
+    if (!code) { $("gate-error").textContent = "Bitte gib deinen Zugangscode ein."; return; }
+    $("gate-submit").disabled = true;
+    $("gate-error").textContent = "";
+    postJSON("/api/antwort-helfer/zugang", {code: code})
+      .then(function(res){
+        if (!res.ok) { $("gate-error").textContent = res.data.error || "Das hat nicht geklappt. Versuch es noch einmal."; return; }
+        state.code = code;
+        try {
+          if ($("remember-input").checked) localStorage.setItem(CODE_KEY, code); else localStorage.removeItem(CODE_KEY);
+        } catch(e){}
+        setCounter(res.data.used, res.data.limit);
+        show("screen-form");
+        $("nachricht").focus();
+      })
+      .catch(function(){ $("gate-error").textContent = "Keine Verbindung. Prüf dein Internet und versuch es noch einmal."; })
+      .then(function(){ $("gate-submit").disabled = false; });
+  });
+
+  function backToGate(message){
+    stopPolling();
+    state.code = null;
+    try { localStorage.removeItem(CODE_KEY); } catch(e){}
+    $("code-input").value = ""; $("remember-input").checked = false;
+    $("gate-error").textContent = message || "";
+    show("screen-gate");
+  }
+
+  function setCounter(used, limit){
+    if (typeof used !== "number" || typeof limit !== "number") return;
+    var left = Math.max(0, limit - used);
+    $("counter").textContent = left <= 20 ? ("Noch " + left + " Prüfungen in diesem Zugang") : "";
+  }
+
+  /* ---------- Formular ---------- */
+  $("nachricht").addEventListener("input", function(){ $("nachricht-count").textContent = this.value.length + " / 4000"; });
+
+  function situation(){
+    var c = document.querySelector('input[name="situation"]:checked');
+    return c ? c.value : "offen";
+  }
+
+  $("check-btn").addEventListener("click", function(){
+    if (state.busy) return;
+    var nachricht = $("nachricht").value.trim();
+    $("form-error").textContent = "";
+    if (!nachricht) { $("form-error").textContent = "Füge zuerst seine Nachricht ein."; $("nachricht").focus(); return; }
+    state.busy = true;
+    $("check-btn").disabled = true;
+    show("screen-wait");
+    postJSON("/api/antwort-helfer/send", { code: state.code, nachricht: nachricht, situation: situation(), anliegen: $("anliegen").value.trim() })
+      .then(function(res){
+        if (!res.ok) {
+          if (res.data.reason === "zugang") { done(); backToGate(res.data.error); return; }
+          failed(res.data.error);
+          return;
+        }
+        setCounter(res.data.used, res.data.limit);
+        state.jobId = res.data.id;
+        poll(res.data.id, 0);
+      })
+      .catch(function(){ failed("Keine Verbindung. Versuch es gleich noch einmal."); });
+  });
+
+  function done(){ state.busy = false; $("check-btn").disabled = false; }
+  function failed(message){
+    done();
+    show("screen-form");
+    $("form-error").textContent = message || "Etwas ist schiefgelaufen. Versuch es gleich noch einmal.";
+  }
+
+  function stopPolling(){ clearTimeout(state.pollTimer); state.pollTimer = null; state.jobId = null; }
+
+  function poll(id, attempt){
+    if (state.jobId !== id) return;
+    var delay = attempt < 5 ? 1500 : 2500;
+    state.pollTimer = setTimeout(function(){
+      fetch("/api/antwort-helfer/status?id=" + encodeURIComponent(id), { cache:"no-store" })
+        .then(function(r){ return r.json(); })
+        .then(function(data){
+          if (state.jobId !== id) return;
+          if (data.status === "pending") { poll(id, attempt + 1); return; }
+          state.jobId = null;
+          if (data.status === "done") { done(); renderResult(data.result); return; }
+          failed(data.error);
+        })
+        .catch(function(){
+          if (attempt < 120) poll(id, attempt + 1);
+          else failed("Die Verbindung ist abgerissen. Versuch es bitte noch einmal.");
+        });
+    }, delay);
+  }
+
+  /* ---------- Ergebnis ---------- */
+  function card(title, cls){
+    var c = el("div", "card" + (cls ? " " + cls : ""));
+    c.appendChild(el("h2", null, title));
+    return c;
+  }
+
+  function renderResult(r){
+    var box = $("result");
+    box.innerHTML = "";
+    box.appendChild(el("h1", null, "Deine Einordnung"));
+
+    if (r.gefahr && r.sicherheitshinweis) {
+      var s = card("Deine Sicherheit zuerst", "safety");
+      s.appendChild(el("p", null, r.sicherheitshinweis));
+      box.appendChild(s);
+    }
+
+    var e = EMPFEHLUNG[r.empfehlung] || EMPFEHLUNG.nicht_antworten;
+    var v = card("Mein Rat", "verdict");
+    v.appendChild(el("p", "big", e.big));
+    v.appendChild(el("p", null, r.einschaetzung || e.sub));
+    box.appendChild(v);
+
+    if (r.sachkern) {
+      var k = card("Was wirklich eine Antwort braucht");
+      k.appendChild(el("p", null, r.sachkern));
+      box.appendChild(k);
+    }
+
+    if (r.haken && r.haken.length) {
+      var h = card("Darauf musst du nicht eingehen");
+      var ul = el("ul", "haken");
+      r.haken.forEach(function(x){
+        var li = el("li");
+        li.appendChild(el("q", null, x.zitat));
+        li.appendChild(el("span", null, x.was_es_ist));
+        ul.appendChild(li);
+      });
+      h.appendChild(ul);
+      box.appendChild(h);
+    }
+
+    if (r.antworten && r.antworten.length) {
+      var a = card("Antwort zum Kopieren");
+      a.appendChild(el("p", null, "Lies sie vor dem Senden in Ruhe durch und füll Platzhalter in [eckigen Klammern] aus."));
+      r.antworten.forEach(function(x){
+        var d = el("div", "reply");
+        d.appendChild(el("div", "art", x.art));
+        d.appendChild(el("p", "text", x.text));
+        var b = el("button", "copy", "Kopieren");
+        b.addEventListener("click", function(){ copy(x.text, b); });
+        d.appendChild(b);
+        a.appendChild(d);
+      });
+      box.appendChild(a);
+    } else if (r.empfehlung === "nicht_antworten") {
+      var n = card("Wenn der Drang zu antworten groß ist");
+      n.appendChild(el("p", null, "Schreib alles, was du ihm sagen willst, in deine eigenen Notizen – nicht an ihn. Der Drang ist wie eine Welle und wird meist nach 15 bis 20 Minuten leiser."));
+      box.appendChild(n);
+    }
+
+    if (r.weglassen) {
+      var w = card("Was du weglässt");
+      w.appendChild(el("p", null, r.weglassen));
+      box.appendChild(w);
+    }
+    if (r.wenn_er_nachlegt) {
+      var f = card("Wenn er nachlegt");
+      f.appendChild(el("p", null, r.wenn_er_nachlegt));
+      box.appendChild(f);
+    }
+    show("screen-result");
+  }
+
+  function copy(text, btn){
+    function ok(){ btn.textContent = "Kopiert"; setTimeout(function(){ btn.textContent = "Kopieren"; }, 1800); }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(ok, function(){ fallbackCopy(text); ok(); });
+    } else { fallbackCopy(text); ok(); }
+  }
+  function fallbackCopy(text){
+    var t = document.createElement("textarea");
+    t.value = text; t.setAttribute("readonly", ""); t.style.position = "fixed"; t.style.opacity = "0";
+    document.body.appendChild(t); t.select();
+    try { document.execCommand("copy"); } catch(e){}
+    t.remove();
+  }
+
+  function clearForm(){
+    $("nachricht").value = ""; $("nachricht-count").textContent = "0 / 4000";
+    $("anliegen").value = "";
+    $("result").innerHTML = "";
+    $("form-error").textContent = "";
+  }
+
+  $("new-btn").addEventListener("click", function(){ clearForm(); show("screen-form"); $("nachricht").focus(); });
+  $("back-btn").addEventListener("click", function(){ $("result").innerHTML = ""; show("screen-form"); });
+
+  /* ---------- Schnell weg ---------- */
+  function quickExit(){
+    stopPolling();
+    clearForm();
+    document.title = "Wetter";
+    window.location.replace(EXIT_URL);
+  }
+  $("exit-btn").addEventListener("click", quickExit);
+  document.addEventListener("keydown", function(e){
+    if (e.key !== "Escape") return;
+    state.escCount++;
+    clearTimeout(state.escTimer);
+    state.escTimer = setTimeout(function(){ state.escCount = 0; }, 800);
+    if (state.escCount >= 2) { state.escCount = 0; quickExit(); }
+  });
+})();
+</script>
+</body>
+</html>
