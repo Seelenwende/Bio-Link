@@ -151,3 +151,7 @@ Die Anweisungen stehen in `netlify/lib/antwort-helfer.mts`, die Code-Prüfung ko
 | `ANTWORT_HELFER_MODEL` | optional, Standard `claude-opus-5-5` |
 
 Alle Codes aus `BEGLEITERIN_CODES` und `PROGRAMM_CODES` gelten auch hier (mit eigenem Zähler), damit Mira-Käuferinnen und das 6-Wochen-Programm den Antwort-Helfer automatisch mitnutzen. Kosten: grob 0,02–0,06 $ pro Prüfung.
+
+## Bildnachweis
+
+Stimmungsfotos in `assets/bilder/` von [Pexels](https://www.pexels.com) (Pexels-Lizenz: kostenlos, auch kommerziell, ohne Namensnennung). Foto-IDs: `mira-nacht` 8070525 · `antwort-nachricht` 7341894 · `kompass-licht` 321599 · `tagebuch-schreiben` 8716266 · `programm-aufbruch` 112358 · `start-fenster` 11012771 · `kreis-lesen` 5358916 · `bundle-blumen` 545018 · `abschluss-weite` 11727471 (Hintergrund der Abschluss-Bereiche). Original: `https://www.pexels.com/photo/<ID>/`. Die Bilder liegen auf der eigenen Seite, damit keine Besucherdaten an Dritte gehen.
