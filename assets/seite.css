@@ -829,3 +829,6 @@ h1, h2, h3{letter-spacing:-.015em;}
 .foto-buehne.rund .schwebe-karte.oben-rechts{top:4px; right:-40px;}
 .foto-buehne.rund .schwebe-karte.unten-links{bottom:10px; left:-40px;}
 @media (max-width:520px){ .foto-buehne.rund .schwebe-karte.oben-rechts{right:-8px; top:-12px;} .foto-buehne.rund .schwebe-karte.unten-links{left:-8px; bottom:-4px;} }
+/* Quadratisches Porträt im Held (Startseite) */
+.foto-buehne.quadrat{width:min(420px, 78vw);}
+.foto-buehne.quadrat .foto{aspect-ratio:1;}
