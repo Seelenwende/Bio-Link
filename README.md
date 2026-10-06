@@ -10,6 +10,7 @@
 - `begleiterin.html` – **Mira**, die Seelenwende-Begleiterin: KI-Gesprächsbegleitung mit Zugangscode. Ein offenes Gespräch ohne Kategorien – die Begleiterin erkennt selbst, was gerade gebraucht wird. Krisenerkennung mit Notrufnummern (CH/DE/AT), „Schnell weg“-Knopf, Gespräche werden nicht gespeichert.
 - `kreis.html` – **Seelenwende Kreis**: Mitgliedschaft (19 €/Monat). Ohne Code eine Einladungsseite, mit Code der Mitgliederbereich: ein Thema pro Monat mit vier Wochen-Impulsen (Text, Übung, Journal-Frage, Einstieg für Mira), Archiv, Mira mit Monatskontingent.
 - `zugang-admin.html` – internes Werkzeug: Zugangscodes für Mira und den Kreis anlegen, sperren, nachschlagen.
+- `antwort-helfer.html` – **Antwort-Helfer** mit Zugangscode: Sie fügt seine Nachricht ein und bekommt eine ruhige Einordnung – ob sie überhaupt antworten sollte, was wirklich eine Antwort braucht, welche Sätze nur Köder sind, und bei Bedarf ein bis zwei kurze, sachliche Antworten (BIFF/Grey Rock) zum Kopieren. Besonders für Co-Parenting. Erkennt Drohungen und zeigt dann Notrufnummern statt Antwortvorschlägen, „Schnell weg“-Knopf, Nachrichten werden nicht gespeichert.
 - `programm.html` – **„Wieder bei dir“**, das 6-Wochen-Programm mit Zugangscode: sechs Wochen mit Impulsen zum Lesen, Schreibübungen, sieben Tagesankern pro Woche und Gesprächsanstößen für Mira. Die Inhalte liegen nur auf dem Server und kommen erst nach dem Code. Notizen bleiben auf dem Gerät (dauerhaft nur mit Häkchen, sonst nur im offenen Tab). Mit „Schnell weg“ und Krisenleiste.
 - `planer.html` – **Ausstiegs-Planer** (gratis, ohne Code): Sicherheitsplan als Checkliste in neun Abschnitten (Handy und Spuren, Notfall, Dokumente, Geld, Notfalltasche, Menschen, Schutz und Recht, der Tag selbst, die ersten Wochen) mit Hinweisen und Beratungsstellen für die Schweiz, Deutschland und Österreich. Bewusst neutraler Tab-Titel („Checkliste“), „Schnell weg“-Knopf. Ohne PIN wird nichts gespeichert, mit PIN bleibt der Plan verschlüsselt (AES-GCM) nur auf dem Gerät. Läuft komplett im Browser, ohne Server und ohne Kosten. Der Inhalt (Punkte, Tipps, Hinweise je Land, Beratungsstellen) steht oben im Skript als `INHALT`. **Nummern und Stellen vor jeder Änderung fachlich prüfen lassen** (Stand: Oktober 2026).
 - `profil-check.html` – KI-Profil-Check: Instagram-Namen eingeben, die KI liest Profil, Bio, Link-Seite und die letzten Posts (offizielle Instagram Graph API) und bewertet jeden Punkt des Profil-Checks mit konkretem Verbesserungsvorschlag.
@@ -78,7 +79,7 @@ Authorization: Bearer <SEELENWENDE_ADMIN_KEY>
 
 ## Kreis-Inhalte
 
-Die Monatsthemen stehen in `netlify/lib/kreis-inhalte.mts` und werden nur mit gültigem Kreis-Code ausgeliefert (`/api/kreis/inhalt`). Ein Monat wird an seinem ersten Tag sichtbar, ältere bleiben im Archiv. Vom nächsten Monat zeigt die Seite vorab nur Titel und Untertitel. In Netlify-Vorschauen (Deploy Previews) kommen alle Monate mit, damit man sie prüfen kann. Ein Kreis-Code öffnet auch den Neuer-Satz-Kompass (`kompass-tage`). Angelegt sind Oktober, November und Dezember 2026. Den Kauf-Link trägst du in `kreis.html` bei `KAUF_URL` ein; solange er leer ist, zeigt die Seite den Hinweis „Schreib KREIS an @_seelenwende“.
+Die Monatsthemen stehen in `netlify/lib/kreis-inhalte.mts` und werden nur mit gültigem Kreis-Code ausgeliefert (`/api/kreis/inhalt`). Ein Monat wird an seinem ersten Tag sichtbar, ältere bleiben im Archiv. Vom nächsten Monat zeigt die Seite vorab nur Titel und Untertitel. In Netlify-Vorschauen (Deploy Previews) kommen alle Monate mit, damit man sie prüfen kann. Ein Kreis-Code öffnet auch den Neuer-Satz-Kompass (`kompass-tage`) und den Antwort-Helfer (wie alle Codes, die Mira öffnen). Angelegt sind Oktober, November und Dezember 2026. Den Kauf-Link trägst du in `kreis.html` bei `KAUF_URL` ein; solange er leer ist, zeigt die Seite den Hinweis „Schreib KREIS an @_seelenwende“.
 
 
 ### Kreis in einer Netlify-Vorschau testen
@@ -127,3 +128,20 @@ Die Texte des Tests stehen in `glaubenssaetze.json` (für Seite und Mail). Unter
 |---|---|
 | `MAILERLITE_API_KEY` | API-Schlüssel aus MailerLite |
 | `MAILERLITE_GROUP_GLAUBENSSAETZE` | ID der Gruppe „Glaubenssätze-Test“ |
+## So funktioniert der Antwort-Helfer (Netlify)
+
+Gleicher Aufbau wie bei Mira, nur ohne Gesprächsverlauf – eine Nachricht rein, eine Einordnung raus:
+
+1. `antwort-helfer-zugang` prüft den Zugangscode und das Kontingent.
+2. `antwort-helfer-send` zählt die Prüfung und startet `antwort-helfer-background` (fragt Claude, Hintergrund-Funktion).
+3. `antwort-helfer-status` liefert das Ergebnis und löscht es sofort danach. Gespeichert wird nur der Zähler pro Code (als Hash).
+
+Die Anweisungen stehen in `netlify/lib/antwort-helfer.mts`, die Code-Prüfung kommt aus `netlify/lib/codes.mts`.
+
+| Variable | Inhalt |
+|---|---|
+| `ANTWORT_HELFER_CODES` | eigene Zugangscodes, kommagetrennt (z. B. für Käuferinnen des Erste-Hilfe-Sets) |
+| `ANTWORT_HELFER_LIMIT` | optional, Prüfungen pro Code (Standard 100) |
+| `ANTWORT_HELFER_MODEL` | optional, Standard `claude-opus-5-5` |
+
+Alle Codes aus `BEGLEITERIN_CODES` und `PROGRAMM_CODES` gelten auch hier (mit eigenem Zähler), damit Mira-Käuferinnen und das 6-Wochen-Programm den Antwort-Helfer automatisch mitnutzen. Kosten: grob 0,02–0,06 $ pro Prüfung.
