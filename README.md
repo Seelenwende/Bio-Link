@@ -13,6 +13,7 @@
 - `antwort-helfer.html` – **Antwort-Helfer** mit Zugangscode: Sie fügt seine Nachricht ein und bekommt eine ruhige Einordnung – ob sie überhaupt antworten sollte, was wirklich eine Antwort braucht, welche Sätze nur Köder sind, und bei Bedarf ein bis zwei kurze, sachliche Antworten (BIFF/Grey Rock) zum Kopieren. Besonders für Co-Parenting. Erkennt Drohungen und zeigt dann Notrufnummern statt Antwortvorschlägen, „Schnell weg“-Knopf, Nachrichten werden nicht gespeichert.
 - `programm.html` – **„Wieder bei dir“**, das 6-Wochen-Programm mit Zugangscode: sechs Wochen mit Impulsen zum Lesen, Schreibübungen, sieben Tagesankern pro Woche und Gesprächsanstößen für Mira. Die Inhalte liegen nur auf dem Server und kommen erst nach dem Code. Notizen bleiben auf dem Gerät (dauerhaft nur mit Häkchen, sonst nur im offenen Tab). Mit „Schnell weg“ und Krisenleiste.
 - `planer.html` – **Ausstiegs-Planer** (gratis, ohne Code): Sicherheitsplan als Checkliste in neun Abschnitten (Handy und Spuren, Notfall, Dokumente, Geld, Notfalltasche, Menschen, Schutz und Recht, der Tag selbst, die ersten Wochen) mit Hinweisen und Beratungsstellen für die Schweiz, Deutschland und Österreich. Bewusst neutraler Tab-Titel („Checkliste“), „Schnell weg“-Knopf. Ohne PIN wird nichts gespeichert, mit PIN bleibt der Plan verschlüsselt (AES-GCM) nur auf dem Gerät. Läuft komplett im Browser, ohne Server und ohne Kosten. Der Inhalt (Punkte, Tipps, Hinweise je Land, Beratungsstellen) steht oben im Skript als `INHALT`. **Nummern und Stellen vor jeder Änderung fachlich prüfen lassen** (Stand: Oktober 2026).
+- `avatar.html` – **Avatar-Studio** mit Zugangscode: Die Kundin nimmt ein Selfie und eine kurze Sprachprobe auf (der vorgelesene Text enthält ihre Einwilligung). Daraus entsteht ihr KI-Avatar mit geklonter Stimme. Danach schreibt sie einen Text (bis 600 Zeichen, ca. 40 Sek.) und bekommt ein Video, in dem ihr Avatar ihn mit ihrer Stimme spricht – zum Ansehen und Herunterladen. Stimme über ElevenLabs, Video über D-ID.
 - `profil-check.html` – KI-Profil-Check: Instagram-Namen eingeben, die KI liest Profil, Bio, Link-Seite und die letzten Posts (offizielle Instagram Graph API) und bewertet jeden Punkt des Profil-Checks mit konkretem Verbesserungsvorschlag.
 
 ## So funktioniert der Profil-Check (Netlify)
@@ -145,3 +146,28 @@ Die Anweisungen stehen in `netlify/lib/antwort-helfer.mts`, die Code-Prüfung ko
 | `ANTWORT_HELFER_MODEL` | optional, Standard `claude-opus-5-5` |
 
 Alle Codes aus `BEGLEITERIN_CODES` und `PROGRAMM_CODES` gelten auch hier (mit eigenem Zähler), damit Mira-Käuferinnen und das 6-Wochen-Programm den Antwort-Helfer automatisch mitnutzen. Kosten: grob 0,02–0,06 $ pro Prüfung.
+
+## So funktioniert das Avatar-Studio (Netlify, ElevenLabs, D-ID)
+
+1. `avatar-zugang` prüft den Code und meldet den Stand: noch kein Avatar, wird erstellt, bereit (mit Foto und Videoliste) oder Fehler.
+2. `avatar-einrichten` nimmt Selfie (JPEG) und Stimmprobe (WAV, 25–80 Sek.) an, legt beide kurz in Netlify Blobs ab und startet `avatar-einrichten-background`: Die Stimme wird bei **ElevenLabs** geklont (Instant Voice Cloning), das Foto zu **D-ID** hochgeladen. Die Stimmprobe wird danach sofort gelöscht.
+3. `avatar-video-start` zählt das Video und startet `avatar-video-background`: ElevenLabs spricht den Text mit ihrer Stimme, D-ID macht daraus mit ihrem Foto ein Video. Das fertige MP4 wird in Netlify Blobs abgelegt und bei D-ID samt Tonspur wieder gelöscht. Fehlgeschlagene Videos zählen nicht.
+4. `avatar-video-status` meldet, wann es fertig ist; `avatar-video` liefert das Video (die zufällige ID ist der Schlüssel).
+5. `avatar-loeschen` löscht ein einzelnes Video oder den ganzen Avatar (Stimme bei ElevenLabs, Foto bei D-ID, alles hier).
+6. `avatar-aufraeumen` läuft jede Nacht: Videos nach `VIDEO_TAGE`, ungenutzte Avatare nach `AVATAR_AUFBEWAHRUNG_TAGE`.
+
+Gespeichert wird pro Code nur ein Hash, nie der Code selbst. Die Anbieter-Anbindung steht in `netlify/lib/avatar.mts`.
+
+| Variable | Inhalt |
+|---|---|
+| `ELEVENLABS_API_KEY` | API-Schlüssel von elevenlabs.io (*Developers → API Keys*). Stimmklonen braucht ein bezahltes Abo (ab „Starter“). |
+| `DID_API_KEY` | API-Schlüssel aus dem D-ID-Studio (*API → API Key*), genau so eintragen, wie er angezeigt wird. Ohne bezahlten API-Plan setzt D-ID ein Wasserzeichen. |
+| `AVATAR_CODES` | Zugangscodes, kommagetrennt, z. B. `AVATAR-AB12-CD34` |
+| `AVATAR_LIMIT` | optional, Videos pro Code und Monat (Standard 10) |
+| `VIDEO_TAGE` | optional, wie lange Videos bleiben (Standard 7) |
+| `AVATAR_AUFBEWAHRUNG_TAGE` | optional, nach wie vielen Tagen ohne Nutzung der Avatar gelöscht wird (Standard 30) |
+| `ELEVENLABS_MODEL` | optional, Standard `eleven_multilingual_v2` |
+
+Kosten: Beide Anbieter rechnen nach Abo und Guthaben ab (ElevenLabs nach Zeichen, D-ID nach Videominuten). Vor dem Verkauf die aktuellen Preise prüfen und `AVATAR_LIMIT` so setzen, dass ein voll genutzter Code den Verkaufspreis nicht übersteigt. Test: ein eigener Code in `AVATAR_CODES`, Avatar erstellen, ein Video, danach in beiden Anbieter-Konten den Verbrauch ansehen.
+
+**Vor dem Start rechtlich prüfen lassen:** Gesicht und Stimme sind besonders geschützte Daten. Die Datenschutzerklärung muss ElevenLabs und D-ID als Auftragsverarbeiter (mit Datenübermittlung in die USA) nennen, dazu die Löschfristen oben. Ab August 2026 verlangt die EU-KI-Verordnung, dass solche Videos als KI-generiert erkennbar sind; die Seite weist die Kundin darauf hin, ins Video eingebrannt wird aber noch keine Kennzeichnung. Schutz vor Missbrauch: Selfie über die Kamera, Einwilligungssatz in der Stimmprobe, drei Häkchen – ein Missbrauchsverbot gehört zusätzlich in die Nutzungsbedingungen.

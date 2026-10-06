@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="referrer" content="no-referrer">
+<title>Avatar-Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  /* Layout: eine ruhige Spalte – Code, Avatar einrichten (Foto, Stimme, Einwilligung), dann Videos erstellen */
+  :root{
+    --papier:#FAF6F4; --sand:#F3ECE9; --blush:#F6E9EC;
+    --rose:#B5808F; --beere:#8C5A69; --pflaume:#5C3A46;
+    --gedaempft:#8E7079; --linie:#E4D8D8; --ok:#5C7A5C; --ok-soft:#E4EDE4;
+    --auf-beere:#FAF6F4;
+    --serif:"Playfair Display",Georgia,serif;
+    --sans:"Jost",system-ui,-apple-system,"Segoe UI",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --papier:#1B1417; --sand:#241B1F; --blush:#2A1E22;
+      --rose:#D9A6B3; --beere:#9E6478; --pflaume:#F3E4E7;
+      --gedaempft:#C0A2AA; --linie:#3D2C31; --ok:#8FBFA0; --ok-soft:#20302A;
+      --auf-beere:#FBF1F3; color-scheme:dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --papier:#1B1417; --sand:#241B1F; --blush:#2A1E22;
+    --rose:#D9A6B3; --beere:#9E6478; --pflaume:#F3E4E7;
+    --gedaempft:#C0A2AA; --linie:#3D2C31; --ok:#8FBFA0; --ok-soft:#20302A;
+    --auf-beere:#FBF1F3; color-scheme:dark;
+  }
+  *{box-sizing:border-box;}
+  [hidden]{display:none !important;}
+  html,body{height:100%;}
+  body{
+    margin:0; background:var(--papier); color:var(--pflaume);
+    font-family:var(--sans); font-weight:300; font-size:16px; line-height:1.6;
+    -webkit-font-smoothing:antialiased; display:flex; flex-direction:column;
+  }
+  button{font-family:inherit;}
+  button:focus-visible, textarea:focus-visible, input:focus-visible, a:focus-visible{outline:2px solid var(--rose); outline-offset:2px;}
+
+  header{
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    padding:12px 16px; border-bottom:1px solid var(--linie); flex-shrink:0;
+  }
+  .brand{display:flex; align-items:center; gap:10px; min-width:0;}
+  .brand .word{font-family:var(--serif); letter-spacing:.2em; text-transform:uppercase; font-size:12px; color:var(--gedaempft); white-space:nowrap;}
+  .butterfly{width:24px; height:24px; flex-shrink:0;}
+  .butterfly .w1{fill:var(--beere);} .butterfly .w2{fill:var(--rose);} .butterfly .w3{fill:var(--linie);} .butterfly .k{fill:var(--pflaume);}
+  .logout{background:none; border:none; color:var(--gedaempft); font-size:.8rem; cursor:pointer; text-decoration:underline; text-underline-offset:3px;}
+
+  main{flex:1; min-height:0; overflow-y:auto;}
+  .screen{max-width:620px; width:100%; margin:0 auto; padding:26px 16px 40px;}
+
+  h1{font-family:var(--serif); font-weight:500; font-size:1.6rem; margin:0 0 8px; line-height:1.25; text-wrap:balance;}
+  h2.step{font-family:var(--serif); font-weight:500; font-size:1.15rem; margin:0 0 4px;}
+  .lead{color:var(--gedaempft); font-size:.95rem; margin:0 0 20px;}
+  .field-label{display:block; font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; color:var(--gedaempft); font-weight:500; margin:18px 0 7px;}
+  textarea, input[type="text"]{
+    width:100%; border:1px solid var(--linie); background:var(--sand); color:var(--pflaume);
+    border-radius:12px; padding:12px 14px; font-family:var(--sans); font-size:1rem; font-weight:400; line-height:1.5;
+  }
+  textarea{resize:vertical;}
+  .hint{font-size:.82rem; color:var(--gedaempft); margin:6px 0 0;}
+  .hint.right{text-align:right;}
+
+  .btn{
+    display:inline-block; background:var(--pflaume); color:var(--papier); border:none; border-radius:24px;
+    padding:12px 20px; font-weight:500; font-size:.95rem; cursor:pointer; text-decoration:none; text-align:center;
+  }
+  .btn:disabled{opacity:.5; cursor:not-allowed;}
+  .btn.soft{background:var(--sand); color:var(--pflaume); border:1px solid var(--linie);}
+  .btn.small{padding:7px 14px; font-size:.82rem;}
+  .btn.rec{background:var(--beere); color:var(--auf-beere);}
+  .row{display:flex; flex-wrap:wrap; gap:10px; margin-top:16px; align-items:center;}
+  .error{color:var(--beere); font-size:.88rem; min-height:1.3em; margin-top:10px;}
+
+  /* Zugang */
+  .gate{max-width:360px; margin:8vh auto 0; display:flex; flex-direction:column; gap:12px; text-align:center;}
+  .gate .lead{margin:0;}
+  .gate .field-label{text-align:left; margin:8px 0 0;}
+  .gate input[type="text"]{letter-spacing:.04em;}
+  .check{display:flex; gap:10px; align-items:flex-start; text-align:left; font-size:.88rem;}
+  .check input{margin-top:5px; accent-color:var(--beere); flex-shrink:0;}
+
+  /* Schritte */
+  .card{background:var(--sand); border-radius:16px; padding:18px; margin-top:16px;}
+  .card .num{font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; color:var(--rose); font-weight:500;}
+  .card.done{border:1px solid var(--ok);}
+  .card.done .num::after{content:" · erledigt"; color:var(--ok);}
+  .camera{position:relative; margin-top:12px; border-radius:14px; overflow:hidden; background:#000; aspect-ratio:3/4; max-width:320px;}
+  .camera video{width:100%; height:100%; object-fit:cover; transform:scaleX(-1); display:block;}
+  .camera .oval{position:absolute; inset:12% 18% 18%; border:2px dashed rgba(255,255,255,.7); border-radius:50%; pointer-events:none;}
+  .foto-preview{display:block; margin-top:12px; max-width:220px; width:100%; border-radius:14px;}
+  .lesetext{background:var(--papier); border:1px solid var(--linie); border-radius:12px; padding:14px 16px; margin-top:12px; font-family:var(--serif); font-size:1.05rem; line-height:1.65;}
+  .rec-status{font-variant-numeric:tabular-nums; font-size:.9rem; color:var(--gedaempft);}
+  .rec-dot{display:inline-block; width:9px; height:9px; border-radius:50%; background:#C0392B; margin-right:6px; animation:pulse 1.2s ease-in-out infinite;}
+  audio{width:100%; margin-top:12px;}
+  ul.tips{margin:8px 0 0; padding-left:18px; font-size:.88rem; color:var(--gedaempft);}
+  .consent{display:flex; flex-direction:column; gap:12px; margin-top:6px;}
+
+  /* Warten */
+  .waiting{text-align:center; margin-top:12vh; color:var(--gedaempft);}
+  .waiting p{font-family:var(--serif); font-style:italic; font-size:1.15rem; color:var(--pflaume); margin:0 0 8px;}
+  .dots span{display:inline-block; width:7px; height:7px; border-radius:50%; background:var(--rose); margin:0 3px; animation:pulse 1.4s ease-in-out infinite;}
+  .dots span:nth-child(2){animation-delay:.2s;} .dots span:nth-child(3){animation-delay:.4s;}
+  @keyframes pulse{0%,100%{opacity:.25;} 50%{opacity:1;}}
+
+  /* Studio */
+  .me{display:flex; gap:14px; align-items:center;}
+  .me img{width:64px; height:64px; border-radius:50%; object-fit:cover; flex-shrink:0; border:2px solid var(--linie);}
+  .me h1{margin:0;}
+  .counter{font-size:.82rem; color:var(--gedaempft);}
+  .label-note{background:var(--blush); border-radius:12px; padding:12px 14px; font-size:.86rem; margin-top:16px;}
+  .label-note b{font-weight:500;}
+  .videos{display:flex; flex-direction:column; gap:16px; margin-top:12px;}
+  .video{background:var(--sand); border-radius:16px; padding:12px; }
+  .video video{width:100%; max-height:70vh; border-radius:10px; background:#000; display:block;}
+  .video .meta{font-size:.78rem; color:var(--gedaempft); margin-top:8px;}
+  .video .text{font-size:.9rem; margin:2px 0 0; overflow-wrap:anywhere; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;}
+  .danger{margin-top:36px; padding-top:18px; border-top:1px solid var(--linie);}
+  .linkbtn{background:none; border:none; padding:0; color:var(--beere); font-size:.86rem; cursor:pointer; text-decoration:underline; text-underline-offset:3px;}
+
+  footer{
+    flex-shrink:0; text-align:center; font-size:.74rem; color:var(--gedaempft); line-height:1.5;
+    padding:9px 16px calc(9px + env(safe-area-inset-bottom, 0px)); border-top:1px solid var(--linie); background:var(--blush);
+  }
+  @media (prefers-reduced-motion: reduce){ *{animation:none !important; transition:none !important;} }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <svg class="butterfly" viewBox="0 0 100 100" aria-hidden="true">
+      <path class="w1" d="M50 30 C46 14 30 6 18 12 C6 18 8 38 22 44 C32 48 44 42 50 30 Z"/>
+      <path class="w2" d="M50 30 C54 14 70 6 82 12 C94 18 92 38 78 44 C68 48 56 42 50 30 Z"/>
+      <path class="w3" d="M50 46 C47 36 36 32 28 37 C20 42 22 54 32 57 C40 59 47 54 50 46 Z"/>
+      <path class="w3" d="M50 46 C53 36 64 32 72 37 C80 42 78 54 68 57 C60 59 53 54 50 46 Z"/>
+      <rect class="k" x="48.7" y="26" width="2.6" height="34" rx="1.3"/>
+    </svg>
+    <span class="word">Avatar-Studio</span>
+  </div>
+  <button class="logout" id="logout-btn" hidden>Abmelden</button>
+</header>
+
+<main id="main">
+  <!-- Zugang -->
+  <section id="screen-gate" class="screen">
+    <form class="gate" id="gate-form" novalidate>
+      <h1>Dein Avatar-Studio</h1>
+      <p class="lead">Aus einem Selfie und deiner Stimme entsteht dein KI-Avatar. Danach schreibst du einen Text, und dein Avatar spricht ihn – mit deinem Gesicht und deiner Stimme.</p>
+      <label class="field-label" for="code-input">Zugangscode</label>
+      <input type="text" id="code-input" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Dein Zugangscode" required>
+      <label class="check"><input type="checkbox" id="remember-input"> Code auf diesem Gerät merken</label>
+      <button type="submit" class="btn" id="gate-submit">Weiter</button>
+      <div class="error" id="gate-error" role="alert"></div>
+    </form>
+  </section>
+
+  <!-- Einrichten -->
+  <section id="screen-setup" class="screen" hidden>
+    <h1>Deinen Avatar erstellen</h1>
+    <p class="lead">Drei kurze Schritte, etwa fünf Minuten. Das machst du nur einmal.</p>
+    <div class="error" id="setup-previous-error" role="alert" hidden></div>
+
+    <div class="card" id="step-foto">
+      <div class="num">Schritt 1</div>
+      <h2 class="step">Dein Selfie</h2>
+      <ul class="tips">
+        <li>Gesicht gerade in die Kamera, Schultern sichtbar</li>
+        <li>Helles, weiches Licht von vorne, ruhiger Hintergrund</li>
+        <li>Mund geschlossen, ohne Sonnenbrille</li>
+      </ul>
+      <div id="camera-box" class="camera" hidden>
+        <video id="camera-video" autoplay playsinline muted></video>
+        <div class="oval" aria-hidden="true"></div>
+      </div>
+      <img id="foto-preview" class="foto-preview" alt="Dein Selfie" hidden>
+      <div class="row">
+        <button class="btn" id="camera-btn">Kamera öffnen</button>
+        <button class="btn" id="shoot-btn" hidden>Foto aufnehmen</button>
+        <button class="btn soft" id="retake-btn" hidden>Neu aufnehmen</button>
+      </div>
+      <!-- Falls der Browser keine Kamera-Vorschau kann: Handy öffnet direkt die Frontkamera -->
+      <input type="file" id="foto-file" accept="image/*" capture="user" hidden>
+      <div class="error" id="foto-error" role="alert"></div>
+    </div>
+
+    <div class="card" id="step-stimme">
+      <div class="num">Schritt 2</div>
+      <h2 class="step">Deine Stimme</h2>
+      <p class="hint" style="margin-top:0">Lies diesen Text in Ruhe und ganz natürlich vor, so wie du sprichst. Der erste Satz ist gleichzeitig deine Einwilligung.</p>
+      <div class="lesetext" id="lesetext">
+        Ich bin die Person auf diesem Foto, und das hier ist meine eigene Stimme. Ich stimme zu, dass daraus ein KI-Avatar für meine eigenen Videos entsteht.
+        Heute nehme ich mir einen Moment nur für mich. Ich atme ruhig ein und langsam wieder aus. Manchmal ist der wichtigste Schritt der, den niemand sieht: Ich bleibe bei mir, auch wenn es um mich herum laut wird. Ich darf Fragen stellen, ich darf Nein sagen, und ich darf meine Meinung ändern. Was gestern schwer war, darf heute ein kleines bisschen leichter sein. Ich freue mich auf das, was kommt – Schritt für Schritt, in meinem eigenen Tempo.
+      </div>
+      <ul class="tips">
+        <li>Ruhiger Raum, kein Fernseher, keine Musik</li>
+        <li>Handy etwa eine Handbreit vom Mund entfernt</li>
+      </ul>
+      <div class="row">
+        <button class="btn rec" id="rec-btn">Aufnahme starten</button>
+        <button class="btn" id="stop-btn" hidden>Fertig</button>
+        <span class="rec-status" id="rec-status" aria-live="polite"></span>
+      </div>
+      <audio id="stimme-preview" controls hidden></audio>
+      <div class="error" id="stimme-error" role="alert"></div>
+    </div>
+
+    <div class="card" id="step-ok">
+      <div class="num">Schritt 3</div>
+      <h2 class="step">Deine Zustimmung</h2>
+      <div class="consent">
+        <label class="check"><input type="checkbox" id="ok-eigen"> Foto und Stimme sind meine eigenen. Ich lade keine Aufnahmen einer anderen Person hoch.</label>
+        <label class="check"><input type="checkbox" id="ok-dienste"> Ich bin einverstanden, dass meine Stimme bei ElevenLabs und mein Foto bei D-ID verarbeitet werden, um meinen Avatar und meine Videos zu erstellen. Die Stimmprobe wird danach gelöscht.</label>
+        <label class="check"><input type="checkbox" id="ok-kennzeichnen"> Ich kennzeichne meine Videos als KI-generiert, wenn ich sie veröffentliche, und nutze den Avatar nicht, um andere zu täuschen.</label>
+      </div>
+      <div class="row">
+        <button class="btn" id="create-btn" disabled>Avatar erstellen</button>
+      </div>
+      <div class="error" id="create-error" role="alert"></div>
+    </div>
+  </section>
+
+  <!-- Warten -->
+  <section id="screen-wait" class="screen" hidden>
+    <div class="waiting" aria-live="polite">
+      <p id="wait-title">Dein Avatar entsteht.</p>
+      <div class="dots" aria-hidden="true"><span></span><span></span><span></span></div>
+      <div id="wait-text" style="margin-top:14px; font-size:.9rem;">Das dauert meist weniger als eine Minute.</div>
+    </div>
+  </section>
+
+  <!-- Studio -->
+  <section id="screen-studio" class="screen" hidden>
+    <div class="me">
+      <img id="me-foto" alt="Dein Avatar" hidden>
+      <div>
+        <h1>Neues Video</h1>
+        <div class="counter" id="counter"></div>
+      </div>
+    </div>
+
+    <label class="field-label" for="text-input">Was soll dein Avatar sagen?</label>
+    <textarea id="text-input" rows="6" maxlength="600" placeholder="z. B. Hallo, schön, dass du da bist. Heute möchte ich dir etwas erzählen, das mir selbst lange gefehlt hat …"></textarea>
+    <p class="hint right" id="text-count">0 / 600 · ca. 0 Sek.</p>
+    <p class="hint">Tipp: Schreib so, wie du sprichst. Ein Komma ist eine kleine Pause, ein Punkt eine längere.</p>
+    <div class="row">
+      <button class="btn" id="video-btn">Video erstellen</button>
+    </div>
+    <div class="error" id="video-error" role="alert"></div>
+
+    <div class="label-note">
+      <b>Wichtig beim Veröffentlichen:</b> Kennzeichne das Video als KI-generiert, z. B. mit „Mit KI erstellt“ in der Beschreibung oder über das KI-Label von Instagram. So steht es auch im EU-Recht.
+    </div>
+
+    <h2 class="field-label" style="margin-top:28px">Deine Videos</h2>
+    <p class="hint" id="videos-hint"></p>
+    <div class="videos" id="videos"></div>
+
+    <div class="danger">
+      <button class="linkbtn" id="delete-btn">Avatar und alle Videos löschen</button>
+      <p class="hint">Löscht deine geklonte Stimme, dein Foto und alle Videos – bei uns, bei ElevenLabs und bei D-ID. Danach kannst du einen neuen Avatar erstellen.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  Avatar und Videos werden mit KI erstellt (ElevenLabs für die Stimme, D-ID für das Video). Videos bleiben <span id="foot-video-tage">7</span> Tage, dein Avatar wird nach <span id="foot-profil-tage">30</span> Tagen ohne Nutzung automatisch gelöscht.
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  var CODE_KEY = "sw_avatar_code";
+  var MIN_SEK = 25, MAX_SEK = 80, SAMPLE_RATE = 24000;
+  var ZEICHEN_PRO_SEK = 14; // grobe Schätzung für ruhig gesprochenes Deutsch
+
+  var state = {
+    code:null, info:null, videos:[],
+    stream:null, foto:null,
+    recorder:null, chunks:[], recStart:0, recTimer:null, stimme:null,
+    pollTimer:null, jobId:null, busy:false
+  };
+
+  function $(id){ return document.getElementById(id); }
+  function show(id){
+    ["screen-gate","screen-setup","screen-wait","screen-studio"].forEach(function(s){ $(s).hidden = (s !== id); });
+    $("logout-btn").hidden = (id === "screen-gate");
+    $("main").scrollTop = 0;
+  }
+  function el(tag, cls, text){
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+  function postJSON(url, body){
+    return fetch(url, { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify(body) })
+      .then(function(r){ return r.json().catch(function(){ return {}; }).then(function(d){ return {ok:r.ok, status:r.status, data:d}; }); });
+  }
+  function setWait(title, text){ $("wait-title").textContent = title; $("wait-text").textContent = text; show("screen-wait"); }
+
+  /* ---------- Zugang ---------- */
+  try { var saved = localStorage.getItem(CODE_KEY); if (saved) { $("code-input").value = saved; $("remember-input").checked = true; } } catch(e){}
+
+  $("gate-form").addEventListener("submit", function(e){
+    e.preventDefault();
+    var code = $("code-input").value.trim();
+    if (!code) { $("gate-error").textContent = "Bitte gib deinen Zugangscode ein."; return; }
+    $("gate-submit").disabled = true;
+    $("gate-error").textContent = "";
+    postJSON("/api/avatar/zugang", {code: code})
+      .then(function(res){
+        if (!res.ok) { $("gate-error").textContent = res.data.error || "Das hat nicht geklappt. Versuch es noch einmal."; return; }
+        state.code = code;
+        try {
+          if ($("remember-input").checked) localStorage.setItem(CODE_KEY, code); else localStorage.removeItem(CODE_KEY);
+        } catch(e){}
+        route(res.data);
+      })
+      .catch(function(){ $("gate-error").textContent = "Keine Verbindung. Prüf dein Internet und versuch es noch einmal."; })
+      .then(function(){ $("gate-submit").disabled = false; });
+  });
+
+  function backToGate(message){
+    stopAll();
+    state.code = null;
+    $("gate-error").textContent = message || "";
+    show("screen-gate");
+  }
+  $("logout-btn").addEventListener("click", function(){
+    try { localStorage.removeItem(CODE_KEY); } catch(e){}
+    $("code-input").value = ""; $("remember-input").checked = false;
+    backToGate("");
+  });
+
+  /** Zeigt je nach Stand des Avatars die passende Ansicht. */
+  function route(data){
+    state.info = data;
+    $("foot-video-tage").textContent = data.videoTage;
+    $("foot-profil-tage").textContent = data.profilTage;
+    var a = data.avatar;
+    if (!a || a.status === "fehler") {
+      var prev = $("setup-previous-error");
+      prev.hidden = !(a && a.error);
+      prev.textContent = a && a.error ? ("Beim letzten Versuch hat es nicht geklappt: " + a.error) : "";
+      show("screen-setup");
+      return;
+    }
+    if (a.status === "pending" || a.status === "running") {
+      setWait("Dein Avatar entsteht.", "Das dauert meist weniger als eine Minute.");
+      pollAvatar(0);
+      return;
+    }
+    openStudio(a);
+  }
+
+  /* ---------- Schritt 1: Selfie ---------- */
+  $("camera-btn").addEventListener("click", function(){
+    $("foto-error").textContent = "";
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { $("foto-file").click(); return; }
+    navigator.mediaDevices.getUserMedia({ video:{ facingMode:"user", width:{ideal:1280}, height:{ideal:1280} }, audio:false })
+      .then(function(stream){
+        state.stream = stream;
+        $("camera-video").srcObject = stream;
+        $("camera-box").hidden = false;
+        $("camera-btn").hidden = true;
+        $("shoot-btn").hidden = false;
+      })
+      .catch(function(){
+        $("foto-error").textContent = "Die Kamera ließ sich nicht öffnen. Erlaube den Zugriff in den Browser-Einstellungen – oder nimm das Selfie direkt mit der Handy-Kamera auf.";
+        $("foto-file").click();
+      });
+  });
+
+  function stopCamera(){
+    if (state.stream) state.stream.getTracks().forEach(function(t){ t.stop(); });
+    state.stream = null;
+    $("camera-box").hidden = true;
+  }
+
+  /** Zeichnet ein Bild auf höchstens 1024 px und macht ein JPEG daraus (entfernt dabei auch Ortsdaten). */
+  function toJpeg(source, w, h){
+    var scale = Math.min(1, 1024 / Math.max(w, h));
+    var c = document.createElement("canvas");
+    c.width = Math.round(w * scale); c.height = Math.round(h * scale);
+    var ctx = c.getContext("2d");
+    ctx.drawImage(source, 0, 0, c.width, c.height);
+    return new Promise(function(resolve){ c.toBlob(resolve, "image/jpeg", 0.9); });
+  }
+
+  $("shoot-btn").addEventListener("click", function(){
+    var v = $("camera-video");
+    if (!v.videoWidth) return;
+    // Vorschau ist gespiegelt wie ein Spiegel, gespeichert wird seitenrichtig – so sehen sie andere im Video
+    toJpeg(v, v.videoWidth, v.videoHeight).then(function(blob){ stopCamera(); setFoto(blob); });
+  });
+
+  $("foto-file").addEventListener("change", function(){
+    var file = this.files && this.files[0];
+    this.value = "";
+    if (!file) return;
+    var img = new Image();
+    var url = URL.createObjectURL(file);
+    img.onload = function(){
+      URL.revokeObjectURL(url);
+      toJpeg(img, img.naturalWidth, img.naturalHeight).then(setFoto);
+    };
+    img.onerror = function(){ URL.revokeObjectURL(url); $("foto-error").textContent = "Dieses Bild konnte nicht geöffnet werden."; };
+    img.src = url;
+  });
+
+  function setFoto(blob){
+    if (!blob) { $("foto-error").textContent = "Das Foto konnte nicht gespeichert werden. Versuch es noch einmal."; return; }
+    state.foto = blob;
+    var p = $("foto-preview");
+    if (p.src) URL.revokeObjectURL(p.src);
+    p.src = URL.createObjectURL(blob);
+    p.hidden = false;
+    $("shoot-btn").hidden = true;
+    $("camera-btn").hidden = true;
+    $("retake-btn").hidden = false;
+    $("step-foto").classList.add("done");
+    updateCreate();
+  }
+
+  $("retake-btn").addEventListener("click", function(){
+    state.foto = null;
+    $("foto-preview").hidden = true;
+    $("retake-btn").hidden = true;
+    $("camera-btn").hidden = false;
+    $("step-foto").classList.remove("done");
+    updateCreate();
+    $("camera-btn").click();
+  });
+
+  /* ---------- Schritt 2: Stimme ---------- */
+  function fmt(sek){ var s = Math.floor(sek); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); }
+
+  $("rec-btn").addEventListener("click", function(){
+    $("stimme-error").textContent = "";
+    if (!window.MediaRecorder || !navigator.mediaDevices) {
+      $("stimme-error").textContent = "Dieser Browser kann keine Sprachaufnahmen. Öffne die Seite bitte in Safari, Chrome oder Firefox.";
+      return;
+    }
+    navigator.mediaDevices.getUserMedia({ audio:{ echoCancellation:false, noiseSuppression:true, autoGainControl:true } })
+      .then(function(stream){
+        state.chunks = [];
+        state.stimme = null;
+        $("stimme-preview").hidden = true;
+        $("step-stimme").classList.remove("done");
+        updateCreate();
+        var rec = new MediaRecorder(stream);
+        state.recorder = rec;
+        rec.ondataavailable = function(e){ if (e.data && e.data.size) state.chunks.push(e.data); };
+        rec.onstop = function(){
+          stream.getTracks().forEach(function(t){ t.stop(); });
+          var dauer = (Date.now() - state.recStart) / 1000;
+          clearInterval(state.recTimer);
+          $("rec-btn").hidden = false; $("stop-btn").hidden = true;
+          $("rec-btn").textContent = "Neu aufnehmen";
+          if (dauer < MIN_SEK) {
+            $("rec-status").textContent = "";
+            $("stimme-error").textContent = "Die Aufnahme ist zu kurz (" + Math.round(dauer) + " Sek.). Lies bitte den ganzen Text vor.";
+            return;
+          }
+          $("rec-status").textContent = "Wird vorbereitet …";
+          toWav(new Blob(state.chunks, { type: rec.mimeType || "audio/webm" }))
+            .then(function(wav){
+              state.stimme = wav;
+              var a = $("stimme-preview");
+              if (a.src) URL.revokeObjectURL(a.src);
+              a.src = URL.createObjectURL(wav);
+              a.hidden = false;
+              $("rec-status").textContent = "Aufnahme: " + fmt(dauer) + " – hör kurz rein.";
+              $("step-stimme").classList.add("done");
+              updateCreate();
+            })
+            .catch(function(){
+              $("rec-status").textContent = "";
+              $("stimme-error").textContent = "Die Aufnahme ließ sich nicht verarbeiten. Versuch es bitte noch einmal oder in einem anderen Browser.";
+            });
+        };
+        state.recStart = Date.now();
+        rec.start(1000);
+        $("rec-btn").hidden = true; $("stop-btn").hidden = false;
+        tick();
+        state.recTimer = setInterval(tick, 500);
+      })
+      .catch(function(){
+        $("stimme-error").textContent = "Das Mikrofon ließ sich nicht öffnen. Erlaube den Zugriff in den Browser-Einstellungen.";
+      });
+  });
+
+  function tick(){
+    var sek = (Date.now() - state.recStart) / 1000;
+    var s = $("rec-status");
+    s.innerHTML = "";
+    s.appendChild(el("span", "rec-dot"));
+    s.appendChild(document.createTextNode(fmt(sek) + (sek < MIN_SEK ? " · lies weiter …" : " · tippe auf „Fertig“, wenn du am Ende bist")));
+    if (sek >= MAX_SEK) stopRecording();
+  }
+  function stopRecording(){ if (state.recorder && state.recorder.state === "recording") state.recorder.stop(); }
+  $("stop-btn").addEventListener("click", stopRecording);
+
+  /** Macht aus der Aufnahme eine WAV-Datei (Mono, 24 kHz, 16 Bit) – die nimmt ElevenLabs sicher an. */
+  function toWav(blob){
+    return blob.arrayBuffer().then(function(buf){
+      var Ctx = window.AudioContext || window.webkitAudioContext;
+      var ctx = new Ctx();
+      return new Promise(function(resolve, reject){ ctx.decodeAudioData(buf, resolve, reject); })
+        .then(function(audio){
+          ctx.close();
+          var len = Math.ceil(audio.duration * SAMPLE_RATE);
+          var off = new OfflineAudioContext(1, len, SAMPLE_RATE);
+          var src = off.createBufferSource();
+          src.buffer = audio;
+          src.connect(off.destination);
+          src.start();
+          return off.startRendering();
+        })
+        .then(function(rendered){ return encodeWav(rendered.getChannelData(0), SAMPLE_RATE); });
+    });
+  }
+
+  function encodeWav(samples, rate){
+    var buffer = new ArrayBuffer(44 + samples.length * 2);
+    var v = new DataView(buffer);
+    function str(o, s){ for (var i = 0; i < s.length; i++) v.setUint8(o + i, s.charCodeAt(i)); }
+    str(0, "RIFF"); v.setUint32(4, 36 + samples.length * 2, true); str(8, "WAVE");
+    str(12, "fmt "); v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true);
+    v.setUint32(24, rate, true); v.setUint32(28, rate * 2, true); v.setUint16(32, 2, true); v.setUint16(34, 16, true);
+    str(36, "data"); v.setUint32(40, samples.length * 2, true);
+    for (var i = 0, o = 44; i < samples.length; i++, o += 2) {
+      var s = Math.max(-1, Math.min(1, samples[i]));
+      v.setInt16(o, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
+    }
+    return new Blob([buffer], { type: "audio/wav" });
+  }
+
+  /* ---------- Schritt 3: Zustimmung und Absenden ---------- */
+  function consentOk(){ return $("ok-eigen").checked && $("ok-dienste").checked && $("ok-kennzeichnen").checked; }
+  function updateCreate(){ $("create-btn").disabled = !(state.foto && state.stimme && consentOk()); }
+  ["ok-eigen","ok-dienste","ok-kennzeichnen"].forEach(function(id){ $(id).addEventListener("change", updateCreate); });
+
+  $("create-btn").addEventListener("click", function(){
+    if (!(state.foto && state.stimme && consentOk())) return;
+    $("create-error").textContent = "";
+    $("create-btn").disabled = true;
+    var form = new FormData();
+    form.append("code", state.code);
+    form.append("einwilligung", "ja");
+    form.append("foto", state.foto, "selfie.jpg");
+    form.append("stimme", state.stimme, "stimme.wav");
+    setWait("Dein Avatar entsteht.", "Foto und Stimme werden hochgeladen …");
+    fetch("/api/avatar/einrichten", { method:"POST", body: form })
+      .then(function(r){ return r.json().catch(function(){ return {}; }).then(function(d){ return {ok:r.ok, data:d}; }); })
+      .then(function(res){
+        if (!res.ok) {
+          if (res.data.reason === "zugang") { backToGate(res.data.error); return; }
+          show("screen-setup");
+          $("create-error").textContent = res.data.error || "Das hat nicht geklappt. Versuch es gleich noch einmal.";
+          updateCreate();
+          return;
+        }
+        setWait("Dein Avatar entsteht.", "Deine Stimme wird gelernt. Das dauert meist weniger als eine Minute.");
+        pollAvatar(0);
+      })
+      .catch(function(){
+        show("screen-setup");
+        $("create-error").textContent = "Keine Verbindung. Prüf dein Internet und versuch es noch einmal.";
+        updateCreate();
+      });
+  });
+
+  function pollAvatar(attempt){
+    clearTimeout(state.pollTimer);
+    state.pollTimer = setTimeout(function(){
+      if (!state.code) return;
+      postJSON("/api/avatar/zugang", { code: state.code })
+        .then(function(res){
+          if (!res.ok) { backToGate(res.data.error); return; }
+          var a = res.data.avatar;
+          if (a && (a.status === "pending" || a.status === "running") && attempt < 90) { pollAvatar(attempt + 1); return; }
+          if (a && a.status === "bereit") resetSetup();
+          route(res.data);
+        })
+        .catch(function(){ if (attempt < 90) pollAvatar(attempt + 1); });
+    }, 3000);
+  }
+
+  function resetSetup(){
+    stopCamera();
+    state.foto = null; state.stimme = null;
+    $("foto-preview").hidden = true; $("retake-btn").hidden = true; $("camera-btn").hidden = false; $("shoot-btn").hidden = true;
+    $("stimme-preview").hidden = true; $("rec-status").textContent = ""; $("rec-btn").textContent = "Aufnahme starten";
+    ["step-foto","step-stimme"].forEach(function(id){ $(id).classList.remove("done"); });
+    ["ok-eigen","ok-dienste","ok-kennzeichnen"].forEach(function(id){ $(id).checked = false; });
+    updateCreate();
+  }
+
+  /* ---------- Studio ---------- */
+  function openStudio(a){
+    if (a.foto) { $("me-foto").src = a.foto; $("me-foto").hidden = false; }
+    state.videos = a.videos || [];
+    setCounter(state.info.used, state.info.limit);
+    renderVideos();
+    show("screen-studio");
+  }
+
+  function setCounter(used, limit){
+    state.info.used = used; state.info.limit = limit;
+    var left = Math.max(0, limit - used);
+    $("counter").textContent = "Noch " + left + " von " + limit + " Videos in diesem Monat";
+    $("video-btn").disabled = left <= 0;
+  }
+
+  $("text-input").addEventListener("input", function(){
+    var n = this.value.length;
+    $("text-count").textContent = n + " / 600 · ca. " + Math.max(1, Math.round(n / ZEICHEN_PRO_SEK)) + " Sek.";
+  });
+
+  $("video-btn").addEventListener("click", function(){
+    if (state.busy) return;
+    var text = $("text-input").value.trim();
+    $("video-error").textContent = "";
+    if (text.length < 10) { $("video-error").textContent = "Schreib zuerst, was dein Avatar sagen soll."; $("text-input").focus(); return; }
+    state.busy = true;
+    $("video-btn").disabled = true;
+    setWait("Dein Video entsteht.", "Das dauert meist ein bis drei Minuten. Lass diese Seite offen – oder komm später wieder, dann steht das Video in deiner Liste.");
+    postJSON("/api/avatar/video/start", { code: state.code, text: text })
+      .then(function(res){
+        if (!res.ok) {
+          if (res.data.reason === "zugang") { backToGate(res.data.error); return; }
+          videoFailed(res.data.error);
+          return;
+        }
+        setCounter(res.data.used, res.data.limit);
+        state.jobId = res.data.id;
+        pollVideo(res.data.id, 0);
+      })
+      .catch(function(){ videoFailed("Keine Verbindung. Versuch es gleich noch einmal."); });
+  });
+
+  function videoFailed(message){
+    state.busy = false;
+    setCounter(state.info.used, state.info.limit);
+    show("screen-studio");
+    $("video-error").textContent = message || "Etwas ist schiefgelaufen. Versuch es gleich noch einmal.";
+  }
+
+  function pollVideo(id, attempt){
+    if (state.jobId !== id) return;
+    clearTimeout(state.pollTimer);
+    state.pollTimer = setTimeout(function(){
+      fetch("/api/avatar/video/status?id=" + encodeURIComponent(id), { cache:"no-store" })
+        .then(function(r){ return r.json(); })
+        .then(function(data){
+          if (state.jobId !== id) return;
+          if (data.status === "pending") { pollVideo(id, attempt + 1); return; }
+          state.jobId = null;
+          if (data.status === "done") {
+            state.busy = false;
+            state.videos = [data.video].concat(state.videos.filter(function(v){ return v.id !== data.video.id; }));
+            $("text-input").value = ""; $("text-count").textContent = "0 / 600 · ca. 0 Sek.";
+            setCounter(state.info.used, state.info.limit);
+            renderVideos();
+            show("screen-studio");
+            return;
+          }
+          // fehlgeschlagene Videos zählen nicht
+          state.info.used = Math.max(0, state.info.used - 1);
+          videoFailed(data.error);
+        })
+        .catch(function(){
+          if (attempt < 300) pollVideo(id, attempt + 1);
+          else videoFailed("Die Verbindung ist abgerissen. Schau gleich in deiner Liste nach, ob das Video trotzdem fertig wurde.");
+        });
+    }, attempt < 10 ? 4000 : 6000);
+  }
+
+  function renderVideos(){
+    var box = $("videos");
+    box.innerHTML = "";
+    $("videos-hint").textContent = state.videos.length
+      ? "Lade deine Videos herunter – sie werden nach " + state.info.videoTage + " Tagen automatisch gelöscht."
+      : "Noch keine Videos. Schreib oben deinen ersten Text.";
+    state.videos.forEach(function(v){
+      var src = "/api/avatar/video?id=" + encodeURIComponent(v.id);
+      var item = el("div", "video");
+      var vid = document.createElement("video");
+      vid.controls = true; vid.playsInline = true; vid.preload = "metadata"; vid.src = src;
+      item.appendChild(vid);
+      item.appendChild(el("div", "meta", new Date(v.createdAt).toLocaleString("de-CH", { day:"numeric", month:"long", hour:"2-digit", minute:"2-digit" })));
+      item.appendChild(el("p", "text", v.text));
+      var row = el("div", "row");
+      var dl = el("a", "btn small", "Herunterladen");
+      dl.href = src + "&download=1";
+      dl.setAttribute("download", "avatar-video.mp4");
+      row.appendChild(dl);
+      var del = el("button", "btn soft small", "Löschen");
+      del.addEventListener("click", function(){ deleteVideo(v.id, del); });
+      row.appendChild(del);
+      item.appendChild(row);
+      box.appendChild(item);
+    });
+  }
+
+  function deleteVideo(id, btn){
+    if (!confirm("Dieses Video löschen?")) return;
+    btn.disabled = true;
+    postJSON("/api/avatar/loeschen", { code: state.code, video: id })
+      .then(function(res){
+        if (!res.ok && res.status !== 404) { btn.disabled = false; alert(res.data.error || "Das hat nicht geklappt."); return; }
+        state.videos = state.videos.filter(function(v){ return v.id !== id; });
+        renderVideos();
+      })
+      .catch(function(){ btn.disabled = false; alert("Keine Verbindung. Versuch es noch einmal."); });
+  }
+
+  $("delete-btn").addEventListener("click", function(){
+    if (!confirm("Deinen Avatar, deine geklonte Stimme und alle Videos endgültig löschen?")) return;
+    $("delete-btn").disabled = true;
+    postJSON("/api/avatar/loeschen", { code: state.code })
+      .then(function(res){
+        if (!res.ok) { alert(res.data.error || "Das hat nicht geklappt."); return; }
+        state.videos = [];
+        $("me-foto").hidden = true; $("me-foto").removeAttribute("src");
+        resetSetup();
+        $("setup-previous-error").hidden = true;
+        show("screen-setup");
+      })
+      .catch(function(){ alert("Keine Verbindung. Versuch es noch einmal."); })
+      .then(function(){ $("delete-btn").disabled = false; });
+  });
+
+  function stopAll(){
+    clearTimeout(state.pollTimer);
+    state.jobId = null; state.busy = false;
+    stopCamera();
+    stopRecording();
+  }
+})();
+</script>
+</body>
+</html>
