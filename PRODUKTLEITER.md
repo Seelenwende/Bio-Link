@@ -8,12 +8,7 @@ Seelenwende begleitet Frauen ganzheitlich, egal wo sie stehen:
 
 Viele Frauen wissen selbst nicht, in welcher Phase sie sind. Darum gilt: **Die Eingänge unterscheiden sich, die Begleitung nicht.** Kostenlose Angebote und Instagram-Inhalte sprechen eine Phase an, Mira, das Programm und der Kreis sind für alle da.
 
-Es gibt **zwei Leitern**, die getrennt bleiben:
-
-- **A · Seelenwende** für betroffene Frauen: Selbsttests, Werkzeuge, KI-Begleitung, Programm, Kreis.
-- **B · KI-Werkzeuge für Selbstständige**: Profil-Check, Social-Agent, Avatar-Studio, Instagram-Skills, Content-Recycling. Andere Zielgruppe, anderer Ton, eigener Auftritt (siehe unten).
-
-## Grundregeln (Leiter A)
+## Grundregeln
 
 - **Kein Produkt enthält ein anderes**, außer Programm und Kreis: Ihre Codes öffnen alle kleinen Werkzeuge („alle Werkzeuge inklusive“).
 - **Gratis bewusst knapp**: vier Eingänge, je Phase einer, dazu der Mira-Schnupper-Code. Zu viel Gratis wirkt unglaubwürdig, und wer einmal 7–9 € ausgibt, kauft eher auch das Programm.
@@ -22,7 +17,7 @@ Es gibt **zwei Leitern**, die getrennt bleiben:
 - **Diskretion vor Umsatz**: neutrale Abbuchung, Werkzeuge einmalig statt im Abo, Gespräche werden nicht gespeichert.
 - **Feste Preispunkte**: 0 € · 7–9 € · 14 € · 19 € · 24 € · 29 € · 49 € · 99 € · 149 € · 19 €/Monat.
 
-## Leiter A · Seelenwende
+## Die Produktleiter
 
 | Stufe | Ihre Frage | Preis | Produkte | KI |
 |---|---|---|---|---|
@@ -40,7 +35,7 @@ Es gibt **zwei Leitern**, die getrennt bleiben:
 
 Die Preise der Einzel-PDFs (Grenz-Sätze, Anker-Set, Klartext, No-Contact-Kit) sind ein Vorschlag und mit dem Shop abzugleichen. Die übrigen Preise stehen so auf den Salespages (`angebot-*.html`).
 
-### Die KI-Tools in Leiter A
+### Die KI-Tools
 
 | Tool | Rolle in der Leiter | Preis / Zugang | Kontingent | KI-Kosten bei voller Nutzung |
 |---|---|---|---|---|
@@ -80,28 +75,9 @@ Folgerungen:
 - **Preise vereinheitlicht**: E-Book 29 €, Bundle 49 € (die Entwurfspreise 24 € und 59 € entfallen).
 - **Programm in Raten (3 × 55 €)** und **Kreis auch jährlich (190 €)**: Eine Abbuchung im Jahr ist diskreter als zwölf. Nach dem Programm ist der erste Kreis-Monat geschenkt.
 
-## Leiter B · KI-Werkzeuge für Selbstständige
-
-Diese Werkzeuge sind für Coaches, Creatorinnen und kleine Unternehmen gebaut, nicht für Frauen in einer belastenden Beziehung. Sie bekommen **einen eigenen Auftritt**, nicht unter dem Namen Seelenwende und nicht auf dem Bio-Link. Eine Frau, die gerade den Muster-Check gemacht hat, darf dort nicht auf „Dein KI-Avatar“ stoßen. Und eine Kundin, die Seelenwende als Schutzraum kennt, soll nicht das Gefühl bekommen, Teil einer Marketing-Maschine zu sein.
-
-| Stufe | Ihre Frage | Preis (Vorschlag) | Produkt | Stand |
-|---|---|---|---|---|
-| **0 · Einstieg** | „Was bremst mein Profil?“ | gratis (1 Analyse gegen Mail-Adresse), danach 19 € | **KI-Profil-Check** (`profil-check.html`): liest Profil, Bio, Link-Seite und die letzten Posts und bewertet jeden Punkt mit Vorschlag | auf `main` |
-| **1 · Vorlagen** | „Wie schreibe ich besser?“ | 39 € | **Instagram-Skills für Claude** (Markenkern, Post, Reel, Story, Redaktionsplan, Analyse, Community, Visuals) als Paket mit Anleitung, angepasst auf die eigene Marke | Branch `instagram-agent-skills` |
-| **2 · Werkzeug** | „Wie mache ich Videos, ohne vor die Kamera zu müssen?“ | 29 €/Monat (10 Videos) | **Avatar-Studio** (`avatar.html`): Selfie und Sprachprobe → eigener KI-Avatar mit eigener Stimme, Text rein, Video raus | Branch `gracious-allen` |
-| **3 · Automatisieren** | „Wer postet für mich?“ | 149 € einmalig oder 290 € mit Einrichtung | **Social-Agent**: Ideen, Hooks, Reels mit Musik, Bildbeiträge, Karussells, Texte für Instagram und Facebook, einplanen und posten | Branch `instagram-reel-agent` |
-| **4 · Dienstleistung** | „Kann das jemand für mich machen?“ | 550 / 950 / 1’650 CHF pro Monat | **Content-Recycling**: Podcast, Webinar oder YouTube → Posts, Newsletter, Clips, mit eigenem CLI-Tool | Branch `ki-geschaeftsmodelle` |
-
-Hinweise:
-- **Profil-Check ist der Eingang** für Leiter B: Er zeigt das Problem („deine Bio verkauft nicht, deine Reels haben keinen Hook“), die Skills und der Social-Agent lösen es. Kosten pro Analyse 0,10–0,40 $, also gut gratis anzubieten.
-- **Avatar-Studio nur im Monatsabo**, weil ElevenLabs (nach Zeichen) und D-ID (nach Videominuten) laufend kosten. `AVATAR_LIMIT` so setzen, dass ein voll genutzter Code höchstens die Hälfte des Preises kostet; vorher mit einem eigenen Code den echten Verbrauch messen.
-- **Social-Agent** läuft auf dem Rechner der Kundin und braucht ihre Instagram- und Facebook-Zugänge. Darum als Paket mit Einrichtung verkaufen, nicht als „Download und fertig“.
-- **Content-Recycling** ist Dienstleistung mit Rechnung, kein Shop-Produkt. Das Tool bleibt intern.
-- Für Seelenwende selbst bleiben Profil-Check, Social-Agent, Instagram-Skills und Avatar-Studio **interne Werkzeuge** für den eigenen Kanal. Sie tauchen in Leiter A nicht auf.
-
 ## Verkaufsplattform: Tentary oder Digistore24?
 
-**Empfehlung: Leiter A bei Tentary. Für Leiter B ist Digistore24 die bessere Wahl. Content-Recycling direkt mit Rechnung.**
+**Empfehlung: bei Tentary bleiben.** Digistore24 nur dann, wenn die Mehrwertsteuer für Käuferinnen in der EU selbst abzuführen zu aufwendig wird.
 
 ### Kosten im Vergleich
 
@@ -116,27 +92,25 @@ Tentary: Grundgebühr ab 10 €/Monat (Start) plus 2,9 % pro Verkauf, dazu die G
 | 149 € | 6,81 € | 12,77 € |
 | 19 €/Monat (Kreis) | 1,09 € | 2,50 € |
 
-Ab etwa fünf bis sieben Verkäufen im Monat ist Tentary trotz Grundgebühr günstiger, und der Abstand wächst mit jedem Kreis-Mitglied: Bei 50 Mitgliedern sind es rund 70 € im Monat. Bei den vielen kleinen Preisen der Leiter A (7–24 €) frisst die feste 1 € von Digistore24 besonders viel.
+Ab etwa fünf bis sieben Verkäufen im Monat ist Tentary trotz Grundgebühr günstiger, und der Abstand wächst mit jedem Kreis-Mitglied: Bei 50 Mitgliedern sind es rund 70 € im Monat. Bei den vielen kleinen Preisen der Leiter (7–24 €) frisst die feste 1 € von Digistore24 besonders viel.
 
-### Leiter A: Tentary
+### Was für Tentary spricht
 
 - **Ruhiger Auftritt**: Der Checkout passt zu einem sanften, vertrauensvollen Thema. Digistore24 ist im Kopf vieler Käuferinnen mit Coaching-Funnels, Upsell-Ketten und lauten Verkaufsseiten verbunden; das passt nicht zu Frauen, die gerade gelernt haben, Druck zu misstrauen.
 - **Alles steht schon**: Shop, Bundle, Journal, Mini-Guide und alle Links laufen über Tentary. Der Kaufweg Tentary → Make → Code (`/api/zugang/admin`) → MailerLite ist geplant.
 - **Ein Partnerprogramm ist hier ein Risiko**: Wer fremde Werbung für Seelenwende macht, kontrolliert Ton und Versprechen nicht.
 - **Neutrale Abbuchung**: Bei Stripe eine neutrale Zahlungsbeschreibung einstellen (z. B. „SW Shop“), damit auf dem Kontoauszug nichts auf Trennung hinweist.
 
-### Leiter B: Digistore24
+### Was für Digistore24 spräche
 
-- **Partnerprogramm**: Coaches und Creatorinnen empfehlen Werkzeuge gern weiter. Hier ist der Affiliate-Marktplatz von Digistore24 ein echter Wachstumskanal und kein Risiko.
-- **Mehrwertsteuer und Rechnungen**: Digistore24 ist Wiederverkäufer und kümmert sich um Rechnungen und die Mehrwertsteuer in allen Ländern. Geschäftskundinnen brauchen saubere Rechnungen.
-- **Getrennter Auftritt**: Ein eigener Shop hält Leiter B sauber von Seelenwende fern.
-- **Abos und Codes**: Digistore24 kann Abos (Avatar-Studio) abrechnen und per IPN an Make melden, das dann wie bei Leiter A einen Code anlegt.
+- **Mehrwertsteuer und Rechnungen**: Digistore24 ist Wiederverkäufer und kümmert sich um Rechnungen und die Mehrwertsteuer in allen Ländern.
+- **Partnerprogramm**: Für Seelenwende kein Vorteil, sondern ein Risiko (siehe oben).
+- **Neutrale Abbuchung** („Digistore24“ auf dem Kontoauszug): Das gleiche erreicht Tentary mit einer neutralen Stripe-Zahlungsbeschreibung.
 
 ### Vor der Entscheidung prüfen
 
-1. Bei Tentary klären, wer die Mehrwertsteuer für Käuferinnen in DE und AT abführt. Muss Seelenwende das selbst tun (EU-OSS-Registrierung), spricht das auch bei Leiter A für Digistore24. Aus der Schweiz gilt die EU-Mehrwertsteuer auf digitale Produkte ohne Mindestumsatz.
+1. Bei Tentary klären, wer die Mehrwertsteuer für Käuferinnen in DE und AT abführt. Muss Seelenwende das selbst tun (EU-OSS-Registrierung), spricht das für Digistore24. Aus der Schweiz gilt die EU-Mehrwertsteuer auf digitale Produkte ohne Mindestumsatz.
 2. Kreis-Abo, Jahresabo und Ratenzahlung beim Programm in Tentary testen (Abo-Link, Kündigung → Code sperren über Make).
-3. Für Leiter B einen eigenen Namen und eine eigene Domain festlegen, bevor der erste Shop angelegt wird.
 
 ## Die Bausteine
 
@@ -166,7 +140,6 @@ Ab etwa fünf bis sieben Verkäufen im Monat ist Tentary trotz Grundgebühr gün
 - Preise im Shop an die neue Leiter anpassen: kleine Werkzeuge 7–9 €, Tagebuch 14 €, Mira und Erste-Hilfe-Set 19 €, Kompass mit Werte-Finder 24 €, E-Book 29 €, Bundle 49 €.
 - Bio-Link (`index.html`) an „Gratis bewusst knapp“ anpassen: Werte-Finder, Red-Flag-Radar, Sei sanft mit dir und Self Care Journal nicht mehr gratis; Mira-Schnupper-Code als Eingang ergänzen.
 - Salespages und Phasen-Wegweiser (Branch `blissful-carson`) mergen; beim Konflikt in `PRODUKTLEITER.md` diese Fassung behalten (sie enthält die Preise und den Phasen-Wegweiser schon).
-- Leiter B: Namen und Domain festlegen, Avatar-Studio, Social-Agent und Instagram-Skills mergen, Kosten pro Avatar-Video messen, Digistore24-Konto anlegen.
 - Kreis-Jahresabo (190 €) und Programm in Raten (3 × 55 €) in Tentary anlegen.
 - Mehrwertsteuer für EU-Käuferinnen klären und neutrale Stripe-Zahlungsbeschreibung einstellen (siehe „Verkaufsplattform“).
 - Tagline auf alle drei Gruppen öffnen, z. B. „Zurück zu dir – egal, wo du gerade stehst.“
