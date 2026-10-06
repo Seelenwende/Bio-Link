@@ -1,8 +1,8 @@
 # Bio-Link
 
 - `index.html` – Link-in-Bio-Seite von Seelenwende (siehe unten: Werkzeuge erst nach Mail-Adresse). Gruppen: Kostenlos starten · Für den Moment · Begleitung · Mehr. Die bezahlten Produkte verlinken auf ihre Angebotsseite, nicht direkt auf den Shop.
-- `start.html` – **Website** von Seelenwende: drei Phasen (Noch drin · Im Gehen · Danach), alle kostenlosen Werkzeuge, alle Angebote nach Stufe, Haltung, Sicherheit, Fragen.
-- `angebot-*.html` – **Salespages**: `angebot-mira`, `angebot-antwort-helfer` (Erste-Hilfe-Set), `angebot-kompass`, `angebot-tagebuch`, `angebot-programm`, `angebot-kreis`, `angebot-bundle` (inkl. „Du bist genug“ einzeln).
+- `start.html` – **Website** von Seelenwende. Reihenfolge für Vertrauen vor Kauf: Bild-Held → Erkennen (Muster zum Antippen) → Über mich (Foto, Geschichte, Zahlen) → Laufband → Phasen-Wegweiser → Angebote nach Phase → Kostenlos → Sicherheit → Fragen. Bisher: drei Phasen (Noch drin · Im Gehen · Danach), alle kostenlosen Werkzeuge, alle Angebote nach Stufe, Haltung, Sicherheit, Fragen.
+- `angebot-*.html` – **Salespages**: `angebot-mira`, `angebot-antwort-helfer` (Erste-Hilfe-Set), `angebot-werte` (Stufe 2), `angebot-kompass` (Stufe 3), `angebot-tagebuch`, `angebot-programm`, `angebot-kreis`, `angebot-bundle` (inkl. „Du bist genug“ einzeln).
 - `ueber-mich.html` – **Über mich**: Geschichte (über 15 Jahre in der Beziehung, letztes Jahr der Ausstieg), Weg als Zeitachse, Haltung. Kurzfassung auch auf `start.html`, je eine persönliche Notiz auf jeder Salespage.
 - `assets/logo.svg` – Logo-Schmetterling als Vektor (Kopf, Bio-Link, Browser-Icon), nachgezeichnet nach `assets/logo-seelenwende.png` (Original mit Schriftzug). `assets/icons.svg` – Icon-Set (`<svg class="ic"><use href="assets/icons.svg#herz"/></svg>`).
 - **Fotos:** `assets/ueber-mich.jpg` (Porträt 4:5, „Über mich“ und Startseite) und `assets/avatar.jpg` (quadratisch, persönliche Notizen auf den Salespages). Fehlt eine Datei, erscheint der Schmetterling.
@@ -124,10 +124,10 @@ Die drei Seiten laufen weiter komplett im Browser. Beim Öffnen fragt `assets/we
 | Variable | Inhalt |
 |---|---|
 | `RADAR_CODES` | Codes für den Red-Flag-Radar (9 €), kommagetrennt |
-| `WERTE_CODES` | Codes nur für den Werte-Finder (9 €). Kompass-Codes (`KOMPASS_CODES`) öffnen ihn ebenfalls (Paket 24 €). |
+| `WERTE_CODES` | Codes für den Werte-Finder (9 €). Werte-Finder und Kompass sind getrennte Stufen, ein Kompass-Code öffnet den Werte-Finder nicht. |
 | `SANFT_CODES` | Codes für „Sei sanft mit dir“ (7 €) – auch den Code für Bundle-Käuferinnen hier eintragen |
 
-Kreis- und Programm-Codes öffnen alle drei. Salespages: `angebot-radar.html`, `angebot-sanft.html`, Werte-Finder auf `angebot-kompass.html`.
+Kreis- und Programm-Codes öffnen alle drei. Salespages: `angebot-radar.html`, `angebot-sanft.html`, `angebot-werte.html`.
 
 ## Bio-Link: Werkzeuge erst nach Mail-Adresse
 
@@ -166,4 +166,4 @@ Alle Codes aus `BEGLEITERIN_CODES` und `PROGRAMM_CODES` gelten auch hier (mit ei
 
 ## Bildnachweis
 
-Stimmungsfotos in `assets/bilder/` von [Pexels](https://www.pexels.com) (Pexels-Lizenz: kostenlos, auch kommerziell, ohne Namensnennung). Foto-IDs: `antwort-nachricht` 7341894 · `start-fenster` 11012771 · `kreis-lesen` 5358916 · `bundle-blumen` 545018 · `abschluss-weite` und `band-weite` 11727471 (Hintergrund der Abschluss-Bereiche und des Bild-Bands) · Kartenbilder in `karten/`: Planer 7365452, Journal 6913375, sonst wie oben. Original: `https://www.pexels.com/photo/<ID>/`. Die Bilder liegen auf der eigenen Seite, damit keine Besucherdaten an Dritte gehen.
+Stimmungsfotos in `assets/bilder/` von [Pexels](https://www.pexels.com) (Pexels-Lizenz: kostenlos, auch kommerziell, ohne Namensnennung). Foto-IDs: `antwort-nachricht` 7341894 · `start-fenster` 11012771 · `kreis-lesen` 5358916 · `bundle-blumen` 545018 · `abschluss-weite` und `band-weite` 11727471 (Hintergrund der Abschluss-Bereiche und des Bild-Bands) · Kartenbilder in `karten/`: Planer 7365452, Journal 6913375, Werte-Finder 36511421, sonst wie oben · `held-freiheit` 847483 (Hintergrund oben auf der Startseite) · `werte-tee` 36511421. Original: `https://www.pexels.com/photo/<ID>/`. Die Bilder liegen auf der eigenen Seite, damit keine Besucherdaten an Dritte gehen.

@@ -1,18 +1,17 @@
 import type { Config, Context } from "@netlify/functions";
 import { isCodeInList } from "../lib/codes.mts";
 import { json } from "../lib/common.mts";
-import { isValidKompassCode } from "../lib/kompass.mts";
 import { resolveAccess } from "../lib/zugang.mts";
 
 /* Freischaltung der bezahlten Browser-Werkzeuge (Red-Flag-Radar, Werte-Finder, Sei sanft mit dir).
    Es wird nur geprüft, ob der Code gilt; gespeichert wird nichts.
    - Eigene Codes je Werkzeug: RADAR_CODES, WERTE_CODES, SANFT_CODES
    - Kreis- und Programm-Codes öffnen alle drei („alle Werkzeuge inklusive“)
-   - Kompass-Codes öffnen den Werte-Finder (Paket Werte-Finder + Kompass) */
-const WERKZEUGE: Record<string, { env: string; kompass: boolean }> = {
-  radar: { env: "RADAR_CODES", kompass: false },
-  werte: { env: "WERTE_CODES", kompass: true },
-  sanft: { env: "SANFT_CODES", kompass: false },
+   Werte-Finder (Stufe 2) und Kompass (Stufe 3) sind getrennte Produkte, kein Code öffnet beide. */
+const WERKZEUGE: Record<string, { env: string }> = {
+  radar: { env: "RADAR_CODES" },
+  werte: { env: "WERTE_CODES" },
+  sanft: { env: "SANFT_CODES" },
 };
 
 export default async (req: Request, _context: Context) => {
@@ -22,7 +21,7 @@ export default async (req: Request, _context: Context) => {
   if (!werkzeug) return json({ error: "Unbekanntes Werkzeug." }, 400);
 
   const code = body?.code;
-  let ok = isCodeInList(werkzeug.env, code) || (werkzeug.kompass && isValidKompassCode(code));
+  let ok = isCodeInList(werkzeug.env, code);
   if (!ok) {
     const plan = (await resolveAccess(code))?.plan;
     ok = plan === "kreis" || plan === "programm";

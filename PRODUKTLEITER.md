@@ -15,8 +15,8 @@ Viele Frauen wissen selbst nicht, in welcher Phase sie sind. Darum gilt: **Die E
 | Stufe | Ihre Frage | Produkte |
 |---|---|---|
 | Erkennen | „Was ist hier los?“ | Muster-Check, Glaubenssätze-Test, Ausstiegs-Planer, Mini-Guide – **gratis** (je Phase ein Einstieg, Sicherheit immer gratis) |
-| Kleine Werkzeuge | „Was hilft mir genau hier?“ | Red-Flag-Radar (9 €), Werte-Finder (9 €, im Kompass-Paket), Sei sanft mit dir (7 €, Bonus im Bundle), Self Care Journal (9 €) |
-| Werkzeug | „Was mache ich jetzt, in diesem Moment?“ | No-Contact-Kit, Grenz-Sätze, Klartext, Anker-Set, Erste-Hilfe-Set, Werte-Finder + Neuer-Satz-Kompass (24 €) |
+| Kleine Werkzeuge | „Was hilft mir genau hier?“ | Red-Flag-Radar (9 €), Werte-Finder (9 €, Stufe 2 vor dem Kompass), Sei sanft mit dir (7 €, Bonus im Bundle), Self Care Journal (9 €) |
+| Werkzeug | „Was mache ich jetzt, in diesem Moment?“ | No-Contact-Kit, Grenz-Sätze, Klartext, Anker-Set, Erste-Hilfe-Set, Neuer-Satz-Kompass (19 €) |
 | Wissen | „Warum fühle ich mich so klein?“ | Du bist genug, Bundle |
 | Weg | „Wie komme ich wirklich zu mir zurück?“ | „Wieder bei dir“, 6 Wochen |
 | Bleiben | „Wie halte ich das?“ | Seelenwende Kreis |
@@ -38,7 +38,9 @@ Viele Frauen wissen selbst nicht, in welcher Phase sie sind. Darum gilt: **Die E
 
 ## Gratis bewusst knapp (Oktober 2026)
 
-Nur noch vier Gratis-Einstiege: Muster-Check (noch drin), Ausstiegs-Planer und Mini-Guide (im Gehen), Glaubenssätze-Test (danach). Dazu später der Mira-Schnupper-Code. Alles andere hat einen kleinen Preis, weil zu viel Gratis unglaubwürdig wirkt und wer einmal 7–9 € ausgibt, eher auch das Programm kauft. Kreis- und Programm-Codes öffnen alle kleinen Werkzeuge („alle Werkzeuge inklusive“), Kompass-Codes zusätzlich den Werte-Finder.
+Nur noch vier Gratis-Einstiege: Muster-Check (noch drin), Ausstiegs-Planer und Mini-Guide (im Gehen), Glaubenssätze-Test (danach). Dazu später der Mira-Schnupper-Code. Alles andere hat einen kleinen Preis, weil zu viel Gratis unglaubwürdig wirkt und wer einmal 7–9 € ausgibt, eher auch das Programm kauft. Kreis- und Programm-Codes öffnen alle kleinen Werkzeuge („alle Werkzeuge inklusive“).
+
+**Keine doppelten Produkte, sondern Stufen:** Glaubenssätze-Test (gratis) → Werte-Finder (9 €) → Neuer-Satz-Kompass (19 €). Jede Stufe übernimmt das Ergebnis der vorherigen, keine enthält eine andere. Beide Salespages zeigen eine Stufenleiste.
 
 ## Phasen-Wegweiser
 
@@ -48,7 +50,7 @@ Startseite (`start.html#phasen`) und Bio-Link fragen zuerst „Wo stehst du gera
 |---|---|---|---|
 | Noch drin | Muster-Check | Mira (oder Klarheits-Tagebuch) | Bundle |
 | Im Gehen | Ausstiegs-Planer (oder Mini-Guide) | Erste-Hilfe-Set (oder Mira) | „Wieder bei dir“ |
-| Danach | Glaubenssätze-Test | Werte-Finder + Kompass (oder Red-Flag-Radar) | „Wieder bei dir“ (oder Kreis) |
+| Danach | Glaubenssätze-Test | Werte-Finder, dann Kompass (oder Red-Flag-Radar) | „Wieder bei dir“ (oder Kreis) |
 | Weiß nicht | Muster-Check | Mira | Kreis |
 
 Direkt verlinkbar: `start.html#drin`, `#gehen`, `#draussen`, `#unsicher`.

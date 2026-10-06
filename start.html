@@ -16,13 +16,15 @@
 <header id="kopf"></header>
 
 <main>
-  <section class="held split">
+  <section class="held held-bild">
+    <div class="held-hintergrund" aria-hidden="true"><img src="assets/bilder/held-freiheit.jpg" alt="" width="2000" height="1100" fetchpriority="high"></div>
     <div class="innen">
       <div class="text-seite">
         <span class="ueber">Hilfe bei toxischen &amp; narzisstischen Beziehungen</span>
-        <h1>Raus aus der toxischen Beziehung. Zurück zu dir.</h1>
-        <p class="unterzeile">Für Frauen, die in einer narzisstischen Beziehung kleiner geworden sind, als sie sind. Von einer Frau, die selbst über 15 Jahre in einer war.</p>
-        <p class="text">Ob du noch in der Beziehung bist und an dir zweifelst, gerade die Trennung planst oder schon getrennt bist und dich wiederfinden willst: Hier bekommst du Klarheit, einen sicheren Weg hinaus und Begleitung danach. Diskret, in deinem Tempo, ohne Urteil.</p>
+        <h1>Raus aus der toxischen Beziehung. <span class="akzent">Zurück zu dir.</span></h1>
+        <p class="unterzeile">Für Frauen, die in einer narzisstischen Beziehung kleiner geworden sind, als sie sind.</p>
+        <p class="wechsel">Du bist nicht <span class="wechsel-wort" data-woerter="verrückt.|zu empfindlich.|schuld.|allein.">verrückt.</span></p>
+        <p class="text">Ob du noch in der Beziehung bist, gerade die Trennung planst oder schon getrennt bist: Hier bekommst du Klarheit, einen sicheren Weg hinaus und Begleitung danach. Von einer Frau, die all das selbst erlebt hat.</p>
         <div class="knopf-reihe">
           <a class="knopf" href="#phasen">Wo stehe ich gerade?</a>
           <a class="knopf leicht" href="#werkzeuge">Kostenlos starten</a>
@@ -32,12 +34,8 @@
           <span><svg class="ic"><use href="assets/icons.svg#schloss"/></svg>Bleibt auf deinem Gerät</span>
         </div>
       </div>
-      <div class="bild-seite">
-        <div class="foto-buehne quadrat">
-          <div class="foto"><img src="assets/bilder/ich-portrait.jpg" alt="Die Gründerin von Seelenwende" width="900" height="900"></div>
-        </div>
-      </div>
     </div>
+    <a class="scroll-hinweis" href="#erkennen" aria-label="Weiter nach unten"><span></span></a>
   </section>
 
   <div class="vertrauen">
@@ -74,6 +72,36 @@
     </div>
   </section>
 
+  <!-- Über mich: Vertrauen, bevor es um Angebote geht -->
+  <section class="abschnitt sand" id="ueber">
+    <div class="innen">
+      <div class="ueber-mich">
+        <div class="foto-buehne quadrat">
+          <div class="foto"><img src="assets/bilder/ich-portrait.jpg" alt="Die Gründerin von Seelenwende" width="900" height="900" loading="lazy"></div>
+        </div>
+        <div>
+          <span class="ueber">Über mich · Wer hier zu dir spricht</span>
+          <h2>Ich weiß, wovon ich spreche. Ich war über 15 Jahre in einer narzisstischen Beziehung.</h2>
+          <div class="brief">
+            <p>Ich kenne das Zweifeln, das Erklären, das Funktionieren. Die Nächte, in denen der Kopf nicht aufhört. Die Hoffnung, dass es wieder so wird wie am Anfang. Und die leise Stimme, die sagt: <em>Vielleicht übertreibe ich ja.</em></p>
+            <p>Letztes Jahr habe ich den Ausstieg gefunden. Alles, was du hier findest, ist aus dem entstanden, was mir selbst geholfen hat, und aus dem, was ich mir damals gewünscht hätte.</p>
+          </div>
+          <ul class="zahlen">
+            <li><b><span data-zaehlen="15">15</span>+</b><span>Jahre selbst erlebt</span></li>
+            <li><b><span data-zaehlen="3">3</span></b><span>Phasen selbst durchlebt: in der Beziehung, die Trennung, das Heilen</span></li>
+            <li><b><span data-zaehlen="100">100</span> %</b><span>diskret, deine Daten bleiben bei dir</span></li>
+          </ul>
+          <div class="knopf-reihe" style="margin-top:24px">
+            <a class="knopf" href="ueber-mich.html">Meine ganze Geschichte</a>
+            <a class="knopf leicht" href="#phasen">Wo stehe ich?</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="laufband" aria-hidden="true"><div class="laufband-spur"><span>Du bist nicht verrückt</span><i></i><span>Du bist nicht zu empfindlich</span><i></i><span>Du bist nicht schuld</span><i></i><span>Du darfst gehen</span><i></i><span>Du darfst heilen</span><i></i><span>Du bist genug</span><i></i><span>Du bist nicht verrückt</span><i></i><span>Du bist nicht zu empfindlich</span><i></i><span>Du bist nicht schuld</span><i></i><span>Du darfst gehen</span><i></i><span>Du darfst heilen</span><i></i><span>Du bist genug</span><i></i></div></div>
+
   <section class="abschnitt blush" id="phasen">
     <div class="innen">
       <div class="bild-text">
@@ -83,14 +111,14 @@
           <h2>Wo stehst du in deiner toxischen Beziehung?</h2>
           <p class="einleitung">Wähle, was sich am meisten nach dir anfühlt. Du bekommst drei Schritte: einen kostenlosen Einstieg, etwas für jetzt und deinen nächsten Schritt.</p>
           <div class="phasen-tabs" role="tablist" aria-label="Deine Phase"><button type="button" role="tab" id="tab-drin" aria-controls="panel-drin" aria-selected="true">Ich bin noch in der Beziehung</button><button type="button" role="tab" id="tab-gehen" aria-controls="panel-gehen" aria-selected="false">Ich will mich trennen</button><button type="button" role="tab" id="tab-draussen" aria-controls="panel-draussen" aria-selected="false">Ich habe mich getrennt</button><button type="button" role="tab" id="tab-unsicher" aria-controls="panel-unsicher" aria-selected="false">Ich bin unsicher</button></div>
-          <div class="phase-panel" role="tabpanel" id="panel-drin" aria-labelledby="tab-drin"><p class="phase-frage">„Ist das noch normal, oder ist meine Beziehung toxisch?“</p><p class="leise">Er wertet dich ab, verdreht, was passiert ist, und gibt dir die Schuld. Und du fragst dich, ob du übertreibst.</p><ol class="schritt-liste"><li class="schritt-karte gratis"><span class="stufe">Kostenlos starten</span><a class="schritt-link" href="#phasen" data-ziel="muster-check.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#auge"/></svg></span><span class="schritt-text"><b>Muster-Check</b><span>20 Alltagssituationen zeigen, ob sich ein Muster wiederholt.</span></span><span class="schritt-preis">Kostenlos</span></a></li><li class="schritt-karte"><span class="stufe">Für jetzt</span><a class="schritt-link" href="angebot-mira.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#chat"/></svg></span><span class="schritt-text"><b>Mira, deine Begleiterin</b><span>Jemand zum Reden, auch um drei Uhr nachts.</span></span><span class="schritt-preis">19 €</span></a><span class="oder">oder <a href="angebot-tagebuch.html">Klarheits-Tagebuch · 14 €</a></span></li><li class="schritt-karte"><span class="stufe">Dein nächster Schritt</span><a class="schritt-link" href="angebot-bundle.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#buch"/></svg></span><span class="schritt-text"><b>Das Bundle – Zurück zu dir</b><span>E-Book, Vision Board, Journal und „Sei sanft mit dir“.</span></span><span class="schritt-preis">49 €</span></a></li></ol></div><div class="phase-panel" role="tabpanel" id="panel-gehen" aria-labelledby="tab-gehen" hidden><p class="phase-frage">„Wie trenne ich mich, ohne dass es gefährlich wird?“</p><p class="leise">Du willst aus der narzisstischen Beziehung raus. Jetzt brauchst du einen sicheren Plan und Rückhalt, wenn er Druck macht.</p><ol class="schritt-liste"><li class="schritt-karte gratis"><span class="stufe">Kostenlos starten</span><a class="schritt-link" href="planer.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#tuer"/></svg></span><span class="schritt-text"><b>Ausstiegs-Planer</b><span>Dein Sicherheitsplan mit Beratungsstellen für CH, DE und AT.</span></span><span class="schritt-preis">Kostenlos</span></a><span class="oder">oder <a href="#phasen" data-ziel="https://seelenwende.mytentary.com/p/WPedba">Mini-Guide „Der Weg nach draußen“</a></span></li><li class="schritt-karte"><span class="stufe">Für jetzt</span><a class="schritt-link" href="angebot-antwort-helfer.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#nachricht"/></svg></span><span class="schritt-text"><b>Erste-Hilfe-Set</b><span>Seine Nachrichten ruhig einordnen und sachlich antworten.</span></span><span class="schritt-preis">19 €</span></a><span class="oder">oder <a href="angebot-mira.html">Mira · 19 €</a></span></li><li class="schritt-karte"><span class="stufe">Dein nächster Schritt</span><a class="schritt-link" href="angebot-programm.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#blatt"/></svg></span><span class="schritt-text"><b>„Wieder bei dir“ – 6 Wochen</b><span>Vom Ankommen bis zu dir selbst, mit Mira, Begleitheft und Audios.</span></span><span class="schritt-preis">149 €</span></a></li></ol></div><div class="phase-panel" role="tabpanel" id="panel-draussen" aria-labelledby="tab-draussen" hidden><p class="phase-frage">„Ich bin raus. Warum geht es mir trotzdem nicht gut?“</p><p class="leise">Du hast dich getrennt, aber er ist noch in deinem Kopf: Vermissen, Schuldgefühle, Selbstzweifel. Jetzt geht es um dich.</p><ol class="schritt-liste"><li class="schritt-karte gratis"><span class="stufe">Kostenlos starten</span><a class="schritt-link" href="#phasen" data-ziel="glaubenssaetze.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#chat"/></svg></span><span class="schritt-text"><b>Glaubenssätze-Test</b><span>Welcher alte Satz ist in dir am lautesten?</span></span><span class="schritt-preis">Kostenlos</span></a></li><li class="schritt-karte"><span class="stufe">Für jetzt</span><a class="schritt-link" href="angebot-kompass.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#kompass"/></svg></span><span class="schritt-text"><b>Werte-Finder + Kompass</b><span>Vom alten Satz über deine Werte zum neuen Satz, in 30 Tagen.</span></span><span class="schritt-preis">24 €</span></a><span class="oder">oder <a href="angebot-radar.html">Red-Flag-Radar · 9 €</a></span></li><li class="schritt-karte"><span class="stufe">Dein nächster Schritt</span><a class="schritt-link" href="angebot-programm.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#blatt"/></svg></span><span class="schritt-text"><b>„Wieder bei dir“ – 6 Wochen</b><span>Sechs Wochen, in denen es um dich geht. Nicht um ihn.</span></span><span class="schritt-preis">149 €</span></a><span class="oder">oder <a href="angebot-kreis.html">Seelenwende Kreis · 19 €/Monat</a></span></li></ol></div><div class="phase-panel" role="tabpanel" id="panel-unsicher" aria-labelledby="tab-unsicher" hidden><p class="phase-frage">„Ich weiß nicht, ob das, was ich erlebe, toxisch ist.“</p><p class="leise">Das geht vielen Frauen so, gerade weil toxische Beziehungen so verwirrend sind. Du musst es nicht wissen, um anzufangen.</p><ol class="schritt-liste"><li class="schritt-karte gratis"><span class="stufe">Kostenlos starten</span><a class="schritt-link" href="#phasen" data-ziel="muster-check.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#auge"/></svg></span><span class="schritt-text"><b>Muster-Check</b><span>Fünf Minuten, die dir zeigen, was gerade los ist.</span></span><span class="schritt-preis">Kostenlos</span></a></li><li class="schritt-karte"><span class="stufe">Für jetzt</span><a class="schritt-link" href="angebot-mira.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#chat"/></svg></span><span class="schritt-text"><b>Mira, deine Begleiterin</b><span>Schreib einfach los. Mira erkennt, was du brauchst.</span></span><span class="schritt-preis">19 €</span></a></li><li class="schritt-karte"><span class="stufe">Dein nächster Schritt</span><a class="schritt-link" href="angebot-kreis.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#kreis"/></svg></span><span class="schritt-text"><b>Seelenwende Kreis</b><span>Für jede Phase: ein Thema pro Monat, Mira inklusive.</span></span><span class="schritt-preis">19 €/Mt.</span></a></li></ol></div>
+          <div class="phase-panel" role="tabpanel" id="panel-drin" aria-labelledby="tab-drin"><p class="phase-frage">„Ist das noch normal, oder ist meine Beziehung toxisch?“</p><p class="leise">Er wertet dich ab, verdreht, was passiert ist, und gibt dir die Schuld. Und du fragst dich, ob du übertreibst.</p><ol class="schritt-liste"><li class="schritt-karte gratis"><span class="stufe">Kostenlos starten</span><a class="schritt-link" href="#phasen" data-ziel="muster-check.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#auge"/></svg></span><span class="schritt-text"><b>Muster-Check</b><span>20 Alltagssituationen zeigen, ob sich ein Muster wiederholt.</span></span><span class="schritt-preis">Kostenlos</span></a></li><li class="schritt-karte"><span class="stufe">Für jetzt</span><a class="schritt-link" href="angebot-mira.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#chat"/></svg></span><span class="schritt-text"><b>Mira, deine Begleiterin</b><span>Jemand zum Reden, auch um drei Uhr nachts.</span></span><span class="schritt-preis">19 €</span></a><span class="oder">oder <a href="angebot-tagebuch.html">Klarheits-Tagebuch · 14 €</a></span></li><li class="schritt-karte"><span class="stufe">Dein nächster Schritt</span><a class="schritt-link" href="angebot-bundle.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#buch"/></svg></span><span class="schritt-text"><b>Das Bundle – Zurück zu dir</b><span>E-Book, Vision Board, Journal und „Sei sanft mit dir“.</span></span><span class="schritt-preis">49 €</span></a></li></ol></div><div class="phase-panel" role="tabpanel" id="panel-gehen" aria-labelledby="tab-gehen" hidden><p class="phase-frage">„Wie trenne ich mich, ohne dass es gefährlich wird?“</p><p class="leise">Du willst aus der narzisstischen Beziehung raus. Jetzt brauchst du einen sicheren Plan und Rückhalt, wenn er Druck macht.</p><ol class="schritt-liste"><li class="schritt-karte gratis"><span class="stufe">Kostenlos starten</span><a class="schritt-link" href="planer.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#tuer"/></svg></span><span class="schritt-text"><b>Ausstiegs-Planer</b><span>Dein Sicherheitsplan mit Beratungsstellen für CH, DE und AT.</span></span><span class="schritt-preis">Kostenlos</span></a><span class="oder">oder <a href="#phasen" data-ziel="https://seelenwende.mytentary.com/p/WPedba">Mini-Guide „Der Weg nach draußen“</a></span></li><li class="schritt-karte"><span class="stufe">Für jetzt</span><a class="schritt-link" href="angebot-antwort-helfer.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#nachricht"/></svg></span><span class="schritt-text"><b>Erste-Hilfe-Set</b><span>Seine Nachrichten ruhig einordnen und sachlich antworten.</span></span><span class="schritt-preis">19 €</span></a><span class="oder">oder <a href="angebot-mira.html">Mira · 19 €</a></span></li><li class="schritt-karte"><span class="stufe">Dein nächster Schritt</span><a class="schritt-link" href="angebot-programm.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#blatt"/></svg></span><span class="schritt-text"><b>„Wieder bei dir“ – 6 Wochen</b><span>Vom Ankommen bis zu dir selbst, mit Mira, Begleitheft und Audios.</span></span><span class="schritt-preis">149 €</span></a></li></ol></div><div class="phase-panel" role="tabpanel" id="panel-draussen" aria-labelledby="tab-draussen" hidden><p class="phase-frage">„Ich bin raus. Warum geht es mir trotzdem nicht gut?“</p><p class="leise">Du hast dich getrennt, aber er ist noch in deinem Kopf: Vermissen, Schuldgefühle, Selbstzweifel. Jetzt geht es um dich.</p><ol class="schritt-liste"><li class="schritt-karte gratis"><span class="stufe">Kostenlos starten</span><a class="schritt-link" href="#phasen" data-ziel="glaubenssaetze.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#chat"/></svg></span><span class="schritt-text"><b>Glaubenssätze-Test</b><span>Welcher alte Satz ist in dir am lautesten?</span></span><span class="schritt-preis">Kostenlos</span></a></li><li class="schritt-karte"><span class="stufe">Für jetzt</span><a class="schritt-link" href="angebot-werte.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#kompass"/></svg></span><span class="schritt-text"><b>Werte-Finder</b><span>Was ist dir wichtig? Danach führt der Kompass in 30 Tagen zum neuen Satz (19 €).</span></span><span class="schritt-preis">9 €</span></a><span class="oder">oder <a href="angebot-radar.html">Red-Flag-Radar · 9 €</a></span></li><li class="schritt-karte"><span class="stufe">Dein nächster Schritt</span><a class="schritt-link" href="angebot-programm.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#blatt"/></svg></span><span class="schritt-text"><b>„Wieder bei dir“ – 6 Wochen</b><span>Sechs Wochen, in denen es um dich geht. Nicht um ihn.</span></span><span class="schritt-preis">149 €</span></a><span class="oder">oder <a href="angebot-kreis.html">Seelenwende Kreis · 19 €/Monat</a></span></li></ol></div><div class="phase-panel" role="tabpanel" id="panel-unsicher" aria-labelledby="tab-unsicher" hidden><p class="phase-frage">„Ich weiß nicht, ob das, was ich erlebe, toxisch ist.“</p><p class="leise">Das geht vielen Frauen so, gerade weil toxische Beziehungen so verwirrend sind. Du musst es nicht wissen, um anzufangen.</p><ol class="schritt-liste"><li class="schritt-karte gratis"><span class="stufe">Kostenlos starten</span><a class="schritt-link" href="#phasen" data-ziel="muster-check.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#auge"/></svg></span><span class="schritt-text"><b>Muster-Check</b><span>Fünf Minuten, die dir zeigen, was gerade los ist.</span></span><span class="schritt-preis">Kostenlos</span></a></li><li class="schritt-karte"><span class="stufe">Für jetzt</span><a class="schritt-link" href="angebot-mira.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#chat"/></svg></span><span class="schritt-text"><b>Mira, deine Begleiterin</b><span>Schreib einfach los. Mira erkennt, was du brauchst.</span></span><span class="schritt-preis">19 €</span></a></li><li class="schritt-karte"><span class="stufe">Dein nächster Schritt</span><a class="schritt-link" href="angebot-kreis.html"><span class="ic-rund"><svg class="ic"><use href="assets/icons.svg#kreis"/></svg></span><span class="schritt-text"><b>Seelenwende Kreis</b><span>Für jede Phase: ein Thema pro Monat, Mira inklusive.</span></span><span class="schritt-preis">19 €/Mt.</span></a></li></ol></div>
         </div>
       </div>
     </div>
   </section>
 
   <!-- Alle Angebote mit Preis und Kaufknopf -->
-  <section class="abschnitt sand" id="angebote">
+  <section class="abschnitt" id="angebote">
     <div class="innen">
       <span class="ueber">Angebote</span>
       <h2>Alle Angebote, nach deiner Phase sortiert.</h2>
@@ -160,7 +188,7 @@
       </div>
 
       <div class="angebots-gruppe">
-        <div class="gruppen-kopf"><span class="gruppen-nr">3</span><div><h3>Nach der Trennung</h3><p>Heilen, alte Sätze loslassen und neu vertrauen.</p></div></div>
+        <div class="gruppen-kopf"><span class="gruppen-nr">3</span><div><h3>Nach der Trennung</h3><p>Heilen, alte Sätze loslassen und neu vertrauen. Test, Werte-Finder und Kompass bauen aufeinander auf.</p></div></div>
         <div class="angebote">
         <article class="angebot top">
           <div class="vorschau foto"><img src="assets/bilder/karten/programm.jpg" alt="" width="720" height="450" loading="lazy"><span class="badge">Herzstück</span><span class="vorschau-ic"><svg class="ic"><use href="assets/icons.svg#blatt"/></svg></span></div>
@@ -176,16 +204,29 @@
           </div>
         </article>
         <article class="angebot">
-          <div class="vorschau foto"><img src="assets/bilder/karten/kompass.jpg" alt="" width="720" height="450" loading="lazy"><span class="badge leise">30 Tage</span><span class="vorschau-ic"><svg class="ic"><use href="assets/icons.svg#kompass"/></svg></span></div>
+          <div class="vorschau foto"><img src="assets/bilder/karten/werte.jpg" alt="" width="720" height="450" loading="lazy"><span class="badge leise">Stufe 2 · 10 Minuten</span><span class="vorschau-ic"><svg class="ic"><use href="assets/icons.svg#kompass"/></svg></span></div>
+          <div class="koerper">
+            <span class="frage">„Wer bin ich ohne ihn?“</span>
+            <h3>Werte-Finder</h3>
+            <ul>
+              <li><svg class="ic"><use href="assets/icons.svg#haken"/></svg>Deine fünf Kernwerte, in deinen Worten</li>
+              <li><svg class="ic"><use href="assets/icons.svg#haken"/></svg>Baut auf dem Glaubenssätze-Test auf</li>
+              <li><svg class="ic"><use href="assets/icons.svg#haken"/></svg>Wird im Kompass übernommen</li>
+            </ul>
+            <div class="fuss-zeile"><span class="preis">9 € <small>einmalig</small></span><a class="knopf" href="angebot-werte.html">Ansehen</a></div>
+          </div>
+        </article>
+        <article class="angebot">
+          <div class="vorschau foto"><img src="assets/bilder/karten/kompass.jpg" alt="" width="720" height="450" loading="lazy"><span class="badge leise">Stufe 3 · 30 Tage</span><span class="vorschau-ic"><svg class="ic"><use href="assets/icons.svg#stern"/></svg></span></div>
           <div class="koerper">
             <span class="frage">„Wie werde ich die alten Sätze los?“</span>
-            <h3>Werte-Finder + Kompass</h3>
+            <h3>Neuer-Satz-Kompass</h3>
             <ul>
-              <li><svg class="ic"><use href="assets/icons.svg#haken"/></svg>Deine fünf Kernwerte finden</li>
               <li><svg class="ic"><use href="assets/icons.svg#haken"/></svg>30 Tage, 5 Minuten pro Tag</li>
-              <li><svg class="ic"><use href="assets/icons.svg#haken"/></svg>Werte-Finder einzeln 9 €</li>
+              <li><svg class="ic"><use href="assets/icons.svg#haken"/></svg>Mit deinem Satz und deinen Werten</li>
+              <li><svg class="ic"><use href="assets/icons.svg#haken"/></svg>Kein Abo</li>
             </ul>
-            <div class="fuss-zeile"><span class="preis">24 € <small>einmalig</small></span><a class="knopf" href="angebot-kompass.html">Ansehen</a></div>
+            <div class="fuss-zeile"><span class="preis">19 € <small>einmalig</small></span><a class="knopf" href="angebot-kompass.html">Ansehen</a></div>
           </div>
         </article>
         <article class="angebot">
@@ -277,34 +318,13 @@
     </div>
   </section>
 
-  <!-- Über mich (Kurzfassung) -->
+
+
+  <!-- Atempause vor den kostenlosen Werkzeugen -->
   <section class="bild-band" aria-label="Du bist nicht allein">
     <blockquote>„Du bist nicht verrückt. Du bist nicht zu empfindlich. Und du bist nicht allein.“</blockquote>
-    <p>Über 15 Jahre habe ich selbst gebraucht, um das zu glauben. Du musst nicht so lange warten.</p>
-    <a class="knopf" href="ueber-mich.html">Meine Geschichte lesen</a>
-  </section>
-
-  <section class="abschnitt" id="ueber">
-    <div class="innen">
-      <div class="ueber-mich">
-        <figure class="zitat-karte">
-          <svg class="ic anfuehrung" aria-hidden="true"><use href="assets/icons.svg#chat"/></svg>
-          <blockquote>„Wenn du das hier liest, bist du vielleicht genau dort, wo ich so lange war. Du bist nicht verrückt. Und du bist nicht allein.“</blockquote>
-          <figcaption><img src="assets/avatar.jpg" alt="" width="56" height="56"><span><b>Gründerin von Seelenwende</b>15 Jahre selbst erlebt, letztes Jahr gegangen</span></figcaption>
-        </figure>
-        <div>
-          <span class="ueber">Über mich</span>
-          <h2>Ich war über 15 Jahre dort, wo du vielleicht gerade bist.</h2>
-          <div class="brief">
-            <p>Ich kenne das Zweifeln, das Erklären, das Funktionieren. Die Nächte, in denen der Kopf nicht aufhört. Die Hoffnung, dass es wieder so wird wie am Anfang. Und die leise Stimme, die sagt: <em>Vielleicht übertreibe ich ja.</em></p>
-            <p>Letztes Jahr habe ich den Ausstieg gefunden. Seelenwende ist das, was ich mir damals gewünscht hätte: jemand, der versteht, ohne zu urteilen. Und Werkzeuge, die mich schützen, statt mich zu verraten.</p>
-          </div>
-          <div class="knopf-reihe" style="margin-top:22px">
-            <a class="knopf leicht" href="ueber-mich.html">Meine ganze Geschichte</a>
-          </div>
-        </div>
-      </div>
-    </div>
+    <p>Über 15 Jahre habe ich gebraucht, um das zu glauben. Du musst nicht so lange warten.</p>
+    <a class="knopf" href="#werkzeuge">Kostenlos anfangen</a>
   </section>
 
   <!-- Kostenlose Werkzeuge -->

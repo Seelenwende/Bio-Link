@@ -935,3 +935,147 @@ h1, h2, h3{letter-spacing:-.015em;}
 /* Warteliste-Hinweis unter dem Knopf */
 .preisbox .warteliste{margin-top:-4px;}
 .angebot .warteliste{margin:6px 0 0; text-align:left;}
+
+/* Stufenleiste: Produkte bauen aufeinander auf */
+.stufenleiter{list-style:none; margin:28px 0 0; padding:0; display:grid; gap:16px; grid-template-columns:repeat(auto-fit, minmax(min(100%, 260px), 1fr)); position:relative; counter-reset:none;}
+.stufenleiter li{position:relative; display:flex; gap:14px; align-items:flex-start; background:var(--karte); border-radius:22px; padding:22px 20px; box-shadow:var(--s1); border:1px solid rgba(228,216,216,.6);}
+.stufenleiter li.aktiv{box-shadow:0 0 0 2px var(--beere), var(--s3);}
+.stufenleiter li.aktiv::after{content:"Du bist hier"; position:absolute; top:-11px; right:18px; font-size:.68rem; font-weight:500; letter-spacing:.12em; text-transform:uppercase; padding:3px 10px; border-radius:20px; background:var(--verlauf-beere); color:#fff;}
+.stufenleiter h3{font-size:1.15rem; margin:2px 0 4px;}
+.stufenleiter p{font-size:.92rem; color:var(--gedaempft);}
+.stufenleiter a{display:inline-block; margin-top:8px; font-weight:500; text-decoration:none;}
+.stufenleiter a::after{content:" →";}
+.stufenleiter .zeile{font-size:.74rem; letter-spacing:.12em; text-transform:uppercase; color:var(--rose);}
+.stufe-nr{width:42px; height:42px; flex-shrink:0; border-radius:14px; display:grid; place-items:center; background:var(--verlauf-beere); color:#fff; font-family:var(--serif); font-size:1.15rem; box-shadow:var(--s-knopf);}
+@media (min-width:860px){
+  .stufenleiter li:not(:last-child)::before{content:""; position:absolute; right:-14px; top:50%; width:12px; height:12px; border-top:2px solid var(--rose); border-right:2px solid var(--rose); transform:translateY(-50%) rotate(45deg); z-index:2;}
+}
+.stufen-hinweis{max-width:520px; margin:18px auto 0; display:flex; gap:14px; align-items:center; padding:16px 18px; border-radius:18px; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.18); color:#F3E4E7;}
+.stufen-hinweis p{font-size:.92rem; color:#EBD9DD;}
+.stufen-hinweis b{color:#fff; font-weight:500;}
+.stufen-hinweis a{color:#fff;}
+.stufen-hinweis .stufe-nr{background:#fff; color:#5C3A46;}
+
+/* =====================================================================
+   Dynamik: Bild-Held, Wechselwort, Laufband, Zahlen, Parallax, Tilt
+   ===================================================================== */
+/* Held mit Hintergrundbild (Startseite) */
+.held.held-bild{
+  position:relative; overflow:hidden; text-align:left; color:#fff;
+  min-height:clamp(560px, 88vh, 860px); display:flex; align-items:center; padding:110px 16px 140px; background:#3a2630;
+}
+.held.held-bild::before, .held.held-bild::after{display:none;}
+.held-hintergrund{position:absolute; inset:0; z-index:0;}
+.held-hintergrund img{width:100%; height:115%; object-fit:cover; object-position:62% 50%; will-change:transform; animation:kenburns 26s ease-in-out infinite alternate;}
+.held-hintergrund::after{
+  content:""; position:absolute; inset:0;
+  background:
+    linear-gradient(90deg, rgba(53,32,42,.92) 0%, rgba(74,45,56,.78) 36%, rgba(92,58,70,.25) 66%, rgba(92,58,70,.05) 100%),
+    linear-gradient(0deg, rgba(53,32,42,.55), transparent 40%);
+}
+@keyframes kenburns{from{transform:scale(1.02) translate3d(0,0,0);} to{transform:scale(1.12) translate3d(-1.5%, -2%, 0);}}
+.held.held-bild .innen{position:relative; z-index:1; max-width:var(--breit); width:100%; margin:0 auto;}
+.held.held-bild .text-seite{max-width:600px;}
+.held.held-bild .ueber{color:#F0D4DB;}
+.held.held-bild h1{color:#fff; font-size:clamp(2.3rem, 6.4vw, 3.9rem); margin-bottom:18px;}
+.held.held-bild h1 .akzent{display:block; font-style:italic; color:#F3C9D4;}
+.held.held-bild .unterzeile{color:#F6E4E9; font-size:clamp(1.08rem, 2.6vw, 1.3rem);}
+.held.held-bild .text{color:#EBD9DD; margin:0 0 26px;}
+.held.held-bild .knopf-reihe{justify-content:flex-start;}
+.held.held-bild .knopf{background:#fff; color:#5C3A46;}
+.held.held-bild .knopf.leicht{background:rgba(255,255,255,.12); color:#fff; border-color:rgba(255,255,255,.45); backdrop-filter:blur(6px);}
+.held.held-bild .mikro, .held.held-bild .mikro .ic{color:#EBD9DD;}
+.held.held-bild .innen > *{animation:none;}
+.held.held-bild .text-seite > *{animation:auftauchen .9s ease both;}
+.held.held-bild .text-seite > *:nth-child(2){animation-delay:.1s;}
+.held.held-bild .text-seite > *:nth-child(3){animation-delay:.2s;}
+.held.held-bild .text-seite > *:nth-child(4){animation-delay:.3s;}
+.held.held-bild .text-seite > *:nth-child(5){animation-delay:.4s;}
+.held.held-bild .text-seite > *:nth-child(6){animation-delay:.5s;}
+.held.held-bild .text-seite > *:nth-child(7){animation-delay:.6s;}
+@media (max-width:720px){
+  .held.held-bild{min-height:auto; padding:96px 16px 120px;}
+  .held-hintergrund img{object-position:70% 50%;}
+  .held-hintergrund::after{background:linear-gradient(180deg, rgba(53,32,42,.72) 0%, rgba(74,45,56,.86) 55%, rgba(53,32,42,.94) 100%);}
+}
+.held.held-bild + .vertrauen{margin-top:-60px; background:none;}
+
+/* Wechselndes Wort */
+.wechsel{font-family:var(--serif); font-size:clamp(1.3rem, 3.4vw, 1.75rem); color:#fff; margin:6px 0 16px; min-height:1.4em;}
+.wechsel-wort{display:inline-block; color:#F3C9D4; font-style:italic; transition:opacity .45s ease, transform .45s ease;}
+.wechsel-wort.raus{opacity:0; transform:translateY(-10px);}
+.wechsel-wort::after{content:""; display:inline-block; width:2px; height:.9em; margin-left:4px; background:#F3C9D4; vertical-align:-2px; animation:blinken 1s steps(1) infinite;}
+@keyframes blinken{50%{opacity:0;}}
+
+/* Scroll-Hinweis */
+.scroll-hinweis{position:absolute; z-index:2; left:50%; bottom:86px; transform:translateX(-50%); width:28px; height:44px; border:2px solid rgba(255,255,255,.6); border-radius:16px;}
+.scroll-hinweis span{position:absolute; left:50%; top:8px; width:4px; height:8px; margin-left:-2px; border-radius:2px; background:#fff; animation:scrollen 1.8s ease-in-out infinite;}
+@keyframes scrollen{0%{opacity:0; transform:translateY(0);} 30%{opacity:1;} 100%{opacity:0; transform:translateY(16px);}}
+@media (max-width:720px){ .scroll-hinweis{display:none;} }
+
+/* Zahlen im Über-mich-Teil */
+.zahlen{list-style:none; margin:24px 0 0; padding:0; display:grid; gap:12px; grid-template-columns:repeat(3, minmax(0,1fr));}
+.zahlen li{background:var(--karte); border-radius:18px; padding:16px 14px; box-shadow:var(--s1); display:grid; gap:4px; align-content:start;}
+.zahlen b{font-family:var(--serif); font-weight:500; font-size:2rem; line-height:1; color:var(--beere);}
+.zahlen li > span{font-size:.82rem; color:var(--gedaempft); line-height:1.4;}
+@media (max-width:520px){ .zahlen{grid-template-columns:1fr;} .zahlen li{grid-template-columns:auto 1fr; align-items:center; gap:14px;} }
+#ueber .foto-buehne.quadrat{margin:20px auto 30px;}
+
+/* Laufband */
+.laufband{overflow:hidden; background:var(--verlauf-beere); padding:18px 0; position:relative;}
+.laufband-spur{display:flex; align-items:center; gap:28px; width:max-content; animation:laufen 38s linear infinite;}
+.laufband span{font-family:var(--serif); font-style:italic; font-size:clamp(1.1rem, 2.6vw, 1.45rem); color:#fff; white-space:nowrap;}
+.laufband i{width:8px; height:8px; border-radius:50%; background:#F3C9D4; flex-shrink:0;}
+@keyframes laufen{from{transform:translateX(0);} to{transform:translateX(-50%);}}
+@media (hover:hover){ .laufband:hover .laufband-spur{animation-play-state:paused;} }
+
+/* Knöpfe: Glanz beim Darüberfahren */
+.knopf{position:relative; overflow:hidden; isolation:isolate;}
+.knopf::after{content:""; position:absolute; inset:0; z-index:-1; background:linear-gradient(110deg, transparent 30%, rgba(255,255,255,.35) 50%, transparent 70%); transform:translateX(-120%); transition:transform .7s ease;}
+@media (hover:hover){ .knopf:hover::after{transform:translateX(120%);} }
+
+/* Kopf wird beim Scrollen kompakter */
+.kopf .kopf-innen{transition:padding .3s ease;}
+.kopf.klein .kopf-innen{padding-top:6px; padding-bottom:6px;}
+.kopf.klein{box-shadow:0 8px 24px -16px rgba(74,45,56,.4);}
+
+/* Stimmungsfotos: Wisch-Einblendung und Parallax */
+.js-anim .stimmung.enthuellen{opacity:1; transform:none;}
+.js-anim .stimmung.enthuellen img{clip-path:inset(0 0 100% 0 round 28px); transition:clip-path 1.1s cubic-bezier(.2,.7,.1,1);}
+.js-anim .stimmung.enthuellen.da img{clip-path:inset(0 0 0 0 round 28px);}
+.js-anim .stimmung.enthuellen::before{transform:translate(-14px,-14px); opacity:0; transition:transform 1s ease .3s, opacity 1s ease .3s;}
+.js-anim .stimmung.enthuellen.da::before{transform:none; opacity:1;}
+.stimmung img, .foto-buehne .foto img{will-change:transform;}
+
+/* Seitlich einfliegen bei Bild-Text-Blöcken */
+.js-anim .bild-text .text.enthuellen{transform:translateX(30px);}
+.js-anim .bild-text .text.enthuellen.da{transform:none;}
+
+/* Handy-Mockups schweben, Chatblasen erscheinen nacheinander */
+.buehne .handy, .buehne .tablet{animation:schweben 6s ease-in-out infinite;}
+@keyframes schweben{0%,100%{transform:translateY(0);} 50%{transform:translateY(-10px);}}
+.buehne .blase, .buehne .mini-karte{animation:auftauchen .6s ease both;}
+.buehne .inhalt > *:nth-child(1){animation-delay:.5s;}
+.buehne .inhalt > *:nth-child(2){animation-delay:1.1s;}
+.buehne .inhalt > *:nth-child(3){animation-delay:1.7s;}
+.buehne .inhalt > *:nth-child(4){animation-delay:2.3s;}
+.beigabe{animation:schweben 7s ease-in-out infinite reverse;}
+
+/* Karten: leichte 3D-Neigung (per JS) */
+.angebot, .stufenleiter li{transform-style:preserve-3d; transition:transform .25s ease, box-shadow .25s ease;}
+
+/* Preisbox: Badge pulsiert sanft */
+.preisbox .badge{animation:pulsieren 2.8s ease-in-out infinite;}
+@keyframes pulsieren{0%,100%{box-shadow:0 0 0 0 rgba(140,90,105,.45);} 50%{box-shadow:0 0 0 8px rgba(140,90,105,0);}}
+
+/* Fragen: weiches Aufklappen */
+.fragen details p{animation:aufklappen .35s ease;}
+@keyframes aufklappen{from{opacity:0; transform:translateY(-6px);} to{opacity:1; transform:none;}}
+
+@media (prefers-reduced-motion: reduce){
+  .held-hintergrund img, .laufband-spur, .buehne .handy, .buehne .tablet, .beigabe, .preisbox .badge, .scroll-hinweis span, .wechsel-wort::after{animation:none !important;}
+  .js-anim .stimmung.enthuellen img{clip-path:none; transition:none;}
+}
+/* Gruppen mit genau vier Angeboten: vier Spalten statt 3 + 1 */
+@media (min-width:1000px){ .angebots-gruppe .angebote:has(> :nth-child(4):last-child){grid-template-columns:repeat(4, 1fr);} }
+@media (min-width:600px) and (max-width:999px){ .angebots-gruppe .angebote:has(> :nth-child(4):last-child){grid-template-columns:repeat(2, 1fr);} }

@@ -144,9 +144,9 @@
     }, { passive: true });
     if (ruhig || !("IntersectionObserver" in window)) return;
     document.documentElement.classList.add("js-anim");
-    var ziele = document.querySelectorAll(".abschnitt h2, .karte, .leistung, .angebot, .woche, .schritt-karte, .sicher, .zitat, .stimmung, .persoenlich, .preisbox, .fragen details, .zitat-karte, .gruppen-kopf, .bild-band blockquote");
+    var ziele = document.querySelectorAll(".abschnitt h2, .karte, .leistung, .angebot, .woche, .schritt-karte, .sicher, .zitat, .stimmung, .persoenlich, .preisbox, .fragen details, .zitat-karte, .gruppen-kopf, .bild-band blockquote, .bild-text .text, .zahlen li, .stufenleiter li, .foto-buehne, .muster-ergebnis, .zeitachse li");
     var io = new IntersectionObserver(function(eintraege){
-      eintraege.forEach(function(e){ if (e.isIntersecting) { e.target.classList.add("da"); io.unobserve(e.target); } });
+      eintraege.forEach(function(e){ if (e.isIntersecting) { var t = e.target; t.classList.add("da"); io.unobserve(t); setTimeout(function(){ t.style.transitionDelay = ""; }, 1300); } });
     }, { rootMargin: "0px 0px -8% 0px" });
     ziele.forEach(function(el){
       if (el.closest(".held")) return;
@@ -155,6 +155,83 @@
       el.classList.add("enthuellen");
       io.observe(el);
     });
+  })();
+
+
+  /* ---------- Mehr Bewegung: Wechselwort, Zahlen, Kopf, Parallax, Neigung ---------- */
+  (function(){
+    var ruhig = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // Kopf wird beim Scrollen kompakter
+    var kopfEl = document.getElementById("kopf");
+    var kopfTick = false;
+    window.addEventListener("scroll", function(){
+      if (kopfTick || !kopfEl) return; kopfTick = true;
+      requestAnimationFrame(function(){ kopfEl.classList.toggle("klein", scrollY > 40); kopfTick = false; });
+    }, { passive: true });
+
+    // Wechselndes Wort: <span class="wechsel-wort" data-woerter="a|b|c">
+    document.querySelectorAll("[data-woerter]").forEach(function(el){
+      var woerter = el.getAttribute("data-woerter").split("|"), i = 0;
+      if (ruhig || woerter.length < 2) return;
+      setInterval(function(){
+        el.classList.add("raus");
+        setTimeout(function(){ i = (i + 1) % woerter.length; el.textContent = woerter[i]; el.classList.remove("raus"); }, 450);
+      }, 2600);
+    });
+
+    // Zahlen hochzählen, sobald sie sichtbar werden: <span data-zaehlen="15">15</span>
+    var zahlen = document.querySelectorAll("[data-zaehlen]");
+    if (zahlen.length && !ruhig && "IntersectionObserver" in window) {
+      var zio = new IntersectionObserver(function(eintraege){
+        eintraege.forEach(function(e){
+          if (!e.isIntersecting) return;
+          zio.unobserve(e.target);
+          var el = e.target, ziel = Number(el.getAttribute("data-zaehlen")), start = null, dauer = 1400;
+          function schritt(t){
+            if (start === null) start = t;
+            var p = Math.min(1, (t - start) / dauer);
+            el.textContent = Math.round(ziel * (1 - Math.pow(1 - p, 3)));
+            if (p < 1) requestAnimationFrame(schritt);
+          }
+          el.textContent = "0";
+          requestAnimationFrame(schritt);
+        });
+      }, { threshold: .6 });
+      zahlen.forEach(function(z){ zio.observe(z); });
+    }
+
+    if (ruhig) return;
+
+    // Parallax: Hintergrund oben und Fotos bewegen sich leicht gegen die Scrollrichtung
+    var held = document.querySelector(".held-hintergrund");
+    var fotos = Array.prototype.slice.call(document.querySelectorAll(".stimmung img, .foto-buehne .foto img"));
+    var pTick = false;
+    function parallax(){
+      pTick = false;
+      var h = innerHeight;
+      if (held) held.style.transform = "translate3d(0," + Math.min(scrollY, h) * 0.25 + "px,0)";
+      fotos.forEach(function(img){
+        var r = img.getBoundingClientRect();
+        if (r.bottom < 0 || r.top > h) return;
+        var mitte = (r.top + r.height / 2 - h / 2) / h;
+        img.style.transform = "translate3d(0," + (mitte * -24).toFixed(1) + "px,0)";
+      });
+    }
+    window.addEventListener("scroll", function(){ if (!pTick) { pTick = true; requestAnimationFrame(parallax); } }, { passive: true });
+    parallax();
+
+    // Leichte 3D-Neigung der Angebotskarten bei Maus
+    if (window.matchMedia && matchMedia("(hover: hover) and (pointer: fine)").matches) {
+      document.querySelectorAll(".angebot, .stufenleiter li").forEach(function(k){
+        k.addEventListener("mousemove", function(e){
+          var r = k.getBoundingClientRect();
+          var x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+          k.style.transform = "perspective(900px) rotateX(" + (-y * 5).toFixed(2) + "deg) rotateY(" + (x * 6).toFixed(2) + "deg) translateY(-4px)";
+        });
+        k.addEventListener("mouseleave", function(){ k.style.transform = ""; });
+      });
+    }
   })();
 
   /* ---------- Mail-Fenster vor den kostenlosen Werkzeugen ---------- */
