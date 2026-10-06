@@ -1079,3 +1079,61 @@ h1, h2, h3{letter-spacing:-.015em;}
 /* Gruppen mit genau vier Angeboten: vier Spalten statt 3 + 1 */
 @media (min-width:1000px){ .angebots-gruppe .angebote:has(> :nth-child(4):last-child){grid-template-columns:repeat(4, 1fr);} }
 @media (min-width:600px) and (max-width:999px){ .angebots-gruppe .angebote:has(> :nth-child(4):last-child){grid-template-columns:repeat(2, 1fr);} }
+
+/* =====================================================================
+   Verläufe von Dunkelbeere zu Hell: dunkle Flächen laufen weich ins Helle aus
+   ===================================================================== */
+:root{
+  --verlauf-dunkel-hell:linear-gradient(180deg, #4A2D38 0%, #6E4152 38%, #9A6476 64%, #D9AEBB 84%, #FAF6F4 100%);
+  --verlauf-quer:linear-gradient(90deg, #4A2D38 0%, #8C5A69 45%, #C99AA8 75%, #EBD3DA 100%);
+}
+
+/* Bild oben auf der Startseite: unten ins Helle auslaufen */
+.held.held-bild .held-hintergrund::after{
+  background:
+    linear-gradient(90deg, rgba(53,32,42,.9) 0%, rgba(74,45,56,.74) 36%, rgba(92,58,70,.22) 66%, rgba(92,58,70,.04) 100%),
+    linear-gradient(0deg, #FAF6F4 0%, rgba(250,246,244,.85) 8%, rgba(217,174,187,.35) 22%, rgba(92,58,70,0) 42%);
+}
+@media (max-width:720px){
+  .held.held-bild .held-hintergrund::after{
+    background:
+      linear-gradient(180deg, rgba(53,32,42,.72) 0%, rgba(74,45,56,.84) 50%, rgba(140,90,105,.7) 78%, #FAF6F4 100%);
+  }
+}
+.held.held-bild{padding-bottom:170px;}
+
+/* Dunkle Abschnitte (Kaufbereich, Sicherheit): oben Dunkelbeere, unten weich hell */
+.abschnitt.beere{
+  background:var(--verlauf-dunkel-hell);
+  padding-bottom:170px;
+}
+.abschnitt.beere > .innen > .leise, .abschnitt.beere > .innen > p{color:#F6E4E9;}
+.abschnitt.beere::after{display:none;}
+
+/* Abschluss: Foto mit Verlauf von Dunkelbeere (oben) zu Rosé (unten) */
+.abschnitt.dunkel{
+  background:
+    linear-gradient(180deg, rgba(74,45,56,.92) 0%, rgba(110,65,82,.82) 50%, rgba(181,128,143,.72) 100%),
+    url("bilder/abschluss-weite.jpg") center 60% / cover no-repeat;
+}
+.abschnitt.dunkel::before, .abschnitt.dunkel::after{display:none;}
+
+/* Bild-Band: von Dunkelbeere links oben zu hellem Rosé rechts unten */
+.bild-band{
+  background:
+    linear-gradient(135deg, rgba(74,45,56,.88) 0%, rgba(110,65,82,.7) 45%, rgba(217,174,187,.45) 100%),
+    url("bilder/band-weite.jpg") center 60% / cover no-repeat;
+}
+
+/* Laufband: quer von Dunkelbeere zu Hell */
+.laufband{background:var(--verlauf-quer);}
+.laufband span{color:#fff; text-shadow:0 1px 8px rgba(74,45,56,.35);}
+.laufband i{background:#fff;}
+
+/* Kleine Akzente im Verlauf */
+.ueber::before{background:linear-gradient(90deg, var(--beere), #E8C3CD); opacity:1;}
+.gruppen-kopf{border-bottom:none; position:relative;}
+.gruppen-kopf::after{content:""; position:absolute; left:0; right:0; bottom:0; height:2px; border-radius:2px; background:linear-gradient(90deg, #6E4152, #C99AA8 40%, rgba(235,211,218,0) 100%);}
+.angebot .vorschau.foto::after{background:linear-gradient(180deg, rgba(250,246,244,0) 45%, rgba(110,65,82,.5));}
+.preisbox::before{background:linear-gradient(90deg, #4A2D38, #8C5A69, #E8C3CD);}
+.fortschritt{background:linear-gradient(90deg, #4A2D38, #8C5A69, #E8C3CD);}

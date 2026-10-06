@@ -45,10 +45,7 @@
     ".swz .klein{font-size:.8rem;color:#8E7079;margin-top:12px;text-align:center;}" +
     ".swz .klein a{color:#8E7079;}" +
     ".swz .weg{position:fixed;top:14px;right:14px;background:#F3ECE9;color:#5C3A46;border:1px solid #E4D8D8;border-radius:20px;padding:7px 14px;font:inherit;font-size:.8rem;cursor:pointer;}" +
-    ".swz .vorschau{display:block;margin-top:10px;text-align:center;font-size:.82rem;color:#8C5A69;}" +
-    "@media (prefers-color-scheme:dark){.swz{background:linear-gradient(135deg,#2A1E22,#1B1417);color:#F3E4E7;}" +
-      ".swz-karte{background:#2A2024;}.swz h1{color:#F3E4E7;}.swz input[type=text],.swz .kauf{background:#1B1417;border-color:#3D2C31;color:#F3E4E7;}" +
-      ".swz .kauf a,.swz-label,.swz .vorschau{color:#D9A6B3;}.swz .weg{background:#241B1F;color:#F3E4E7;border-color:#3D2C31;}}";
+    ".swz .vorschau{display:block;margin-top:10px;text-align:center;font-size:.82rem;color:#8C5A69;}";
   var style = document.createElement("style");
   style.textContent = css;
   document.head.appendChild(style);
