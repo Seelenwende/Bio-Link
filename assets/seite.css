@@ -820,3 +820,4 @@ h1, h2, h3{letter-spacing:-.015em;}
 .schritt-karte .oder a{color:var(--beere); font-weight:500;}
 @media (hover:hover){ .schritt-karte:hover{box-shadow:var(--s3);} }
 @media (max-width:480px){ .schritt-karte .oder{margin-left:0;} .schritt-link{grid-template-columns:auto 1fr;} .schritt-preis{grid-column:2;} }
+.schwebe-karte.oben-rechts{top:-22px;} @media (max-width:520px){ .schwebe-karte.oben-rechts{top:-16px;} }
