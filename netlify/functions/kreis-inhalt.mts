@@ -11,7 +11,7 @@ export default async (req: Request, _context: Context) => {
   const access = await resolveAccess(body?.code);
   if (!access) return json({ error: "Dieser Zugangscode ist ungültig. Prüf ihn in deiner Willkommens-Mail." }, 401);
   if (access.plan !== "kreis") {
-    return json({ error: "Dieser Code gehört zu Mira, nicht zum Kreis. Du kannst ihn direkt bei Mira verwenden.", reason: "mira" }, 403);
+    return json({ error: "Dieser Code gehört nicht zum Kreis. Mit ihm kannst du Mira direkt öffnen.", reason: "mira" }, 403);
   }
 
   const used = await getUsage(access);

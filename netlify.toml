@@ -3,3 +3,11 @@
 
 [functions]
   directory = "netlify/functions"
+
+# Der Ordner netlify/ (Quellcode) soll nicht öffentlich abrufbar sein.
+# Bonus-Dateien unter /bonus/ schützt die Edge-Funktion bonus-schutz.
+[[redirects]]
+  from = "/netlify/*"
+  to = "/index.html"
+  status = 404
+  force = true

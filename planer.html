@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<!-- Bewusst neutraler Titel: Im Tab und im Verlauf soll nichts auffallen. -->
+<title>Checkliste</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --papier:#FAF6F4;
+    --sand:#F3ECE9;
+    --rose:#B5808F;
+    --beere:#8C5A69;
+    --pflaume:#5C3A46;
+    --gedaempft:#8E7079;
+    --linie:#E4D8D8;
+    --mikro:#C3AEB2;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  [hidden]{display:none !important;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    background:var(--papier);
+    color:var(--pflaume);
+    font-family:"Jost",sans-serif;
+    font-weight:300;
+    line-height:1.65;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* --- Leiste mit „Schnell weg“ --- */
+  .bar{
+    position:sticky;top:0;z-index:10;
+    display:flex;justify-content:space-between;align-items:center;gap:10px;
+    padding:10px 16px;background:rgba(250,246,244,.94);border-bottom:1px solid var(--linie);
+    -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+  }
+  .bar .word{font-family:"Playfair Display",serif;letter-spacing:.2em;text-transform:uppercase;font-size:11px;color:var(--gedaempft);}
+  .exit{
+    background:var(--pflaume);color:var(--papier);border:none;
+    border-radius:20px;padding:8px 16px;font:inherit;font-size:.85rem;font-weight:400;cursor:pointer;white-space:nowrap;
+  }
+  .exit:focus-visible{outline:2px solid var(--rose);outline-offset:3px;}
+
+  .page{width:100%;max-width:600px;margin:0 auto;padding:32px 16px 60px;}
+
+  header{text-align:center;}
+  .butterfly{width:46px;height:46px;margin:0 auto 10px;display:block;}
+  .butterfly path,.butterfly ellipse{fill:none;stroke:var(--rose);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+  .butterfly .dot,.butterfly .body{fill:var(--rose);stroke:none;}
+  h1{font-family:"Playfair Display",serif;font-weight:500;font-size:30px;line-height:1.2;}
+  h2{font-family:"Playfair Display",serif;font-weight:500;font-size:21px;line-height:1.3;}
+  .intro{font-size:15px;color:var(--gedaempft);max-width:44ch;margin:12px auto 0;text-align:center;}
+
+  .card{background:#fff;border:1px solid var(--linie);border-radius:20px;padding:20px;margin-top:22px;}
+  .card p{font-size:14.5px;}
+  .card p + p{margin-top:8px;}
+  .muted{color:var(--gedaempft);}
+  .small{font-size:13px;}
+
+  label.field{display:block;font-size:14px;margin-top:14px;}
+  label.field span{display:block;margin-bottom:6px;}
+  input[type=text],input[type=password],textarea{
+    width:100%;font:inherit;font-size:16px;color:var(--pflaume);
+    background:var(--papier);border:1px solid var(--linie);border-radius:12px;padding:10px 12px;
+  }
+  textarea{resize:vertical;min-height:62px;line-height:1.5;}
+  input:focus,textarea:focus{outline:2px solid var(--rose);outline-offset:1px;}
+
+  .actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:18px;}
+  .btn{
+    font-family:"Playfair Display",serif;font-size:16px;font-weight:500;
+    border:none;border-radius:16px;padding:12px 20px;cursor:pointer;
+    background:var(--beere);color:var(--papier);
+  }
+  .btn--soft{background:var(--papier);color:var(--pflaume);border:1px solid var(--linie);}
+  .btn--link{background:none;color:var(--gedaempft);font-family:"Jost",sans-serif;font-size:14px;padding:8px 10px;text-decoration:underline;text-underline-offset:3px;}
+  .btn:disabled{opacity:.45;cursor:not-allowed;}
+  .btn:focus-visible{outline:2px solid var(--rose);outline-offset:3px;}
+  .msg{font-size:14px;color:var(--beere);text-align:center;margin-top:10px;min-height:1.4em;}
+
+  .screen[hidden]{display:none;}
+
+  /* --- Land --- */
+  .lands{display:flex;gap:8px;justify-content:center;margin-top:10px;flex-wrap:wrap;}
+  .land{
+    font:inherit;font-size:14.5px;color:var(--pflaume);background:#fff;border:1px solid var(--linie);
+    border-radius:20px;padding:7px 16px;cursor:pointer;
+  }
+  .land[aria-pressed="true"]{background:var(--beere);border-color:var(--beere);color:var(--papier);}
+  .land:focus-visible{outline:2px solid var(--rose);outline-offset:3px;}
+
+  /* --- Fortschritt --- */
+  .progress{margin-top:22px;}
+  .progress__bar{height:6px;border-radius:6px;background:var(--sand);overflow:hidden;}
+  .progress__bar span{display:block;height:100%;width:0;background:var(--rose);border-radius:6px;transition:width .3s ease;}
+  .progress__label{font-size:13px;color:var(--gedaempft);text-align:center;margin-top:6px;}
+
+  /* --- Abschnitte --- */
+  details.sec{background:#fff;border:1px solid var(--linie);border-radius:18px;margin-top:12px;}
+  details.sec > summary{
+    list-style:none;cursor:pointer;padding:15px 18px;display:flex;justify-content:space-between;align-items:baseline;gap:10px;
+  }
+  details.sec > summary::-webkit-details-marker{display:none;}
+  details.sec > summary:focus-visible{outline:2px solid var(--rose);outline-offset:2px;border-radius:18px;}
+  .sec__title{font-family:"Playfair Display",serif;font-size:18px;font-weight:500;line-height:1.3;}
+  .sec__count{font-size:13px;color:var(--gedaempft);white-space:nowrap;}
+  .sec__count.done{color:var(--beere);}
+  .sec__body{padding:0 18px 16px;}
+  .sec__intro{font-size:14px;color:var(--gedaempft);margin-bottom:6px;}
+
+  .item{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-top:1px dashed var(--linie);}
+  .item input{width:20px;height:20px;margin-top:3px;flex-shrink:0;accent-color:var(--beere);cursor:pointer;}
+  .item label{cursor:pointer;font-size:15px;line-height:1.45;}
+  .item.checked label{color:var(--gedaempft);text-decoration:line-through;text-decoration-color:var(--mikro);}
+  .item .tipp{font-size:13.5px;color:var(--gedaempft);margin-top:3px;line-height:1.5;}
+  .item .tipp.land{color:var(--beere);}
+
+  .eyebrow{display:flex;align-items:center;gap:14px;margin:34px 0 4px;}
+  .eyebrow::before,.eyebrow::after{content:"";flex:1;height:1px;background:var(--linie);}
+  .eyebrow span{font-family:"Playfair Display",serif;font-size:10.5px;letter-spacing:.4em;text-transform:uppercase;color:var(--rose);white-space:nowrap;}
+
+  .field .hilfe{font-size:12.5px;color:var(--gedaempft);margin-top:4px;}
+
+  /* --- Beratungsstellen --- */
+  .stelle{padding:12px 0;border-top:1px dashed var(--linie);}
+  .stelle:first-child{border-top:none;padding-top:0;}
+  .stelle__top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;}
+  .stelle__name{font-family:"Playfair Display",serif;font-size:16.5px;font-weight:500;}
+  .stelle__nr{font-size:17px;font-weight:400;color:var(--beere);text-decoration:none;white-space:nowrap;}
+  .stelle__info{font-size:13.5px;color:var(--gedaempft);margin-top:2px;}
+  .stelle__web{font-size:13.5px;color:var(--pflaume);}
+  .stelle.notruf .stelle__nr{color:var(--pflaume);}
+
+  /* --- Speichern --- */
+  .save-state{font-size:13.5px;text-align:center;margin-top:4px;}
+  .save-state.on{color:var(--beere);}
+
+  /* --- Hilfe-Leiste unten --- */
+  .help{
+    margin-top:30px;background:var(--sand);border-radius:16px;padding:14px 16px;font-size:13px;line-height:1.6;text-align:center;
+  }
+  .help b{font-weight:400;color:var(--pflaume);}
+  .note{font-size:12px;color:var(--gedaempft);text-align:center;margin-top:22px;line-height:1.65;}
+  .footer{font-family:"Playfair Display",serif;font-size:9px;letter-spacing:.42em;text-transform:uppercase;color:var(--mikro);text-align:center;margin-top:18px;}
+  .sr-only{position:absolute;left:-9999px;}
+
+  @media (prefers-reduced-motion:reduce){*{transition:none !important;}}
+
+  @media print{
+    .bar,.actions,.lands,.progress,#storeCard,.help,.save-state,.btn{display:none !important;}
+    .page{padding:0;max-width:none;}
+    details.sec,.card{break-inside:avoid;border-color:#ccc;}
+    .item.checked label{text-decoration:none;}
+  }
+</style>
+</head>
+<body>
+<div class="bar">
+  <span class="word">Seelenwende</span>
+  <button class="exit" id="exitBtn" type="button" title="Verlässt die Seite sofort (auch: zweimal Esc)">Schnell weg</button>
+</div>
+
+<main class="page">
+  <header>
+    <svg class="butterfly" viewBox="0 0 100 100" aria-hidden="true">
+      <ellipse cx="38" cy="40" rx="13" ry="18" transform="rotate(-35 38 40)"/>
+      <ellipse cx="62" cy="40" rx="13" ry="18" transform="rotate(35 62 40)"/>
+      <ellipse cx="41" cy="61" rx="9" ry="13" transform="rotate(-20 41 61)"/>
+      <ellipse cx="59" cy="61" rx="9" ry="13" transform="rotate(20 59 61)"/>
+      <ellipse class="body" cx="50" cy="50" rx="1.5" ry="16"/>
+      <path d="M50 36 C47 30 45 27 43 24"/>
+      <path d="M50 36 C53 30 55 27 57 24"/>
+      <circle class="dot" cx="43" cy="23.5" r="1.5"/>
+      <circle class="dot" cx="57" cy="23.5" r="1.5"/>
+    </svg>
+    <h1>Ausstiegs-Planer</h1>
+    <p class="intro">Dein Sicherheitsplan, Schritt für Schritt. Du musst nicht alles machen und nicht alles auf einmal. Jeder Haken ist ein Stück mehr Boden unter den Füßen.</p>
+  </header>
+
+  <!-- Start: neuer Plan oder gespeicherten Plan öffnen -->
+  <section class="screen" id="startScreen">
+    <div class="card" id="resumeCard" hidden>
+      <h2>Weitermachen</h2>
+      <p class="muted">Auf diesem Gerät ist ein Plan gespeichert. Gib deine PIN ein, um ihn zu öffnen.</p>
+      <form id="resumeForm" autocomplete="off">
+        <label class="field"><span>PIN</span>
+          <input type="password" id="resumePin" inputmode="numeric" autocomplete="off" required>
+        </label>
+        <div class="actions">
+          <button class="btn" type="submit">Öffnen</button>
+        </div>
+        <p class="msg" id="resumeMsg" role="status"></p>
+        <div class="actions" style="margin-top:4px">
+          <button class="btn btn--link" type="button" id="forgetBtn">PIN vergessen? Plan löschen</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="card" style="text-align:center">
+      <h2 id="newTitle">Deinen Plan beginnen</h2>
+      <p class="muted" id="newNote" hidden>Ein neuer Plan ersetzt den gespeicherten erst, wenn du für ihn eine PIN festlegst.</p>
+      <div class="actions">
+        <button class="btn" type="button" id="newBtn">Los geht's</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <p><b style="font-weight:400">Bevor du anfängst:</b> Benutze, wenn möglich, ein Gerät, auf das er keinen Zugriff hat. Oben rechts bringt dich „Schnell weg“ sofort auf eine harmlose Seite, auch zweimal <kbd>Esc</kbd>.</p>
+      <p class="muted">Ohne PIN wird nichts gespeichert. Mit PIN bleibt dein Plan verschlüsselt auf diesem Gerät, nie auf einem Server.</p>
+    </div>
+  </section>
+
+  <!-- Der Plan -->
+  <section class="screen" id="planScreen" hidden>
+    <div class="card" style="text-align:center">
+      <p>Wo lebst du? Dann zeige ich dir die passenden Nummern und Hinweise.</p>
+      <div class="lands" role="group" aria-label="Land">
+        <button class="land" type="button" data-land="CH" aria-pressed="false">Schweiz</button>
+        <button class="land" type="button" data-land="DE" aria-pressed="false">Deutschland</button>
+        <button class="land" type="button" data-land="AT" aria-pressed="false">Österreich</button>
+        <button class="land" type="button" data-land="XX" aria-pressed="false">Anderes Land</button>
+      </div>
+    </div>
+
+    <div class="progress" aria-live="polite">
+      <div class="progress__bar"><span id="progressBar"></span></div>
+      <div class="progress__label" id="progressLabel"></div>
+    </div>
+
+    <div id="sections"></div>
+
+    <div class="eyebrow"><span>Meine Angaben</span></div>
+    <div class="card" style="margin-top:12px" id="fields"></div>
+
+    <div class="eyebrow"><span>Hier bekommst du Hilfe</span></div>
+    <div class="card" style="margin-top:12px" id="stellen"></div>
+
+    <div class="eyebrow"><span>Speichern</span></div>
+    <div class="card" style="margin-top:12px" id="storeCard">
+      <p class="save-state" id="saveState" role="status"></p>
+      <form id="pinForm" autocomplete="off">
+        <p class="small muted" style="margin-top:12px">Lege eine PIN fest (mindestens 6 Zeichen), dann bleibt dein Plan verschlüsselt auf diesem Gerät. Wähle keine PIN, die er erraten könnte, zum Beispiel kein Geburtsdatum. Die PIN schützt vor neugierigen Blicken, nicht vor jemandem, der dein Gerät gezielt untersucht.</p>
+        <label class="field"><span>PIN</span>
+          <input type="password" id="pin1" inputmode="numeric" autocomplete="new-password" minlength="6" required>
+        </label>
+        <label class="field"><span>PIN wiederholen</span>
+          <input type="password" id="pin2" inputmode="numeric" autocomplete="new-password" minlength="6" required>
+        </label>
+        <div class="actions">
+          <button class="btn" type="submit">Auf diesem Gerät merken</button>
+        </div>
+        <p class="msg" id="pinMsg" role="status"></p>
+      </form>
+      <div class="actions" id="savedActions" hidden>
+        <button class="btn btn--soft" type="button" id="lockBtn">Sperren</button>
+        <button class="btn btn--link" type="button" id="deleteBtn">Gespeicherten Plan löschen</button>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn--soft" type="button" id="copyBtn">Als Text kopieren</button>
+      <button class="btn btn--soft" type="button" id="printBtn">Drucken / als PDF</button>
+    </div>
+    <p class="small muted" style="text-align:center;margin-top:8px">Ausgedruckt oder kopiert kann dein Plan gefunden werden. Gib ihn am besten deiner Vertrauensperson oder schick ihn an deine neue E-Mail-Adresse.</p>
+    <p class="msg" id="exportMsg" role="status"></p>
+  </section>
+
+  <div class="help">
+    In Gefahr: <b>Notruf 112</b> · CH Polizei <b>117</b>, Opferhilfe <b>142</b> · DE Polizei <b>110</b>, Hilfetelefon <b>116 016</b> · AT Polizei <b>133</b>, Frauenhelpline <b>0800 222 555</b>
+  </div>
+  <p class="note">Dieser Planer ersetzt keine Beratung. Eine Beratungsstelle hilft dir, ihn auf deine Lage anzupassen – kostenlos und anonym. Seelenwende ist Selbsthilfe und ersetzt keine Therapie.</p>
+  <div class="footer">Seelenwende · Checkliste</div>
+</main>
+
+<script>
+(function(){
+  "use strict";
+  /* Inhalt des Planers. Nummern und Stellen vor jeder Änderung fachlich prüfen (Stand: Oktober 2026). */
+  var INHALT = {
+
+    felder: [
+      { id: "vertraut", label: "Meine Vertrauensperson(en)", hilfe: "Wer weiß Bescheid und ist erreichbar? Name und Nummer." },
+      { id: "codewort", label: "Unser Codewort", hilfe: "Ein harmloses Wort, das heißt: Ruf die Polizei. Zum Beispiel „Hast du noch das Rezept?“" },
+      { id: "ziel", label: "Wohin ich gehen kann", hilfe: "Freundin, Familie, Frauenhaus, Pension. Am besten zwei Möglichkeiten." },
+      { id: "tasche", label: "Wo meine Notfalltasche liegt", hilfe: "Ein Ort, den er nicht kennt, z. B. bei der Vertrauensperson oder im Spind." },
+      { id: "notizen", label: "Sonstiges", hilfe: "Termine, Fragen an die Beratungsstelle, was dir noch einfällt." },
+    ],
+
+    abschnitte: [
+      {
+        id: "sicher",
+        titel: "Dein Handy und deine Spuren",
+        intro: "Bevor du planst: Sorg dafür, dass er nicht mitlesen kann. Plötzliche Änderungen können ihn aber misstrauisch machen. Mach nur, was sich gerade sicher anfühlt.",
+        punkte: [
+          { id: "geraet", text: "Ein Gerät nutzen, auf das er keinen Zugriff hat", tipp: "Zum Beispiel das Handy einer Freundin, ein Computer bei der Arbeit oder in der Bibliothek. Wenn das nicht geht: privates Fenster und danach den Verlauf löschen." },
+          { id: "verlauf", text: "Verlauf löschen, wenn du diese Seite benutzt hast", tipp: "Lösch nur die Einträge zu Seelenwende und Beratungsstellen, nicht den ganzen Verlauf – ein komplett leerer Verlauf fällt eher auf." },
+          { id: "standort", text: "Standortfreigaben prüfen", tipp: "Google Maps, „Wo ist?“ bei Apple, Life360, Snapchat-Karte, Familienfreigabe, Fitness-Apps. Auch geteilte Kalender und Fotoalben verraten viel." },
+          { id: "tracker", text: "Auf Ortungsgeräte achten", tipp: "AirTags oder andere Tracker in Tasche, Auto oder Jacke. iPhones warnen bei fremden AirTags, auf Android gibt es die Suche in den Einstellungen unter „Sicherheit“ bzw. „Unbekannte Tracker“." },
+          { id: "mail", text: "Eine neue E-Mail-Adresse anlegen, die er nicht kennt", tipp: "Nur auf einem sicheren Gerät. Darüber laufen Beratung, Wohnungssuche und neue Konten." },
+          { id: "passwoerter", text: "Passwörter ändern – erst, wenn du in Sicherheit bist", tipp: "Vorher könnte es ihn alarmieren. Danach: E-Mail, Bank, Cloud, Apple-ID oder Google-Konto, soziale Netzwerke, und alle angemeldeten fremden Geräte abmelden." },
+        ],
+      },
+      {
+        id: "notfall",
+        titel: "Für den Notfall",
+        intro: "Falls es eskaliert, bevor du gehst. Diese Punkte schützen dich auch dann, wenn du dich noch nicht entschieden hast.",
+        punkte: [
+          { id: "nummern", text: "Notrufnummern im Handy speichern, unter unauffälligem Namen", land: { CH: "Polizei 117, Sanität 144, Opferhilfe 142.", DE: "Polizei 110, Notruf 112, Hilfetelefon 116 016.", AT: "Polizei 133, Notruf 112, Frauenhelpline 0800 222 555.", XX: "Den Notruf deines Landes (in ganz Europa 112) und die Nummer einer Frauen-Helpline vor Ort, siehe unten." } },
+          { id: "codewort", text: "Ein Codewort mit einer Vertrauensperson ausmachen", tipp: "Wenn du es schreibst oder sagst, ruft sie die Polizei. Trag es unten bei „Meine Angaben“ ein." },
+          { id: "raeume", text: "Wissen, wo du im Streit hingehst", tipp: "Möglichst in einen Raum mit Ausgang oder Telefon. Küche, Bad und Garage meiden – dort gibt es harte Kanten und Gegenstände." },
+          { id: "ausweg", text: "Den schnellsten Weg nach draußen kennen", tipp: "Auch nachts. Schlüssel immer am gleichen Ort, Auto mit der Front zur Ausfahrt parken, wenn möglich." },
+          { id: "kinder", text: "Kinder vorbereiten, wenn sie alt genug sind", tipp: "Den Notruf wählen können, wissen, zu welcher Nachbarin sie laufen. Ohne Details zu deinem Plan – Kinder können sich verplappern." },
+        ],
+      },
+      {
+        id: "dokumente",
+        titel: "Dokumente",
+        intro: "Originale, wenn es unauffällig geht. Sonst Fotos – gespeichert in der neuen E-Mail oder bei deiner Vertrauensperson, nicht in einer Cloud, die er sieht.",
+        punkte: [
+          { id: "ausweis", text: "Ausweis oder Pass, Aufenthaltstitel", tipp: "Für dich und die Kinder." },
+          { id: "geburt", text: "Geburtsurkunden, Familienbuch oder Heiratsurkunde" },
+          { id: "kasse", text: "Krankenkassenkarte, Impfpass, Medikamentenplan" },
+          { id: "geld", text: "Bankkarten, Kontoauszüge, Lohnabrechnungen, letzte Steuererklärung" },
+          { id: "wohnung", text: "Mietvertrag oder Grundbuchauszug, Versicherungspolicen" },
+          { id: "auto", text: "Führerschein, Fahrzeugpapiere, Zweitschlüssel" },
+          { id: "kinderdok", text: "Unterlagen der Kinder", tipp: "Schulzeugnisse, Sorgerechtsbeschlüsse, Unterlagen von Ärztinnen und Kita." },
+          { id: "beweise", text: "Belege, was passiert ist", tipp: "Screenshots von Nachrichten, Fotos von Verletzungen oder zerstörten Sachen, Arztberichte, Anzeigen. Mit Datum. Schick sie an die neue E-Mail und lösch sie dann vom Handy." },
+        ],
+      },
+      {
+        id: "geld",
+        titel: "Eigenes Geld",
+        intro: "Finanzielle Abhängigkeit ist einer der häufigsten Gründe, zu bleiben. Schon kleine Schritte geben dir Spielraum.",
+        punkte: [
+          { id: "konto", text: "Ein eigenes Konto, am besten bei einer anderen Bank", tipp: "Kontoauszüge nur digital an die neue E-Mail, keine Post nach Hause." },
+          { id: "bargeld", text: "Eine kleine Bargeld-Reserve anlegen", tipp: "Auch kleine Beträge zählen. Lagere sie bei deiner Vertrauensperson oder in der Notfalltasche." },
+          { id: "ueberblick", text: "Überblick über gemeinsame Konten, Schulden und Verträge", tipp: "Fotografier Kontoauszüge, Kredite, Handy- und Stromverträge. Was läuft auf deinen Namen?" },
+          { id: "ansprueche", text: "Fragen, worauf du Anspruch hast", tipp: "Unterhalt, Sozialleistungen, Wohnkosten, Hilfe vom Frauenhaus oder der Opferhilfe. Die Beratungsstellen unten wissen das." },
+        ],
+      },
+      {
+        id: "tasche",
+        titel: "Notfalltasche",
+        intro: "Eine kleine Tasche, die du im Ernstfall nur noch greifen musst. Am sichersten bei einer Vertrauensperson.",
+        punkte: [
+          { id: "schluessel", text: "Ersatzschlüssel für Wohnung und Auto" },
+          { id: "medis", text: "Medikamente für ein paar Tage, Brille, Ladekabel" },
+          { id: "kopien", text: "Kopien der wichtigsten Dokumente" },
+          { id: "kleidung", text: "Kleidung zum Wechseln, für dich und die Kinder" },
+          { id: "handy", text: "Wenn möglich: ein altes Handy mit Prepaid-Karte", tipp: "Mit den wichtigsten Nummern. Er kennt die Nummer nicht und kann es nicht orten." },
+          { id: "trost", text: "Etwas Vertrautes für die Kinder", tipp: "Kuscheltier, Lieblingsbuch. Das hilft mehr als man denkt." },
+        ],
+      },
+      {
+        id: "menschen",
+        titel: "Menschen an deiner Seite",
+        intro: "Du musst das nicht allein schaffen. Ein, zwei Menschen reichen.",
+        punkte: [
+          { id: "vertraut", text: "Eine oder zwei Vertrauenspersonen einweihen", tipp: "Menschen, die ihm nichts weitererzählen. Trag sie unten bei „Meine Angaben“ ein." },
+          { id: "beratung", text: "Mit einer Beratungsstelle sprechen", tipp: "Anonym, kostenlos, auch wenn du dich noch nicht entschieden hast. Sie helfen dir, diesen Plan auf deine Lage anzupassen." },
+          { id: "arbeit", text: "Überlegen, ob jemand bei der Arbeit Bescheid wissen sollte", tipp: "Zum Beispiel, damit er am Empfang nicht durchgestellt wird." },
+          { id: "schule", text: "Kita oder Schule informieren, wer die Kinder abholen darf", tipp: "Erst, wenn du gegangen bist – oder wenn die Beratungsstelle es dir rät." },
+        ],
+      },
+      {
+        id: "recht",
+        titel: "Schutz und Recht",
+        intro: "Du hast Rechte, auch wenn er dir etwas anderes erzählt. Lass dich beraten, bevor du etwas unterschreibst oder vereinbarst.",
+        punkte: [
+          {
+            id: "schutz", text: "Nach Schutzmaßnahmen fragen",
+            tipp: "Je nach Lage kann er aus der Wohnung gewiesen werden oder darf sich dir nicht nähern.",
+            land: {
+              CH: "Die Polizei kann ihn wegweisen (kantonal geregelt). Längerer Schutz über das Zivilgericht (Art. 28b ZGB). Die Opferhilfe begleitet dich dabei.",
+              DE: "Die Polizei kann ihn der Wohnung verweisen. Schutzanordnungen und Wohnungszuweisung nach dem Gewaltschutzgesetz beim Familiengericht, auch als Eilantrag.",
+              AT: "Die Polizei kann ein Betretungs- und Annäherungsverbot aussprechen (zwei Wochen). Danach meldet sich das Gewaltschutzzentrum bei dir. Länger über eine einstweilige Verfügung beim Bezirksgericht.",
+              XX: "In vielen Ländern gibt es Wegweisung, Kontakt- und Annäherungsverbote. Was bei dir gilt, weiß eine Beratungsstelle vor Ort.",
+            },
+          },
+          { id: "arzt", text: "Verletzungen ärztlich festhalten lassen", tipp: "Auch wenn sie klein wirken. Ein Bericht kann später wichtig sein, für Schutzanordnungen oder das Sorgerecht." },
+          { id: "anwaeltin", text: "Eine Anwältin für Familienrecht suchen", tipp: "Vor allem bei Kindern, gemeinsamer Wohnung oder gemeinsamem Besitz. Die Beratungsstelle kennt Anwältinnen, die sich mit Gewalt auskennen, und weiß, wie die Kosten übernommen werden können." },
+          { id: "nichts", text: "Nichts unterschreiben, was er dir vorlegt", tipp: "Keine Vereinbarung zu Kindern, Wohnung oder Geld ohne Beratung – auch wenn er Druck macht." },
+        ],
+      },
+      {
+        id: "tag",
+        titel: "Der Tag, an dem du gehst",
+        intro: "Die Zeit rund um die Trennung ist oft die gefährlichste. Plane den Tag so, dass er es nicht vorher erfährt.",
+        punkte: [
+          { id: "zeit", text: "Einen Zeitpunkt wählen, an dem er nicht da ist", tipp: "Kündige es nicht an. Erklären kannst du es später, aus sicherer Entfernung, wenn überhaupt." },
+          { id: "ziel", text: "Wissen, wohin du gehst", tipp: "Freundin, Familie oder Frauenhaus. Frauenhäuser nehmen auch kurzfristig auf, frag vorher nach freien Plätzen." },
+          { id: "polizei", text: "Wenn du Angst hast: die Polizei um Begleitung bitten", tipp: "Sie kann dabei sein, wenn du deine Sachen holst." },
+          { id: "handyaus", text: "Standort ausschalten, bevor du losfährst" },
+        ],
+      },
+      {
+        id: "danach",
+        titel: "Die ersten Wochen danach",
+        intro: "Draußen sein heißt noch nicht sicher sein. Diese Schritte schützen deinen neuen Ort.",
+        punkte: [
+          {
+            id: "adresse", text: "Deine neue Adresse schützen",
+            land: {
+              CH: "Bei der Einwohnerkontrolle deiner Gemeinde eine Datensperre beantragen.",
+              DE: "Beim Bürgeramt eine Auskunftssperre im Melderegister beantragen.",
+              AT: "Beim Meldeamt eine Auskunftssperre beantragen.",
+              XX: "Frag beim Einwohner- oder Meldeamt, ob du deine Adresse sperren lassen kannst.",
+            },
+          },
+          { id: "sichern", text: "Jeden Kontakt von ihm sichern, nicht beantworten", tipp: "Screenshots mit Datum. Wenn ihr wegen der Kinder Kontakt braucht: kurz, sachlich, schriftlich." },
+          { id: "wege", text: "Gewohnte Wege und Zeiten ändern", tipp: "Arbeitsweg, Einkauf, Sport – zumindest in den ersten Wochen." },
+          { id: "soziale", text: "Soziale Netzwerke prüfen", tipp: "Keine Fotos, die zeigen, wo du bist. Gemeinsame Bekannte können mitlesen." },
+          { id: "du", text: "Dir selbst etwas Gutes tun", tipp: "Schlaf, Essen, ein Mensch, der dich in den Arm nimmt. Zweifel und Sehnsucht sind normal und kein Zeichen, dass du falsch entschieden hast." },
+        ],
+      },
+    ],
+
+    stellen: {
+      CH: [
+        { name: "Polizei", nummer: "117", info: "Bei akuter Gefahr. Sanität 144, europäischer Notruf 112.", notruf: true },
+        { name: "Opferhilfe", nummer: "142", web: "opferhilfe-schweiz.ch", info: "Rund um die Uhr, kostenlos und vertraulich. Verbindet dich mit der Fachstelle in deinem Kanton. Kein Notruf." },
+        { name: "Frauenhäuser Schweiz", web: "frauenhaus-schweiz.ch", info: "Übersicht der Frauenhäuser in der Schweiz und Liechtenstein, mit Notfallnummern." },
+        { name: "Die Dargebotene Hand", nummer: "143", web: "143.ch", info: "Wenn du einfach jemanden zum Reden brauchst, rund um die Uhr." },
+      ],
+      DE: [
+        { name: "Polizei", nummer: "110", info: "Bei akuter Gefahr. Rettungsdienst und europäischer Notruf 112.", notruf: true },
+        { name: "Hilfetelefon Gewalt gegen Frauen", nummer: "116 016", web: "hilfetelefon.de", info: "Rund um die Uhr, anonym, kostenlos, in vielen Sprachen. Auch per Chat und Mail." },
+        { name: "Frauenhaus-Suche", web: "frauenhaus-suche.de", info: "Zeigt täglich, welche Frauenhäuser freie Plätze haben." },
+        { name: "Weisser Ring", nummer: "116 006", web: "weisser-ring.de", info: "Opfer-Telefon, auch Begleitung zu Polizei und Gericht." },
+        { name: "TelefonSeelsorge", nummer: "0800 111 0 111", web: "telefonseelsorge.de", info: "Wenn du einfach jemanden zum Reden brauchst, rund um die Uhr." },
+      ],
+      AT: [
+        { name: "Polizei", nummer: "133", info: "Bei akuter Gefahr. Europäischer Notruf 112.", notruf: true },
+        { name: "Frauenhelpline gegen Gewalt", nummer: "0800 222 555", web: "frauenhelpline.at", info: "Rund um die Uhr, anonym, kostenlos, mehrsprachig. Vermittelt auch Frauenhausplätze." },
+        { name: "Gewaltschutzzentren", nummer: "0800 700 217", web: "gewaltschutzzentrum.at", info: "Kostenlose Beratung, Hilfe beim Sicherheitsplan und Begleitung zu Gericht." },
+        { name: "Autonome Österreichische Frauenhäuser", web: "aoef.at", info: "Übersicht der Frauenhäuser in Österreich." },
+        { name: "Telefonseelsorge", nummer: "142", info: "Wenn du einfach jemanden zum Reden brauchst, rund um die Uhr." },
+      ],
+      XX: [
+        { name: "Notruf", nummer: "112", info: "Bei akuter Gefahr. Gilt in ganz Europa und funktioniert in vielen Ländern auch außerhalb.", notruf: true },
+        { name: "WAVE „Find Help“", web: "wave-network.org", info: "Rund 2000 Frauenhäuser, Helplines und Beratungsstellen in 46 Ländern Europas. Manche nationalen Nummern sind nur im Land selbst erreichbar." },
+        { name: "Außerhalb Europas", info: "Such nach „domestic violence hotline“ und dem Namen deines Landes, am besten auf einem sicheren Gerät. Lebst du im Ausland, kann dir auch die Botschaft deines Heimatlandes weiterhelfen." },
+      ],
+    },
+  };
+
+  var STORE_KEY = "notizen-v1";
+  var EXIT_URL = "https://www.google.com/search?q=wetter";
+  var LAND_NAMEN = { CH: "Schweiz", DE: "Deutschland", AT: "Österreich", XX: "Anderes Land" };
+
+  var $ = function(id){ return document.getElementById(id); };
+  var state = null;      // { land, done:{}, felder:{} }
+  var key = null;        // CryptoKey, nur solange entsperrt
+  var salt = null;
+  var saveTimer = null;
+  var escCount = 0, escTimer = null;
+
+  /* ---------- Speicher (nur verschlüsselt) ---------- */
+  function readStore(){ try{ return JSON.parse(localStorage.getItem(STORE_KEY) || "null"); }catch(e){ return null; } }
+  function writeStore(v){ try{ localStorage.setItem(STORE_KEY, JSON.stringify(v)); return true; }catch(e){ return false; } }
+  function clearStore(){ try{ localStorage.removeItem(STORE_KEY); }catch(e){} }
+
+  function b64(buf){ var s = "", b = new Uint8Array(buf); for (var i = 0; i < b.length; i++) s += String.fromCharCode(b[i]); return btoa(s); }
+  function unb64(str){ var s = atob(str), b = new Uint8Array(s.length); for (var i = 0; i < s.length; i++) b[i] = s.charCodeAt(i); return b; }
+
+  function deriveKey(pin, saltBytes){
+    var enc = new TextEncoder();
+    return crypto.subtle.importKey("raw", enc.encode(pin), "PBKDF2", false, ["deriveKey"]).then(function(base){
+      return crypto.subtle.deriveKey(
+        { name: "PBKDF2", salt: saltBytes, iterations: 310000, hash: "SHA-256" },
+        base, { name: "AES-GCM", length: 256 }, false, ["encrypt", "decrypt"]
+      );
+    });
+  }
+  function encryptState(){
+    var iv = crypto.getRandomValues(new Uint8Array(12));
+    var data = new TextEncoder().encode(JSON.stringify(state));
+    return crypto.subtle.encrypt({ name: "AES-GCM", iv: iv }, key, data).then(function(ct){
+      return { v: 1, s: b64(salt), i: b64(iv), d: b64(ct) };
+    });
+  }
+  function saveNow(){
+    if (!key || !state) return Promise.resolve();
+    return encryptState().then(function(blob){
+      if (!writeStore(blob)) setSaveState("Speichern hat nicht geklappt. Dein Browser erlaubt hier vielleicht keinen Speicher.");
+    });
+  }
+  function scheduleSave(){
+    if (!key) return;
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(saveNow, 500);
+  }
+
+  /* ---------- Start ---------- */
+  function showStart(){
+    $("planScreen").hidden = true;
+    $("startScreen").hidden = false;
+    var saved = !!readStore();
+    $("resumeCard").hidden = !saved;
+    $("newNote").hidden = !saved;
+    $("newTitle").textContent = saved ? "Oder neu beginnen" : "Deinen Plan beginnen";
+  }
+
+  $("newBtn").addEventListener("click", function(){
+    state = { land: null, done: {}, felder: {} };
+    key = null; salt = null;
+    openPlan();
+  });
+
+  $("resumeForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    var blob = readStore();
+    var pin = $("resumePin").value;
+    if (!blob || !pin) return;
+    $("resumeMsg").textContent = "Einen Moment …";
+    var s = unb64(blob.s);
+    deriveKey(pin, s).then(function(k){
+      return crypto.subtle.decrypt({ name: "AES-GCM", iv: unb64(blob.i) }, k, unb64(blob.d)).then(function(pt){
+        var d = JSON.parse(new TextDecoder().decode(pt));
+        state = { land: d.land || null, done: d.done || {}, felder: d.felder || {} };
+        key = k; salt = s;
+        $("resumePin").value = "";
+        $("resumeMsg").textContent = "";
+        openPlan();
+      });
+    }).catch(function(){
+      $("resumeMsg").textContent = "Diese PIN passt nicht.";
+    });
+  });
+
+  var forgetArmed = false;
+  $("forgetBtn").addEventListener("click", function(){
+    if (!forgetArmed){
+      forgetArmed = true;
+      this.textContent = "Wirklich löschen? Nochmal tippen";
+      $("resumeMsg").textContent = "Ohne PIN lässt sich der Plan nicht öffnen. Löschen kann man ihn trotzdem.";
+      return;
+    }
+    clearStore();
+    forgetArmed = false;
+    this.textContent = "PIN vergessen? Plan löschen";
+    $("resumeMsg").textContent = "";
+    showStart();
+  });
+
+  /* ---------- Plan anzeigen ---------- */
+  function el(tag, cls, text){
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text != null) n.textContent = text;
+    return n;
+  }
+
+  function openPlan(){
+    $("startScreen").hidden = true;
+    $("planScreen").hidden = false;
+    renderLands();
+    renderSections();
+    renderFields();
+    renderStellen();
+    updateProgress();
+    updateStoreCard();
+    window.scrollTo(0, 0);
+  }
+
+  function renderLands(){
+    document.querySelectorAll(".land").forEach(function(b){
+      b.setAttribute("aria-pressed", String(b.getAttribute("data-land") === state.land));
+    });
+  }
+
+  function renderSections(){
+    var wrap = $("sections");
+    wrap.innerHTML = "";
+    INHALT.abschnitte.forEach(function(a, idx){
+      var det = el("details", "sec");
+      det.setAttribute("data-sec", a.id);
+      if (idx === 0) det.open = true;
+      var sum = el("summary");
+      sum.appendChild(el("span", "sec__title", a.titel));
+      var count = el("span", "sec__count");
+      count.setAttribute("data-count", a.id);
+      sum.appendChild(count);
+      det.appendChild(sum);
+
+      var body = el("div", "sec__body");
+      body.appendChild(el("p", "sec__intro", a.intro));
+      a.punkte.forEach(function(p){
+        var id = a.id + "." + p.id;
+        var row = el("div", "item");
+        var cb = el("input");
+        cb.type = "checkbox";
+        cb.id = "cb-" + id;
+        cb.setAttribute("data-id", id);
+        cb.checked = !!state.done[id];
+        if (cb.checked) row.classList.add("checked");
+        var txt = el("div");
+        var lab = el("label", null, p.text);
+        lab.htmlFor = cb.id;
+        txt.appendChild(lab);
+        if (p.tipp) txt.appendChild(el("p", "tipp", p.tipp));
+        if (p.land){
+          var lt = el("p", "tipp land");
+          lt.setAttribute("data-landtipp", id);
+          txt.appendChild(lt);
+        }
+        row.appendChild(cb);
+        row.appendChild(txt);
+        body.appendChild(row);
+      });
+      det.appendChild(body);
+      wrap.appendChild(det);
+    });
+    renderLandTipps();
+    updateCounts();
+  }
+
+  function findPunkt(id){
+    var parts = id.split(".");
+    var a = INHALT.abschnitte.filter(function(x){ return x.id === parts[0]; })[0];
+    return a && a.punkte.filter(function(x){ return x.id === parts[1]; })[0];
+  }
+
+  function renderLandTipps(){
+    document.querySelectorAll("[data-landtipp]").forEach(function(n){
+      var p = findPunkt(n.getAttribute("data-landtipp"));
+      var t = p && p.land && state.land ? p.land[state.land] : "";
+      n.textContent = t ? LAND_NAMEN[state.land] + ": " + t : "";
+      n.hidden = !t;
+    });
+  }
+
+  function renderFields(){
+    var wrap = $("fields");
+    wrap.innerHTML = "";
+    wrap.appendChild(el("p", "small muted", "Nur für dich. Wird nur gespeichert, wenn du unten eine PIN festlegst."));
+    INHALT.felder.forEach(function(f){
+      var lab = el("label", "field");
+      lab.appendChild(el("span", null, f.label));
+      var ta = el("textarea");
+      ta.rows = 2;
+      ta.setAttribute("data-feld", f.id);
+      ta.value = state.felder[f.id] || "";
+      lab.appendChild(ta);
+      lab.appendChild(el("p", "hilfe", f.hilfe));
+      wrap.appendChild(lab);
+    });
+  }
+
+  function renderStellen(){
+    var wrap = $("stellen");
+    wrap.innerHTML = "";
+    if (!state.land){
+      wrap.appendChild(el("p", "muted", "Wähle oben dein Land, dann siehst du hier die passenden Beratungsstellen."));
+      return;
+    }
+    INHALT.stellen[state.land].forEach(function(s){
+      var box = el("div", "stelle" + (s.notruf ? " notruf" : ""));
+      var top = el("div", "stelle__top");
+      top.appendChild(el("span", "stelle__name", s.name));
+      if (s.nummer){
+        var a = el("a", "stelle__nr", s.nummer);
+        a.href = "tel:" + s.nummer.replace(/\s+/g, "");
+        top.appendChild(a);
+      }
+      box.appendChild(top);
+      box.appendChild(el("p", "stelle__info", s.info));
+      if (s.web){
+        var w = el("a", "stelle__web", s.web);
+        w.href = "https://" + s.web;
+        w.target = "_blank";
+        w.rel = "noopener noreferrer";
+        box.appendChild(w);
+      }
+      wrap.appendChild(box);
+    });
+  }
+
+  function allIds(){
+    var ids = [];
+    INHALT.abschnitte.forEach(function(a){ a.punkte.forEach(function(p){ ids.push(a.id + "." + p.id); }); });
+    return ids;
+  }
+
+  function updateCounts(){
+    INHALT.abschnitte.forEach(function(a){
+      var n = a.punkte.filter(function(p){ return state.done[a.id + "." + p.id]; }).length;
+      var c = document.querySelector('[data-count="' + a.id + '"]');
+      if (!c) return;
+      c.textContent = n + " / " + a.punkte.length;
+      c.classList.toggle("done", n === a.punkte.length);
+    });
+  }
+
+  function updateProgress(){
+    var ids = allIds();
+    var n = ids.filter(function(id){ return state.done[id]; }).length;
+    $("progressBar").style.width = (ids.length ? Math.round(n / ids.length * 100) : 0) + "%";
+    $("progressLabel").textContent = n === 0
+      ? "Fang an, wo es sich gerade am leichtesten anfühlt."
+      : n + " von " + ids.length + " Schritten erledigt";
+  }
+
+  function setSaveState(text, on){
+    $("saveState").textContent = text;
+    $("saveState").classList.toggle("on", !!on);
+  }
+
+  function updateStoreCard(){
+    var saved = !!key;
+    $("pinForm").hidden = saved;
+    $("savedActions").hidden = !saved;
+    if (saved) setSaveState("Wird verschlüsselt auf diesem Gerät gespeichert.", true);
+    else setSaveState("Nicht gespeichert. Wenn du die Seite schließt, ist alles weg.");
+  }
+
+  /* ---------- Eingaben ---------- */
+  document.addEventListener("change", function(e){
+    var id = e.target.getAttribute && e.target.getAttribute("data-id");
+    if (!id || !state) return;
+    if (e.target.checked) state.done[id] = true; else delete state.done[id];
+    e.target.closest(".item").classList.toggle("checked", e.target.checked);
+    updateCounts();
+    updateProgress();
+    scheduleSave();
+  });
+
+  document.addEventListener("input", function(e){
+    var f = e.target.getAttribute && e.target.getAttribute("data-feld");
+    if (!f || !state) return;
+    if (e.target.value) state.felder[f] = e.target.value; else delete state.felder[f];
+    scheduleSave();
+  });
+
+  document.querySelectorAll(".land").forEach(function(b){
+    b.addEventListener("click", function(){
+      state.land = this.getAttribute("data-land");
+      renderLands();
+      renderLandTipps();
+      renderStellen();
+      scheduleSave();
+    });
+  });
+
+  $("pinForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    var p1 = $("pin1").value, p2 = $("pin2").value;
+    if (p1.length < 6){ $("pinMsg").textContent = "Die PIN braucht mindestens 6 Zeichen."; return; }
+    if (p1 !== p2){ $("pinMsg").textContent = "Die beiden PINs sind nicht gleich."; return; }
+    if (!window.crypto || !crypto.subtle){ $("pinMsg").textContent = "Dein Browser kann hier nicht verschlüsselt speichern."; return; }
+    $("pinMsg").textContent = "Einen Moment …";
+    salt = crypto.getRandomValues(new Uint8Array(16));
+    deriveKey(p1, salt).then(function(k){
+      key = k;
+      return saveNow();
+    }).then(function(){
+      $("pin1").value = ""; $("pin2").value = "";
+      $("pinMsg").textContent = "";
+      updateStoreCard();
+    }).catch(function(){
+      key = null; salt = null;
+      $("pinMsg").textContent = "Speichern hat nicht geklappt.";
+    });
+  });
+
+  $("lockBtn").addEventListener("click", function(){
+    clearTimeout(saveTimer);
+    saveNow().then(function(){
+      state = null; key = null; salt = null;
+      $("sections").innerHTML = ""; $("fields").innerHTML = ""; $("stellen").innerHTML = "";
+      showStart();
+      window.scrollTo(0, 0);
+    });
+  });
+
+  var deleteArmed = false;
+  $("deleteBtn").addEventListener("click", function(){
+    if (!deleteArmed){
+      deleteArmed = true;
+      this.textContent = "Wirklich löschen? Nochmal tippen";
+      return;
+    }
+    deleteArmed = false;
+    this.textContent = "Gespeicherten Plan löschen";
+    clearTimeout(saveTimer);
+    clearStore();
+    key = null; salt = null;
+    updateStoreCard();
+    setSaveState("Gelöscht. Was du jetzt siehst, verschwindet, wenn du die Seite schließt.");
+  });
+
+  /* ---------- Kopieren und Drucken ---------- */
+  function planText(){
+    var lines = ["MEIN PLAN", ""];
+    INHALT.abschnitte.forEach(function(a){
+      lines.push(a.titel.toUpperCase());
+      a.punkte.forEach(function(p){
+        var id = a.id + "." + p.id;
+        lines.push((state.done[id] ? "[x] " : "[ ] ") + p.text);
+        if (p.land && state.land && p.land[state.land]) lines.push("    " + p.land[state.land]);
+      });
+      lines.push("");
+    });
+    var felder = INHALT.felder.filter(function(f){ return state.felder[f.id]; });
+    if (felder.length){
+      lines.push("MEINE ANGABEN");
+      felder.forEach(function(f){ lines.push(f.label + ": " + state.felder[f.id]); });
+      lines.push("");
+    }
+    if (state.land){
+      lines.push("HILFE (" + LAND_NAMEN[state.land].toUpperCase() + ")");
+      INHALT.stellen[state.land].forEach(function(s){
+        lines.push(s.name + (s.nummer ? " · " + s.nummer : "") + (s.web ? " · " + s.web : ""));
+      });
+    }
+    return lines.join("\n");
+  }
+
+  $("copyBtn").addEventListener("click", function(){
+    var text = planText();
+    var done = function(){ $("exportMsg").textContent = "Kopiert. Füge ihn nur dort ein, wo er ihn nicht sieht."; };
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(done, function(){ fallbackCopy(text); done(); });
+    } else { fallbackCopy(text); done(); }
+  });
+  function fallbackCopy(text){
+    var ta = document.createElement("textarea");
+    ta.value = text; document.body.appendChild(ta); ta.select();
+    try{ document.execCommand("copy"); }catch(_){}
+    ta.remove();
+  }
+
+  var openBefore = [];
+  window.addEventListener("beforeprint", function(){
+    openBefore = [];
+    document.querySelectorAll("details.sec").forEach(function(d){ openBefore.push(d.open); d.open = true; });
+  });
+  window.addEventListener("afterprint", function(){
+    document.querySelectorAll("details.sec").forEach(function(d, i){ d.open = !!openBefore[i]; });
+  });
+  var framed = true; try{ framed = window.self !== window.top; }catch(e){}
+  if (framed) $("printBtn").hidden = true;
+  else $("printBtn").addEventListener("click", function(){ window.print(); });
+
+  /* ---------- Schnell weg ---------- */
+  function quickExit(){
+    clearTimeout(saveTimer);
+    state = null; key = null; salt = null;
+    document.body.innerHTML = "";
+    document.title = "Wetter";
+    window.location.replace(EXIT_URL);
+  }
+  $("exitBtn").addEventListener("click", quickExit);
+  document.addEventListener("keydown", function(e){
+    if (e.key !== "Escape") return;
+    escCount++;
+    clearTimeout(escTimer);
+    escTimer = setTimeout(function(){ escCount = 0; }, 800);
+    if (escCount >= 2){ escCount = 0; quickExit(); }
+  });
+
+  showStart();
+})();
+</script>
+</body>
+</html>

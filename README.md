@@ -1,10 +1,17 @@
 # Bio-Link
 
 - `index.html` – Link-in-Bio-Seite von Seelenwende.
+- `muster-check.html` – **Muster-Check** „Ist das noch normal?“: 20 konkrete Alltagssituationen in fünf Bereichen (Wahrnehmung, Abwertung, Kontrolle & Rückzug, Heiß & kalt, Schuld & Angst). Zeigt, wo sich ein Muster wiederholt, wie es in einer gesunden Beziehung aussähe, einen Satz und eine Journal-Frage. Sicherheitshinweis mit Hilfenummern (CH/DE/AT), sobald sie Angst vor seiner Wut angibt; „Schnell weg“-Knopf (auch zweimal Esc). Läuft komplett im Browser, nichts wird gespeichert.
 - `werte-finder.html` – Werte-Finder: in vier Schritten (5–15 Werte wählen, auf 5 eingrenzen, in eigenen Worten beschreiben, was jeder Wert bedeutet, einschätzen wie sehr man sie lebt) zu den eigenen fünf Kernwerten – mit eigenen Bedeutungssätzen und Impulsfragen zum Nachspüren. Läuft komplett im Browser, ohne KI, API-Schlüssel oder Kosten; Antworten bleiben auf dem Gerät.
+- `notizen.html` – **Klarheits-Tagebuch** (bewusst neutral benannt, heißt im Browser nur „Notizen“): Vorfälle mit Datum festhalten – was passiert ist, was wörtlich gesagt wurde, erkannte Muster (Leugnen, Kleinreden, Schuldumkehr …), Gefühle, Belege und ein Satz „Was weißt du sicher?“ für Zweifelsmomente. Übersicht „Muster“ zeigt, was sich wiederholt. PIN-geschützt und mit AES-GCM verschlüsselt (Schlüssel per PBKDF2 aus der PIN), gespeichert nur im Browser des Geräts – kein Server, kein Konto. Sperrt sich nach 5 Min. ohne Eingabe oder 30 Sek. im Hintergrund, „Schnell weg“-Knopf (auch zweimal Esc), Bremse nach 5 falschen PINs. Export als Druck/PDF oder Text (z. B. für eine Beratungsstelle), verschlüsselte Sicherungsdatei zum Mitnehmen auf ein anderes Gerät. Vergessene PIN = Tagebuch verloren (Absicht). Knopf **„Mit Mira einordnen“** in jedem Eintrag: übergibt den Eintrag (ohne Belege/Zeugen) über `sessionStorage` an `begleiterin.html`, wo er nach dem Zugangscode im Textfeld steht – sie liest ihn und schickt ihn selbst ab. Mira liest den Wert sofort aus und löscht ihn; nichts landet in Adresse oder Verlauf.
+- `affirmationen.html` – **Sei sanft mit dir**: persönliche Affirmationen für Frauen, die gerade zu hart mit sich sind. Sie wählt, was die harte Stimme sagt (bis zu drei Sätze, optional in eigenen Worten), wie es ihr gerade geht und wo sie steht, und beantwortet die Freundinnen-Frage („Was würdest du einer Freundin sagen?“). Danach bekommt sie zu jedem harten Satz eine Einordnung und einen freundlichen Satz in drei Stufen (ganz sanft · auf dem Weg · klar und stark) und wählt selbst, welche Stufe sie heute glauben kann. Dazu ein Satz für ihr Gefühl, ihre Phase und – falls vorhanden – ihre Werte aus dem Werte-Finder. Mit Lese-Moment im Vollbild, „Satz für heute“ beim nächsten Besuch und Krisenhinweis, wenn ihre eigenen Worte auf Gefahr deuten. Läuft komplett im Browser, ohne KI und ohne Kosten; alles bleibt auf dem Gerät.
+- `neuer-satz-kompass.html` – **Neuer-Satz-Kompass** (bezahlt, mit Zugangscode): 30 Tage, ein Impuls pro Tag (Impuls, kleine Aufgabe, Frage, eigene Notiz). Baut auf dem lautesten Satz aus dem Glaubenssätze-Test und drei Werten aus dem Werte-Finder auf – beide werden automatisch übernommen, wenn sie auf dem Gerät gemacht wurden, sonst wählt sie die Frau selbst. Woche 1 Bemerken, Woche 2 Der neue Satz, Woche 3 Werte leben, Woche 4 Verankern. Die Startseite bietet zwei Wege: **Weg 1 (empfohlen)** über Glaubenssätze-Test → Werte-Finder → Kompass, wobei sich jeder Schritt erst nach dem vorherigen öffnet, oder **Weg 2** direkt starten (Satz und Werte selbst wählen, nichts wird übernommen). Die Einrichtung ist frei; die 30 Impulse liefert der Server erst nach gültigem Code (siehe unten). Jeden Kalendertag öffnet sich ein neuer Tag, verpasste bleiben offen. Optional Kalender-Erinnerung (.ics). Notizen bleiben auf dem Gerät. Die Weiter-Knöpfe aus Test und Werte-Finder öffnen `neuer-satz-kompass.html#neu`: Dann erscheint immer ein neuer, leerer Kompass zum Einrichten (ein laufender bleibt über „Zu deinem bisherigen Kompass“ erreichbar, bis der neue gestartet wird). Vorschau mit allen Tagen: `neuer-satz-kompass.html?alle` oder `#alle`.
+- `red-flag-radar.html` – Red-Flag-Radar: „Passiert mir das wieder?“ – Check für neue Bekanntschaften mit 18 Situationen in sechs Bereichen (Tempo, zu perfekt, Grenzen, Verantwortung, Kontrolle, Bauchgefühl). Antwort „Weiß ich noch nicht“ wird als offener Beobachtungspunkt gezeigt. Ergebnis mit Was-dahinterstecken-kann, gesundem Gegenstück, „Sanft prüfen“ und Journal-Frage; bei deutlichen Signalen Beratungsnummern (CH/DE/AT). Läuft komplett im Browser, Antworten bleiben auf dem Gerät.
 - `begleiterin.html` – **Mira**, die Seelenwende-Begleiterin: KI-Gesprächsbegleitung mit Zugangscode. Ein offenes Gespräch ohne Kategorien – die Begleiterin erkennt selbst, was gerade gebraucht wird. Krisenerkennung mit Notrufnummern (CH/DE/AT), „Schnell weg“-Knopf, Gespräche werden nicht gespeichert.
 - `kreis.html` – **Seelenwende Kreis**: Mitgliedschaft (19 €/Monat). Ohne Code eine Einladungsseite, mit Code der Mitgliederbereich: ein Thema pro Monat mit vier Wochen-Impulsen (Text, Übung, Journal-Frage, Einstieg für Mira), Archiv, Mira mit Monatskontingent.
 - `zugang-admin.html` – internes Werkzeug: Zugangscodes für Mira und den Kreis anlegen, sperren, nachschlagen.
+- `programm.html` – **„Wieder bei dir“**, das 6-Wochen-Programm mit Zugangscode: sechs Wochen mit Impulsen zum Lesen, Schreibübungen, sieben Tagesankern pro Woche und Gesprächsanstößen für Mira. Die Inhalte liegen nur auf dem Server und kommen erst nach dem Code. Notizen bleiben auf dem Gerät (dauerhaft nur mit Häkchen, sonst nur im offenen Tab). Mit „Schnell weg“ und Krisenleiste.
+- `planer.html` – **Ausstiegs-Planer** (gratis, ohne Code): Sicherheitsplan als Checkliste in neun Abschnitten (Handy und Spuren, Notfall, Dokumente, Geld, Notfalltasche, Menschen, Schutz und Recht, der Tag selbst, die ersten Wochen) mit Hinweisen und Beratungsstellen für die Schweiz, Deutschland und Österreich. Bewusst neutraler Tab-Titel („Checkliste“), „Schnell weg“-Knopf. Ohne PIN wird nichts gespeichert, mit PIN bleibt der Plan verschlüsselt (AES-GCM) nur auf dem Gerät. Läuft komplett im Browser, ohne Server und ohne Kosten. Der Inhalt (Punkte, Tipps, Hinweise je Land, Beratungsstellen) steht oben im Skript als `INHALT`. **Nummern und Stellen vor jeder Änderung fachlich prüfen lassen** (Stand: Oktober 2026).
 - `profil-check.html` – KI-Profil-Check: Instagram-Namen eingeben, die KI liest Profil, Bio, Link-Seite und die letzten Posts (offizielle Instagram Graph API) und bewertet jeden Punkt des Profil-Checks mit konkretem Verbesserungsvorschlag.
 
 ## So funktioniert der Profil-Check (Netlify)
@@ -56,7 +63,7 @@ Codes kommen aus zwei Quellen (`netlify/lib/zugang.mts`):
 1. **Code-Register** (empfohlen): Codes über `zugang-admin.html` oder per API anlegen. Sie gelten sofort, ohne neues Deployment, und lassen sich wieder sperren, etwa wenn ein Kreis-Abo gekündigt wird. Gespeichert wird nur ein Hash des Codes.
 2. **Umgebungsvariablen** `BEGLEITERIN_CODES` / `KREIS_CODES`: von Hand, nach jeder Änderung neu deployen.
 
-Ein Kreis-Code öffnet auch Mira. Das Kontingent zählt pro Kalendermonat (Schweizer Zeit) und ist am Monatsersten wieder voll. Ein Mira-Code öffnet den Kreis nicht.
+Ein Kreis-Code öffnet auch Mira, ein Programm-Code ebenfalls (Kontingent `PROGRAMM_MIRA_LIMIT`, insgesamt). Das Kontingent zählt pro Kalendermonat (Schweizer Zeit) und ist am Monatsersten wieder voll. Ein Mira-Code öffnet den Kreis nicht.
 
 API für Make (z. B. Tentary-Kauf → Code anlegen → MailerLite-Mail; Tentary-Kündigung → sperren):
 
@@ -72,3 +79,46 @@ Authorization: Bearer <SEELENWENDE_ADMIN_KEY>
 ## Kreis-Inhalte
 
 Die Monatsthemen stehen in `netlify/lib/kreis-inhalte.mts` und werden nur mit gültigem Kreis-Code ausgeliefert (`/api/kreis/inhalt`). Ein Monat wird an seinem ersten Tag sichtbar, ältere bleiben im Archiv. Angelegt sind Oktober, November und Dezember 2026. Den Kauf-Link trägst du in `kreis.html` bei `KAUF_URL` ein; solange er leer ist, zeigt die Seite den Hinweis „Schreib KREIS an @_seelenwende“.
+
+## So funktioniert das 6-Wochen-Programm „Wieder bei dir“ (Netlify)
+
+1. `programm-inhalt` prüft den Zugangscode und liefert erst dann die Inhalte aus. Die Texte stehen in `netlify/lib/programm.mts`.
+2. Notizen, Tagesanker und Fortschritt werden nie hochgeladen. Mit Häkchen bleiben sie auf dem Gerät, ohne Häkchen nur, solange der Tab offen ist.
+3. Boni (Begleitheft und „Audio für schwere Tage“, beide nur im Programm) liegen in `bonus/`. `programm-bonus` gibt mit gültigem Code einen drei Stunden gültigen, signierten Link heraus; die Edge-Funktion `bonus-schutz` lässt nur solche Links durch. Welche Dateien wohin gehören, steht in `bonus/LIESMICH.md`. Einzelprodukte werden nicht mitgeliefert; die Wochen knüpfen mit „Du hast schon …?“ an sie an (Werkzeug und Weg).
+4. Derselbe Code öffnet Mira, mit eigenem, größerem Kontingent. Die Gesprächsanstöße jeder Woche landen direkt in Miras Eingabefeld.
+
+| Variable | Inhalt |
+|---|---|
+| `PROGRAMM_CODES` | gültige Programm-Codes, kommagetrennt, z. B. `WIEDER-AB12-CD34` |
+| `BONUS_SECRET` | optional, eigenes Geheimnis für die Bonus-Links (sonst aus den Programm-Codes abgeleitet) |
+| `PROGRAMM_MIRA_LIMIT` | optional, Mira-Nachrichten pro Programm-Code (Standard 1000) |
+
+Neue Käuferin: Code an `PROGRAMM_CODES` anhängen, danach neu deployen.
+
+## So funktioniert der Neuer-Satz-Kompass (Netlify)
+
+Satz und Werte wählt die Frau frei. Auf der letzten Einrichtungsseite gibt sie ihren Zugangscode ein. `kompass-tage` (`/api/kompass/tage`) prüft den Code und liefert die 30 Impulse, fertig eingesetzt mit ihrem Satz und ihren Werten. Die Impulse stehen nur in `netlify/lib/kompass.mts`, nicht in der Seite. Danach läuft alles auf ihrem Gerät; gespeichert wird auf dem Server nichts.
+
+| Variable | Inhalt |
+|---|---|
+| `KOMPASS_CODES` | gültige Kompass-Codes, kommagetrennt, Groß-/Kleinschreibung egal, z. B. `KOMPASS-AB12-CD34` |
+
+Neue Käuferin: Code an `KOMPASS_CODES` anhängen, danach neu deployen. Ohne die Variable zeigt der Kompass „noch nicht eingerichtet“. Den Kauf-Link („Noch keinen Code?“) in `neuer-satz-kompass.html` auf das Tentary-Produkt setzen, sobald es angelegt ist.
+
+## Bio-Link: Werkzeuge erst nach Mail-Adresse
+
+Auf `index.html` öffnen Self Care Journal, Muster-Check, Glaubenssätze-Test, Werte-Finder, „Sei sanft mit dir“ und der Mini-Guide nicht direkt. Zuerst kommt ein Fenster, in das die Frau ihre Mail-Adresse einträgt und den Mails zustimmt. `werkzeuge-anmeldung` (`/api/werkzeuge/anmelden`) trägt sie in MailerLite ein, danach öffnet sich das Werkzeug. Der Browser merkt sich die Anmeldung, beim nächsten Besuch geht es direkt weiter. Journal und Mini-Guide öffnen danach ihre Tentary-Seite im selben Fenster. Die Werkzeug-Seiten selbst bleiben über ihren direkten Link erreichbar (z. B. aus dem Programm oder den Ergebnis-Mails).
+
+| Variable | Inhalt |
+|---|---|
+| `MAILERLITE_API_KEY` | API-Schlüssel aus MailerLite (derselbe wie beim Glaubenssätze-Test) |
+| `MAILERLITE_GROUP_WERKZEUGE` | optional: ID einer anderen Gruppe. Ohne sie sucht die Funktion die Gruppe „Bio-Link Werkzeuge“ per Name und legt sie bei Bedarf selbst an. |
+
+## Glaubenssätze-Test: Ergebnis per Mail (MailerLite)
+
+Die Texte des Tests stehen in `glaubenssaetze.json` (für Seite und Mail). Unter dem Ergebnis kann die Frau ihre Mail-Adresse eintragen. `test-ergebnis-mail` rechnet das Ergebnis aus den Punkten nach und trägt sie mit ihrem Hauptsatz in MailerLite ein; die Mail verschickt eine MailerLite-Automatisierung. Einrichtung, Felder und Mailtext: `mails/glaubenssaetze-ergebnis.md`.
+
+| Variable | Inhalt |
+|---|---|
+| `MAILERLITE_API_KEY` | API-Schlüssel aus MailerLite |
+| `MAILERLITE_GROUP_GLAUBENSSAETZE` | ID der Gruppe „Glaubenssätze-Test“ |

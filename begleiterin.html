@@ -53,7 +53,7 @@
   .butterfly{width:24px; height:24px; flex-shrink:0;}
   .butterfly .w1{fill:var(--beere);} .butterfly .w2{fill:var(--rose);} .butterfly .w3{fill:var(--linie);} .butterfly .k{fill:var(--pflaume);}
   .actions{display:flex; gap:8px; flex-shrink:0;}
-  .restart{background:none; border:none; color:var(--gedaempft); font-size:.8rem; cursor:pointer; padding:7px 4px;}
+  .restart{background:none; border:none; color:var(--gedaempft); font-size:.8rem; cursor:pointer; padding:7px 4px; text-decoration:none;}
   .exit{
     background:var(--sand); color:var(--pflaume); border:1px solid var(--linie);
     border-radius:20px; padding:7px 14px; font-size:.8rem; font-weight:500; cursor:pointer; white-space:nowrap;
@@ -73,6 +73,8 @@
     padding:7px 13px; font-size:.84rem; cursor:pointer; text-align:left; max-width:100%;
   }
   .starter:hover{border-color:var(--rose);}
+  .prefill-hint{width:100%; text-align:center; color:var(--gedaempft); font-size:.86rem; margin:0; max-width:44ch;}
+  .prefill-note{background:var(--sand); border-radius:12px; padding:9px 12px; font-size:.86rem;}
   .chat-screen{padding:0;}
   .chat-messages{flex:1; min-height:0; overflow-y:auto; padding:18px 16px; display:flex; flex-direction:column; gap:12px;}
   .msg{max-width:86%; padding:12px 15px; border-radius:16px; font-size:.95rem; line-height:1.6; white-space:pre-wrap; overflow-wrap:anywhere;}
@@ -135,6 +137,7 @@
     <span class="word">Mira</span>
   </div>
   <div class="actions">
+    <a class="restart" id="back-programm" href="programm.html" hidden>Zum Programm</a>
     <button class="restart" id="restart-btn" hidden>Neu beginnen</button>
     <button class="exit" id="exit-btn" title="Verlässt die Seite sofort (auch: zweimal Esc)">Schnell weg</button>
   </div>
@@ -145,6 +148,7 @@
     <form class="gate" id="gate-form" novalidate>
       <h1>Willkommen bei Mira.</h1>
       <p>Mira ist deine Seelenwende-Begleiterin. Gib deinen Zugangscode ein – du findest ihn in deiner Bestätigungs-Mail.</p>
+      <p class="prefill-note" id="gate-prefill" hidden>Dein Eintrag aus den Notizen ist bereit. Nach dem Code steht er im Textfeld – du schickst ihn selbst ab.</p>
       <label class="field" for="code-input">Zugangscode</label>
       <input type="text" id="code-input" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Dein Zugangswort" required>
       <label class="remember"><input type="checkbox" id="remember-input"> Code auf diesem Gerät merken. Lass das aus, wenn jemand anderes dein Handy benutzt oder kontrolliert.</label>
@@ -164,7 +168,7 @@
 </main>
 
 <footer class="crisis-bar">
-  In Gefahr: <b>Notruf 112</b> (CH Polizei <b>117</b>) · Gewalt gegen Frauen: <b>DE 116 016</b> · <b>AT 0800 222 555</b> · CH Opferhilfe · Seelsorge: <b>CH 143</b> · <b>DE 0800 111 0 111</b> · <b>AT 142</b><br>
+  In Gefahr: <b>Notruf 112</b> (CH Polizei <b>117</b>) · Gewalt gegen Frauen: <b>DE 116 016</b> · <b>AT 0800 222 555</b> · CH Opferhilfe <b>142</b> · Seelsorge: <b>CH 143</b> · <b>DE 0800 111 0 111</b> · <b>AT 142</b><br>
   Mira ist eine KI und Selbsthilfe, keine Therapie. Gespräche werden nicht gespeichert.
 </footer>
 
@@ -181,12 +185,17 @@
   ];
   var MAX_TURNS = 30;
   var CODE_KEY = "sw_begleiterin_code";
-  var HANDOFF_KEY = "sw_mira_uebergabe"; // vom Kreis: { code, text }, nur in diesem Tab
   var EXIT_URL = "https://www.google.com/search?q=wetter";
 
-  var state = { code:null, turns:[], busy:false, escCount:0, escTimer:null, pollTimer:null, jobId:null };
+  var PREFILL_KEY = "sw_mira_prefill";
+
+  var state = { code:null, turns:[], busy:false, escCount:0, escTimer:null, pollTimer:null, jobId:null, prefill:null };
+
+  // Eintrag aus dem Klarheits-Tagebuch (notizen.html): sofort aus dem Speicher nehmen, nur im Arbeitsspeicher halten.
+  try { state.prefill = sessionStorage.getItem(PREFILL_KEY); sessionStorage.removeItem(PREFILL_KEY); } catch(e){}
 
   function $(id){ return document.getElementById(id); }
+  if (state.prefill) $("gate-prefill").hidden = false;
   function show(id){
     ["screen-gate","screen-chat"].forEach(function(s){ $(s).hidden = (s !== id); });
     $("restart-btn").hidden = (id !== "screen-chat");
@@ -195,14 +204,20 @@
   /* ---------- Zugang ---------- */
   try { var saved = localStorage.getItem(CODE_KEY); if (saved) { $("code-input").value = saved; $("remember-input").checked = true; } } catch(e){}
 
+  // Aus dem 6-Wochen-Programm: Code und Gesprächsanfang kommen über den Tab-Speicher, nicht über die Adresse.
+  var vomProgramm = { code:null, start:null };
+  try {
+    vomProgramm.code = sessionStorage.getItem("sw_mira_code");
+    vomProgramm.start = sessionStorage.getItem("sw_mira_start");
+    if (sessionStorage.getItem("sw_mira_von") === "programm") $("back-programm").hidden = false;
+    sessionStorage.removeItem("sw_mira_code");
+    sessionStorage.removeItem("sw_mira_start");
+  } catch(e){}
+
   $("gate-form").addEventListener("submit", function(e){
     e.preventDefault();
     var code = $("code-input").value.trim();
     if (!code) { $("gate-error").textContent = "Bitte gib deinen Zugangscode ein."; return; }
-    unlock(code, $("remember-input").checked, "");
-  });
-
-  function unlock(code, remember, prefill){
     $("gate-submit").disabled = true;
     $("gate-error").textContent = "";
     fetch("/api/begleiterin/zugang", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({code: code}) })
@@ -210,24 +225,24 @@
       .then(function(res){
         if (!res.ok) { $("gate-error").textContent = res.data.error || "Das hat nicht geklappt. Versuch es noch einmal."; return; }
         state.code = code;
-        if (remember !== null) {
-          try { if (remember) localStorage.setItem(CODE_KEY, code); else localStorage.removeItem(CODE_KEY); } catch(e){}
-        }
+        try {
+          if ($("remember-input").checked) localStorage.setItem(CODE_KEY, code); else localStorage.removeItem(CODE_KEY);
+        } catch(e){}
         setCounter(res.data);
         startChat();
-        if (prefill) { var i = $("chat-input"); i.value = prefill; autosize(i); }
+        if (vomProgramm.start) {
+          var i = $("chat-input"); i.value = vomProgramm.start; autosize(i); i.focus();
+          vomProgramm.start = null;
+        }
       })
       .catch(function(){ $("gate-error").textContent = "Keine Verbindung. Prüf dein Internet und versuch es noch einmal."; })
       .then(function(){ $("gate-submit").disabled = false; });
-  }
+  });
 
   function setCounter(d){
     if (typeof d.used !== "number" || typeof d.limit !== "number") return;
     var left = Math.max(0, d.limit - d.used);
-    var text = "";
-    if (d.plan === "kreis") text = left <= 30 ? ("Noch " + left + " Nachrichten in diesem Monat") : "";
-    else text = left <= 30 ? ("Noch " + left + " Nachrichten in diesem Zugang") : "";
-    $("chat-counter").textContent = text;
+    $("chat-counter").textContent = left > 30 ? "" : "Noch " + left + " Nachrichten " + (d.resetsOn ? "in diesem Monat" : "in diesem Zugang");
   }
 
   /* ---------- Gespräch ---------- */
@@ -252,8 +267,18 @@
       st.appendChild(b);
     });
     box.appendChild(st);
+    if (state.prefill) {
+      // Statt der Starthilfen: Eintrag einfügen, sie liest und schickt selbst ab.
+      st.innerHTML = '<span class="label">Aus deinen Notizen</span><p class="prefill-hint">Dein Eintrag steht unten im Textfeld. Lies ihn durch, lösch, was du nicht teilen magst, und schick ihn ab, wenn es passt.</p>';
+      $("chat-input").value = state.prefill;
+      state.prefill = null;
+      $("gate-prefill").hidden = true;
+    }
     show("screen-chat");
-    $("chat-input").focus();
+    var input = $("chat-input");
+    autosize(input);
+    input.focus();
+    if (input.value) { input.setSelectionRange(0, 0); input.scrollTop = 0; }
   }
   $("restart-btn").addEventListener("click", startChat);
 
@@ -357,18 +382,17 @@
   function autosize(el){ el.style.height = "auto"; el.style.height = Math.min(130, el.scrollHeight) + "px"; }
   $("chat-input").addEventListener("input", function(){ autosize(this); });
 
-  /* ---------- Übergabe aus dem Kreis ---------- */
-  // Der Code wird nicht gemerkt (remember = null lässt die Einstellung unverändert).
-  (function(){
-    var raw = null;
-    try { raw = sessionStorage.getItem(HANDOFF_KEY); sessionStorage.removeItem(HANDOFF_KEY); } catch(e){}
-    if (!raw) return;
-    try { var h = JSON.parse(raw); if (h && h.code) unlock(String(h.code), null, String(h.text || "")); } catch(e){}
-  })();
+  if (vomProgramm.code) {
+    $("code-input").value = vomProgramm.code;
+    vomProgramm.code = null;
+    $("gate-form").requestSubmit();
+  }
 
   /* ---------- Schnell weg ---------- */
   function quickExit(){
     stopPolling();
+    state.prefill = null;
+    try { sessionStorage.removeItem(PREFILL_KEY); } catch(e){}
     state.turns = [];
     try { sessionStorage.clear(); } catch(e){}
     $("chat-messages").innerHTML = "";

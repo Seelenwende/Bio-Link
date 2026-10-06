@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="referrer" content="no-referrer">
+<title>Wieder bei dir</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  /* Layout: eine ruhige Lese-Spalte. Übersicht mit sechs Wochen-Karten, darunter Wochen-Ansicht mit Impulsen, Übungen und Tagesankern. */
+  :root{
+    --papier:#FAF6F4; --sand:#F3ECE9; --blush:#F6E9EC; --weiss:#FFFFFF;
+    --rose:#B5808F; --beere:#8C5A69; --pflaume:#5C3A46;
+    --gedaempft:#8E7079; --linie:#E4D8D8; --ok:#5C7A5C; --ok-soft:#E4EDE4;
+    --auf-dunkel:#FAF6F4; --auf-dunkel-leise:#E3CFD5;
+    --serif:"Playfair Display",Georgia,serif;
+    --sans:"Jost",system-ui,-apple-system,"Segoe UI",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --papier:#1B1417; --sand:#241B1F; --blush:#2A1E22; --weiss:#21181C;
+      --rose:#D9A6B3; --beere:#9E6478; --pflaume:#F3E4E7;
+      --gedaempft:#C0A2AA; --linie:#3D2C31; --ok:#8FBFA0; --ok-soft:#20302A;
+      --auf-dunkel:#FBF1F3; --auf-dunkel-leise:#E9D3DA; color-scheme:dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --papier:#1B1417; --sand:#241B1F; --blush:#2A1E22; --weiss:#21181C;
+    --rose:#D9A6B3; --beere:#9E6478; --pflaume:#F3E4E7;
+    --gedaempft:#C0A2AA; --linie:#3D2C31; --ok:#8FBFA0; --ok-soft:#20302A;
+    --auf-dunkel:#FBF1F3; --auf-dunkel-leise:#E9D3DA; color-scheme:dark;
+  }
+  *{box-sizing:border-box;}
+  [hidden]{display:none !important;}
+  body{
+    margin:0; background:var(--papier); color:var(--pflaume);
+    font-family:var(--sans); font-weight:300; font-size:16px; line-height:1.65;
+    -webkit-font-smoothing:antialiased; min-height:100vh; display:flex; flex-direction:column;
+  }
+  button{font-family:inherit;}
+  a{color:var(--beere);}
+  button:focus-visible, a:focus-visible, textarea:focus-visible, input:focus-visible{outline:2px solid var(--rose); outline-offset:2px;}
+  h1,h2,h3{font-family:var(--serif); font-weight:500; margin:0; line-height:1.25; text-wrap:balance;}
+
+  header.top{
+    position:sticky; top:0; z-index:5; background:var(--papier);
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    padding:12px 16px; border-bottom:1px solid var(--linie);
+  }
+  .brand{display:flex; align-items:center; gap:10px; min-width:0; background:none; border:none; padding:0; cursor:pointer; color:inherit;}
+  .brand .word{font-family:var(--serif); letter-spacing:.2em; text-transform:uppercase; font-size:12px; color:var(--gedaempft); white-space:nowrap;}
+  .butterfly{width:24px; height:24px; flex-shrink:0;}
+  .butterfly .w1{fill:var(--beere);} .butterfly .w2{fill:var(--rose);} .butterfly .w3{fill:var(--linie);} .butterfly .k{fill:var(--pflaume);}
+  .actions{display:flex; gap:8px; flex-shrink:0;}
+  .exit{
+    background:var(--sand); color:var(--pflaume); border:1px solid var(--linie);
+    border-radius:20px; padding:7px 14px; font-size:.8rem; font-weight:500; cursor:pointer; white-space:nowrap;
+  }
+
+  main{flex:1; width:100%; max-width:680px; margin:0 auto; padding:28px 16px 48px;}
+
+  .eyebrow{font-size:.7rem; letter-spacing:.2em; text-transform:uppercase; color:var(--rose); font-weight:500;}
+  .muted{color:var(--gedaempft);}
+  .small{font-size:.86rem;}
+  p{margin:0;}
+  .stack > * + *{margin-top:12px;}
+
+  .btn{
+    display:inline-block; background:var(--pflaume); color:var(--papier); border:none; border-radius:24px;
+    padding:12px 22px; font-weight:500; font-size:.94rem; cursor:pointer; text-decoration:none; text-align:center;
+  }
+  .btn:disabled{opacity:.5; cursor:not-allowed;}
+  .btn.soft{background:var(--papier); color:var(--pflaume); border:1px solid var(--linie);}
+  .btn.link{background:none; color:var(--gedaempft); padding:8px 4px; text-decoration:underline; text-underline-offset:3px; font-weight:400;}
+
+  /* Zugang */
+  .gate{max-width:380px; margin:40px auto 0; display:flex; flex-direction:column; gap:12px; text-align:center;}
+  .gate h1{font-size:1.75rem;}
+  .gate label.field{font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; color:var(--gedaempft); text-align:left; margin-top:8px;}
+  .gate input[type="text"]{
+    width:100%; border:1px solid var(--linie); background:var(--sand); color:var(--pflaume);
+    border-radius:12px; padding:13px 15px; font-family:var(--sans); font-size:1rem; font-weight:400; letter-spacing:.04em;
+  }
+  .check{display:flex; gap:9px; align-items:flex-start; text-align:left; font-size:.86rem; color:var(--gedaempft);}
+  .check input{margin-top:5px; accent-color:var(--beere); flex-shrink:0;}
+  .error{color:var(--beere); font-size:.88rem; min-height:1.3em;}
+
+  /* Übersicht */
+  .hero{background:var(--pflaume); color:var(--auf-dunkel); border-radius:20px; padding:26px 22px; display:grid; gap:10px;}
+  .hero .eyebrow{color:var(--auf-dunkel-leise);}
+  .hero h1{font-size:2rem;}
+  .hero p{color:var(--auf-dunkel-leise); font-size:.96rem;}
+  .bar{height:6px; border-radius:6px; background:rgba(255,255,255,.18); overflow:hidden; margin-top:6px;}
+  .bar span{display:block; height:100%; background:var(--rose); border-radius:6px; transition:width .4s ease;}
+
+  .section{margin-top:30px;}
+  .section > h2{font-size:1.3rem; margin-bottom:12px;}
+  .howto{list-style:none; margin:0; padding:0; display:grid; gap:8px;}
+  .howto li{background:var(--sand); border-radius:12px; padding:10px 14px; font-size:.92rem;}
+
+  .weeks{display:grid; gap:10px;}
+  .week-card{
+    display:grid; grid-template-columns:auto 1fr auto; gap:14px; align-items:center; text-align:left;
+    background:var(--weiss); border:1px solid var(--linie); border-radius:16px; padding:14px 16px; cursor:pointer; color:inherit; width:100%;
+  }
+  .week-card:hover{border-color:var(--rose);}
+  .week-card .nr{
+    width:40px; height:40px; border-radius:50%; display:grid; place-items:center;
+    font-family:var(--serif); font-size:1.1rem; background:var(--sand); color:var(--beere);
+  }
+  .week-card.done .nr{background:var(--beere); color:var(--auf-dunkel);}
+  .week-card .t{font-family:var(--serif); font-size:1.08rem; font-weight:500; display:block;}
+  .week-card .u{font-size:.86rem; color:var(--gedaempft); display:block;}
+  .week-card .s{font-size:.76rem; color:var(--gedaempft); white-space:nowrap; text-align:right;}
+  .week-card.next{border-color:var(--beere); box-shadow:0 10px 24px -20px var(--beere);}
+
+  .card{background:var(--weiss); border:1px solid var(--linie); border-radius:16px; padding:18px;}
+  .card h3{font-size:1.1rem; margin-bottom:6px;}
+  .mira-card{display:grid; gap:10px; background:var(--blush); border-color:transparent;}
+  .row-actions{display:flex; flex-wrap:wrap; gap:10px; align-items:center;}
+
+  .settings{display:grid; gap:12px; font-size:.88rem;}
+  .notice{background:var(--blush); border-radius:12px; padding:10px 14px; font-size:.86rem; color:var(--beere);}
+
+  /* Woche */
+  .week-head{display:grid; gap:8px;}
+  .week-head h1{font-size:2rem;}
+  .week-head .sub{font-family:var(--serif); font-style:italic; font-size:1.1rem; color:var(--beere);}
+  .satz{
+    margin-top:22px; text-align:center; background:var(--pflaume); color:var(--auf-dunkel);
+    border-radius:18px; padding:20px 18px; display:grid; gap:6px;
+  }
+  .satz .eyebrow{color:var(--auf-dunkel-leise);}
+  .satz q{font-family:var(--serif); font-size:1.3rem; line-height:1.4; quotes:"„" "“";}
+
+  .impuls{padding:16px 0; border-top:1px solid var(--linie);}
+  .impuls:first-of-type{border-top:none; padding-top:0;}
+  .impuls h3{font-size:1.15rem; margin-bottom:8px;}
+  .impuls p + p{margin-top:10px;}
+
+  .uebung{display:grid; gap:12px;}
+  .uebung + .uebung{margin-top:14px;}
+  .uebung .anl{font-size:.9rem; color:var(--gedaempft);}
+  .frage{display:grid; gap:6px;}
+  .frage label{font-size:.95rem; font-weight:400;}
+  .frage textarea{
+    width:100%; min-height:76px; resize:vertical; font-family:var(--sans); font-size:1rem; font-weight:400; line-height:1.55;
+    color:var(--pflaume); background:var(--papier); border:1px solid var(--linie); border-radius:12px; padding:10px 12px;
+  }
+  .frage.lang textarea{min-height:200px;}
+  .werkzeug{display:grid; gap:10px; justify-items:start; background:var(--sand); border-radius:12px; padding:12px 14px; font-size:.9rem;}
+  .werkzeug .btn{padding:9px 16px; font-size:.86rem;}
+  .werkzeug .msg{font-size:.84rem; color:var(--beere);}
+  .bonus{display:grid; grid-template-columns:auto minmax(0,1fr); gap:6px 14px; align-items:start;}
+  .bonus .icon{grid-row:span 3; width:38px; height:46px; border-radius:6px; background:var(--blush); border:1px solid var(--linie); display:grid; place-items:center; font-size:.62rem; letter-spacing:.1em; color:var(--beere); font-weight:500;}
+  .bonus .bt{font-family:var(--serif); font-size:1.02rem; font-weight:500; line-height:1.3;}
+  .bonus .bx{font-size:.88rem; color:var(--gedaempft);}
+  .bonus .row-actions{gap:10px;}
+  .bonus .btn{padding:8px 16px; font-size:.86rem;}
+  .bonus .msg{font-size:.84rem; color:var(--beere);}
+  .bonus > .row-actions, .bonus > .spuren{grid-column:2;}
+  .spuren{list-style:none; margin:6px 0 0; padding:0; display:grid; gap:0;}
+  .spur{display:grid; gap:6px; padding-block:12px; border-top:1px solid var(--linie);}
+  .spur-kopf{display:flex; justify-content:space-between; gap:10px; align-items:baseline;}
+  .spur-titel{font-weight:400;}
+  .spur-dauer{font-size:.8rem; color:var(--gedaempft); white-space:nowrap; font-variant-numeric:tabular-nums;}
+  .spur-player audio{width:100%;}
+  .bonus .btn.link{padding:8px 4px;}
+  .aufbau{display:grid; gap:6px; justify-items:start; font-size:.92rem;}
+  .aufbau .bt{font-family:var(--serif); font-size:1.02rem; font-weight:500;}
+  .aufbau .btn.link{padding:2px 0; font-size:.84rem;}
+  .rueckblick-zitat{background:var(--sand); border-radius:12px; padding:12px 14px; font-family:var(--serif); font-style:italic; white-space:pre-wrap;}
+
+  .tage{list-style:none; margin:0; padding:0; display:grid; gap:8px;}
+  .tage label{display:flex; gap:12px; align-items:flex-start; background:var(--weiss); border:1px solid var(--linie); border-radius:12px; padding:11px 14px; cursor:pointer;}
+  .tage input{margin-top:5px; accent-color:var(--beere); width:18px; height:18px; flex-shrink:0;}
+  .tage .tag{font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; color:var(--rose); font-weight:500; display:block;}
+  .tage input:checked + span{color:var(--gedaempft);}
+
+  .starter{
+    display:block; width:100%; text-align:left; background:var(--papier); color:var(--pflaume); border:1px solid var(--linie);
+    border-radius:14px; padding:10px 14px; font-size:.92rem; cursor:pointer;
+  }
+  .starter:hover{border-color:var(--rose);}
+  .hinweis{background:var(--ok-soft); border:1px solid var(--ok); border-radius:14px; padding:14px 16px; font-size:.92rem;}
+  .hinweis::before{content:"Deine Sicherheit zuerst"; display:block; font-size:.68rem; letter-spacing:.14em; text-transform:uppercase; color:var(--ok); font-weight:500; margin-bottom:4px;}
+
+  .week-nav{display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-top:30px; padding-top:18px; border-top:1px solid var(--linie);}
+  .done-box{text-align:center; display:grid; gap:10px; justify-items:center;}
+  .saved{font-size:.78rem; color:var(--gedaempft); min-height:1.2em; text-align:right;}
+
+  footer.crisis-bar{
+    text-align:center; font-size:.74rem; color:var(--gedaempft); line-height:1.5;
+    padding:10px 16px calc(10px + env(safe-area-inset-bottom, 0px)); border-top:1px solid var(--linie); background:var(--blush);
+  }
+  footer.crisis-bar b{color:var(--pflaume); font-weight:500;}
+
+  @media (prefers-reduced-motion: reduce){ *{transition:none !important;} }
+  @media print{
+    header.top, footer.crisis-bar, .week-nav, .no-print, .starter{display:none !important;}
+    body{background:#fff; color:#000;}
+    .satz, .hero{-webkit-print-color-adjust:exact; print-color-adjust:exact;}
+    .card, .uebung{break-inside:avoid;}
+    .frage textarea{border:none; min-height:0; height:auto; overflow:visible;}
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <button class="brand" id="home-btn" type="button" aria-label="Zur Übersicht">
+    <svg class="butterfly" viewBox="0 0 100 100" aria-hidden="true">
+      <path class="w1" d="M50 30 C46 14 30 6 18 12 C6 18 8 38 22 44 C32 48 44 42 50 30 Z"/>
+      <path class="w2" d="M50 30 C54 14 70 6 82 12 C94 18 92 38 78 44 C68 48 56 42 50 30 Z"/>
+      <path class="w3" d="M50 46 C47 36 36 32 28 37 C20 42 22 54 32 57 C40 59 47 54 50 46 Z"/>
+      <path class="w3" d="M50 46 C53 36 64 32 72 37 C80 42 78 54 68 57 C60 59 53 54 50 46 Z"/>
+      <rect class="k" x="48.7" y="26" width="2.6" height="34" rx="1.3"/>
+    </svg>
+    <span class="word">Wieder bei dir</span>
+  </button>
+  <div class="actions">
+    <button class="exit" id="exit-btn" type="button" title="Verlässt die Seite sofort (auch: zweimal Esc)">Schnell weg</button>
+  </div>
+</header>
+
+<main>
+  <!-- Zugang -->
+  <section id="screen-gate">
+    <form class="gate" id="gate-form" novalidate>
+      <span class="eyebrow">Seelenwende · 6 Wochen</span>
+      <h1>Wieder bei dir</h1>
+      <p class="muted">Gib deinen Zugangscode ein. Du findest ihn in deiner Bestätigungs-Mail. Mit demselben Code öffnest du auch Mira.</p>
+      <label class="field" for="code-input">Zugangscode</label>
+      <input type="text" id="code-input" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Dein Zugangscode" required>
+      <label class="check"><input type="checkbox" id="save-input"> Code, Fortschritt und Notizen auf diesem Gerät speichern. Lass das aus, wenn jemand anderes dein Handy benutzt oder kontrolliert.</label>
+      <button type="submit" class="btn" id="gate-submit">Programm öffnen</button>
+      <div class="error" id="gate-error" role="alert"></div>
+    </form>
+  </section>
+
+  <!-- Übersicht -->
+  <section id="screen-home" hidden>
+    <div class="hero">
+      <span class="eyebrow">Dein 6-Wochen-Programm</span>
+      <h1 id="home-title">Wieder bei dir</h1>
+      <p id="home-progress-text"></p>
+      <div class="bar" aria-hidden="true"><span id="home-bar" style="width:0%"></span></div>
+    </div>
+
+    <div class="section stack" id="home-welcome"></div>
+
+    <div class="section">
+      <h2>So gehst du vor</h2>
+      <ul class="howto" id="home-howto"></ul>
+    </div>
+
+    <div class="section">
+      <h2>Deine sechs Wochen</h2>
+      <div class="weeks" id="home-weeks"></div>
+    </div>
+
+    <div class="section card stack" id="home-done" hidden></div>
+
+    <div class="section">
+      <h2>Deine Boni</h2>
+      <p class="muted small" style="margin-bottom:12px;">Im Programm enthalten. Zum Herunterladen auf dein Gerät.</p>
+      <div class="stack" id="home-boni"></div>
+    </div>
+
+    <div class="section card mira-card">
+      <h3>Mira ist mit dabei</h3>
+      <p class="small">Wenn du zwischendurch reden möchtest, ist Mira da. Sie öffnet sich mit deinem Programm-Code.</p>
+      <div class="row-actions"><button class="btn" type="button" id="home-mira">Mit Mira sprechen</button></div>
+    </div>
+
+    <div class="section card settings" id="home-settings">
+      <h3>Deine Daten</h3>
+      <label class="check"><input type="checkbox" id="save-toggle"> Fortschritt und Notizen auf diesem Gerät speichern</label>
+      <p class="muted small" id="save-status"></p>
+      <div class="row-actions">
+        <button class="btn soft" type="button" id="wipe-btn">Alles auf diesem Gerät löschen</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Woche -->
+  <section id="screen-week" hidden>
+    <div class="week-head">
+      <span class="eyebrow" id="wk-eyebrow"></span>
+      <h1 id="wk-title"></h1>
+      <p class="sub" id="wk-sub"></p>
+    </div>
+    <div class="section stack" id="wk-intro"></div>
+    <div class="satz"><span class="eyebrow">Dein Satz für diese Woche</span><q id="wk-satz"></q></div>
+
+    <div class="section" id="wk-hinweis-wrap" hidden><div class="hinweis" id="wk-hinweis"></div></div>
+
+    <div class="section">
+      <h2>Zum Lesen</h2>
+      <div id="wk-impulse"></div>
+    </div>
+
+    <div class="section">
+      <h2>Zum Schreiben</h2>
+      <p class="saved no-print" id="wk-saved" aria-live="polite"></p>
+      <div id="wk-uebungen"></div>
+    </div>
+
+    <div class="section" id="wk-boni-wrap" hidden>
+      <h2>Dein Bonus zu dieser Woche</h2>
+      <div class="stack" id="wk-boni"></div>
+    </div>
+
+    <div class="section" id="wk-werkzeuge-wrap" hidden>
+      <h2>Passt zu dieser Woche</h2>
+      <div class="stack" id="wk-werkzeuge"></div>
+    </div>
+
+    <div class="section">
+      <h2>Jeden Tag ein kleiner Anker</h2>
+      <ol class="tage" id="wk-tage"></ol>
+    </div>
+
+    <div class="section card mira-card">
+      <h3>Mit Mira weiterdenken</h3>
+      <p class="small">Tipp einen Anfang an. Er steht dann bei Mira im Eingabefeld, und du kannst ihn noch ändern.</p>
+      <div class="stack" id="wk-mira"></div>
+    </div>
+
+    <div class="section card stack done-box">
+      <div class="frage" style="width:100%; text-align:left;">
+        <label for="wk-rueckblick">Was nehme ich aus dieser Woche mit?</label>
+        <textarea id="wk-rueckblick"></textarea>
+      </div>
+      <button class="btn" type="button" id="wk-done"></button>
+      <button class="btn link no-print" type="button" id="wk-print">Diese Woche drucken oder als PDF sichern</button>
+    </div>
+
+    <nav class="week-nav" aria-label="Wochen">
+      <button class="btn soft" type="button" id="wk-prev"></button>
+      <button class="btn soft" type="button" id="wk-overview">Übersicht</button>
+      <button class="btn soft" type="button" id="wk-next"></button>
+    </nav>
+  </section>
+</main>
+
+<footer class="crisis-bar">
+  In Gefahr: <b>Notruf 112</b> (CH Polizei <b>117</b>) · Gewalt gegen Frauen: <b>DE 116 016</b> · <b>AT 0800 222 555</b> · CH Opferhilfe <b>142</b> · Seelsorge: <b>CH 143</b> · <b>DE 0800 111 0 111</b> · <b>AT 142</b><br>
+  Wieder bei dir ist ein Selbsthilfe-Programm und ersetzt keine Therapie.
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  var CODE_KEY = "sw_programm_code";
+  var DATA_KEY = "sw_programm_daten";
+  var EXIT_URL = "https://www.google.com/search?q=wetter";
+
+  var state = {
+    code: null, programm: null, woche: null, save: false,
+    daten: { notizen:{}, tage:{}, fertig:{} },
+    escCount: 0, escTimer: null, saveTimer: null
+  };
+
+  function $(id){ return document.getElementById(id); }
+  function el(tag, cls, text){
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+  function show(id){
+    ["screen-gate","screen-home","screen-week"].forEach(function(s){ $(s).hidden = (s !== id); });
+    window.scrollTo(0, 0);
+  }
+
+  /* ---------- Speichern ----------
+     Mit Häkchen: dauerhaft auf dem Gerät (localStorage).
+     Ohne Häkchen: nur in diesem Tab (sessionStorage), damit nichts verloren geht, wenn sie kurz zu Mira wechselt.
+     Beim Schließen des Tabs oder mit „Schnell weg“ ist es dann weg. */
+  function dauerhaft(){ try { return window.localStorage; } catch(e){ return null; } }
+  function nurTab(){ try { return window.sessionStorage; } catch(e){ return null; } }
+
+  function readFrom(st){
+    if (!st) return null;
+    try {
+      var code = st.getItem(CODE_KEY);
+      if (!code) return null;
+      var d = JSON.parse(st.getItem(DATA_KEY) || "{}") || {};
+      return { code: code, daten: { notizen: d.notizen || {}, tage: d.tage || {}, fertig: d.fertig || {} } };
+    } catch(e){ return null; }
+  }
+
+  function loadSaved(){
+    var fest = readFrom(dauerhaft());
+    var tab = readFrom(nurTab());
+    var found = tab || fest;
+    if (!found) return null;
+    state.daten = found.daten;
+    $("code-input").value = found.code;
+    $("save-input").checked = !!fest;
+    return found;
+  }
+
+  function writeTo(st){
+    if (!st) return;
+    try { st.setItem(CODE_KEY, state.code); st.setItem(DATA_KEY, JSON.stringify(state.daten)); } catch(e){}
+  }
+  function clearIn(st){
+    if (!st) return;
+    try { st.removeItem(CODE_KEY); st.removeItem(DATA_KEY); } catch(e){}
+  }
+
+  function persist(){
+    if (!state.code) return;
+    writeTo(nurTab());
+    if (state.save) writeTo(dauerhaft());
+  }
+
+  function wipeStorage(){ clearIn(dauerhaft()); clearIn(nurTab()); }
+
+  function setSave(on){
+    state.save = on;
+    $("save-toggle").checked = on;
+    if (on) persist(); else { clearIn(dauerhaft()); persist(); }
+    $("save-status").textContent = on
+      ? "Deine Notizen liegen nur auf diesem Gerät. Sie werden nirgends hochgeladen."
+      : "Deine Notizen bleiben nur, solange dieser Tab offen ist. Sichere sie vorher über „Diese Woche drucken“.";
+  }
+
+  /* ---------- Zugang ---------- */
+  var gespeichert = loadSaved();
+
+  $("gate-form").addEventListener("submit", function(e){
+    e.preventDefault();
+    var code = $("code-input").value.trim();
+    if (!code) { $("gate-error").textContent = "Bitte gib deinen Zugangscode ein."; return; }
+    $("gate-submit").disabled = true;
+    $("gate-error").textContent = "";
+    fetch("/api/programm/inhalt", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({code: code}) })
+      .then(function(r){ return r.json().then(function(d){ return {ok:r.ok, data:d}; }); })
+      .then(function(res){
+        if (!res.ok) { $("gate-error").textContent = res.data.error || "Das hat nicht geklappt. Versuch es noch einmal."; return; }
+        state.code = code;
+        state.programm = res.data.programm;
+        // Anderer Code als der gespeicherte: mit leeren Notizen beginnen.
+        if (gespeichert && gespeichert.code.toUpperCase() !== code.toUpperCase()) state.daten = { notizen:{}, tage:{}, fertig:{} };
+        setSave($("save-input").checked);
+        renderHome();
+        show("screen-home");
+      })
+      .catch(function(){ $("gate-error").textContent = "Keine Verbindung. Prüf dein Internet und versuch es noch einmal."; })
+      .then(function(){ $("gate-submit").disabled = false; });
+  });
+
+  /* ---------- Fortschritt ---------- */
+  function tageErledigt(nr){
+    var t = state.daten.tage[nr] || [];
+    return t.filter(Boolean).length;
+  }
+  function anzahlFertig(){
+    return state.programm.wochen.filter(function(w){ return state.daten.fertig[w.nr]; }).length;
+  }
+  function naechsteWoche(){
+    var w = state.programm.wochen;
+    for (var i = 0; i < w.length; i++) if (!state.daten.fertig[w[i].nr]) return w[i].nr;
+    return null;
+  }
+
+  /* ---------- Übersicht ---------- */
+  function renderHome(){
+    var p = state.programm;
+    $("home-title").textContent = p.titel;
+    var fertig = anzahlFertig();
+    $("home-progress-text").textContent = fertig === 0
+      ? "Sechs Wochen, in denen es um dich geht. Fang an, wann es für dich passt."
+      : fertig + " von " + p.wochen.length + " Wochen abgeschlossen. Schön, dass du dranbleibst.";
+    $("home-bar").style.width = Math.round(fertig / p.wochen.length * 100) + "%";
+
+    var welcome = $("home-welcome"); welcome.innerHTML = "";
+    p.willkommen.forEach(function(t){ welcome.appendChild(el("p", null, t)); });
+
+    var howto = $("home-howto"); howto.innerHTML = "";
+    p.soGehts.forEach(function(t){ howto.appendChild(el("li", null, t)); });
+
+    var next = naechsteWoche();
+    var list = $("home-weeks"); list.innerHTML = "";
+    p.wochen.forEach(function(w){
+      var b = el("button", "week-card" + (state.daten.fertig[w.nr] ? " done" : "") + (w.nr === next ? " next" : ""));
+      b.type = "button";
+      b.appendChild(el("span", "nr", state.daten.fertig[w.nr] ? "✓" : String(w.nr)));
+      var txt = el("span");
+      txt.appendChild(el("span", "t", "Woche " + w.nr + " · " + w.titel));
+      txt.appendChild(el("span", "u", w.untertitel));
+      b.appendChild(txt);
+      b.appendChild(el("span", "s", state.daten.fertig[w.nr] ? "abgeschlossen" : (w.nr === next ? "als Nächstes" : tageErledigt(w.nr) + "/7 Tage")));
+      b.setAttribute("aria-label", "Woche " + w.nr + ": " + w.titel + (state.daten.fertig[w.nr] ? ", abgeschlossen" : ""));
+      b.addEventListener("click", function(){ openWeek(w.nr); });
+      list.appendChild(b);
+    });
+
+    var boni = $("home-boni"); boni.innerHTML = "";
+    (p.boni || []).forEach(function(b){ boni.appendChild(bonusKarte(b)); });
+
+    var done = $("home-done");
+    if (fertig === p.wochen.length) {
+      done.innerHTML = "";
+      done.appendChild(el("h3", null, "Du hast alle sechs Wochen geschafft."));
+      p.abschluss.forEach(function(t){ done.appendChild(el("p", null, t)); });
+      done.hidden = false;
+    } else done.hidden = true;
+  }
+
+  /* ---------- Woche ---------- */
+  function noteKey(id, i){ return id + "#" + i; }
+  function getNote(key){ return state.daten.notizen[key] || ""; }
+
+  function onNoteInput(key, value){
+    if (value) state.daten.notizen[key] = value; else delete state.daten.notizen[key];
+    clearTimeout(state.saveTimer);
+    state.saveTimer = setTimeout(function(){
+      persist();
+      $("wk-saved").textContent = state.save ? "Auf diesem Gerät gespeichert" : "Nur in diesem Tab gespeichert";
+    }, 500);
+  }
+
+  function addFrage(parent, key, labelText, lang){
+    var wrap = el("div", "frage" + (lang ? " lang" : ""));
+    var id = "f-" + key.replace(/[^a-z0-9]/gi, "-");
+    var lab = el("label", null, labelText); lab.htmlFor = id;
+    var ta = el("textarea"); ta.id = id; ta.value = getNote(key);
+    ta.addEventListener("input", function(){ onNoteInput(key, ta.value); });
+    wrap.appendChild(lab); wrap.appendChild(ta);
+    parent.appendChild(wrap);
+  }
+
+  /* ---------- Boni ----------
+     Die Datei kommt über einen zeitlich begrenzten Link, den es nur mit dem Programm-Code gibt. */
+  function holeLink(b, spur){
+    return fetch("/api/programm/bonus", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({code: state.code, id: b.id, spur: spur ? spur.id : undefined}) })
+      .then(function(r){ return r.json().then(function(d){ if (!r.ok) throw new Error(d.error || "Das hat nicht geklappt."); return d.url; }); })
+      .then(function(url){
+        // Prüfen, ob die Datei schon da ist, bevor sie geöffnet wird.
+        return fetch(url, { method:"HEAD", cache:"no-store" }).then(function(r){
+          if (!r.ok) throw new Error(spur ? "Diese Aufnahme kommt bald. Schau wieder vorbei." : "Dieser Bonus wird gerade vorbereitet. Schau bald wieder vorbei.");
+          return url;
+        });
+      });
+  }
+
+  function fehlerText(err){ return err && err.message && err.message !== "Failed to fetch" ? err.message : "Keine Verbindung. Versuch es gleich noch einmal."; }
+
+  function herunterladen(b, spur, btn, msg){
+    btn.disabled = true; msg.textContent = "Wird geladen …";
+    holeLink(b, spur)
+      .then(function(url){
+        var a = document.createElement("a");
+        a.href = url; a.download = (spur ? spur.datei : b.datei).split("/").pop();
+        document.body.appendChild(a); a.click(); a.remove();
+        msg.textContent = "";
+      })
+      .catch(function(err){ msg.textContent = fehlerText(err); })
+      .then(function(){ btn.disabled = false; });
+  }
+
+  function anhoeren(b, spur, btn, msg, platz){
+    btn.disabled = true; msg.textContent = "Wird geladen …";
+    holeLink(b, spur)
+      .then(function(url){
+        platz.innerHTML = "";
+        var audio = document.createElement("audio");
+        audio.controls = true; audio.preload = "auto"; audio.src = url;
+        audio.setAttribute("aria-label", spur.titel);
+        platz.appendChild(audio);
+        audio.play().catch(function(){});
+        msg.textContent = "";
+        btn.hidden = true;
+      })
+      .catch(function(err){ msg.textContent = fehlerText(err); btn.disabled = false; });
+  }
+
+  function bonusKarte(b){
+    var c = el("div", "card bonus no-print");
+    c.appendChild(el("span", "icon", b.art === "audio" ? "AUDIO" : "PDF"));
+    c.appendChild(el("span", "bt", b.titel));
+    c.appendChild(el("span", "bx", b.text));
+    if (b.art === "audio") {
+      var liste = el("ol", "spuren");
+      b.spuren.forEach(function(sp){
+        var li = el("li", "spur");
+        var kopf = el("div", "spur-kopf");
+        kopf.appendChild(el("span", "spur-titel", sp.titel));
+        kopf.appendChild(el("span", "spur-dauer", sp.dauer));
+        li.appendChild(kopf);
+        li.appendChild(el("span", "bx", sp.text));
+        var platz = el("div", "spur-player");
+        var row = el("div", "row-actions");
+        var play = el("button", "btn soft", "Anhören"); play.type = "button";
+        var dl = el("button", "btn link", "Herunterladen"); dl.type = "button";
+        var msg = el("span", "msg"); msg.setAttribute("role", "status");
+        play.addEventListener("click", function(){ anhoeren(b, sp, play, msg, platz); });
+        dl.addEventListener("click", function(){ herunterladen(b, sp, dl, msg); });
+        row.appendChild(play); row.appendChild(dl); row.appendChild(msg);
+        li.appendChild(platz); li.appendChild(row);
+        liste.appendChild(li);
+      });
+      c.appendChild(liste);
+      return c;
+    }
+    var row = el("div", "row-actions");
+    var btn = el("button", "btn soft", "Herunterladen"); btn.type = "button";
+    var msg = el("span", "msg"); msg.setAttribute("role", "status");
+    btn.addEventListener("click", function(){ herunterladen(b, null, btn, msg); });
+    row.appendChild(btn); row.appendChild(msg);
+    c.appendChild(row);
+    return c;
+  }
+
+  function boniFuer(ids){
+    var alle = (state.programm && state.programm.boni) || [];
+    return (ids || []).map(function(id){ return alle.filter(function(b){ return b.id === id; })[0]; }).filter(Boolean);
+  }
+
+  // Tools öffnen sich in einem neuen Tab, damit sie ihren Platz im Programm behält.
+  function werkzeugKarte(wz, cls){
+    var box = el("div", cls);
+    box.appendChild(el("p", null, wz.text));
+    var dl = wz.download && ((state.programm && state.programm.downloads) || []).filter(function(d){ return d.id === wz.download; })[0];
+    if (dl) {
+      var row = el("div", "row-actions");
+      var btn = el("button", "btn soft", wz.label); btn.type = "button";
+      var msg = el("span", "msg"); msg.setAttribute("role", "status");
+      btn.addEventListener("click", function(){ herunterladen(dl, null, btn, msg); });
+      row.appendChild(btn); row.appendChild(msg);
+      box.appendChild(row);
+      return box;
+    }
+    var a = el("a", "btn soft", wz.label);
+    a.href = wz.href; a.target = "_blank"; a.rel = "noopener";
+    box.appendChild(a);
+    return box;
+  }
+
+  function aufbauKarte(a){
+    var box = el("div", "card aufbau no-print");
+    box.appendChild(el("span", "eyebrow", "Du hast schon …?"));
+    box.appendChild(el("span", "bt", a.produkt));
+    box.appendChild(el("p", null, a.text));
+    var link = el("a", "btn link", "Im Shop ansehen");
+    link.href = a.href; link.target = "_blank"; link.rel = "noopener";
+    box.appendChild(link);
+    return box;
+  }
+
+  function openWeek(nr){
+    var p = state.programm;
+    var w = p.wochen.filter(function(x){ return x.nr === nr; })[0];
+    if (!w) return;
+    state.woche = nr;
+
+    $("wk-eyebrow").textContent = "Woche " + w.nr + " von " + p.wochen.length;
+    $("wk-title").textContent = w.titel;
+    $("wk-sub").textContent = w.untertitel;
+    $("wk-satz").textContent = w.satz;
+
+    var intro = $("wk-intro"); intro.innerHTML = "";
+    w.einleitung.forEach(function(t){ intro.appendChild(el("p", null, t)); });
+
+    $("wk-hinweis-wrap").hidden = !w.hinweis;
+    $("wk-hinweis").textContent = w.hinweis || "";
+
+    var imp = $("wk-impulse"); imp.innerHTML = "";
+    w.impulse.forEach(function(i){
+      var a = el("article", "impuls");
+      a.appendChild(el("h3", null, i.titel));
+      i.absaetze.forEach(function(t){ a.appendChild(el("p", null, t)); });
+      imp.appendChild(a);
+    });
+
+    var ue = $("wk-uebungen"); ue.innerHTML = "";
+    $("wk-saved").textContent = "";
+    w.uebungen.forEach(function(u){
+      var c = el("div", "card uebung");
+      c.appendChild(el("h3", null, u.titel));
+      c.appendChild(el("p", "anl", u.anleitung));
+      if (u.werkzeug) c.appendChild(werkzeugKarte(u.werkzeug, "werkzeug no-print"));
+      u.fragen.forEach(function(f, i){ addFrage(c, noteKey(u.id, i), f, u.fragen.length === 1); });
+      ue.appendChild(c);
+    });
+
+    // Woche 6 holt den Wunsch aus Woche 1 zurück.
+    if (w.nr === 6) {
+      var wunsch = [getNote("w1-wunsch#0"), getNote("w1-wunsch#1")].filter(Boolean);
+      var r = el("div", "card uebung");
+      r.appendChild(el("h3", null, "Zurückschauen"));
+      if (wunsch.length) {
+        r.appendChild(el("p", "anl", "Das hast du dir in Woche 1 gewünscht:"));
+        r.appendChild(el("div", "rueckblick-zitat", wunsch.join("\n\n")));
+      } else {
+        r.appendChild(el("p", "anl", "Denk an den Anfang zurück: Wie ging es dir, als du mit dem Programm begonnen hast?"));
+      }
+      addFrage(r, noteKey("w6-rueck", 0), "Was hat sich seitdem verändert, auch im Kleinen?");
+      ue.insertBefore(r, ue.firstChild);
+    }
+
+    var bListe = boniFuer(w.bonus);
+    var bBox = $("wk-boni"); bBox.innerHTML = "";
+    bListe.forEach(function(b){ bBox.appendChild(bonusKarte(b)); });
+    $("wk-boni-wrap").hidden = bListe.length === 0;
+
+    // Kostenlose Tools und „Du hast schon …?“-Hinweise zu Produkten, die sie vielleicht schon hat.
+    var wzListe = w.werkzeuge || [], aufbau = w.aufbau || [];
+    var wzBox = $("wk-werkzeuge"); wzBox.innerHTML = "";
+    wzListe.forEach(function(wz){ wzBox.appendChild(werkzeugKarte(wz, "card werkzeug")); });
+    aufbau.forEach(function(a){ wzBox.appendChild(aufbauKarte(a)); });
+    $("wk-werkzeuge-wrap").hidden = wzListe.length + aufbau.length === 0;
+
+    var tage = $("wk-tage"); tage.innerHTML = "";
+    var t = state.daten.tage[nr] || [];
+    w.tage.forEach(function(text, i){
+      var li = el("li");
+      var lab = el("label");
+      var cb = el("input"); cb.type = "checkbox"; cb.checked = !!t[i];
+      cb.addEventListener("change", function(){
+        var arr = state.daten.tage[nr] || [];
+        arr[i] = cb.checked;
+        state.daten.tage[nr] = arr;
+        persist();
+      });
+      var span = el("span");
+      span.appendChild(el("span", "tag", "Tag " + (i + 1)));
+      span.appendChild(document.createTextNode(text));
+      lab.appendChild(cb); lab.appendChild(span);
+      li.appendChild(lab); tage.appendChild(li);
+    });
+
+    var mira = $("wk-mira"); mira.innerHTML = "";
+    w.mira.forEach(function(text){
+      var b = el("button", "starter", text); b.type = "button";
+      b.addEventListener("click", function(){ goToMira(text); });
+      mira.appendChild(b);
+    });
+
+    var rb = $("wk-rueckblick");
+    var rbKey = noteKey("w" + nr + "-rueckblick", 0);
+    rb.value = getNote(rbKey);
+    rb.oninput = function(){ onNoteInput(rbKey, rb.value); };
+
+    updateDoneButton();
+
+    var prev = $("wk-prev"), next = $("wk-next");
+    prev.hidden = nr === 1; next.hidden = nr === p.wochen.length;
+    prev.textContent = "← Woche " + (nr - 1);
+    next.textContent = "Woche " + (nr + 1) + " →";
+
+    show("screen-week");
+  }
+
+  function updateDoneButton(){
+    var fertig = !!state.daten.fertig[state.woche];
+    $("wk-done").textContent = fertig ? "Abgeschlossen ✓ (wieder öffnen)" : "Woche abschließen";
+    $("wk-done").classList.toggle("soft", fertig);
+  }
+
+  $("wk-done").addEventListener("click", function(){
+    var nr = state.woche;
+    if (state.daten.fertig[nr]) delete state.daten.fertig[nr]; else state.daten.fertig[nr] = true;
+    persist();
+    updateDoneButton();
+    if (state.daten.fertig[nr]) { renderHome(); show("screen-home"); }
+  });
+  $("wk-prev").addEventListener("click", function(){ openWeek(state.woche - 1); });
+  $("wk-next").addEventListener("click", function(){ openWeek(state.woche + 1); });
+  $("wk-overview").addEventListener("click", goHome);
+  $("home-btn").addEventListener("click", goHome);
+  $("wk-print").addEventListener("click", function(){
+    // Textfelder wachsen beim Drucken mit, damit nichts abgeschnitten wird.
+    Array.prototype.forEach.call(document.querySelectorAll("#screen-week textarea"), function(t){ t.style.height = (t.scrollHeight + 4) + "px"; });
+    window.print();
+  });
+
+  function goHome(){
+    if (!state.programm) return;
+    renderHome();
+    show("screen-home");
+  }
+
+  /* ---------- Mira ---------- */
+  // Code und Gesprächsanfang gehen nur über den Tab-Speicher an Mira, nie über die Adresse.
+  function goToMira(starter){
+    try {
+      sessionStorage.setItem("sw_mira_code", state.code);
+      sessionStorage.setItem("sw_mira_von", "programm");
+      if (starter) sessionStorage.setItem("sw_mira_start", starter); else sessionStorage.removeItem("sw_mira_start");
+    } catch(e){}
+    window.location.href = "begleiterin.html";
+  }
+  $("home-mira").addEventListener("click", function(){ goToMira(null); });
+
+  /* ---------- Einstellungen ---------- */
+  $("save-toggle").addEventListener("change", function(){ setSave(this.checked); });
+  $("wipe-btn").addEventListener("click", function(){
+    var b = this;
+    if (b.dataset.armed !== "1") {
+      b.dataset.armed = "1";
+      b.textContent = "Wirklich alles löschen? Nochmal tippen";
+      setTimeout(function(){ b.dataset.armed = ""; b.textContent = "Alles auf diesem Gerät löschen"; }, 4000);
+      return;
+    }
+    b.dataset.armed = "";
+    b.textContent = "Alles auf diesem Gerät löschen";
+    state.daten = { notizen:{}, tage:{}, fertig:{} };
+    wipeStorage();
+    setSave(false);
+    renderHome();
+    $("save-status").textContent = "Alles gelöscht. Auf diesem Gerät ist nichts mehr gespeichert.";
+  });
+
+  if (gespeichert) $("gate-form").requestSubmit();
+
+  /* ---------- Schnell weg ---------- */
+  function quickExit(){
+    state.daten = { notizen:{}, tage:{}, fertig:{} };
+    state.programm = null; state.code = null;
+    try { sessionStorage.clear(); } catch(e){}
+    document.querySelector("main").innerHTML = "";
+    document.title = "Wetter";
+    window.location.replace(EXIT_URL);
+  }
+  $("exit-btn").addEventListener("click", quickExit);
+  document.addEventListener("keydown", function(e){
+    if (e.key !== "Escape") return;
+    state.escCount++;
+    clearTimeout(state.escTimer);
+    state.escTimer = setTimeout(function(){ state.escCount = 0; }, 800);
+    if (state.escCount >= 2) { state.escCount = 0; quickExit(); }
+  });
+})();
+</script>
+</body>
+</html>

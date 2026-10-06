@@ -1,6 +1,6 @@
 import type { Config, Context } from "@netlify/functions";
 import { json } from "../lib/common.mts";
-import { PLANS, checkAdminKey, createCode, describe, setActive, type Plan } from "../lib/zugang.mts";
+import { REGISTER_PLANS, checkAdminKey, createCode, describe, setActive, type Plan } from "../lib/zugang.mts";
 
 /* Codes anlegen, sperren und nachschlagen. Für Make (nach Kauf oder Kündigung) und die Seite zugang-admin.html.
    Header: Authorization: Bearer <SEELENWENDE_ADMIN_KEY>
@@ -17,7 +17,7 @@ export default async (req: Request, _context: Context) => {
   try {
     switch (body?.aktion) {
       case "erstellen": {
-        if (!PLANS.includes(body.plan)) return json({ error: "plan muss „kreis“ oder „mira“ sein." }, 400);
+        if (!REGISTER_PLANS.includes(body.plan)) return json({ error: "plan muss „kreis“ oder „mira“ sein." }, 400);
         return json({ code: await createCode(body.plan as Plan, ref), plan: body.plan, ref: ref ?? null }, 201);
       }
       case "sperren":

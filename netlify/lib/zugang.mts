@@ -1,23 +1,27 @@
 import { getStore } from "@netlify/blobs";
 import { createHash, randomInt, timingSafeEqual } from "node:crypto";
+import { isCodeInList, normalizeCode } from "./codes.mts";
 
-/* Zugangscodes für Mira und den Seelenwende Kreis.
+/* Zugangscodes, die Mira öffnen: Mira einzeln, 6-Wochen-Programm und Seelenwende Kreis.
 
    Zwei Quellen:
    - Umgebungsvariablen (von Hand gepflegt, nach Änderung neu deployen):
      BEGLEITERIN_CODES = Mira-Codes mit festem Kontingent (BEGLEITERIN_LIMIT, gesamt)
+     PROGRAMM_CODES    = Programm-Codes mit festem Kontingent (PROGRAMM_MIRA_LIMIT, gesamt)
      KREIS_CODES       = Kreis-Codes mit Monatskontingent (KREIS_LIMIT, jeden Monat neu)
    - Code-Register in Netlify Blobs (über /api/zugang/admin, z. B. aus Make nach einem Kauf).
      Dort lassen sich Codes auch wieder sperren, etwa wenn ein Kreis-Abo gekündigt wird.
 
    Gespeichert wird nur der Hash eines Codes, nie der Code selbst. */
 
-export type Plan = "mira" | "kreis";
-export const PLANS: readonly Plan[] = ["mira", "kreis"];
+export type Plan = "mira" | "programm" | "kreis";
+/** Was sich im Code-Register anlegen lässt. Programm-Codes stehen weiter in PROGRAMM_CODES, weil die Programmseite nur diese Liste kennt. */
+export const REGISTER_PLANS: readonly Plan[] = ["mira", "kreis"];
 
 const ZUGANG_STORE = "zugang";
 const USAGE_STORE = "begleiterin"; // Zähler lagen schon vor dem Kreis hier; Schlüssel bleiben kompatibel.
 const DEFAULT_MIRA_LIMIT = 300;
+const DEFAULT_PROGRAMM_LIMIT = 1000;
 const DEFAULT_KREIS_LIMIT = 150;
 const TIME_ZONE = "Europe/Zurich";
 
@@ -48,10 +52,6 @@ interface CodeRecord {
 
 /* ---------- Hilfsfunktionen ---------- */
 
-export function normalizeCode(code: string): string {
-  return code.trim().toUpperCase();
-}
-
 function sha(value: string): Buffer {
   return createHash("sha256").update(value).digest();
 }
@@ -64,24 +64,15 @@ function refKey(ref: string): string {
   return "ref/" + sha(ref.trim()).toString("hex");
 }
 
-function envCodes(name: string): string[] {
-  return (Netlify.env.get(name) ?? "").split(",").map(normalizeCode).filter(Boolean);
-}
-
-function inEnvList(code: string, name: string): boolean {
-  const g = sha(normalizeCode(code));
-  let ok = false;
-  for (const c of envCodes(name)) ok = timingSafeEqual(g, sha(c)) || ok;
-  return ok;
-}
-
 function envLimit(name: string, fallback: number): number {
   const n = Number(Netlify.env.get(name));
   return Number.isFinite(n) && n > 0 ? Math.floor(n) : fallback;
 }
 
 export function limitFor(plan: Plan): number {
-  return plan === "kreis" ? envLimit("KREIS_LIMIT", DEFAULT_KREIS_LIMIT) : envLimit("BEGLEITERIN_LIMIT", DEFAULT_MIRA_LIMIT);
+  if (plan === "kreis") return envLimit("KREIS_LIMIT", DEFAULT_KREIS_LIMIT);
+  if (plan === "programm") return envLimit("PROGRAMM_MIRA_LIMIT", DEFAULT_PROGRAMM_LIMIT);
+  return envLimit("BEGLEITERIN_LIMIT", DEFAULT_MIRA_LIMIT);
 }
 
 /** Heutiges Datum in der Schweiz als { year, month, day }. */
@@ -117,10 +108,12 @@ export async function resolveAccess(given: unknown): Promise<Access | null> {
   if (record) {
     if (!record.active) return null; // gesperrt hat Vorrang, auch wenn der Code noch in einer Liste steht
     plan = record.plan;
-  } else if (inEnvList(given, "KREIS_CODES")) {
+  } else if (isCodeInList("KREIS_CODES", given)) {
     plan = "kreis";
-  } else if (inEnvList(given, "BEGLEITERIN_CODES")) {
+  } else if (isCodeInList("BEGLEITERIN_CODES", given)) {
     plan = "mira";
+  } else if (isCodeInList("PROGRAMM_CODES", given)) {
+    plan = "programm";
   }
   if (!plan) return null;
 
