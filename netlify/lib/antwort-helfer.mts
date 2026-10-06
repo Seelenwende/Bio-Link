@@ -126,7 +126,8 @@ Die Antwortvorschläge (BIFF und Grey Rock):
 - Wenn sie ein Anliegen angibt, berücksichtige es. Will sie ihm „endlich alles erklären“ oder ihn überzeugen, sag in der Einschätzung sanft, warum eine kurze Antwort sie besser schützt – ohne sie zu belehren.
 
 Sicherheit – hat immer Vorrang:
-- Bei Drohungen (auch versteckten: „Du wirst schon sehen“, „Ich weiß, wo du bist“), Gewalt, Stalking, Gefahr für Kinder, Erpressung mit Bildern, Suizid-Drohungen von ihm oder Hinweisen, dass sie nicht sicher ist: gefahr=true. Dann rät sie in der Regel nicht selbst zu antworten (empfehlung nicht_antworten oder erst_beraten), sondern die Nachricht mit Datum zu sichern und Hilfe zu holen. Nenne im sicherheitshinweis die passenden Nummern: Notruf 112 (Schweiz Polizei 117), Hilfetelefon Gewalt gegen Frauen Deutschland 116 016, Frauenhelpline Österreich 0800 222 555, Schweiz Opferhilfe (opferhilfe-schweiz.ch) und Die Dargebotene Hand 143. Droht er mit Suizid: Das ist ernst, aber nicht ihre Aufgabe – sie darf den Notruf verständigen.
+- Bei Drohungen (auch versteckten: „Du wirst schon sehen“, „Ich weiß, wo du bist“), Gewalt, Stalking, Gefahr für Kinder, Erpressung mit Bildern, Suizid-Drohungen von ihm oder Hinweisen, dass sie nicht sicher ist: gefahr=true. Dann rät sie in der Regel nicht selbst zu antworten (empfehlung nicht_antworten oder erst_beraten), sondern die Nachricht mit Datum zu sichern und Hilfe zu holen. Nenne im sicherheitshinweis die passenden Nummern: Notruf 112 (Schweiz Polizei 117), Hilfetelefon Gewalt gegen Frauen Deutschland 116 016, Frauenhelpline Österreich 0800 222 555, Opferhilfe Schweiz 142 (rund um die Uhr, kostenlos) und Die Dargebotene Hand 143. Droht er mit Suizid: Das ist ernst, aber nicht ihre Aufgabe – sie darf den Notruf verständigen.
+- Telefonnummern und Beratungsstellen-Namen stehen ausschließlich im sicherheitshinweis und nur bei gefahr=true. In allen anderen Feldern (einschaetzung, weglassen, wenn_er_nachlegt …) nennst du keine Nummern; dort reicht höchstens ein allgemeiner Satz wie „Eine Beratungsstelle kann dir helfen“.
 - Wenn sie noch mit ihm zusammen ist, kann jede Antwort Folgen zu Hause haben. Schlag dann nichts vor, was eine Grenze so setzt, dass es gefährlich werden könnte, und sag das.
 
 wenn_er_nachlegt: ein konkreter Satz, wie sie bei Nachlegen ruhig bleibt (z. B. nicht weiter antworten, eine Wiederholung derselben Sachantwort, Nachrichten sichern, Kommunikation über eine Co-Parenting-App oder Dritte).`;
@@ -144,7 +145,7 @@ ${e.nachricht}
 const REFUSAL_RESULT: AntwortErgebnis = {
   gefahr: true,
   sicherheitshinweis:
-    "Bei dieser Nachricht kann ich dir keinen Vorschlag machen. Wenn du dich bedroht fühlst: Sichere die Nachricht mit Datum und hol dir Hilfe – Notruf 112 (Schweiz 117), Hilfetelefon Deutschland 116 016, Frauenhelpline Österreich 0800 222 555, Die Dargebotene Hand 143.",
+    "Bei dieser Nachricht kann ich dir keinen Vorschlag machen. Wenn du dich bedroht fühlst: Sichere die Nachricht mit Datum und hol dir Hilfe – Notruf 112 (Schweiz 117), Hilfetelefon Deutschland 116 016, Frauenhelpline Österreich 0800 222 555, Opferhilfe Schweiz 142, Die Dargebotene Hand 143.",
   empfehlung: "nicht_antworten",
   einschaetzung: "Du musst darauf jetzt nicht antworten. Sprich lieber zuerst mit einer Beratungsstelle oder einer Vertrauensperson.",
   sachkern: "",
@@ -153,6 +154,24 @@ const REFUSAL_RESULT: AntwortErgebnis = {
   weglassen: "",
   wenn_er_nachlegt: "Nicht antworten, alles sichern und dir Unterstützung holen.",
 };
+
+// Entfernt übriggebliebene JSON-Zeichen am Textende (z. B. `."}`) und zeigt Nummern nur bei Gefahr.
+function sauber(text: string): string {
+  return text.replace(/["”]?\s*}+\s*$/, "").trim();
+}
+
+function bereinigen(r: AntwortErgebnis): AntwortErgebnis {
+  return {
+    ...r,
+    sicherheitshinweis: r.gefahr ? sauber(r.sicherheitshinweis) : "",
+    einschaetzung: sauber(r.einschaetzung),
+    sachkern: sauber(r.sachkern),
+    haken: r.haken.map((h) => ({ zitat: sauber(h.zitat), was_es_ist: sauber(h.was_es_ist) })),
+    antworten: r.antworten.map((a) => ({ art: sauber(a.art), text: sauber(a.text) })),
+    weglassen: sauber(r.weglassen),
+    wenn_er_nachlegt: sauber(r.wenn_er_nachlegt),
+  };
+}
 
 export async function runAntwortHelfer(eingabe: AntwortEingabe): Promise<AntwortErgebnis> {
   const client = new Anthropic({ apiKey: Netlify.env.get("ANTHROPIC_API_KEY") });
@@ -170,5 +189,5 @@ export async function runAntwortHelfer(eingabe: AntwortEingabe): Promise<Antwort
 
   if (response.stop_reason === "refusal") return REFUSAL_RESULT;
   if (!response.parsed_output) throw new Error("Die Antwort konnte nicht gelesen werden. Bitte noch einmal versuchen.");
-  return response.parsed_output;
+  return bereinigen(response.parsed_output);
 }
