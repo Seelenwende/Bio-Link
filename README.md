@@ -80,6 +80,11 @@ Authorization: Bearer <SEELENWENDE_ADMIN_KEY>
 
 Die Monatsthemen stehen in `netlify/lib/kreis-inhalte.mts` und werden nur mit gültigem Kreis-Code ausgeliefert (`/api/kreis/inhalt`). Ein Monat wird an seinem ersten Tag sichtbar, ältere bleiben im Archiv. Angelegt sind Oktober, November und Dezember 2026. Den Kauf-Link trägst du in `kreis.html` bei `KAUF_URL` ein; solange er leer ist, zeigt die Seite den Hinweis „Schreib KREIS an @_seelenwende“.
 
+
+### Kreis in einer Netlify-Vorschau testen
+
+In Netlify `KREIS_CODES` (z. B. `KREIS-TEST`) und `SEELENWENDE_ADMIN_KEY` mit dem Kontext *Deploy Previews* anlegen. Netlify übernimmt geänderte Variablen erst beim nächsten Build, also danach die Vorschau neu bauen lassen. Mira antwortet in Vorschauen nur, wenn `ANTHROPIC_API_KEY` auch dort gesetzt ist. Achtung: Das Code-Register ist für Vorschau und Live-Seite dasselbe; Test-Codes aus `zugang-admin.html` danach sperren.
+
 ## So funktioniert das 6-Wochen-Programm „Wieder bei dir“ (Netlify)
 
 1. `programm-inhalt` prüft den Zugangscode und liefert erst dann die Inhalte aus. Die Texte stehen in `netlify/lib/programm.mts`.
