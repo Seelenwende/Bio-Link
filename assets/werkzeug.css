@@ -1,0 +1,364 @@
+/* Seelenwende – Website-Look für die Werkzeuge und KI-Tools.
+   Wird NACH dem eigenen <style> einer Werkzeug-Seite geladen und legt das Aussehen der Website
+   (start.html, assets/seite.css) darüber: gläserner Kopf mit Logo, Rosé-Verlauf oben,
+   Jost-Labels, Verlaufsknöpfe, weiße Karten mit weichen Beere-Schatten.
+   Zwei Arten von Seiten:
+   - body.sw-werkzeug: Schritt-für-Schritt-Werkzeuge (Muster-Check, Tests, Werte-Finder …), nur hell
+   - body.sw-app:      Mira, Antwort-Helfer, Programm, Kreis (mit eigenem Kopf, hell und dunkel)
+   Alle Regeln sind mit :where() verpackt, damit sie nur so stark sind wie die Regeln der Seite
+   selbst und durch die Reihenfolge gewinnen. Zustände (gewählt, deaktiviert …) stehen darum
+   hier noch einmal. */
+
+/* =====================================================================
+   Farben und Tiefe (wie assets/seite.css)
+   ===================================================================== */
+.sw-werkzeug, .sw-app{
+  --sw-karte:#FFFFFF;
+  --sw-rand:rgba(228,216,216,.6);
+  --sw-label:#8C5A69;
+  --sw-verlauf-rose:linear-gradient(135deg, #F6E9EC 0%, #F3DDE2 50%, #EFD3DA 100%);
+  --sw-verlauf-beere:linear-gradient(135deg, #8C5A69 0%, #6E4152 45%, #4A2D38 100%);
+  --sw-knopf:linear-gradient(135deg, #9A6476, #7A4B5B);
+  --sw-seite:linear-gradient(180deg, #F3DDE2 0, #F6E9EC 240px, #FAF6F4 560px);
+  --sw-glas:rgba(250,246,244,.86);
+  --sw-s1:0 1px 2px rgba(74,45,56,.06), 0 2px 8px -2px rgba(74,45,56,.08);
+  --sw-s2:0 2px 4px rgba(74,45,56,.05), 0 12px 28px -10px rgba(74,45,56,.22);
+  --sw-s3:0 4px 10px rgba(74,45,56,.06), 0 28px 60px -22px rgba(74,45,56,.38);
+  --sw-s-knopf:0 8px 20px -8px rgba(110,65,82,.65);
+}
+/* Die Schritt-Werkzeuge haben (noch) kein dunkles Aussehen: immer hell darstellen. */
+.sw-werkzeug{color-scheme:light;}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) .sw-app{
+    --sw-karte:#2A2024;
+    --sw-rand:#3D2C31;
+    --sw-label:#D9A6B3;
+    --sw-verlauf-rose:linear-gradient(135deg, #2A1E22 0%, #2F2127 100%);
+    --sw-seite:linear-gradient(180deg, #2A1E22 0, #1B1417 420px);
+    --sw-glas:rgba(27,20,23,.86);
+    --sw-s1:0 1px 2px rgba(0,0,0,.3);
+    --sw-s2:0 12px 28px -10px rgba(0,0,0,.55);
+    --sw-s3:0 28px 60px -22px rgba(0,0,0,.7);
+    --sw-s-knopf:0 8px 20px -8px rgba(0,0,0,.6);
+  }
+}
+:root[data-theme="dark"] .sw-app{
+  --sw-karte:#2A2024;
+  --sw-rand:#3D2C31;
+  --sw-label:#D9A6B3;
+  --sw-verlauf-rose:linear-gradient(135deg, #2A1E22 0%, #2F2127 100%);
+  --sw-seite:linear-gradient(180deg, #2A1E22 0, #1B1417 420px);
+  --sw-glas:rgba(27,20,23,.86);
+  --sw-s1:0 1px 2px rgba(0,0,0,.3);
+  --sw-s2:0 12px 28px -10px rgba(0,0,0,.55);
+  --sw-s3:0 28px 60px -22px rgba(0,0,0,.7);
+  --sw-s-knopf:0 8px 20px -8px rgba(0,0,0,.6);
+}
+
+/* =====================================================================
+   Gemeinsamer Kopf (wie .kopf auf der Website)
+   ===================================================================== */
+.sw-kopf{
+  position:sticky; top:0; z-index:20; width:100%;
+  background:var(--sw-glas);
+  -webkit-backdrop-filter:saturate(1.4) blur(12px); backdrop-filter:saturate(1.4) blur(12px);
+  box-shadow:0 1px 0 var(--linie, #E4D8D8);
+}
+.sw-kopf-innen{
+  max-width:1080px; margin:0 auto; padding:10px 16px;
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+}
+.sw-marke{display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--pflaume); min-width:0;}
+.sw-marke img{width:28px; height:28px; flex-shrink:0;}
+.sw-marke span{
+  font-family:"Playfair Display",Georgia,serif; font-size:1rem; font-weight:400;
+  letter-spacing:.2em; text-transform:uppercase; white-space:nowrap;
+}
+.sw-weg{
+  background:var(--sand); color:var(--pflaume); border:1px solid var(--linie);
+  border-radius:20px; padding:7px 14px; cursor:pointer; white-space:nowrap;
+  font-family:"Jost",system-ui,sans-serif; font-size:.8rem; font-weight:400;
+}
+@media (hover:hover){ .sw-weg:hover{background:var(--linie);} }
+.sw-marke:focus-visible, .sw-weg:focus-visible{outline:2px solid var(--rose); outline-offset:3px;}
+/* Vorhandene „Schnell weg“-Knöpfe sitzen jetzt im Kopf statt schwebend */
+.sw-kopf .exit{position:static; top:auto; right:auto;}
+@media print{ .sw-kopf{display:none !important;} }
+
+/* =====================================================================
+   Schritt-Werkzeuge (body.sw-werkzeug)
+   ===================================================================== */
+
+/* Seite: Kopf oben über die ganze Breite, darunter die Spalte mit Rosé-Verlauf */
+body.sw-werkzeug{
+  display:block; padding:0; min-height:100vh;
+  background:radial-gradient(circle at 100% 0, rgba(181,128,143,.24), transparent 380px) no-repeat,
+             var(--sw-seite) no-repeat, var(--papier);
+}
+:where(.sw-werkzeug) .page{
+  position:relative; z-index:1;
+  margin:0 auto; padding:30px 20px 48px;
+}
+/* „← Seelenwende“ übernimmt jetzt der Kopf */
+:where(.sw-werkzeug) .back{display:none;}
+
+/* Schmetterling als Icon-Kachel wie auf der Website */
+:where(.sw-werkzeug) .butterfly{
+  width:64px; height:64px; padding:12px; border-radius:18px;
+  background:var(--sw-verlauf-rose); box-shadow:var(--sw-s1), inset 0 0 0 1px rgba(181,128,143,.18);
+  margin-bottom:18px;
+}
+:where(.sw-werkzeug) .butterfly path, :where(.sw-werkzeug) .butterfly ellipse{stroke:var(--beere); stroke-width:2.2;}
+:where(.sw-werkzeug) .butterfly .dot, :where(.sw-werkzeug) .butterfly .body{fill:var(--beere); stroke:none;}
+
+/* Schrift: Überschriften wie die Website, Labels in Jost */
+:where(.sw-werkzeug) h1{
+  font-size:clamp(1.85rem, 6.4vw, 2.4rem); line-height:1.12; letter-spacing:-.015em; font-weight:500;
+  text-wrap:balance;
+}
+:where(.sw-werkzeug) h2, :where(.sw-werkzeug) h3{letter-spacing:-.01em; text-wrap:balance;}
+:where(.sw-werkzeug) .kicker,
+:where(.sw-werkzeug) .count,
+:where(.sw-werkzeug) .step__label,
+:where(.sw-werkzeug) .hero__eyebrow,
+:where(.sw-werkzeug) .today__eyebrow,
+:where(.sw-werkzeug) .card .rank,
+:where(.sw-werkzeug) .area-label,
+:where(.sw-werkzeug) .link-btn{
+  font-family:"Jost",system-ui,sans-serif; font-weight:500; font-size:.72rem;
+  letter-spacing:.16em; color:var(--sw-label);
+}
+:where(.sw-werkzeug) .hero__eyebrow{color:#E6C3CC;}
+:where(.sw-werkzeug) .handle{
+  font-family:"Jost",system-ui,sans-serif; font-weight:500; font-size:.72rem; letter-spacing:.16em; color:var(--sw-label);
+}
+:where(.sw-werkzeug) .eyebrow span{
+  font-family:"Jost",system-ui,sans-serif; font-weight:500; font-size:.72rem; letter-spacing:.16em; color:var(--sw-label);
+}
+:where(.sw-werkzeug) .eyebrow::before, :where(.sw-werkzeug) .eyebrow::after{background:rgba(181,128,143,.35);}
+:where(.sw-werkzeug) .lead{
+  font-family:"Jost",system-ui,sans-serif; font-style:normal; font-weight:400;
+  font-size:1.12rem; line-height:1.55; color:var(--beere);
+}
+:where(.sw-werkzeug) .intro, :where(.sw-werkzeug) .text{font-size:1rem; color:var(--gedaempft);}
+:where(.sw-werkzeug) .statement{letter-spacing:-.01em;}
+
+/* Nummerierte Schritte als runde Marken */
+:where(.sw-werkzeug) .steps b{
+  display:inline-grid; place-items:center; flex-shrink:0;
+  width:30px; height:30px; min-width:30px; border-radius:10px;
+  background:var(--sw-verlauf-rose); color:var(--beere); font-size:.95rem;
+}
+:where(.sw-werkzeug) .steps li{align-items:center;}
+
+/* Knöpfe */
+:where(.sw-werkzeug) .btn{
+  background:var(--sw-knopf); color:#FFFFFF; border:none;
+  border-radius:14px; box-shadow:var(--sw-s-knopf);
+  font-family:"Jost",system-ui,sans-serif; font-weight:500; font-size:1.02rem; letter-spacing:.01em;
+}
+:where(.sw-werkzeug) .btn .meta{color:rgba(255,255,255,.82);}
+:where(.sw-werkzeug) .btn--dark{background:var(--sw-verlauf-beere);}
+:where(.sw-werkzeug) .btn--dark .meta{color:rgba(255,255,255,.78);}
+:where(.sw-werkzeug) .btn--soft, :where(.sw-werkzeug) .btn--ghost{
+  background:var(--sw-karte); color:var(--pflaume); border:1px solid var(--sw-rand); box-shadow:var(--sw-s1);
+}
+:where(.sw-werkzeug) .btn--soft .meta, :where(.sw-werkzeug) .btn--ghost .meta{color:var(--gedaempft);}
+:where(.sw-werkzeug) .btn--link{
+  background:none; color:var(--beere); border:none; box-shadow:none;
+  font-weight:400; font-size:.92rem;
+}
+:where(.sw-werkzeug) .btn--done{
+  background:var(--sw-verlauf-rose); color:var(--beere); border:1px solid rgba(181,128,143,.4); box-shadow:none;
+}
+:where(.sw-werkzeug) .btn--small{font-size:.9rem; border-radius:12px;}
+:where(.sw-werkzeug) .btn:disabled{opacity:.45; box-shadow:none; transform:none;}
+@media (hover:hover){
+  :where(.sw-werkzeug) .btn:not(:disabled):not(.btn--link):hover{transform:translateY(-2px); box-shadow:0 14px 30px -10px rgba(110,65,82,.7);}
+  :where(.sw-werkzeug) .btn--soft:not(:disabled):hover, :where(.sw-werkzeug) .btn--ghost:not(:disabled):hover{background:var(--sw-karte); box-shadow:var(--sw-s2);}
+  :where(.sw-werkzeug) .btn--done:not(:disabled):hover{box-shadow:var(--sw-s1);}
+}
+
+/* Karten und Kästen: weiß mit weichem Schatten statt Linie */
+:where(.sw-werkzeug) :is(.card, .how, .scale, .box, .entry, .stelle, .help),
+:where(.sw-werkzeug .compare) > div{
+  background:var(--sw-karte); border:1px solid var(--sw-rand); box-shadow:var(--sw-s1);
+}
+:where(.sw-werkzeug) :is(.card, .how, .box){border-radius:20px;}
+:where(.sw-werkzeug) .card{box-shadow:var(--sw-s2);}
+:where(.sw-werkzeug) :is(.card--safety, .safety, .crisis){
+  background:var(--sand); border:1px solid rgba(181,128,143,.45); border-left:4px solid var(--rose); box-shadow:none;
+}
+:where(.sw-werkzeug) :is(.card--soft, .box--sand, .insight){background:var(--sw-verlauf-rose); border-color:transparent; box-shadow:none;}
+:where(.sw-werkzeug) .card .neu{background:var(--sw-verlauf-rose);}
+
+/* Dunkle Ergebnis-Karte (Werte-Finder, Sei sanft, Kompass) wie die Beere-Flächen der Website */
+:where(.sw-werkzeug) .hero{
+  background:var(--sw-verlauf-beere); color:#FAF6F4; border-radius:24px; box-shadow:var(--sw-s3);
+  position:relative; overflow:hidden;
+}
+:where(.sw-werkzeug) .hero::before{
+  content:""; position:absolute; width:300px; height:300px; right:-120px; top:-140px; border-radius:50%;
+  background:radial-gradient(circle, rgba(217,166,179,.32), transparent 65%); pointer-events:none;
+}
+:where(.sw-werkzeug) .hero > *{position:relative;}
+
+/* Antwort-Knöpfe und Auswahl-Chips */
+:where(.sw-werkzeug) :is(.option, .choice, .lvl){
+  background:var(--sw-karte); border:1px solid var(--sw-rand); box-shadow:var(--sw-s1);
+  transition:transform .2s ease, box-shadow .2s ease, background-color .2s ease, color .2s ease;
+}
+:where(.sw-werkzeug) .option{border-radius:14px; font-weight:400;}
+:where(.sw-werkzeug) .chip{background:var(--sw-karte); border:1px solid var(--sw-rand); box-shadow:var(--sw-s1);}
+:where(.sw-werkzeug) .idea{background:var(--sw-karte);}
+:where(.sw-werkzeug) :is(.option, .choice, .chip, .lvl)[aria-pressed="true"],
+:where(.sw-werkzeug) .lvl[aria-checked="true"]{
+  background:var(--sw-knopf); border-color:transparent; color:#FFFFFF; box-shadow:var(--sw-s-knopf);
+}
+:where(.sw-werkzeug) :is(.choice, .chip)[aria-pressed="true"] small{color:rgba(255,255,255,.8);}
+:where(.sw-werkzeug) .chip--danger[aria-pressed="true"]{background:var(--sw-verlauf-beere);}
+:where(.sw-werkzeug) .idea[aria-pressed="true"]{border-color:var(--rose); color:var(--pflaume);}
+:where(.sw-werkzeug) .chip:disabled{opacity:.45; box-shadow:none;}
+@media (hover:hover){
+  :where(.sw-werkzeug) :is(.option, .choice):not([aria-pressed="true"]):hover{background:var(--sw-karte); transform:translateY(-2px); box-shadow:var(--sw-s2);}
+  :where(.sw-werkzeug) .chip:not([aria-pressed="true"]):not(:disabled):hover{box-shadow:var(--sw-s2);}
+}
+
+/* Reiter (Tagebuch) */
+:where(.sw-werkzeug) .tab[aria-selected="true"]{background:var(--sw-knopf); color:#FFFFFF; border-color:transparent;}
+
+/* Fortschritt und Balken im Verlauf */
+:where(.sw-werkzeug) .progress{background:rgba(228,216,216,.7);}
+:where(.sw-werkzeug) .progress:has(> span){background:none;}
+:where(.sw-werkzeug) .progress i,
+:where(.sw-werkzeug) .progress__bar > *,
+:where(.sw-werkzeug) .bar .fill{background:linear-gradient(90deg, #B5808F, #8C5A69);}
+:where(.sw-werkzeug) .progress span.on{background:linear-gradient(90deg, #B5808F, #8C5A69);}
+
+/* Eingabefelder */
+:where(.sw-werkzeug) :is(input[type="text"], input[type="email"], input[type="password"], input[type="date"], input[type="time"], input:not([type]), textarea, select){
+  background:var(--sw-karte); border-color:var(--sw-rand); border-radius:12px; box-shadow:var(--sw-s1);
+}
+:where(.sw-werkzeug) :is(input, textarea, select):focus-visible{outline:2px solid var(--rose); outline-offset:1px;}
+
+/* Fuß */
+:where(.sw-werkzeug) .footer{
+  font-family:"Jost",system-ui,sans-serif; font-weight:500; font-size:.68rem; letter-spacing:.16em; color:var(--mikro);
+}
+
+/* Ausstiegs-Planer: eigene Leiste oben wird zum Website-Kopf */
+:where(.sw-werkzeug) > .bar{
+  position:sticky; top:0; z-index:20;
+  background:var(--sw-glas); -webkit-backdrop-filter:saturate(1.4) blur(12px); backdrop-filter:saturate(1.4) blur(12px);
+  border-bottom:none; box-shadow:0 1px 0 var(--linie);
+}
+:where(.sw-werkzeug) > .bar .word{font-size:1rem; letter-spacing:.2em; color:var(--pflaume);}
+:where(.sw-werkzeug) > .bar .exit{
+  background:var(--sand); color:var(--pflaume); border:1px solid var(--linie); font-size:.8rem;
+}
+
+/* Tagebuch: „Schnell weg“ schwebt, solange die eigene Leiste fehlt */
+:where(.sw-werkzeug) .exit{
+  background:var(--sand); color:var(--pflaume); border:1px solid var(--linie);
+  border-radius:20px; font-family:"Jost",system-ui,sans-serif; font-size:.8rem; font-weight:400;
+  box-shadow:var(--sw-s1);
+}
+
+/* =====================================================================
+   KI-Tools und Begleitung (body.sw-app): Mira, Antwort-Helfer, Programm, Kreis
+   ===================================================================== */
+body.sw-app{background:var(--sw-seite) no-repeat, var(--papier);}
+
+/* Kopf wie auf der Website */
+:where(.sw-app) > header, :where(.sw-app) > header.top{
+  position:sticky; top:0; z-index:20;
+  background:var(--sw-glas); -webkit-backdrop-filter:saturate(1.4) blur(12px); backdrop-filter:saturate(1.4) blur(12px);
+  border-bottom:none; box-shadow:0 1px 0 var(--linie);
+}
+:where(.sw-app) .brand .word{font-size:1rem; letter-spacing:.2em; color:var(--pflaume);}
+:where(.sw-app) .brand .butterfly{width:28px; height:28px;}
+:where(.sw-app) .exit{
+  background:var(--sand); color:var(--pflaume); border:1px solid var(--linie);
+  border-radius:20px; font-size:.8rem; font-weight:400;
+}
+@media (max-width:380px){ :where(.sw-app) .brand .word{font-size:.86rem; letter-spacing:.14em;} }
+
+/* Labels */
+:where(.sw-app) .eyebrow,
+:where(.sw-app) .starters .label{
+  font-family:"Jost",system-ui,sans-serif; font-weight:500; font-size:.72rem; letter-spacing:.16em; color:var(--sw-label);
+}
+:where(.sw-app) h1{letter-spacing:-.015em;}
+:where(.sw-app) .hero .lead, :where(.sw-app) .month-hero .sub{
+  font-family:"Jost",system-ui,sans-serif; font-style:normal; font-weight:400; color:var(--beere);
+}
+
+/* Knöpfe */
+:where(.sw-app) .btn{
+  background:var(--sw-knopf); color:#FFFFFF; border:none;
+  border-radius:14px; box-shadow:var(--sw-s-knopf); font-weight:500;
+  transition:transform .2s ease, box-shadow .2s ease;
+}
+:where(.sw-app) .btn.soft, :where(.sw-app) .btn.stop{
+  background:var(--sw-karte); color:var(--pflaume); border:1px solid var(--sw-rand); box-shadow:var(--sw-s1);
+}
+:where(.sw-app) .btn.link{background:none; color:var(--gedaempft); border:none; box-shadow:none;}
+:where(.sw-app) .btn:disabled{opacity:.5; box-shadow:none;}
+@media (hover:hover){
+  :where(.sw-app) .btn:not(:disabled):not(.link):hover{transform:translateY(-2px); box-shadow:0 14px 30px -10px rgba(110,65,82,.7);}
+  :where(.sw-app) .btn.soft:not(:disabled):hover, :where(.sw-app) .btn.stop:not(:disabled):hover{box-shadow:var(--sw-s2);}
+}
+
+/* Karten */
+:where(.sw-app) .card{
+  background:var(--sw-karte); border:1px solid var(--sw-rand); border-radius:20px; box-shadow:var(--sw-s2);
+}
+:where(.sw-app) .card.outline{box-shadow:var(--sw-s1);}
+:where(.sw-app) :is(.week-card, .tool-group, .week, .step, .werkzeug, .uebung, .impuls){
+  border-color:var(--sw-rand);
+}
+:where(.sw-app) .week-card{background:var(--sw-karte); border-radius:18px; box-shadow:var(--sw-s1); transition:transform .2s ease, box-shadow .2s ease;}
+:where(.sw-app) .week-card.next{box-shadow:0 0 0 2px var(--beere), var(--sw-s2);}
+@media (hover:hover){ :where(.sw-app) .week-card:hover{transform:translateY(-2px); box-shadow:var(--sw-s2);} }
+:where(.sw-app) :is(.mira-card, .mira){background:var(--sw-verlauf-rose); border-color:transparent;}
+
+/* Dunkle Kopf-Karte (Programm) */
+:where(.sw-app) .hero:not(:has(.lead)){
+  background:var(--sw-verlauf-beere); border-radius:24px; box-shadow:var(--sw-s3); position:relative; overflow:hidden;
+}
+:where(.sw-app) .hero:not(:has(.lead))::before{
+  content:""; position:absolute; width:320px; height:320px; right:-120px; top:-150px; border-radius:50%;
+  background:radial-gradient(circle, rgba(217,166,179,.3), transparent 65%); pointer-events:none;
+}
+:where(.sw-app) .hero:not(:has(.lead)) > *{position:relative;}
+:where(.sw-app) .hero:not(:has(.lead)) h1{color:#FFFFFF;}
+:where(.sw-app) .hero:not(:has(.lead)) .eyebrow{color:#E6C3CC;}
+:where(.sw-app) .hero:not(:has(.lead)) p{color:#EBD9DD;}
+
+/* Zugangscode: weiße Karte mit farbiger Kante (wie das Code-Fenster der Werkzeuge) */
+:where(.sw-app) :is(.screen, main, #screen-gate) > .gate{
+  background:var(--sw-karte); border-radius:26px; padding:34px 26px 26px; box-shadow:var(--sw-s3);
+  position:relative; overflow:hidden; max-width:440px; width:100%;
+}
+:where(.sw-app) :is(.screen, main, #screen-gate) > .gate::before{
+  content:""; position:absolute; left:0; right:0; top:0; height:6px;
+  background:linear-gradient(90deg, #B5808F, #8C5A69, #5C3A46);
+}
+:where(.sw-app) .gate input[type="text"]{background:var(--papier); border-color:var(--sw-rand);}
+
+/* Mira: Gesprächsblasen */
+:where(.sw-app) .msg.assistant{background:var(--sw-karte); box-shadow:var(--sw-s1); border:1px solid var(--sw-rand);}
+:where(.sw-app) .msg.user{background:var(--sw-knopf); color:#FFFFFF; box-shadow:var(--sw-s-knopf);}
+:where(.sw-app) .starter{background:var(--sw-karte); border-color:var(--sw-rand); box-shadow:var(--sw-s1);}
+:where(.sw-app) .chat-input-row{background:var(--sw-glas); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px);}
+:where(.sw-app) .chat-input-row textarea, :where(.sw-app) .row textarea, :where(.sw-app) main textarea{
+  background:var(--sw-karte); border-color:var(--sw-rand); box-shadow:var(--sw-s1);
+}
+:where(.sw-app) .chip{background:var(--sw-karte); border-color:var(--sw-rand); box-shadow:var(--sw-s1);}
+
+@media (prefers-reduced-motion: reduce){
+  :where(.sw-werkzeug, .sw-app) *{transition:none !important; transform:none !important;}
+}
+@media print{
+  :where(.sw-werkzeug, .sw-app){background:#FFFFFF !important;}
+  

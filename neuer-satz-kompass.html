@@ -7,7 +7,7 @@
 <meta name="description" content="30 Tage, ein Impuls pro Tag: Vom alten Glaubenssatz zu deinem neuen Satz – aufgebaut auf deinem Testergebnis und deinen Werten.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root{
     --papier:#FAF6F4;
@@ -254,8 +254,10 @@
     .hero{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
   }
 </style>
+<link rel="stylesheet" href="assets/werkzeug.css">
 </head>
-<body>
+<body class="sw-werkzeug">
+<header class="sw-kopf no-print"><div class="sw-kopf-innen"><a class="sw-marke" href="start.html"><img src="assets/logo.svg" alt="" width="28" height="28"><span>Seelenwende</span></a><button class="sw-weg" type="button" id="sw-weg" title="Verlässt die Seite sofort (auch: zweimal Esc)">Schnell weg</button></div></header>
 <main class="page">
 
   <header>
@@ -875,5 +877,6 @@
   else view("intro");
 })();
 </script>
+<script src="assets/werkzeug.js"></script>
 </body>
 </html>
