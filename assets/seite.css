@@ -692,3 +692,78 @@ a.karte{text-decoration:none; color:inherit; transition:transform .2s ease, box-
 .preisbox .ueber{color:var(--rose);}
 @media (min-width:760px){ .wochen:has(> :nth-child(6)){grid-template-columns:repeat(3, 1fr);} }
 .vertrauen{background:linear-gradient(var(--weiss), var(--weiss)) 0 56px / 100% 100% no-repeat;}
+
+/* =====================================================================
+   Modern: klare Typo, große Rundungen, Foto mit Farbfläche statt Rahmen
+   ===================================================================== */
+h1, h2, h3{letter-spacing:-.015em;}
+.held h1, .held.split h1{font-weight:500; line-height:1.08;}
+.abschnitt h2{font-size:clamp(1.8rem, 4.8vw, 2.6rem); line-height:1.12;}
+.ueber{
+  font-family:var(--sans); font-weight:500; font-size:.74rem; letter-spacing:.16em; color:var(--beere);
+  display:inline-flex; align-items:center; gap:10px;
+}
+.ueber::before{content:""; width:22px; height:2px; border-radius:2px; background:currentColor; opacity:.6;}
+.aufruf .ueber::before, .zentriert .ueber::before{display:none;}
+.held .unterzeile{font-style:normal; font-family:var(--sans); font-weight:400; color:var(--beere); font-size:clamp(1.05rem, 2.6vw, 1.2rem);}
+.knopf{border-radius:14px; font-family:var(--sans); font-weight:500; font-size:1rem; letter-spacing:.01em; padding:15px 26px;}
+.knopf.leicht{border-radius:14px;}
+.karte, .leistung, .woche, .wegweiser a, .fragen details, .sicher{border-radius:20px;}
+.angebot, .preisbox, .persoenlich{border-radius:26px;}
+.vertrauen ul{border-radius:24px;}
+.badge{border-radius:8px; letter-spacing:.1em;}
+.ic-rund{border-radius:14px;}
+.leistung h3, .karte h3, .woche h3{font-family:var(--sans); font-weight:500; letter-spacing:0; font-size:1.06rem;}
+.angebot h3{font-family:var(--serif);}
+
+/* Foto mit versetzter Farbfläche */
+.foto-buehne{position:relative; width:min(380px, 78vw); margin:20px auto 30px;}
+.foto-buehne::before{
+  content:""; position:absolute; inset:28px -22px -22px 28px; border-radius:30px;
+  background:var(--verlauf-beere); z-index:0;
+}
+.foto-buehne::after{
+  content:""; position:absolute; width:120px; height:120px; left:-34px; top:-30px; border-radius:50%;
+  background:radial-gradient(circle, rgba(181,128,143,.45), transparent 70%); z-index:0;
+}
+.foto-buehne .foto{
+  position:relative; z-index:1; border-radius:30px; overflow:hidden; aspect-ratio:4/5;
+  box-shadow:0 40px 70px -30px rgba(53,32,42,.6);
+}
+.foto-buehne .foto img{width:100%; height:100%; object-fit:cover; display:block;}
+.schwebe-karte{
+  position:absolute; z-index:2; display:flex; align-items:center; gap:12px;
+  background:rgba(255,255,255,.94); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+  border-radius:18px; padding:12px 16px 12px 12px; box-shadow:var(--s3); max-width:250px; color:#5C3A46;
+}
+.schwebe-karte .ic-rund{width:40px; height:40px; border-radius:12px;}
+.schwebe-karte .ic-rund .ic{width:20px; height:20px;}
+.schwebe-karte b{display:block; font-weight:500; font-size:.92rem; line-height:1.3;}
+.schwebe-karte small{display:block; font-size:.76rem; color:#8E7079; line-height:1.35;}
+.schwebe-karte.oben-rechts{right:-36px; top:42px;}
+.schwebe-karte.unten-links{left:-40px; bottom:48px;}
+@media (max-width:520px){
+  .schwebe-karte{max-width:210px; padding:10px 12px 10px 10px;}
+  .schwebe-karte.oben-rechts{right:-10px; top:18px;}
+  .schwebe-karte.unten-links{left:-10px; bottom:26px;}
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .schwebe-karte{background:rgba(42,32,36,.94); color:#F3E4E7;} }
+
+/* Zitatkarte (Startseite, Über mich) */
+.zitat-karte{
+  margin:0; position:relative; border-radius:28px; padding:40px 34px 30px; color:#FFFFFF;
+  background:var(--verlauf-beere); box-shadow:var(--s3); overflow:hidden;
+}
+.zitat-karte::after{
+  content:""; position:absolute; width:260px; height:260px; right:-90px; top:-90px; border-radius:50%;
+  background:radial-gradient(circle, rgba(217,166,179,.35), transparent 65%);
+}
+.zitat-karte .anfuehrung{width:34px; height:34px; color:#E6C3CC; margin-bottom:14px;}
+.zitat-karte blockquote{margin:0; font-family:var(--serif); font-size:clamp(1.3rem, 3vw, 1.65rem); line-height:1.4; position:relative; z-index:1;}
+.zitat-karte figcaption{display:flex; align-items:center; gap:14px; margin-top:26px; position:relative; z-index:1;}
+.zitat-karte figcaption img{width:56px; height:56px; border-radius:50%; object-fit:cover; box-shadow:0 0 0 3px rgba(255,255,255,.25);}
+.zitat-karte figcaption span{font-size:.86rem; color:#EBD9DD; line-height:1.4;}
+.zitat-karte figcaption b{display:block; color:#FFFFFF; font-weight:500;}
+
+/* Kleine Porträts: ohne Rahmen, mit Ring */
+.portrait{border:none; box-shadow:0 0 0 4px var(--karte), 0 0 0 5px rgba(181,128,143,.4), var(--s2);}
