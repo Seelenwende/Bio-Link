@@ -1,6 +1,12 @@
 # Bio-Link
 
-- `index.html` – Link-in-Bio-Seite von Seelenwende.
+- `index.html` – Link-in-Bio-Seite von Seelenwende (siehe unten: Werkzeuge erst nach Mail-Adresse). Gruppen: Kostenlos starten · Für den Moment · Begleitung · Mehr. Die bezahlten Produkte verlinken auf ihre Angebotsseite, nicht direkt auf den Shop.
+- `start.html` – **Website** von Seelenwende. Reihenfolge für Vertrauen vor Kauf: Bild-Held → Erkennen (Muster zum Antippen) → Über mich (Foto, Geschichte, Zahlen) → Laufband → Phasen-Wegweiser → Angebote nach Phase → Kostenlos → Sicherheit → Fragen. Bisher: drei Phasen (Noch drin · Im Gehen · Danach), alle kostenlosen Werkzeuge, alle Angebote nach Stufe, Haltung, Sicherheit, Fragen.
+- `angebot-*.html` – **Salespages**: `angebot-mira`, `angebot-antwort-helfer` (Erste-Hilfe-Set), `angebot-werte` (Stufe 2), `angebot-kompass` (Stufe 3), `angebot-tagebuch`, `angebot-programm`, `angebot-kreis`, `angebot-bundle` (inkl. „Du bist genug“ einzeln).
+- `ueber-mich.html` – **Über mich**: Geschichte (über 15 Jahre in der Beziehung, letztes Jahr der Ausstieg), Weg als Zeitachse, Haltung. Kurzfassung auch auf `start.html`, je eine persönliche Notiz auf jeder Salespage.
+- `assets/logo.svg` – Logo-Schmetterling als Vektor (Kopf, Bio-Link, Browser-Icon), nachgezeichnet nach `assets/logo-seelenwende.png` (Original mit Schriftzug). `assets/icons.svg` – Icon-Set (`<svg class="ic"><use href="assets/icons.svg#herz"/></svg>`).
+- **Fotos:** `assets/ueber-mich.jpg` (Porträt 4:5, „Über mich“ und Startseite) und `assets/avatar.jpg` (quadratisch, persönliche Notizen auf den Salespages). Fehlt eine Datei, erscheint der Schmetterling.
+- `assets/seite.css`, `assets/seite.js` – gemeinsames Aussehen und Skript für Website und Salespages: Kopf, Fuß, Krisenleiste, „Schnell weg“ (auch zweimal Esc), Mail-Fenster vor den kostenlosen Werkzeugen (derselbe Merk-Schlüssel wie im Bio-Link), Kaufleiste auf dem Handy. **Alle Kauf-Links stehen dort oben in `KAUF`** (Schlüssel: mira, antwort-helfer, kompass, werte, radar, sanft, journal, tagebuch, programm, kreis, bundle, du-bist-genug). Sobald ein Tentary-Link eingetragen ist, führen **alle** Kaufknöpfe des Produkts direkt dorthin – auf den Salespages (Held, Preisbox, Abschluss) und auf der Startseite. Ist der Link noch leer, bleibt der Knopf ein Knopf und führt auf Instagram („Schreib TAGEBUCH an @_seelenwende“) mit dem Hinweis „Bald erhältlich“ darunter.
 - `muster-check.html` – **Muster-Check** „Ist das noch normal?“: 20 konkrete Alltagssituationen in fünf Bereichen (Wahrnehmung, Abwertung, Kontrolle & Rückzug, Heiß & kalt, Schuld & Angst). Zeigt, wo sich ein Muster wiederholt, wie es in einer gesunden Beziehung aussähe, einen Satz und eine Journal-Frage. Sicherheitshinweis mit Hilfenummern (CH/DE/AT), sobald sie Angst vor seiner Wut angibt; „Schnell weg“-Knopf (auch zweimal Esc). Läuft komplett im Browser, nichts wird gespeichert.
 - `werte-finder.html` – Werte-Finder: in vier Schritten (5–15 Werte wählen, auf 5 eingrenzen, in eigenen Worten beschreiben, was jeder Wert bedeutet, einschätzen wie sehr man sie lebt) zu den eigenen fünf Kernwerten – mit eigenen Bedeutungssätzen und Impulsfragen zum Nachspüren. Läuft komplett im Browser, ohne KI, API-Schlüssel oder Kosten; Antworten bleiben auf dem Gerät.
 - `notizen.html` – **Klarheits-Tagebuch** (bewusst neutral benannt, heißt im Browser nur „Notizen“): Vorfälle mit Datum festhalten – was passiert ist, was wörtlich gesagt wurde, erkannte Muster (Leugnen, Kleinreden, Schuldumkehr …), Gefühle, Belege und ein Satz „Was weißt du sicher?“ für Zweifelsmomente. Übersicht „Muster“ zeigt, was sich wiederholt. PIN-geschützt und mit AES-GCM verschlüsselt (Schlüssel per PBKDF2 aus der PIN), gespeichert nur im Browser des Geräts – kein Server, kein Konto. Sperrt sich nach 5 Min. ohne Eingabe oder 30 Sek. im Hintergrund, „Schnell weg“-Knopf (auch zweimal Esc), Bremse nach 5 falschen PINs. Export als Druck/PDF oder Text (z. B. für eine Beratungsstelle), verschlüsselte Sicherungsdatei zum Mitnehmen auf ein anderes Gerät. Vergessene PIN = Tagebuch verloren (Absicht). Knopf **„Mit Mira einordnen“** in jedem Eintrag: übergibt den Eintrag (ohne Belege/Zeugen) über `sessionStorage` an `begleiterin.html`, wo er nach dem Zugangscode im Textfeld steht – sie liest ihn und schickt ihn selbst ab. Mira liest den Wert sofort aus und löscht ihn; nichts landet in Adresse oder Verlauf.
@@ -111,9 +117,21 @@ Satz und Werte wählt die Frau frei. Auf der letzten Einrichtungsseite gibt sie 
 
 Neue Käuferin: Code an `KOMPASS_CODES` anhängen, danach neu deployen. Ohne die Variable zeigt der Kompass „noch nicht eingerichtet“. Den Kauf-Link („Noch keinen Code?“) in `neuer-satz-kompass.html` auf das Tentary-Produkt setzen, sobald es angelegt ist.
 
+## Bezahlte Browser-Werkzeuge (Red-Flag-Radar, Werte-Finder, Sei sanft mit dir)
+
+Die drei Seiten laufen weiter komplett im Browser. Beim Öffnen fragt `assets/werkzeug-zugang.js` nach einem Zugangscode und prüft ihn über `werkzeug-zugang` (`/api/werkzeug/zugang`). Gemerkt wird nur „freigeschaltet“ (mit Häkchen dauerhaft, sonst bis der Tab zu ist), der Code selbst nicht. In Netlify-Vorschauen gibt es „Vorschau: ohne Code ansehen“. Weil der Inhalt in der Seite steht, ist das eine einfache Sperre, kein Kopierschutz – für Preise von 7–9 € reicht das.
+
+| Variable | Inhalt |
+|---|---|
+| `RADAR_CODES` | Codes für den Red-Flag-Radar (9 €), kommagetrennt |
+| `WERTE_CODES` | Codes für den Werte-Finder (9 €). Werte-Finder und Kompass sind getrennte Stufen, ein Kompass-Code öffnet den Werte-Finder nicht. |
+| `SANFT_CODES` | Codes für „Sei sanft mit dir“ (7 €) – auch den Code für Bundle-Käuferinnen hier eintragen |
+
+Kreis- und Programm-Codes öffnen alle drei. Salespages: `angebot-radar.html`, `angebot-sanft.html`, `angebot-werte.html`.
+
 ## Bio-Link: Werkzeuge erst nach Mail-Adresse
 
-Auf `index.html` öffnen Self Care Journal, Muster-Check, Glaubenssätze-Test, Werte-Finder, „Sei sanft mit dir“ und der Mini-Guide nicht direkt. Zuerst kommt ein Fenster, in das die Frau ihre Mail-Adresse einträgt und den Mails zustimmt. `werkzeuge-anmeldung` (`/api/werkzeuge/anmelden`) trägt sie in MailerLite ein, danach öffnet sich das Werkzeug. Der Browser merkt sich die Anmeldung, beim nächsten Besuch geht es direkt weiter. Journal und Mini-Guide öffnen danach ihre Tentary-Seite im selben Fenster. Die Werkzeug-Seiten selbst bleiben über ihren direkten Link erreichbar (z. B. aus dem Programm oder den Ergebnis-Mails).
+Auf `index.html` und `start.html` öffnen die kostenlosen Einstiege (Muster-Check, Glaubenssätze-Test, Mini-Guide) nicht direkt. Zuerst kommt ein Fenster, in das die Frau ihre Mail-Adresse einträgt und den Mails zustimmt. `werkzeuge-anmeldung` (`/api/werkzeuge/anmelden`) trägt sie in MailerLite ein, danach öffnet sich das Werkzeug. Der Browser merkt sich die Anmeldung, beim nächsten Besuch geht es direkt weiter. Der Mini-Guide öffnet danach seine Tentary-Seite im selben Fenster. Das Self Care Journal ist jetzt ein Produkt für 9 € (Preis in Tentary einstellen). Die Werkzeug-Seiten selbst bleiben über ihren direkten Link erreichbar (z. B. aus dem Programm oder den Ergebnis-Mails).
 
 | Variable | Inhalt |
 |---|---|
@@ -145,3 +163,7 @@ Die Anweisungen stehen in `netlify/lib/antwort-helfer.mts`, die Code-Prüfung ko
 | `ANTWORT_HELFER_MODEL` | optional, Standard `claude-opus-5-5` |
 
 Alle Codes aus `BEGLEITERIN_CODES` und `PROGRAMM_CODES` gelten auch hier (mit eigenem Zähler), damit Mira-Käuferinnen und das 6-Wochen-Programm den Antwort-Helfer automatisch mitnutzen. Kosten: grob 0,02–0,06 $ pro Prüfung.
+
+## Bildnachweis
+
+Stimmungsfotos in `assets/bilder/` von [Pexels](https://www.pexels.com) (Pexels-Lizenz: kostenlos, auch kommerziell, ohne Namensnennung). Foto-IDs: `antwort-nachricht` 7341894 · `start-fenster` 11012771 · `kreis-lesen` 5358916 · `bundle-blumen` 545018 · `abschluss-weite` und `band-weite` 11727471 (Hintergrund der Abschluss-Bereiche und des Bild-Bands) · Kartenbilder in `karten/`: Planer 7365452, Journal 6913375, Werte-Finder 36511421, sonst wie oben · `held-freiheit` 847483 (Hintergrund oben auf der Startseite) · `werte-tee` 36511421. Original: `https://www.pexels.com/photo/<ID>/`. Die Bilder liegen auf der eigenen Seite, damit keine Besucherdaten an Dritte gehen.

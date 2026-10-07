@@ -14,8 +14,9 @@ Viele Frauen wissen selbst nicht, in welcher Phase sie sind. Darum gilt: **Die E
 
 | Stufe | Ihre Frage | Produkte |
 |---|---|---|
-| Erkennen | „Was ist hier los?“ | Glaubenssätze-Test, Werte-Finder, Sei sanft mit dir, Red-Flag-Radar, Muster-Check, Ausstiegs-Planer, Mini-Guide, Self Care Journal – **gratis** |
-| Werkzeug | „Was mache ich jetzt, in diesem Moment?“ | No-Contact-Kit, Grenz-Sätze, Klartext, Anker-Set, Erste-Hilfe-Set, Neuer-Satz-Kompass |
+| Erkennen | „Was ist hier los?“ | Muster-Check, Glaubenssätze-Test, Ausstiegs-Planer, Mini-Guide – **gratis** (je Phase ein Einstieg, Sicherheit immer gratis) |
+| Kleine Werkzeuge | „Was hilft mir genau hier?“ | Red-Flag-Radar (9 €), Werte-Finder (9 €, Stufe 2 vor dem Kompass), Sei sanft mit dir (7 €, Bonus im Bundle), Self Care Journal (9 €) |
+| Werkzeug | „Was mache ich jetzt, in diesem Moment?“ | No-Contact-Kit, Grenz-Sätze, Klartext, Anker-Set, Erste-Hilfe-Set, Neuer-Satz-Kompass (19 €) |
 | Wissen | „Warum fühle ich mich so klein?“ | Du bist genug, Bundle |
 | Weg | „Wie komme ich wirklich zu mir zurück?“ | „Wieder bei dir“, 6 Wochen |
 | Bleiben | „Wie halte ich das?“ | Seelenwende Kreis |
@@ -34,6 +35,25 @@ Viele Frauen wissen selbst nicht, in welcher Phase sie sind. Darum gilt: **Die E
 | **2 · Herzstück** | – | Das Bundle – Zurück zu dir (49 €) | Das Bundle – Zurück zu dir (49 €) |
 | **3 · Begleitung** | Klarheits-Analyse (99 €) | 6-Wochen-Programm inkl. Mira, Begleitheft, Audios (149 €) | 6-Wochen-Programm (149 €) |
 | **4 · Dauerhaft** | Seelenwende Kreis inkl. Mira und Audios (ab 19 €/Mo) | Seelenwende Kreis | Seelenwende Kreis |
+
+## Gratis bewusst knapp (Oktober 2026)
+
+Nur noch vier Gratis-Einstiege: Muster-Check (noch drin), Ausstiegs-Planer und Mini-Guide (im Gehen), Glaubenssätze-Test (danach). Dazu später der Mira-Schnupper-Code. Alles andere hat einen kleinen Preis, weil zu viel Gratis unglaubwürdig wirkt und wer einmal 7–9 € ausgibt, eher auch das Programm kauft. Kreis- und Programm-Codes öffnen alle kleinen Werkzeuge („alle Werkzeuge inklusive“).
+
+**Keine doppelten Produkte, sondern Stufen:** Glaubenssätze-Test (gratis) → Werte-Finder (9 €) → Neuer-Satz-Kompass (19 €). Jede Stufe übernimmt das Ergebnis der vorherigen, keine enthält eine andere. Beide Salespages zeigen eine Stufenleiste.
+
+## Phasen-Wegweiser
+
+Startseite (`start.html#phasen`) und Bio-Link fragen zuerst „Wo stehst du gerade?“ und zeigen je Phase genau drei Schritte:
+
+| | Kostenlos starten | Für jetzt | Nächster Schritt |
+|---|---|---|---|
+| Noch drin | Muster-Check | Mira (oder Klarheits-Tagebuch) | Bundle |
+| Im Gehen | Ausstiegs-Planer (oder Mini-Guide) | Erste-Hilfe-Set (oder Mira) | „Wieder bei dir“ |
+| Danach | Glaubenssätze-Test | Werte-Finder, dann Kompass (oder Red-Flag-Radar) | „Wieder bei dir“ (oder Kreis) |
+| Weiß nicht | Muster-Check | Mira | Kreis |
+
+Direkt verlinkbar: `start.html#drin`, `#gehen`, `#draussen`, `#unsicher`.
 
 ## Die Bausteine
 
@@ -55,10 +75,11 @@ Viele Frauen wissen selbst nicht, in welcher Phase sie sind. Darum gilt: **Die E
 
 ## Offene Punkte
 
+- Website und Salespages (`start.html`, `angebot-*.html`) sind gebaut. Kauf-Links in `assets/seite.js` (`KAUF`) eintragen, sobald die Tentary-Produkte stehen; beim Kreis zusätzlich `KAUF_URL` in `kreis.html`. Vor dem Livegang: Impressum und Datenschutzerklärung anlegen und im Fuß verlinken, eigene Domain.
+- Salespages versprechen „Audios für schwere Tage“ (Programm) und eine Code-Freischaltung (Tagebuch): beides vor dem Verkaufsstart fertigstellen.
 - Kaufweg für Mira, Programm und Kreis: Tentary-Produkt → Code erzeugen → Mail mit Code (Make und MailerLite). Für Mira und den Kreis kann Make die Codes über `/api/zugang/admin` anlegen; beim Kreis zusätzlich: Kündigung → sperren. Bis dahin Codes von Hand in `zugang-admin.html`.
 - Antwort-Helfer live schalten: `ANTWORT_HELFER_CODES` in Netlify anlegen, Code in die Erste-Hilfe-Set-Mail aufnehmen.
 - MailerLite für die Ergebnis-Mail einrichten (Gruppe, Felder, Double-Opt-in, Automatisierung) und Datenschutzerklärung verlinken.
 - Audios für schwere Tage aufnehmen (Dateinamen in `bonus/LIESMICH.md`), nicht mehr einzeln verkaufen.
 - Shop-Links der Einzel-PDFs für die „Du hast schon …?“-Hinweise im Programm.
 - Preise vereinheitlichen (Entwurf nennt Selbstwert-Paket 59 € und E-Book 24 €, live stehen 49 € und 29 €).
-- Tagline auf alle drei Gruppen öffnen, z. B. „Zurück zu dir – egal, wo du gerade stehst.“
