@@ -5,7 +5,7 @@ import { KANAELE, alleKunden, neuerKunde, speichereKunde, type Kanal } from "../
 /* GET: alle Kunden · POST: neuen Kunden anlegen und den Ablauf starten
    Body: { website, name?, email?, instagram?, facebook?, linkedin? } */
 export default async (req: Request, _context: Context) => {
-  if (!adminFromRequest(req)) return json({ error: "Admin-Schlüssel fehlt oder ist falsch." }, 401);
+  if (!adminFromRequest(req)) return json({ error: "Passwort fehlt oder ist falsch." }, 401);
 
   if (req.method === "GET") {
     const kunden = await alleKunden();

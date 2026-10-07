@@ -36,7 +36,7 @@ function verschiebe(iso: string, tage: number): string {
 }
 
 export default async (req: Request, _context: Context) => {
-  if (!adminFromRequest(req)) return json({ error: "Admin-Schlüssel fehlt oder ist falsch." }, 401);
+  if (!adminFromRequest(req)) return json({ error: "Passwort fehlt oder ist falsch." }, 401);
   const origin = new URL(req.url).origin;
 
   if (req.method === "GET") {

@@ -6,7 +6,7 @@ import { NAME_PATTERN, speichereMedium } from "../lib/medien.mts";
 /* Upload aus dem Dashboard, z. B. die im Browser erzeugten Reel-Videos.
    POST /api/admin/medien?id=<kundeId>&name=<datei>  Body: Datei (höchstens ~6 MB) */
 export default async (req: Request, _context: Context) => {
-  if (!adminFromRequest(req)) return json({ error: "Admin-Schlüssel fehlt oder ist falsch." }, 401);
+  if (!adminFromRequest(req)) return json({ error: "Passwort fehlt oder ist falsch." }, 401);
   if (req.method !== "POST") return json({ error: "Nur POST." }, 405);
   const params = new URL(req.url).searchParams;
   const kunde = await ladeKunde(params.get("id") ?? "");

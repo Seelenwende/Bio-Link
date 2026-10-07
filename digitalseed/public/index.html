@@ -38,7 +38,7 @@ const PHASE_MARKE = { produktion: "gelb", pruefung: "blau", freigabe: "gelb", li
 async function api(pfad, opts = {}) {
   const res = await fetch(pfad, { ...opts, headers: { authorization: `Bearer ${schluessel}`, ...(opts.body && !(opts.body instanceof Blob) ? { "content-type": "application/json" } : {}), ...(opts.headers || {}) } });
   const daten = await res.json().catch(() => ({}));
-  if (res.status === 401) { abmelden(); throw new Error("Admin-Schlüssel ungültig."); }
+  if (res.status === 401) { abmelden(); throw new Error("Passwort falsch."); }
   if (!res.ok) throw new Error(daten.error || `Fehler ${res.status}`);
   return daten;
 }
@@ -69,7 +69,7 @@ async function mitKnopf(knopf, fn) {
 
 function anmeldung() {
   app.innerHTML = `<div class="karte" style="max-width:440px;margin:40px auto">
-    <h1>Anmelden</h1><p class="leise">Admin-Schlüssel aus Netlify (DIGITALSEED_ADMIN_KEY).</p>
+    <h1>Anmelden</h1><label for="s">Passwort</label>
     <form id="f"><input type="password" id="s" autocomplete="current-password" required><p style="margin-top:12px"><button>Weiter</button></p></form></div>`;
   document.getElementById("f").onsubmit = async (e) => {
     e.preventDefault();

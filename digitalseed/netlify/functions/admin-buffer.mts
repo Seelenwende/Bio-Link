@@ -4,7 +4,7 @@ import { isBufferConfigured, kanaele } from "../lib/buffer.mts";
 
 /* Die in Buffer verbundenen Kanäle, zum Zuordnen pro Kunde im Dashboard */
 export default async (req: Request, _context: Context) => {
-  if (!adminFromRequest(req)) return json({ error: "Admin-Schlüssel fehlt oder ist falsch." }, 401);
+  if (!adminFromRequest(req)) return json({ error: "Passwort fehlt oder ist falsch." }, 401);
   if (!isBufferConfigured()) return json({ kanaele: [], hinweis: "BUFFER_API_TOKEN ist nicht gesetzt." });
   try {
     return json({ kanaele: await kanaele() });

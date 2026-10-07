@@ -8,11 +8,11 @@ export function json(body: unknown, status = 200): Response {
   return Response.json(body, { status, headers: { "cache-control": "no-store" } });
 }
 
-/* Admin-Schlüssel: Dashboard und interne Aufrufe der Hintergrund-Funktion.
+/* Passwort (DIGITALSEED_ADMIN_KEY): Dashboard und interne Aufrufe der Hintergrund-Funktion.
    Header „Authorization: Bearer <DIGITALSEED_ADMIN_KEY>“ oder Feld „schluessel“ im Body. */
 export function checkAdminKey(given: string | null | undefined): boolean {
   const expected = Netlify.env.get("DIGITALSEED_ADMIN_KEY");
-  if (!expected || expected.length < 16 || typeof given !== "string") return false;
+  if (!expected || expected.length < 12 || typeof given !== "string") return false;
   const value = given.replace(/^Bearer\s+/i, "").trim();
   const a = createHash("sha256").update(value).digest();
   const b = createHash("sha256").update(expected.trim()).digest();

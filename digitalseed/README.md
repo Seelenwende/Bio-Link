@@ -32,11 +32,11 @@ Nach drei Monaten: in den Einstellungen ein neues Startdatum setzen und bei „C
 
 1. In Netlify eine **neue Website** aus diesem Repository anlegen, mit **Base directory `digitalseed`**. Build-Befehl und Ordner kommen aus `digitalseed/netlify.toml`.
 2. Umgebungsvariablen setzen (unten) und neu deployen.
-3. Dashboard öffnen (`https://<deine-seite>/`) und mit dem Admin-Schlüssel anmelden.
+3. Dashboard öffnen (`https://<deine-seite>/`) und mit dem Passwort anmelden (Wert von `DIGITALSEED_ADMIN_KEY`). Kundenportal, Website-Demos und Bilder bleiben über ihre geheimen Links ohne Passwort erreichbar, damit Kunden und Buffer sie öffnen können.
 
 | Variable | Pflicht | Inhalt |
 |---|---|---|
-| `DIGITALSEED_ADMIN_KEY` | ja | Langer, zufälliger Schlüssel (mind. 16 Zeichen) für das Dashboard |
+| `DIGITALSEED_ADMIN_KEY` | ja | Passwort fürs Dashboard (mind. 12 Zeichen) |
 | `ANTHROPIC_API_KEY` | ja | API-Schlüssel von https://platform.claude.com |
 | `DIGITALSEED_URL` | empfohlen | Öffentliche Adresse ohne `/` am Ende, z. B. `https://app.digitalseed.ch`. Wird für Bild-Links an Buffer, Mail-Links und den Monatsbericht gebraucht. Ohne sie nimmt Netlify die Standard-URL. |
 | `BUFFER_API_TOKEN` | für Posten und Berichte | Token aus https://publish.buffer.com/settings/api |
