@@ -1,0 +1,15 @@
+# Eigene Netlify-Website für DigitalSeed. In Netlify: Base directory = digitalseed
+[build]
+  publish = "public"
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+  # resvg lädt seine WebAssembly-Datei aus node_modules
+  external_node_modules = ["@resvg/resvg-wasm"]
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+    Referrer-Policy = "same-origin"

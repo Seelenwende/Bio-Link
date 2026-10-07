@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="referrer" content="same-origin">
+<title>Ihre digitale Präsenz · DigitalSeed</title>
+<link rel="stylesheet" href="/stil.css">
+</head>
+<body>
+<header class="kopf"><div class="huelle">
+  <span id="kopflogo"></span>
+  <span style="flex:1"></span>
+  <span class="leise klein">vorbereitet von <b class="logo-wort" style="font-size:.95rem">Digital<span>Seed</span></b></span>
+</div></header>
+<main class="huelle" id="app"><p class="leise">Lade …</p></main>
+
+<script src="/gemeinsam.js"></script>
+<script>
+const app = document.getElementById("app");
+const token = new URLSearchParams(location.search).get("k") || "";
+let d = null;
+let reiter = "";
+let monat = 1;
+let abfrage = null;
+
+function meldung(text, fehler = false) {
+  const el = document.createElement("div");
+  el.textContent = text;
+  el.style.cssText = `position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:${fehler ? "var(--rot)" : "var(--text)"};color:#fff;padding:10px 16px;border-radius:8px;z-index:9;max-width:90vw`;
+  document.body.append(el);
+  setTimeout(() => el.remove(), 4000);
+}
+
+async function laden() {
+  const res = await fetch(`/api/portal?k=${encodeURIComponent(token)}`);
+  const daten = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(daten.error || "Die Seite konnte nicht geladen werden.");
+  d = daten;
+}
+
+async function senden(body) {
+  const res = await fetch("/api/portal", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ k: token, ...body }) });
+  const daten = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(daten.error || "Das hat nicht geklappt. Bitte noch einmal versuchen.");
+  d.freigaben = daten.freigaben;
+}
+
+function markenfarben() {
+  const m = d.marke;
+  if (!m) return;
+  const r = document.documentElement.style;
+  // Sehr helle Hauptfarben taugen nicht für Knöpfe mit weisser Schrift
+  const hell = (hex) => { const [a, b, c] = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16)); return 0.299 * a + 0.587 * b + 0.114 * c > 170; };
+  r.setProperty("--gruen", hell(m.farben.primaer) ? m.farben.dunkel : m.farben.primaer);
+  r.setProperty("--akzent", m.farben.akzent);
+  r.setProperty("--grund", m.farben.hell);
+  document.getElementById("kopflogo").innerHTML = m.logo.pfad
+    ? `<span style="display:inline-block;padding:6px 10px;border-radius:8px;background:${m.logo.aufDunkel ? esc(m.farben.dunkel) : "transparent"}"><img src="${esc(m.logo.vorschau || m.logo.pfad)}" alt="${esc(m.name)}" style="height:34px;display:block"></span>`
+    : `<b style="font-size:1.1rem">${esc(m.name)}</b>`;
+}
+
+function reiterListe() {
+  const r = [["analyse", "Analyse"]];
+  if (d.marke) r.push(["marke", "Ihre Marke"]);
+  if (d.demo) r.push(["website", "Neue Website"]);
+  if (d.inhalte) r.push(["freigabe", "Inhalte freigeben"], ["plan", "Content- und Redaktionsplan"], ["newsletter", "Newsletter"], ["vorlagen", "Vorlagen"]);
+  if (d.berichte.length) r.push(["berichte", "Monatsberichte"]);
+  return r;
+}
+
+function zeige() {
+  const liste = reiterListe();
+  if (!liste.some(([k]) => k === reiter)) reiter = location.hash.startsWith("#bericht") && d.berichte.length ? "berichte" : d.inhalte ? "freigabe" : "analyse";
+  const name = d.marke?.name || d.kunde.name || d.kunde.website;
+  const y = window.scrollY;
+  app.innerHTML = `
+    <h1>${esc(name)}: Ihre digitale Präsenz</h1>
+    <p class="leise">${d.inhalte ? "Analyse, neue Website und Ihre Inhalte für die nächsten drei Monate – bitte prüfen und freigeben." : "Analyse Ihrer Online-Präsenz und Vorschlag für Ihre neue Website."}</p>
+    <nav class="reiter">${liste.map(([k, n]) => `<button data-reiter="${k}" class="${k === reiter ? "aktiv" : ""}">${n}</button>`).join("")}</nav>
+    <section id="inhalt"></section>`;
+  app.querySelectorAll("[data-reiter]").forEach((b) => (b.onclick = () => { reiter = b.dataset.reiter; zeige(); window.scrollTo(0, 0); }));
+  const el = document.getElementById("inhalt");
+  ({
+    analyse: () => (el.innerHTML = analyseHtml(d.analyse)),
+    marke: () => (el.innerHTML = `<p class="leise">Aus Ihrer Website abgeleitet. Danach richten sich Website, Newsletter und alle Beiträge.</p>${markeHtml(d.marke)}`),
+    website: () => (el.innerHTML = `<p class="zeile"><a class="knopf klein" href="${esc(d.demo)}" target="_blank" rel="noopener">Im neuen Fenster öffnen</a><span class="leise klein">Ein Entwurf mit Ihren Inhalten, Farben und Ihrem Logo.</span></p><iframe class="rahmen" src="${esc(d.demo)}" title="Website-Entwurf"></iframe>`),
+    freigabe: () => freigabe(el),
+    plan: () => (el.innerHTML = strategieHtml(d.strategie)),
+    newsletter: () => (el.innerHTML = newsletterKonzeptHtml(d.newsletter, `/newsletter/${encodeURIComponent(token)}/vorlage`) + `<iframe class="rahmen" src="/newsletter/${encodeURIComponent(token)}/vorlage" title="Newsletter-Vorlage"></iframe>`),
+    vorlagen: () => (el.innerHTML = vorlagenHtml(d.vorlagen)),
+    berichte: () => (el.innerHTML = d.berichte.map(berichtHtml).join("<hr style='border:none;border-top:1px solid var(--linie);margin:30px 0'>")),
+  })[reiter]();
+  window.scrollTo(0, y);
+}
+
+/* ---------- Freigabe ---------- */
+
+function freigabe(el) {
+  const alle = [...d.inhalte.beitraege, ...d.inhalte.newsletter];
+  const frei = alle.filter((x) => d.freigaben[x.id]?.status === "freigegeben").length;
+  const beitraege = d.inhalte.beitraege.filter((b) => b.monat === monat);
+  const nl = d.inhalte.newsletter.filter((n) => n.monat === monat);
+  const knoepfe = (id) => {
+    const f = d.freigaben[id];
+    if (f?.status === "in_arbeit" || f?.status === "aenderung") return `<p class="leise klein">Wir setzen Ihren Wunsch um. Die neue Fassung erscheint hier in wenigen Minuten.</p>`;
+    return `<div class="zeile">${f?.status === "freigegeben" ? `<span class="leise klein">Freigegeben ✓</span>` : `<button class="klein" data-frei="${id}">Freigeben</button>`}<button class="zweit klein" data-aendern="${id}">Änderung wünschen</button></div><div id="wunsch-${id}"></div>`;
+  };
+  el.innerHTML = `
+    <div class="karte">
+      <div class="zeile" style="justify-content:space-between">
+        <div><b>${frei} von ${alle.length}</b> Inhalten freigegeben${d.kunde.phase === "live" ? " – vielen Dank!" : ""}</div>
+        ${frei < alle.length ? `<button id="alle">Alle offenen freigeben</button>` : ""}
+      </div>
+      <div class="balken" style="margin-top:12px"><i style="width:${(frei / alle.length) * 100}%"></i></div>
+      <p class="leise klein" style="margin:10px 0 0">Freigegebene Beiträge veröffentlichen wir automatisch zum angegebenen Termin auf Ihren Kanälen. Bei einem Änderungswunsch überarbeiten wir den Beitrag und legen ihn Ihnen erneut vor.</p>
+    </div>
+    <div class="zeile" style="margin-bottom:16px">${[1, 2, 3].map((m) => `<button class="${m === monat ? "" : "zweit"} klein" data-monat="${m}">Monat ${m}</button>`).join("")}</div>
+    <div class="raster" style="grid-template-columns:repeat(auto-fill,minmax(300px,1fr))">
+      ${nl.map((n) => newsletterAusgabeHtml(n, { freigabe: d.freigaben[n.id], url: `/newsletter/${encodeURIComponent(token)}/${n.id}`, aktionen: knoepfe(n.id) })).join("")}
+      ${beitraege.map((b) => beitragHtml(b, { freigabe: d.freigaben[b.id], zusatz: d.geplant[b.id] ? `<p class="klein" style="margin-top:8px"><span class="marke">eingeplant</span></p>` : "", aktionen: knoepfe(b.id) })).join("")}
+    </div>`;
+  el.querySelectorAll("[data-monat]").forEach((b) => (b.onclick = () => { monat = +b.dataset.monat; zeige(); }));
+  el.querySelectorAll("[data-frei]").forEach((b) => (b.onclick = async () => {
+    b.disabled = true;
+    try { await senden({ aktion: "freigeben", ids: [b.dataset.frei] }); await laden(); zeige(); } catch (e) { meldung(e.message, true); b.disabled = false; }
+  }));
+  el.querySelectorAll("[data-aendern]").forEach((b) => (b.onclick = () => {
+    const box = document.getElementById(`wunsch-${b.dataset.aendern}`);
+    box.innerHTML = `<form style="margin-top:10px"><label>Was sollen wir ändern?</label><textarea name="k" required placeholder="z. B. Bitte den Preis weglassen und mehr auf unseren Service eingehen."></textarea><p class="zeile" style="margin-top:8px"><button class="klein">Wunsch senden</button></p></form>`;
+    const form = box.querySelector("form");
+    form.querySelector("textarea").focus();
+    form.onsubmit = async (e) => {
+      e.preventDefault();
+      form.querySelector("button").disabled = true;
+      try { await senden({ aktion: "aenderung", id: b.dataset.aendern, kommentar: form.k.value }); await laden(); zeige(); starteAbfrage(); meldung("Danke! Wir setzen das um."); }
+      catch (err) { meldung(err.message, true); form.querySelector("button").disabled = false; }
+    };
+  }));
+  const alleKnopf = document.getElementById("alle");
+  if (alleKnopf) alleKnopf.onclick = async () => {
+    if (!confirm("Alle noch offenen Inhalte freigeben? Sie werden danach automatisch zu den geplanten Terminen veröffentlicht.")) return;
+    alleKnopf.disabled = true;
+    try { await senden({ aktion: "freigeben", alle: true }); await laden(); zeige(); meldung("Freigegeben. Vielen Dank!"); } catch (e) { meldung(e.message, true); alleKnopf.disabled = false; }
+  };
+}
+
+function starteAbfrage() {
+  clearInterval(abfrage);
+  abfrage = setInterval(async () => {
+    if (!Object.values(d.freigaben).some((f) => f.status === "in_arbeit" || f.status === "aenderung")) return clearInterval(abfrage);
+    const vorher = JSON.stringify(d.freigaben);
+    await laden().catch(() => null);
+    const tippt = document.activeElement?.tagName === "TEXTAREA";
+    if (JSON.stringify(d.freigaben) !== vorher && !tippt) zeige();
+  }, 8000);
+}
+
+(async () => {
+  try {
+    if (!token) throw new Error("Dieser Link ist unvollständig.");
+    await laden();
+    markenfarben();
+    zeige();
+    starteAbfrage();
+  } catch (e) {
+    app.innerHTML = `<div class="karte"><h1>Nicht gefunden</h1><p>${esc(e.message)}</p></div>`;
+  }
+})();
+</script>
+</body>
+</html>
