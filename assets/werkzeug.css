@@ -3,8 +3,9 @@
    (start.html, assets/seite.css) darüber: gläserner Kopf mit Logo, Rosé-Verlauf oben,
    Jost-Labels, Verlaufsknöpfe, weiße Karten mit weichen Beere-Schatten.
    Zwei Arten von Seiten:
-   - body.sw-werkzeug: Schritt-für-Schritt-Werkzeuge (Muster-Check, Tests, Werte-Finder …), nur hell
-   - body.sw-app:      Mira, Antwort-Helfer, Programm, Kreis (mit eigenem Kopf, hell und dunkel)
+   - body.sw-werkzeug: Schritt-für-Schritt-Werkzeuge (Muster-Check, Tests, Werte-Finder …)
+   - body.sw-app:      Mira, Antwort-Helfer, Programm, Kreis (mit eigenem Kopf)
+   Beide folgen dem hellen oder dunklen Modus des Geräts.
    Alle Regeln sind mit :where() verpackt, damit sie nur so stark sind wie die Regeln der Seite
    selbst und durch die Reihenfolge gewinnen. Zustände (gewählt, deaktiviert …) stehen darum
    hier noch einmal. */
@@ -26,10 +27,10 @@
   --sw-s3:0 4px 10px rgba(74,45,56,.06), 0 28px 60px -22px rgba(74,45,56,.38);
   --sw-s-knopf:0 8px 20px -8px rgba(110,65,82,.65);
 }
-/* Die Schritt-Werkzeuge haben (noch) kein dunkles Aussehen: immer hell darstellen. */
-.sw-werkzeug{color-scheme:light;}
+/* Hell: Farben für Flächen, die in den Werkzeugen als Variable mit Rückfall stehen */
+.sw-werkzeug{--karte:#FFFFFF; --auf-dunkel:#FAF6F4; --flaeche-dunkel:#5C3A46; color-scheme:light;}
 @media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]) .sw-app{
+  :root:not([data-theme="light"]) :is(.sw-app, .sw-werkzeug){
     --sw-karte:#2A2024;
     --sw-rand:#3D2C31;
     --sw-label:#D9A6B3;
@@ -41,18 +42,32 @@
     --sw-s3:0 28px 60px -22px rgba(0,0,0,.7);
     --sw-s-knopf:0 8px 20px -8px rgba(0,0,0,.6);
   }
+  :root:not([data-theme="light"]) .sw-werkzeug{
+    --papier:#1B1417; --sand:#241B1F; --blush:#2A1E22;
+    --rose:#D9A6B3; --beere:#9E6478; --pflaume:#F3E4E7;
+    --gedaempft:#C0A2AA; --linie:#3D2C31; --mikro:#7A6067;
+    --karte:#2A2024; --auf-dunkel:#FBF1F3; --flaeche-dunkel:#3A2630;
+    color-scheme:dark;
+  }
 }
-:root[data-theme="dark"] .sw-app{
-  --sw-karte:#2A2024;
-  --sw-rand:#3D2C31;
-  --sw-label:#D9A6B3;
-  --sw-verlauf-rose:linear-gradient(135deg, #2A1E22 0%, #2F2127 100%);
-  --sw-seite:linear-gradient(180deg, #2A1E22 0, #1B1417 420px);
-  --sw-glas:rgba(27,20,23,.86);
-  --sw-s1:0 1px 2px rgba(0,0,0,.3);
-  --sw-s2:0 12px 28px -10px rgba(0,0,0,.55);
-  --sw-s3:0 28px 60px -22px rgba(0,0,0,.7);
-  --sw-s-knopf:0 8px 20px -8px rgba(0,0,0,.6);
+:root[data-theme="dark"] :is(.sw-app, .sw-werkzeug){
+    --sw-karte:#2A2024;
+    --sw-rand:#3D2C31;
+    --sw-label:#D9A6B3;
+    --sw-verlauf-rose:linear-gradient(135deg, #2A1E22 0%, #2F2127 100%);
+    --sw-seite:linear-gradient(180deg, #2A1E22 0, #1B1417 420px);
+    --sw-glas:rgba(27,20,23,.86);
+    --sw-s1:0 1px 2px rgba(0,0,0,.3);
+    --sw-s2:0 12px 28px -10px rgba(0,0,0,.55);
+    --sw-s3:0 28px 60px -22px rgba(0,0,0,.7);
+    --sw-s-knopf:0 8px 20px -8px rgba(0,0,0,.6);
+}
+:root[data-theme="dark"] .sw-werkzeug{
+    --papier:#1B1417; --sand:#241B1F; --blush:#2A1E22;
+    --rose:#D9A6B3; --beere:#9E6478; --pflaume:#F3E4E7;
+    --gedaempft:#C0A2AA; --linie:#3D2C31; --mikro:#7A6067;
+    --karte:#2A2024; --auf-dunkel:#FBF1F3; --flaeche-dunkel:#3A2630;
+    color-scheme:dark;
 }
 
 /* =====================================================================
@@ -138,7 +153,7 @@ body.sw-werkzeug{
 :where(.sw-werkzeug) .eyebrow::before, :where(.sw-werkzeug) .eyebrow::after{background:rgba(181,128,143,.35);}
 :where(.sw-werkzeug) .lead{
   font-family:"Jost",system-ui,sans-serif; font-style:normal; font-weight:400;
-  font-size:1.12rem; line-height:1.55; color:var(--beere);
+  font-size:1.12rem; line-height:1.55; color:var(--sw-label);
 }
 :where(.sw-werkzeug) .intro, :where(.sw-werkzeug) .text{font-size:1rem; color:var(--gedaempft);}
 :where(.sw-werkzeug) .statement{letter-spacing:-.01em;}
@@ -208,6 +223,7 @@ body.sw-werkzeug{
   background:var(--sw-karte); border:1px solid var(--sw-rand); box-shadow:var(--sw-s1);
   transition:transform .2s ease, box-shadow .2s ease, background-color .2s ease, color .2s ease;
 }
+:where(.sw-werkzeug) :is(.option, .choice, .chip, .lvl, .idea, .land, .step-btn, .dot-btn, .tab){color:var(--pflaume);}
 :where(.sw-werkzeug) .option{border-radius:14px; font-weight:400;}
 :where(.sw-werkzeug) .chip{background:var(--sw-karte); border:1px solid var(--sw-rand); box-shadow:var(--sw-s1);}
 :where(.sw-werkzeug) .idea{background:var(--sw-karte);}
@@ -228,8 +244,8 @@ body.sw-werkzeug{
 :where(.sw-werkzeug) .tab[aria-selected="true"]{background:var(--sw-knopf); color:#FFFFFF; border-color:transparent;}
 
 /* Fortschritt und Balken im Verlauf */
-:where(.sw-werkzeug) .progress{background:rgba(228,216,216,.7);}
-:where(.sw-werkzeug) .progress:has(> span){background:none;}
+:where(.sw-werkzeug) .progress:has(> i){background:var(--linie);}
+:where(.sw-werkzeug) .progress__bar{background:var(--linie);}
 :where(.sw-werkzeug) .progress i,
 :where(.sw-werkzeug) .progress__bar > *,
 :where(.sw-werkzeug) .bar .fill{background:linear-gradient(90deg, #B5808F, #8C5A69);}
@@ -237,7 +253,7 @@ body.sw-werkzeug{
 
 /* Eingabefelder */
 :where(.sw-werkzeug) :is(input[type="text"], input[type="email"], input[type="password"], input[type="date"], input[type="time"], input:not([type]), textarea, select){
-  background:var(--sw-karte); border-color:var(--sw-rand); border-radius:12px; box-shadow:var(--sw-s1);
+  color:var(--pflaume); background:var(--sw-karte); border-color:var(--sw-rand); border-radius:12px; box-shadow:var(--sw-s1);
 }
 :where(.sw-werkzeug) :is(input, textarea, select):focus-visible{outline:2px solid var(--rose); outline-offset:1px;}
 

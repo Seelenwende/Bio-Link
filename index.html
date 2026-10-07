@@ -7,225 +7,185 @@
 <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
+  /* Bio-Link im Look der Website (start.html, assets/seite.css): Rosé-Verlauf, Jost-Labels,
+     weiße Karten mit weichen Beere-Schatten, Verlaufsknöpfe. Hell und dunkel. */
   :root{
-    --papier:#FAF6F4;
-    --sand:#F3ECE9;
-    --rose:#B5808F;
-    --beere:#8C5A69;
-    --pflaume:#5C3A46;
-    --gedaempft:#8E7079;
-    --linie:#E4D8D8;
-    --mikro:#C3AEB2;
+    --papier:#FAF6F4; --sand:#F3ECE9; --blush:#F6E9EC;
+    --rose:#B5808F; --beere:#8C5A69; --pflaume:#5C3A46;
+    --gedaempft:#8E7079; --linie:#E4D8D8; --mikro:#C3AEB2;
+    --karte:#FFFFFF; --rand:rgba(228,216,216,.6); --label:#8C5A69;
+    --seite:linear-gradient(180deg, #F3DDE2 0, #F6E9EC 260px, #FAF6F4 620px);
+    --verlauf-rose:linear-gradient(135deg, #F6E9EC 0%, #F3DDE2 50%, #EFD3DA 100%);
+    --verlauf-beere:linear-gradient(135deg, #8C5A69 0%, #6E4152 45%, #4A2D38 100%);
+    --knopf:linear-gradient(135deg, #9A6476, #7A4B5B);
+    --s1:0 1px 2px rgba(74,45,56,.06), 0 2px 8px -2px rgba(74,45,56,.08);
+    --s2:0 2px 4px rgba(74,45,56,.05), 0 12px 28px -10px rgba(74,45,56,.22);
+    --s3:0 4px 10px rgba(74,45,56,.06), 0 28px 60px -22px rgba(74,45,56,.38);
+    --s-knopf:0 8px 20px -8px rgba(110,65,82,.65);
+    --serif:"Playfair Display",Georgia,serif;
+    --sans:"Jost",system-ui,-apple-system,"Segoe UI",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --papier:#1B1417; --sand:#241B1F; --blush:#2A1E22;
+      --rose:#D9A6B3; --beere:#B47388; --pflaume:#F3E4E7;
+      --gedaempft:#C0A2AA; --linie:#3D2C31; --mikro:#7A6067;
+      --karte:#2A2024; --rand:#3D2C31; --label:#D9A6B3;
+      --seite:linear-gradient(180deg, #2A1E22 0, #1B1417 460px);
+      --verlauf-rose:linear-gradient(135deg, #2A1E22 0%, #2F2127 100%);
+      --s1:0 1px 2px rgba(0,0,0,.3); --s2:0 12px 28px -10px rgba(0,0,0,.55); --s3:0 28px 60px -22px rgba(0,0,0,.7);
+      --s-knopf:0 8px 20px -8px rgba(0,0,0,.6);
+      color-scheme:dark;
+    }
   }
   *{box-sizing:border-box;margin:0;padding:0;}
   html{-webkit-text-size-adjust:100%;}
   body{
-    background:var(--papier);
-    color:var(--pflaume);
-    font-family:"Jost",sans-serif;
-    font-weight:300;
-    line-height:1.75;
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    padding:44px 22px 36px;
-    -webkit-font-smoothing:antialiased;
+    min-height:100vh; color:var(--pflaume);
+    background:radial-gradient(circle at 100% 0, rgba(181,128,143,.26), transparent 380px) no-repeat,
+               var(--seite) no-repeat, var(--papier);
+    font-family:var(--sans); font-weight:300; line-height:1.6;
+    padding:40px 16px 36px; -webkit-font-smoothing:antialiased;
   }
-  .page{width:100%;max-width:430px;text-align:center;}
+  .page{width:100%; max-width:440px; margin:0 auto; text-align:center;}
 
   /* --- Kopf --- */
   .butterfly{
-    width:78px;height:78px;margin:0 auto 16px;display:block;
-    opacity:0;animation:rise .9s ease .05s forwards;
+    width:84px; height:84px; padding:14px; margin:0 auto 18px; display:block;
+    border-radius:24px; background:var(--karte); box-shadow:var(--s3);
+    opacity:0; animation:rise .9s ease .05s forwards;
   }
-
   .wordmark{
-    font-family:"Playfair Display",serif;
-    font-weight:400;
-    font-size:26px;
-    letter-spacing:.2em;
-    text-transform:uppercase;
-    color:var(--pflaume);
-    opacity:0;animation:rise .9s ease .18s forwards;
+    font-family:var(--serif); font-weight:400; font-size:24px; letter-spacing:.2em; text-transform:uppercase;
+    opacity:0; animation:rise .9s ease .18s forwards;
   }
   .handle{
-    font-family:"Playfair Display",serif;
-    font-size:11px;
-    letter-spacing:.36em;
-    text-transform:uppercase;
-    color:var(--rose);
-    margin-top:9px;
-    opacity:0;animation:rise .9s ease .3s forwards;
+    font-weight:500; font-size:.72rem; letter-spacing:.16em; text-transform:uppercase; color:var(--label);
+    margin-top:6px; opacity:0; animation:rise .9s ease .3s forwards;
   }
-
   .tagline{
-    font-family:"Playfair Display",serif;
-    font-style:italic;
-    font-size:23px;
-    line-height:1.4;
-    color:var(--pflaume);
-    margin-top:26px;
-    opacity:0;animation:rise .9s ease .42s forwards;
+    font-family:var(--serif); font-weight:500; font-size:clamp(1.6rem, 7vw, 1.95rem); line-height:1.12; letter-spacing:-.015em;
+    margin-top:24px; text-wrap:balance; opacity:0; animation:rise .9s ease .42s forwards;
   }
   .subline{
-    font-size:15px;
-    color:var(--gedaempft);
-    margin-top:12px;
-    max-width:34ch;
-    margin-left:auto;margin-right:auto;
-    opacity:0;animation:rise .9s ease .54s forwards;
+    font-size:15px; color:var(--gedaempft); margin:12px auto 0; max-width:36ch;
+    opacity:0; animation:rise .9s ease .54s forwards;
   }
 
-  /* --- Rubriken --- */
-  .eyebrow{
-    display:flex;align-items:center;gap:14px;
-    margin:34px 0 16px;
-    opacity:0;animation:rise .8s ease forwards;
-  }
-  .eyebrow::before,.eyebrow::after{
-    content:"";flex:1;height:1px;background:var(--linie);
-  }
-  .eyebrow span{
-    font-family:"Playfair Display",serif;
-    font-size:10.5px;
-    letter-spacing:.4em;
-    text-transform:uppercase;
-    color:var(--rose);
-    white-space:nowrap;
-  }
+  /* --- Rubriken (wie .ueber auf der Website) --- */
+  .eyebrow{display:flex; align-items:center; gap:12px; margin:34px 0 14px; opacity:0; animation:rise .8s ease forwards;}
+  .eyebrow::before,.eyebrow::after{content:""; flex:1; height:1px; background:rgba(181,128,143,.35);}
+  .eyebrow span{font-weight:500; font-size:.72rem; letter-spacing:.16em; text-transform:uppercase; color:var(--label); white-space:nowrap;}
 
-  /* --- Links --- */
+  /* --- Links als Karten --- */
   .link{
-    display:block;
-    text-decoration:none;
-    border-radius:16px;
-    padding:16px 20px;
-    margin-bottom:13px;
-    text-align:center;
-    transition:transform .25s ease, box-shadow .25s ease, background-color .25s ease;
-    opacity:0;animation:rise .8s ease forwards;
+    display:flex; align-items:center; gap:14px; text-align:left; text-decoration:none;
+    border-radius:20px; padding:12px 16px 12px 12px; margin-bottom:12px;
+    background:var(--karte); border:1px solid var(--rand); box-shadow:var(--s1);
+    transition:transform .2s ease, box-shadow .2s ease;
+    opacity:0; animation:rise .8s ease forwards; position:relative;
   }
-  .link .title{
-    font-family:"Playfair Display",serif;
-    font-size:17px;
-    font-weight:500;
-    letter-spacing:.01em;
-    display:block;
+  .link .text{flex:1; min-width:0;}
+  .link .title{display:block; font-family:var(--serif); font-weight:500; font-size:17px; line-height:1.3; color:var(--pflaume);}
+  .link .meta{display:block; font-size:13px; line-height:1.45; color:var(--gedaempft); margin-top:2px;}
+  .link::after{content:"→"; color:var(--rose); font-size:18px; flex-shrink:0;}
+  .ic-rund{
+    width:48px; height:48px; border-radius:14px; flex-shrink:0; display:grid; place-items:center;
+    background:var(--verlauf-rose); box-shadow:inset 0 0 0 1px rgba(181,128,143,.18);
   }
-  .link .meta{
-    font-family:"Jost",sans-serif;
-    font-weight:300;
-    font-size:12.5px;
-    letter-spacing:.02em;
-    display:block;
-    margin-top:3px;
-  }
+  .ic{width:24px; height:24px; color:var(--beere);}
+  .foto{width:56px; height:56px; border-radius:14px; flex-shrink:0; object-fit:cover; box-shadow:var(--s1);}
 
-  /* Hero – der kostenlose erste Schritt */
-  .link--hero{
-    background:var(--beere);
-  }
-  .link--hero .title{color:var(--papier);}
-  .link--hero .meta{color:#EBD9DD;}
+  /* Erster Schritt: Verlaufsknopf */
+  .link--hero{background:var(--knopf); border-color:transparent; box-shadow:var(--s-knopf);}
+  .link--hero .title{color:#FFFFFF;}
+  .link--hero .meta{color:rgba(255,255,255,.82);}
+  .link--hero .ic-rund{background:rgba(255,255,255,.16); box-shadow:none;}
+  .link--hero .ic{color:#FFFFFF;}
+  .link--hero::after{color:#FFFFFF;}
 
-  /* Herzstück – das Bundle */
-  .link--flagship{
-    background:var(--pflaume);
-    position:relative;
+  /* Herzstück: dunkle Beere-Karte mit Foto */
+  .link--flagship{background:var(--verlauf-beere); border-color:transparent; box-shadow:var(--s3); padding:14px 16px 14px 14px; overflow:hidden;}
+  .link--flagship::before{
+    content:""; position:absolute; width:260px; height:260px; right:-110px; top:-130px; border-radius:50%;
+    background:radial-gradient(circle, rgba(217,166,179,.32), transparent 65%); pointer-events:none;
   }
-  .link--flagship .title{color:var(--papier);}
-  .link--flagship .meta{color:#D9C4CB;}
+  .link--flagship > *{position:relative;}
+  .link--flagship .title{color:#FFFFFF; font-size:19px;}
+  .link--flagship .meta{color:#EBD9DD;}
+  .link--flagship .foto{width:64px; height:64px; box-shadow:0 0 0 2px rgba(255,255,255,.2);}
+  .link--flagship::after{color:#FFFFFF;}
   .tag{
-    position:absolute;top:-9px;left:50%;transform:translateX(-50%);
-    background:var(--rose);color:var(--papier);
-    font-family:"Playfair Display",serif;
-    font-size:9px;letter-spacing:.26em;text-transform:uppercase;
-    padding:3px 11px;border-radius:20px;white-space:nowrap;
+    display:inline-block; margin-bottom:4px; background:rgba(255,255,255,.16); color:#FFFFFF;
+    font-weight:500; font-size:.66rem; letter-spacing:.14em; text-transform:uppercase;
+    padding:2px 9px; border-radius:8px;
   }
-
-  /* Ruhige Zweit-Links */
-  .link--soft{
-    background:var(--papier);
-    border:1px solid var(--linie);
-  }
-  .link--soft .title{color:var(--pflaume);}
-  .link--soft .meta{color:var(--gedaempft);}
 
   @media (hover:hover){
-    .link:hover{transform:translateY(-2px);box-shadow:0 10px 26px -14px rgba(92,58,70,.5);}
-    .link--soft:hover{background:var(--sand);}
+    .link:hover{transform:translateY(-2px); box-shadow:var(--s2);}
+    .link--hero:hover{box-shadow:0 14px 30px -10px rgba(110,65,82,.7);}
+    .link--flagship:hover{box-shadow:var(--s3);}
   }
-  .link:focus-visible{outline:2px solid var(--rose);outline-offset:3px;}
-
+  .link:focus-visible{outline:2px solid var(--rose); outline-offset:3px;}
 
   /* --- Phasen-Einstieg --- */
-  .phasen{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;opacity:0;animation:rise .8s ease forwards;}
-  .phasen a{display:block;text-decoration:none;border-radius:16px;padding:14px 6px 12px;background:#fff;border:1px solid var(--linie);
-    box-shadow:0 8px 20px -14px rgba(92,58,70,.45);transition:transform .25s ease, box-shadow .25s ease;}
-  .phasen b{display:block;font-family:"Playfair Display",serif;font-weight:500;font-size:15.5px;color:var(--pflaume);}
-  .phasen span{display:block;font-size:11.5px;color:var(--gedaempft);margin-top:2px;}
-  .phasen a:focus-visible{outline:2px solid var(--rose);outline-offset:3px;}
-  @media (hover:hover){.phasen a:hover{transform:translateY(-2px);box-shadow:0 12px 26px -14px rgba(92,58,70,.55);}}
-  .weissnicht{display:inline-block;margin-top:12px;font-size:13px;color:var(--beere);text-decoration:none;opacity:0;animation:rise .8s ease forwards;}
+  .phasen{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; opacity:0; animation:rise .8s ease forwards;}
+  .phasen a{
+    display:block; text-decoration:none; border-radius:18px; padding:14px 6px 12px;
+    background:var(--karte); border:1px solid var(--rand); box-shadow:var(--s1);
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .phasen b{display:block; font-family:var(--serif); font-weight:500; font-size:15px; line-height:1.25; color:var(--pflaume);}
+  .phasen span{display:block; font-size:11.5px; color:var(--gedaempft); margin-top:4px;}
+  .phasen a:focus-visible{outline:2px solid var(--rose); outline-offset:3px;}
+  @media (hover:hover){.phasen a:hover{transform:translateY(-2px); box-shadow:var(--s2);}}
+  .weissnicht{display:inline-block; margin-top:14px; font-size:13.5px; font-weight:400; color:var(--beere); text-decoration:none; opacity:0; animation:rise .8s ease forwards;}
 
   /* --- Fuß --- */
   .note{
-    font-size:12px;
-    color:var(--gedaempft);
-    margin-top:30px;
-    line-height:1.65;
-    max-width:32ch;margin-left:auto;margin-right:auto;
-    opacity:0;animation:rise .8s ease forwards;
+    font-size:12px; color:var(--gedaempft); margin:30px auto 0; line-height:1.65; max-width:32ch;
+    opacity:0; animation:rise .8s ease forwards;
   }
   .footer{
-    font-family:"Playfair Display",serif;
-    font-size:9px;
-    letter-spacing:.42em;
-    text-transform:uppercase;
-    color:var(--mikro);
-    margin-top:24px;
-    opacity:0;animation:rise .8s ease forwards;
+    font-weight:500; font-size:.68rem; letter-spacing:.16em; text-transform:uppercase; color:var(--mikro);
+    margin-top:20px; opacity:0; animation:rise .8s ease forwards;
   }
 
-  /* --- Freischalten per Mail --- */
+  /* --- Freischalten per Mail: Karte mit farbiger Kante (wie das Code-Fenster der Werkzeuge) --- */
   .gate{
-    width:min(100% - 32px, 400px);
-    margin:auto;
-    border:none;border-radius:20px;
-    padding:28px 24px 22px;
-    background:var(--papier);color:var(--pflaume);
-    text-align:left;
-    box-shadow:0 24px 60px -24px rgba(92,58,70,.55);
+    width:min(100% - 32px, 420px); margin:auto;
+    border:none; border-radius:26px; padding:34px 24px 22px;
+    background:var(--karte); color:var(--pflaume); text-align:left; overflow:hidden;
+    box-shadow:var(--s3);
   }
-  .gate::backdrop{background:rgba(92,58,70,.38);}
-  .gate h2{font-family:"Playfair Display",serif;font-weight:500;font-size:21px;line-height:1.35;margin-bottom:8px;padding-right:24px;}
-  .gate p{font-size:14px;color:var(--gedaempft);line-height:1.6;}
-  .gate input[type="email"]{width:100%;margin-top:14px;font:inherit;font-size:16px;color:var(--pflaume);background:#fff;border:1px solid var(--linie);border-radius:12px;padding:12px 14px;}
-  .gate input[type="email"]:focus-visible{outline:2px solid var(--rose);outline-offset:1px;}
-  .gate .check{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--gedaempft);line-height:1.5;margin-top:12px;}
-  .gate .check input{margin-top:3px;accent-color:var(--beere);flex-shrink:0;}
-  .gate .safe{font-size:12.5px;margin-top:8px;}
+  .gate::before{content:""; position:absolute; left:0; right:0; top:0; height:6px; background:linear-gradient(90deg, #B5808F, #8C5A69, #5C3A46);}
+  .gate::backdrop{background:rgba(53,32,42,.45); -webkit-backdrop-filter:blur(4px); backdrop-filter:blur(4px);}
+  .gate h2{font-family:var(--serif); font-weight:500; font-size:24px; line-height:1.2; letter-spacing:-.01em; margin-bottom:8px; padding-right:24px;}
+  .gate p{font-size:14px; color:var(--gedaempft); line-height:1.6;}
+  .gate input[type="email"]{width:100%; margin-top:14px; font:inherit; font-size:16px; font-weight:400; color:var(--pflaume); background:var(--papier); border:1px solid var(--rand); border-radius:12px; padding:13px 14px;}
+  .gate input[type="email"]:focus-visible{outline:2px solid var(--rose); outline-offset:1px;}
+  .gate .check{display:flex; gap:10px; align-items:flex-start; font-size:13px; color:var(--gedaempft); line-height:1.5; margin-top:12px;}
+  .gate .check input{margin-top:3px; accent-color:var(--beere); flex-shrink:0;}
+  .gate .safe{font-size:12.5px; margin-top:8px;}
   .gate .senden{
-    width:100%;margin-top:14px;border:none;border-radius:14px;cursor:pointer;
-    background:var(--beere);color:var(--papier);
-    font-family:"Playfair Display",serif;font-size:16px;font-weight:500;padding:13px 18px;
+    width:100%; margin-top:16px; border:none; border-radius:14px; cursor:pointer;
+    background:var(--knopf); color:#FFFFFF; box-shadow:var(--s-knopf);
+    font-family:var(--sans); font-size:1rem; font-weight:500; padding:15px 18px;
   }
-  .gate .senden:disabled{opacity:.6;cursor:default;}
-  .gate .senden:focus-visible{outline:2px solid var(--rose);outline-offset:3px;}
-  .gate .status{font-size:14px;color:var(--beere);margin-top:8px;min-height:1.4em;}
+  .gate .senden:disabled{opacity:.6; cursor:default;}
+  .gate .senden:focus-visible{outline:2px solid var(--rose); outline-offset:3px;}
+  .gate .status{font-size:14px; color:var(--beere); margin-top:8px; min-height:1.4em;}
   .gate .zu{
-    position:absolute;top:12px;right:14px;
-    background:none;border:none;cursor:pointer;
-    font-size:24px;line-height:1;color:var(--gedaempft);padding:4px 8px;
+    position:absolute; top:14px; right:14px; background:none; border:none; cursor:pointer;
+    font-size:24px; line-height:1; color:var(--gedaempft); padding:4px 8px;
   }
-  .sr,.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;}
+  .sr,.hp{position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden;}
 
-  @keyframes rise{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
-
+  @keyframes rise{from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);}}
   @media (prefers-reduced-motion:reduce){
-    *{animation:none !important;}
+    *{animation:none !important; transition:none !important;}
     .butterfly,.wordmark,.handle,.tagline,.subline,.eyebrow,.link,.note,.footer,.phasen,.weissnicht{opacity:1 !important;}
   }
 </style>
@@ -254,60 +214,70 @@
     <div class="eyebrow" style="animation-delay:.7s"><span>Kostenlos starten</span></div>
 
     <a class="link link--hero" href="#freischalten" data-ziel="muster-check.html" style="animation-delay:.72s">
-      <span class="title">Ist das noch normal?</span>
-      <span class="meta">Kostenloser Muster-Check · 5 Minuten</span>
+      <span class="ic-rund"><svg class="ic" aria-hidden="true"><use href="assets/icons.svg#auge"/></svg></span>
+      <span class="text"><span class="title">Ist das noch normal?</span>
+      <span class="meta">Kostenloser Muster-Check · 5 Minuten</span></span>
     </a>
 
     <a class="link link--soft" href="#freischalten" data-ziel="glaubenssaetze.html" style="animation-delay:.75s">
-      <span class="title">Welche Glaubenssätze tragen dich?</span>
-      <span class="meta">Kostenloser Selbsttest · 5 Minuten</span>
+      <span class="ic-rund"><svg class="ic" aria-hidden="true"><use href="assets/icons.svg#chat"/></svg></span>
+      <span class="text"><span class="title">Welche Glaubenssätze tragen dich?</span>
+      <span class="meta">Kostenloser Selbsttest · 5 Minuten</span></span>
     </a>
 
     <a class="link link--soft" href="planer.html" style="animation-delay:.78s">
-      <span class="title">Sicher gehen</span>
-      <span class="meta">Ausstiegs-Planer · gratis, ohne Anmeldung</span>
+      <span class="ic-rund"><svg class="ic" aria-hidden="true"><use href="assets/icons.svg#tuer"/></svg></span>
+      <span class="text"><span class="title">Sicher gehen</span>
+      <span class="meta">Ausstiegs-Planer · gratis, ohne Anmeldung</span></span>
     </a>
 
     <a class="link link--soft" href="#freischalten" data-ziel="https://seelenwende.mytentary.com/p/WPedba" style="animation-delay:.81s">
-      <span class="title">Der Weg nach draußen</span>
-      <span class="meta">Kostenloser Mini-Guide</span>
+      <span class="ic-rund"><svg class="ic" aria-hidden="true"><use href="assets/icons.svg#blatt"/></svg></span>
+      <span class="text"><span class="title">Der Weg nach draußen</span>
+      <span class="meta">Kostenloser Mini-Guide</span></span>
     </a>
 
     <!-- BEGLEITUNG · Angebotsseiten (angebot-*.html), Kauf-Links stehen in assets/seite.js -->
     <div class="eyebrow" style="animation-delay:.84s"><span>Begleitung</span></div>
 
     <a class="link link--flagship" href="angebot-programm.html" style="animation-delay:.87s">
-      <span class="tag">6 Wochen</span>
+      <img class="foto" src="assets/bilder/karten/programm.jpg" alt="" width="56" height="56" loading="lazy">
+      <span class="text"><span class="tag">6 Wochen</span>
       <span class="title">Wieder bei dir</span>
-      <span class="meta">Mit Mira, Begleitheft &amp; Audios — 149&nbsp;€</span>
+      <span class="meta">Mit Mira, Begleitheft &amp; Audios — 149&nbsp;€</span></span>
     </a>
 
-    <a class="link link--hero" href="angebot-bundle.html" style="animation-delay:.9s">
-      <span class="title">Das Bundle – Zurück zu dir</span>
-      <span class="meta">E-Book · Vision Board · Journal — 49&nbsp;€</span>
+    <a class="link link--soft" href="angebot-bundle.html" style="animation-delay:.9s">
+      <img class="foto" src="assets/bilder/karten/bundle.jpg" alt="" width="56" height="56" loading="lazy">
+      <span class="text"><span class="title">Das Bundle – Zurück zu dir</span>
+      <span class="meta">E-Book · Vision Board · Journal — 49&nbsp;€</span></span>
     </a>
 
     <a class="link link--soft" href="angebot-mira.html" style="animation-delay:.93s">
-      <span class="title">Mira, deine Begleiterin</span>
-      <span class="meta">Einfach losschreiben, auch nachts — 19&nbsp;€</span>
+      <img class="foto" src="assets/bilder/karten/mira.jpg" alt="" width="56" height="56" loading="lazy">
+      <span class="text"><span class="title">Mira, deine Begleiterin</span>
+      <span class="meta">Einfach losschreiben, auch nachts — 19&nbsp;€</span></span>
     </a>
 
     <a class="link link--soft" href="angebot-kreis.html" style="animation-delay:.96s">
-      <span class="title">Seelenwende Kreis</span>
-      <span class="meta">Ein Thema pro Monat, Mira inklusive — 19&nbsp;€/Monat</span>
+      <img class="foto" src="assets/bilder/karten/kreis.jpg" alt="" width="56" height="56" loading="lazy">
+      <span class="text"><span class="title">Seelenwende Kreis</span>
+      <span class="meta">Ein Thema pro Monat, Mira inklusive — 19&nbsp;€/Monat</span></span>
     </a>
 
     <!-- MEHR -->
     <div class="eyebrow" style="animation-delay:.99s"><span>Mehr</span></div>
 
     <a class="link link--soft" href="start.html#angebote" style="animation-delay:1.02s">
-      <span class="title">Alle Angebote</span>
-      <span class="meta">Werkzeuge ab 7&nbsp;€ · Kompass · Tagebuch · Erste-Hilfe-Set</span>
+      <span class="ic-rund"><svg class="ic" aria-hidden="true"><use href="assets/icons.svg#stern"/></svg></span>
+      <span class="text"><span class="title">Alle Angebote</span>
+      <span class="meta">Werkzeuge ab 7&nbsp;€ · Kompass · Tagebuch · Erste-Hilfe-Set</span></span>
     </a>
 
     <a class="link link--soft" href="ueber-mich.html" style="animation-delay:1.05s">
-      <span class="title">Über mich</span>
-      <span class="meta">15 Jahre selbst erlebt, letztes Jahr gegangen</span>
+      <span class="ic-rund"><svg class="ic" aria-hidden="true"><use href="assets/icons.svg#herz"/></svg></span>
+      <span class="text"><span class="title">Über mich</span>
+      <span class="meta">15 Jahre selbst erlebt, letztes Jahr gegangen</span></span>
     </a>
 
     <p class="note" style="animation-delay:1.08s">

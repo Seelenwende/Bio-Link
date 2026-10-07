@@ -75,7 +75,7 @@
   .btn{
     display:block;width:100%;border:0;cursor:pointer;
     border-radius:16px;padding:16px 20px;margin-top:26px;
-    background:var(--beere);color:var(--papier);
+    background:var(--beere);color:var(--auf-dunkel,#FAF6F4);
     font-family:"Playfair Display",serif;font-size:17px;font-weight:500;letter-spacing:.01em;
     text-decoration:none;
     transition:transform .25s ease, box-shadow .25s ease, background-color .25s ease;
@@ -84,7 +84,7 @@
     display:block;font-family:"Jost",sans-serif;font-weight:300;
     font-size:12.5px;color:#EBD9DD;margin-top:3px;
   }
-  .btn--dark{background:var(--pflaume);}
+  .btn--dark{background:var(--flaeche-dunkel,#5C3A46);}
   .btn--dark .meta{color:#D9C4CB;}
   .btn--soft{background:var(--papier);border:1px solid var(--linie);color:var(--pflaume);}
   .btn--soft .meta{color:var(--gedaempft);}
@@ -128,7 +128,7 @@
     transition:background-color .2s ease,border-color .2s ease,color .2s ease;
   }
   @media (hover:hover){.option:hover{background:var(--sand);}}
-  .option[aria-pressed="true"]{background:var(--beere);border-color:var(--beere);color:var(--papier);}
+  .option[aria-pressed="true"]{background:var(--beere);border-color:var(--beere);color:var(--auf-dunkel,#FAF6F4);}
   .link-btn{
     background:none;border:0;cursor:pointer;margin-top:22px;
     font-family:"Playfair Display",serif;font-size:10.5px;letter-spacing:.36em;
@@ -138,7 +138,7 @@
 
   /* --- Ergebnis --- */
   .card{
-    text-align:left;background:#fff;border:1px solid var(--linie);border-radius:18px;
+    text-align:left;background:var(--karte,#fff);border:1px solid var(--linie);border-radius:18px;
     padding:22px 22px 20px;margin-bottom:16px;
   }
   .card .rank{
@@ -177,7 +177,7 @@
     display:flex;align-items:center;justify-content:center;
     font-family:"Playfair Display",serif;font-style:normal;font-size:14px;color:var(--rose);
   }
-  .path li.ok i{background:var(--rose);color:var(--papier);}
+  .path li.ok i{background:var(--rose);color:var(--auf-dunkel,#FAF6F4);}
   .path b{display:block;font-family:"Playfair Display",serif;font-weight:500;font-size:15.5px;color:var(--pflaume);}
 
   .note{
@@ -190,7 +190,7 @@
   }
 
   /* --- Ergebnis per Mail --- */
-  .mail{text-align:left;background:#fff;border:1px solid var(--linie);border-radius:18px;padding:20px 22px;margin:22px 0 16px;}
+  .mail{text-align:left;background:var(--karte,#fff);border:1px solid var(--linie);border-radius:18px;padding:20px 22px;margin:22px 0 16px;}
   .mail h4{font-family:"Playfair Display",serif;font-weight:500;font-size:17px;margin-bottom:6px;}
   .mail p{font-size:14px;color:var(--gedaempft);line-height:1.6;}
   .mail input[type="email"]{width:100%;margin-top:12px;font:inherit;font-size:16px;color:var(--pflaume);background:var(--papier);border:1px solid var(--linie);border-radius:12px;padding:12px 14px;}

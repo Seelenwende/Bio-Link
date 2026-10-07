@@ -76,12 +76,12 @@
   }
 
   /* --- Einstieg --- */
-  .how{background:#fff;border:1px solid var(--linie);border-radius:20px;padding:20px 22px;margin-top:28px;}
+  .how{background:var(--karte,#fff);border:1px solid var(--linie);border-radius:20px;padding:20px 22px;margin-top:28px;}
   .how ol{padding-left:20px;font-size:14.5px;line-height:1.6;}
   .how li{margin-bottom:6px;}
   .how li b{font-weight:400;}
   .today{
-    text-align:center;background:var(--pflaume);color:var(--papier);
+    text-align:center;background:var(--flaeche-dunkel,#5C3A46);color:var(--auf-dunkel,#FAF6F4);
     border-radius:20px;padding:24px 20px;margin-top:28px;
   }
   .today__eyebrow{font-family:"Playfair Display",serif;font-size:10.5px;letter-spacing:.4em;text-transform:uppercase;color:#D9C4CB;}
@@ -102,18 +102,18 @@
   .chips{display:flex;flex-wrap:wrap;gap:8px;}
   .chip{
     font:inherit;font-size:14.5px;color:var(--pflaume);
-    background:#fff;border:1px solid var(--linie);border-radius:20px;
+    background:var(--karte,#fff);border:1px solid var(--linie);border-radius:20px;
     padding:7px 14px;cursor:pointer;text-align:left;
     transition:background-color .2s ease,color .2s ease,border-color .2s ease;
   }
   .chip small{display:block;font-size:11.5px;color:var(--gedaempft);line-height:1.35;}
-  .chip[aria-pressed="true"]{background:var(--beere);border-color:var(--beere);color:var(--papier);}
+  .chip[aria-pressed="true"]{background:var(--beere);border-color:var(--beere);color:var(--auf-dunkel,#FAF6F4);}
   .chip[aria-pressed="true"] small{color:#EBD9DD;}
   .chip:disabled{opacity:.45;cursor:not-allowed;}
   .chip:focus-visible,.btn:focus-visible,.lvl:focus-visible{outline:2px solid var(--rose);outline-offset:3px;}
   .chips--big .chip{padding:10px 16px;}
 
-  .field{background:#fff;border:1px solid var(--linie);border-radius:16px;padding:14px 16px;margin-top:18px;}
+  .field{background:var(--karte,#fff);border:1px solid var(--linie);border-radius:16px;padding:14px 16px;margin-top:18px;}
   .field label{display:block;font-family:"Playfair Display",serif;font-size:17px;font-weight:500;line-height:1.35;}
   .field label span{font-family:"Jost",sans-serif;font-size:13px;font-weight:300;color:var(--gedaempft);}
   .field textarea,.field input{
@@ -143,7 +143,7 @@
 
   /* --- Krise --- */
   .crisis{
-    background:#fff;border:1.5px solid var(--beere);border-radius:16px;padding:16px 18px;margin-top:16px;
+    background:var(--karte,#fff);border:1.5px solid var(--beere);border-radius:16px;padding:16px 18px;margin-top:16px;
     font-size:14.5px;line-height:1.6;
   }
   .crisis h3{font-family:"Playfair Display",serif;font-weight:500;font-size:18px;margin-bottom:6px;}
@@ -158,7 +158,7 @@
   .btn{
     font-family:"Playfair Display",serif;font-size:16px;font-weight:500;
     border:none;border-radius:16px;padding:14px 22px;cursor:pointer;
-    background:var(--beere);color:var(--papier);text-decoration:none;display:inline-block;
+    background:var(--beere);color:var(--auf-dunkel,#FAF6F4);text-decoration:none;display:inline-block;
     transition:transform .2s ease,box-shadow .2s ease,opacity .2s ease;
   }
   .btn--soft{background:var(--papier);color:var(--pflaume);border:1px solid var(--linie);}
@@ -168,7 +168,7 @@
 
   /* --- Ergebnis --- */
   .hero{
-    text-align:center;background:var(--pflaume);color:var(--papier);
+    text-align:center;background:var(--flaeche-dunkel,#5C3A46);color:var(--auf-dunkel,#FAF6F4);
     border-radius:20px;padding:26px 20px;
   }
   .hero__eyebrow{font-family:"Playfair Display",serif;font-size:10.5px;letter-spacing:.4em;text-transform:uppercase;color:#D9C4CB;}
@@ -183,7 +183,7 @@
   }
   .lead{font-size:14.5px;color:var(--gedaempft);text-align:center;max-width:44ch;margin:-4px auto 14px;}
 
-  .card{background:#fff;border:1px solid var(--linie);border-radius:16px;padding:16px 18px;margin-bottom:12px;}
+  .card{background:var(--karte,#fff);border:1px solid var(--linie);border-radius:16px;padding:16px 18px;margin-bottom:12px;}
   .card__harsh{font-size:13.5px;color:var(--gedaempft);}
   .card__harsh s{text-decoration-color:var(--rose);}
   .card__context{font-size:13.5px;color:var(--gedaempft);line-height:1.55;margin-top:6px;}
@@ -212,11 +212,11 @@
   .insight h3{font-family:"Playfair Display",serif;font-weight:500;font-size:17px;margin-bottom:6px;}
   .insight p + p{margin-top:8px;}
 
-  .mine{background:#fff;border:1px solid var(--linie);border-radius:20px;padding:6px 20px;}
+  .mine{background:var(--karte,#fff);border:1px solid var(--linie);border-radius:20px;padding:6px 20px;}
   .mine li{list-style:none;font-family:"Playfair Display",serif;font-size:17px;line-height:1.45;padding:12px 0;border-top:1px solid var(--linie);}
   .mine li:first-child{border-top:none;}
 
-  .next{background:#fff;border:1px solid var(--linie);border-radius:20px;padding:20px;text-align:center;margin-top:26px;}
+  .next{background:var(--karte,#fff);border:1px solid var(--linie);border-radius:20px;padding:20px;text-align:center;margin-top:26px;}
   .next p{font-size:14.5px;color:var(--gedaempft);max-width:40ch;margin:0 auto 14px;}
   .next .btn + .btn{margin-top:10px;}
   .next .stack{display:flex;flex-direction:column;align-items:center;gap:10px;}
@@ -234,7 +234,7 @@
 
   /* --- Lese-Moment --- */
   .moment{
-    position:fixed;inset:0;z-index:10;background:var(--pflaume);color:var(--papier);
+    position:fixed;inset:0;z-index:10;background:var(--flaeche-dunkel,#5C3A46);color:var(--auf-dunkel,#FAF6F4);
     display:flex;flex-direction:column;align-items:center;justify-content:center;
     padding:32px 22px;text-align:center;
   }
@@ -249,7 +249,7 @@
   .moment__count{font-size:12px;color:#D9C4CB;margin-top:16px;}
   .moment .actions{margin-top:22px;}
   .moment .btn{background:var(--papier);color:var(--pflaume);}
-  .moment .btn--ghost{background:none;border:1px solid #D9C4CB;color:var(--papier);}
+  .moment .btn--ghost{background:none;border:1px solid #D9C4CB;color:var(--auf-dunkel,#FAF6F4);}
   @keyframes breathe{0%,100%{transform:scale(.72);opacity:.6;}40%{transform:scale(1);opacity:1;}50%{transform:scale(1);opacity:1;}}
 
   @keyframes rise{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}

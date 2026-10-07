@@ -75,7 +75,7 @@
   .btn{
     display:block;width:100%;border:0;cursor:pointer;
     border-radius:16px;padding:16px 20px;margin-top:26px;
-    background:var(--beere);color:var(--papier);
+    background:var(--beere);color:var(--auf-dunkel,#FAF6F4);
     font-family:"Playfair Display",serif;font-size:17px;font-weight:500;letter-spacing:.01em;
     text-decoration:none;
     transition:transform .25s ease, box-shadow .25s ease, background-color .25s ease;
@@ -84,7 +84,7 @@
     display:block;font-family:"Jost",sans-serif;font-weight:300;
     font-size:12.5px;color:#EBD9DD;margin-top:3px;
   }
-  .btn--dark{background:var(--pflaume);}
+  .btn--dark{background:var(--flaeche-dunkel,#5C3A46);}
   .btn--dark .meta{color:#D9C4CB;}
   .btn--soft{background:var(--papier);border:1px solid var(--linie);color:var(--pflaume);}
   .btn--soft .meta{color:var(--gedaempft);}
@@ -130,7 +130,7 @@
   }
   .option--open{border-style:dashed;color:var(--gedaempft);}
   @media (hover:hover){.option:hover{background:var(--sand);}}
-  .option[aria-pressed="true"]{background:var(--beere);border-color:var(--beere);color:var(--papier);}
+  .option[aria-pressed="true"]{background:var(--beere);border-color:var(--beere);color:var(--auf-dunkel,#FAF6F4);}
   .link-btn{
     background:none;border:0;cursor:pointer;margin-top:22px;
     font-family:"Playfair Display",serif;font-size:10.5px;letter-spacing:.36em;
@@ -150,7 +150,7 @@
   .radar[data-state="strong"] .core{fill:var(--beere);}
 
   .card{
-    text-align:left;background:#fff;border:1px solid var(--linie);border-radius:18px;
+    text-align:left;background:var(--karte,#fff);border:1px solid var(--linie);border-radius:18px;
     padding:22px 22px 20px;margin-bottom:16px;
   }
   .card .rank{
