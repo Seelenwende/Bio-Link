@@ -231,9 +231,11 @@ function deko(r: Rahmen, farbe: string, deckkraft = 0.18): string {
 function etikett(r: Rahmen, text: string, x: number, y: number, bg: string): string {
   if (!text) return "";
   const groesse = Math.round(r.b * 0.024);
-  const breite = (wortBreite(text.toUpperCase(), r.schriften.text, 700, r.schriften) * groesse) / 100 + groesse * 1.6;
+  const t = text.toUpperCase();
+  // Breite inkl. Buchstabenabstand (1 px je Zeichen) und Innenabstand links/rechts
+  const breite = Math.min(r.b - r.rand * 2, (wortBreite(t, r.schriften.text, 700, r.schriften) * groesse) / 100 + t.length * 1.5 + groesse * 1.8);
   const fill = akzentAuf(bg, r.marke);
-  return `<rect x="${x}" y="${y}" width="${breite}" height="${groesse * 2}" rx="${groesse}" fill="${fill}"/><text x="${x + groesse * 0.8}" y="${y + groesse * 1.36}" font-family="${esc(r.schriften.text)}" font-weight="700" font-size="${groesse}" letter-spacing="1" fill="${aufFarbe(fill, r.marke)}">${esc(text.toUpperCase())}</text>`;
+  return `<rect x="${x}" y="${y}" width="${breite}" height="${groesse * 2}" rx="${groesse}" fill="${fill}"/><text x="${x + groesse * 0.8}" y="${y + groesse * 1.36}" font-family="${esc(r.schriften.text)}" font-weight="700" font-size="${groesse}" letter-spacing="1" fill="${aufFarbe(fill, r.marke)}">${esc(t)}</text>`;
 }
 
 /* Aussage: grosse Headline, optional über einem Foto der Kunden-Website */
