@@ -11,10 +11,3 @@
   to = "/index.html"
   status = 404
   force = true
-
-# digitalseed/ ist eine eigene Netlify-Website (Base directory: digitalseed) und gehört nicht hierher.
-[[redirects]]
-  from = "/digitalseed/*"
-  to = "/index.html"
-  status = 404
-  force = true
