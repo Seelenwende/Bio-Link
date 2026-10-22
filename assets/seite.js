@@ -20,7 +20,7 @@
     "programm":        "",
     "kreis":           "",
     "bundle":          "https://seelenwende.mytentary.com/p/Mi6HH3",
-    "du-bist-genug":   "https://seelenwende.mytentary.com/p/Mi6HH3"
+    "du-bist-genug":   ""
   };
   var INSTAGRAM = "https://www.instagram.com/_seelenwende/";
   // Logo im Kopf. Das echte Logo einfach als assets/logo.svg (oder .png, dann hier anpassen) ablegen.

@@ -12,6 +12,7 @@ Die Zugangscodes selbst stehen bewusst nicht im Repository, sondern nur auf der 
 | Neuer-Satz-Kompass | Online-Werkzeug im Browser (30 Tage) | ein Code für alle | `KOMPASS_CODES` |
 | Red-Flag-Radar | Online-Werkzeug im Browser | ein Code für alle | `RADAR_CODES` |
 | Sei sanft mit dir | Online-Werkzeug im Browser | ein Code für alle | `SANFT_CODES` |
+| Du bist genug | E-Book als PDF zum Herunterladen | kein Code, PDF über Tentary | – |
 | Klarheits-Tagebuch | Online-Werkzeug im Browser | noch keine Code-Sperre | – |
 | Wieder bei dir | Online-Programm im Browser, dazu Begleitheft als PDF und Audios | eigener Code pro Käuferin | `PROGRAMM_CODES` |
 | Seelenwende Kreis | Mitgliedschaft (monatliches Abo), alles online im Browser | eigener Code pro Käuferin | `KREIS_CODES` |
@@ -268,6 +269,48 @@ Dein Zugangscode für „Sei sanft mit dir“: [CODE]
 So startest du: Öffne https://seelenwende-links.netlify.app/affirmationen.html und gib deinen Code ein. Wähl den harten Satz, der dich gerade begleitet, und die Stufe, die du heute glauben kannst.
 
 Du hast getan, was du damals konntest. 🤍
+```
+
+## Du bist genug · 29 €
+
+- **Titel:** Du bist genug – das E-Book für deinen Selbstwert nach der toxischen Beziehung
+- **Preis:** 29 € (Einmalzahlung)
+- **Art:** E-Book als PDF zum Herunterladen
+- **Lieferung:** Tentary liefert die PDF direkt nach dem Kauf aus. Lade die Datei als Produktdatei hoch.
+- **Zugangscode:** kein Code, PDF über Tentary. Kein Zugangscode nötig, die Käuferin bekommt die Datei von Tentary. Wichtig: Der E-Book-Knopf auf der Website zeigte bisher auf den Bundle-Link (49 €). Ich habe ihn getrennt, bitte schick mir den eigenen Link für das E-Book.
+- **KAUF-Schlüssel:** `du-bist-genug`
+- **Bilder:** `tentary/bilder/du-bist-genug-quadrat.jpg`, `tentary/bilder/du-bist-genug-breit.jpg`
+
+**Kurzbeschreibung:** Das Impulsbuch in acht Schritten, für die Stimme, die dir sagt, du seist zu viel und nie genug. Zum Lesen, Innehalten und Mitschreiben. Sofort als PDF.
+
+**Beschreibung:**
+
+```text
+„Zu laut, zu empfindlich, zu viel.“ Nach einer narzisstischen Beziehung klingt diese Stimme oft noch lange nach, auch wenn er längst weg ist.
+
+„Du bist genug“ ist ein Impulsbuch in acht Schritten. Es begleitet dich dabei, die alten Sätze zu erkennen, ihnen etwas Eigenes entgegenzusetzen und deinen Selbstwert Schritt für Schritt zurückzuholen.
+
+Das bekommst du:
+• Das E-Book „Du bist genug“ als PDF, sofort zum Herunterladen
+• Acht Schritte zurück zu deinem Selbstwert
+• Impulse zum Lesen, Innehalten und Mitschreiben
+• Auf Handy, Tablet und Computer lesbar, auch zum Ausdrucken
+
+Geschrieben von einer Frau, die über 15 Jahre in einer narzisstischen Beziehung war und selbst wieder lernen musste: Du bist genug.
+
+Tipp: Im Bundle „Zurück zu dir“ (49 €) bekommst du das E-Book zusammen mit Vision Board, Journal und „Sei sanft mit dir“ als Bonus.
+```
+
+**Text nach dem Kauf:**
+
+```text
+Danke, dass du dir dieses Buch schenkst.
+
+Dein E-Book „Du bist genug“ kannst du jetzt direkt herunterladen. Speicher die PDF am besten an einem Ort, den nur du siehst.
+
+Nimm dir für jeden der acht Schritte Zeit. Du musst nichts in einem Rutsch lesen.
+
+Du warst nie zu viel. Und immer genug. 🤍
 ```
 
 ## Klarheits-Tagebuch · 14 €
