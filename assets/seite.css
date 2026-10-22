@@ -1145,3 +1145,11 @@ h1, h2, h3{letter-spacing:-.015em;}
 [data-produkt~="programm"],[data-produkt~="kreis"]{display:none !important;}
 
 .stapel.einzeln .c{width:230px; top:6px; transform:translateX(-50%) rotate(-3deg);}
+
+/* ---------- Impressum und Datenschutz ---------- */
+.recht h1{margin:10px 0 18px;}
+.recht h2{font-size:1.25rem; margin:30px 0 8px;}
+.recht p{margin:0 0 12px; line-height:1.7;}
+.recht a{color:var(--beere);}
+.fuss .recht-links{font-size:.85rem; margin:8px 0 0;}
+.fuss .recht-links a{color:inherit;}

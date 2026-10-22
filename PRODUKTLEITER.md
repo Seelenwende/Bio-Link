@@ -75,7 +75,7 @@ Direkt verlinkbar: `start.html#drin`, `#gehen`, `#draussen`, `#unsicher`.
 
 ## Offene Punkte
 
-- Website und Salespages (`start.html`, `angebot-*.html`) sind gebaut. Kauf-Links in `assets/seite.js` (`KAUF`) eintragen, sobald die Tentary-Produkte stehen; beim Kreis zusätzlich `KAUF_URL` in `kreis.html`. Vor dem Livegang: Impressum und Datenschutzerklärung anlegen und im Fuß verlinken, eigene Domain.
+- Website und Salespages (`start.html`, `angebot-*.html`) sind gebaut. Kauf-Links in `assets/seite.js` (`KAUF`) eintragen, sobald die Tentary-Produkte stehen; beim Kreis zusätzlich `KAUF_URL` in `kreis.html`. Impressum (`impressum.html`) und Datenschutzerklärung (`datenschutz.html`) sind angelegt und im Fuß verlinkt. Offen: eigene Domain.
 - **Programm und Kreis sind ausgeblendet** (Oktober 2026), bis sie vollständig sind: `[data-produkt~="programm"]`, `[data-produkt~="kreis"]` in `assets/seite.css` und oben in `index.html`. Ihre Salespages leiten auf die Startseite um (ansehen mit `?vorschau`). Zum Einblenden die Regeln und die Weiterleitung entfernen und in den Phasen-Schritten der Startseite wieder auf „Wieder bei dir“ bzw. den Kreis verweisen.
 - Das E-Book „Du bist genug“ hat eine eigene Salespage (`angebot-genug.html`). Bundle und E-Book zeigen beide auf denselben Tentary-Link (Mi6HH3).
 - Salespage Programm verspricht „Audios für schwere Tage“: vor dem Verkaufsstart aufnehmen.
