@@ -60,6 +60,7 @@
           '<a href="' + INSTAGRAM + '" target="_blank" rel="noopener">Instagram</a>' +
         '</nav>' +
         '<p class="hinweis">Seelenwende ist Selbsthilfe und ersetzt keine Therapie, Beratung oder Rechtsberatung. Wenn du in Gefahr bist, wende dich bitte an die Nummern unten.</p>' +
+        '<p class="recht-links"><a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a></p>' +
         '<div class="handle">@_seelenwende</div>' +
       '</div></footer>' +
       '<div class="krise">In Gefahr: <b>Notruf 112</b> (CH Polizei <b>117</b>) · Gewalt gegen Frauen: <b>DE 116 016</b> · <b>AT 0800 222 555</b> · CH Opferhilfe <b>142</b> · Seelsorge: <b>CH 143</b> · <b>DE 0800 111 0 111</b> · <b>AT 142</b></div>';
