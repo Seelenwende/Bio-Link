@@ -229,6 +229,8 @@
     *{animation:none !important;}
     .butterfly,.wordmark,.handle,.tagline,.subline,.eyebrow,.link,.note,.footer,.phasen,.weissnicht{opacity:1 !important;}
   }
+  /* Noch nicht fertige Produkte ausblenden (wie in assets/seite.css) */
+  [data-produkt~="programm"],[data-produkt~="kreis"]{display:none !important;}
 </style>
 </head>
 <body>
@@ -277,7 +279,7 @@
     <!-- BEGLEITUNG · Angebotsseiten (angebot-*.html), Kauf-Links stehen in assets/seite.js -->
     <div class="eyebrow" style="animation-delay:.84s"><span>Begleitung</span></div>
 
-    <a class="link link--flagship" href="angebot-programm.html" style="animation-delay:.87s">
+    <a class="link link--flagship" data-produkt="programm" href="angebot-programm.html" style="animation-delay:.87s">
       <span class="tag">6 Wochen</span>
       <span class="title">Wieder bei dir</span>
       <span class="meta">Mit Mira, Begleitheft &amp; Audios — 149&nbsp;€</span>
@@ -288,12 +290,17 @@
       <span class="meta">E-Book · Vision Board · Journal — 49&nbsp;€</span>
     </a>
 
+    <a class="link link--hero" href="angebot-genug.html" style="animation-delay:.9s">
+      <span class="title">Du bist genug</span>
+      <span class="meta">Das E-Book für deinen Selbstwert — 29&nbsp;€</span>
+    </a>
+
     <a class="link link--soft" href="angebot-mira.html" style="animation-delay:.93s">
       <span class="title">Mira, deine Begleiterin</span>
       <span class="meta">Einfach losschreiben, auch nachts — 19&nbsp;€</span>
     </a>
 
-    <a class="link link--soft" href="angebot-kreis.html" style="animation-delay:.96s">
+    <a class="link link--soft" data-produkt="kreis" href="angebot-kreis.html" style="animation-delay:.96s">
       <span class="title">Seelenwende Kreis</span>
       <span class="meta">Ein Thema pro Monat, Mira inklusive — 19&nbsp;€/Monat</span>
     </a>

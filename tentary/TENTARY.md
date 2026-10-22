@@ -17,6 +17,19 @@ Die Zugangscodes selbst stehen bewusst nicht im Repository, sondern nur auf der 
 | Wieder bei dir | Online-Programm im Browser, dazu Begleitheft als PDF und Audios | eigener Code pro Käuferin | `PROGRAMM_CODES` |
 | Seelenwende Kreis | Mitgliedschaft (monatliches Abo), alles online im Browser | eigener Code pro Käuferin | `KREIS_CODES` |
 
+| Produkt | Was sie bekommt | Code | Netlify-Variable |
+|---|---|---|---|
+| Mira | Online-Zugang (KI-Begleiterin im Browser) | eigener Code pro Käuferin | `BEGLEITERIN_CODES` |
+| Erste-Hilfe-Set | Online-Zugang (Antwort-Helfer im Browser) | eigener Code pro Käuferin | `ANTWORT_HELFER_CODES` |
+| Werte-Finder | Online-Werkzeug im Browser | ein Code für alle | `WERTE_CODES` |
+| Neuer-Satz-Kompass | Online-Werkzeug im Browser (30 Tage) | ein Code für alle | `KOMPASS_CODES` |
+| Red-Flag-Radar | Online-Werkzeug im Browser | ein Code für alle | `RADAR_CODES` |
+| Sei sanft mit dir | Online-Werkzeug im Browser | ein Code für alle | `SANFT_CODES` |
+| Du bist genug | E-Book als PDF zum Herunterladen | kein Code, PDF über Tentary | – |
+| Klarheits-Tagebuch | Online-Werkzeug im Browser | ein Code für alle | `TAGEBUCH_CODES` |
+| Wieder bei dir | Online-Programm im Browser, dazu Begleitheft als PDF und Audios | eigener Code pro Käuferin | `PROGRAMM_CODES` |
+| Seelenwende Kreis | Mitgliedschaft (monatliches Abo), alles online im Browser | eigener Code pro Käuferin | `KREIS_CODES` |
+
 ## Mira · 19 €
 
 - **Titel:** Mira – deine Begleiterin bei toxischen Beziehungen
@@ -25,7 +38,7 @@ Die Zugangscodes selbst stehen bewusst nicht im Repository, sondern nur auf der 
 - **Lieferung:** Zugangscode per Mail, kein Download, keine PDF
 - **Zugangscode:** eigener Code pro Käuferin. Jeder Code hat sein eigenes Kontingent von 300 Nachrichten. Ein gemeinsamer Code würde das Kontingent unter allen Käuferinnen aufteilen. Darum bekommt jede Käuferin einen eigenen Code aus der Liste.
 - **KAUF-Schlüssel:** `mira`
-- **Bilder:** `tentary/bilder/mira-quadrat.jpg`, `tentary/bilder/mira-breit.jpg`
+- **Bilder:** `tentary/bilder/mira-*.jpg`
 
 **Kurzbeschreibung:** Einfach losschreiben, auch nachts: Mira hört zu, ordnet ein und hilft dir, klar zu bleiben. 300 Nachrichten, ohne Ablaufdatum, kein Abo.
 
@@ -67,7 +80,7 @@ Heb diese Mail gut auf, am besten an einem Ort, den nur du siehst. Du bist nicht
 - **Lieferung:** Zugangscode per Mail, kein Download, keine PDF
 - **Zugangscode:** eigener Code pro Käuferin. Jeder Code hat 100 eigene Prüfungen. Darum bekommt jede Käuferin einen eigenen Code aus der Liste.
 - **KAUF-Schlüssel:** `antwort-helfer`
-- **Bilder:** `tentary/bilder/erste-hilfe-set-quadrat.jpg`, `tentary/bilder/erste-hilfe-set-breit.jpg`
+- **Bilder:** `tentary/bilder/erste-hilfe-set-*.jpg`
 
 **Kurzbeschreibung:** Seine Nachricht ruhig einordnen, Köder erkennen und kurz und sachlich antworten. Oder gar nicht. Ideal bei Co-Parenting.
 
@@ -111,7 +124,7 @@ Heb diese Mail an einem Ort auf, den nur du siehst. 🤍
 - **Lieferung:** Zugangscode direkt im Danke-Text, kein Download
 - **Zugangscode:** ein Code für alle. Kein Kontingent, darum reicht ein Code für alle. Er steht schon fertig im Danke-Text.
 - **KAUF-Schlüssel:** `werte`
-- **Bilder:** `tentary/bilder/werte-finder-quadrat.jpg`, `tentary/bilder/werte-finder-breit.jpg`
+- **Bilder:** `tentary/bilder/werte-finder-*.jpg`
 
 **Kurzbeschreibung:** In vier Schritten zu deinen fünf Kernwerten, in deinen eigenen Worten. Schritt 2 auf dem Weg vom alten Satz zum neuen.
 
@@ -156,7 +169,7 @@ Dein nächster Schritt danach: der Neuer-Satz-Kompass, der deine Werte automatis
 - **Lieferung:** Zugangscode direkt im Danke-Text, kein Download
 - **Zugangscode:** ein Code für alle. Kein Kontingent, darum reicht ein Code für alle. Er steht schon fertig im Danke-Text.
 - **KAUF-Schlüssel:** `kompass`
-- **Bilder:** `tentary/bilder/kompass-quadrat.jpg`, `tentary/bilder/kompass-breit.jpg`
+- **Bilder:** `tentary/bilder/kompass-*.jpg`
 
 **Kurzbeschreibung:** 30 Tage, fünf Minuten am Tag: vom alten Satz über deine Werte zu einem neuen Satz, der dich trägt.
 
@@ -197,7 +210,7 @@ Wenn du einen Tag verpasst, ist das in Ordnung. Du machst einfach weiter. 🤍
 - **Lieferung:** Zugangscode direkt im Danke-Text, kein Download
 - **Zugangscode:** ein Code für alle. Kein Kontingent, darum reicht ein Code für alle. Er steht schon fertig im Danke-Text.
 - **KAUF-Schlüssel:** `radar`
-- **Bilder:** `tentary/bilder/radar-quadrat.jpg`, `tentary/bilder/radar-breit.jpg`
+- **Bilder:** `tentary/bilder/radar-*.jpg`
 
 **Kurzbeschreibung:** Neue Menschen einschätzen nach einer narzisstischen Beziehung: Warnzeichen erkennen, ohne hinter jedem Lächeln eine Gefahr zu sehen.
 
@@ -237,7 +250,7 @@ Dein Bauchgefühl war nie falsch. Jetzt darfst du ihm wieder trauen. 🤍
 - **Lieferung:** Zugangscode direkt im Danke-Text, kein Download
 - **Zugangscode:** ein Code für alle. Kein Kontingent, darum reicht ein Code für alle. Er steht schon fertig im Danke-Text. Denselben Code kannst du Bundle-Käuferinnen als Bonus schicken.
 - **KAUF-Schlüssel:** `sanft`
-- **Bilder:** `tentary/bilder/sanft-quadrat.jpg`, `tentary/bilder/sanft-breit.jpg`
+- **Bilder:** `tentary/bilder/sanft-*.jpg`
 
 **Kurzbeschreibung:** Keine Hochglanz-Affirmationen, sondern freundliche Sätze für deine eigenen harten Sätze, in der Stufe, die du heute glauben kannst.
 
@@ -277,9 +290,9 @@ Du hast getan, was du damals konntest. 🤍
 - **Preis:** 29 € (Einmalzahlung)
 - **Art:** E-Book als PDF zum Herunterladen
 - **Lieferung:** Tentary liefert die PDF direkt nach dem Kauf aus. Lade die Datei als Produktdatei hoch.
-- **Zugangscode:** kein Code, PDF über Tentary. Kein Zugangscode nötig, die Käuferin bekommt die Datei von Tentary. Wichtig: Der E-Book-Knopf auf der Website zeigte bisher auf den Bundle-Link (49 €). Ich habe ihn getrennt, bitte schick mir den eigenen Link für das E-Book.
+- **Zugangscode:** kein Code, PDF über Tentary. Kein Zugangscode nötig, die Käuferin bekommt die Datei von Tentary. Als Vorschaubild in Tentary passt das Mockup (Buch auf Rosé), das Cover kannst du auch als Titelseite der PDF nutzen.
 - **KAUF-Schlüssel:** `du-bist-genug`
-- **Bilder:** `tentary/bilder/du-bist-genug-quadrat.jpg`, `tentary/bilder/du-bist-genug-breit.jpg`
+- **Bilder:** `tentary/bilder/du-bist-genug-*.jpg`
 
 **Kurzbeschreibung:** Das Impulsbuch in acht Schritten, für die Stimme, die dir sagt, du seist zu viel und nie genug. Zum Lesen, Innehalten und Mitschreiben. Sofort als PDF.
 
@@ -318,10 +331,10 @@ Du warst nie zu viel. Und immer genug. 🤍
 - **Titel:** Klarheits-Tagebuch – gegen Gaslighting
 - **Preis:** 14 € (Einmalzahlung)
 - **Art:** Online-Werkzeug im Browser
-- **Lieferung:** Link im Danke-Text, kein Download
-- **Zugangscode:** noch keine Code-Sperre. Das Tagebuch hat noch keine Code-Sperre und ist im Moment für alle offen. Bitte noch nicht verkaufen. Sag mir Bescheid, dann baue ich die Sperre ein und trage hier den Code nach.
+- **Lieferung:** Zugangscode direkt im Danke-Text, kein Download
+- **Zugangscode:** ein Code für alle. Kein Kontingent, darum reicht ein Code für alle. Er steht schon fertig im Danke-Text. Einmal freigeschaltet (mit Häkchen „merken“), bleibt das Tagebuch auf ihrem Gerät offen.
 - **KAUF-Schlüssel:** `tagebuch`
-- **Bilder:** `tentary/bilder/tagebuch-quadrat.jpg`, `tentary/bilder/tagebuch-breit.jpg`
+- **Bilder:** `tentary/bilder/tagebuch-*.jpg`
 
 **Kurzbeschreibung:** Vorfälle diskret mit Datum festhalten, verschlüsselt und nur auf deinem Gerät. Damit du dir selbst wieder glauben kannst.
 
@@ -350,7 +363,9 @@ So schützt es dich:
 ```text
 Danke für dein Vertrauen. Was du erlebst, ist echt.
 
-So startest du: Öffne https://seelenwende-links.netlify.app/notizen.html und wähl eine PIN, die nur du kennst. Im Browser heißt das Tagebuch unauffällig „Notizen“.
+Dein Zugangscode für das Klarheits-Tagebuch: [CODE]
+
+So startest du: Öffne https://seelenwende-links.netlify.app/notizen.html, gib deinen Code ein und wähl eine PIN, die nur du kennst. Im Browser heißt das Tagebuch unauffällig „Notizen“.
 
 Tipp: Lösch diese Mail nach dem Einrichten, wenn jemand Zugriff auf dein Postfach haben könnte. Dein Tagebuch bleibt trotzdem offen. 🤍
 ```
@@ -363,7 +378,7 @@ Tipp: Lösch diese Mail nach dem Einrichten, wenn jemand Zugriff auf dein Postfa
 - **Lieferung:** Zugangscode per Mail. Begleitheft (PDF) und Audios lädt sie im Programm mit ihrem Code herunter, du musst nichts anhängen.
 - **Zugangscode:** eigener Code pro Käuferin. Im Programm steckt Mira mit 1000 Nachrichten pro Code. Darum bekommt jede Käuferin einen eigenen Code. Achtung: Die vier Audios sind noch nicht aufgenommen.
 - **KAUF-Schlüssel:** `programm`
-- **Bilder:** `tentary/bilder/programm-quadrat.jpg`, `tentary/bilder/programm-breit.jpg`
+- **Bilder:** `tentary/bilder/programm-*.jpg`
 
 **Kurzbeschreibung:** Sechs Wochen vom ersten Durchatmen bis zu dem Moment, in dem du dich wieder erkennst. Mit Mira, Begleitheft, Audios und allen Werkzeugen inklusive.
 
@@ -412,7 +427,7 @@ Nimm dir das Tempo, das du brauchst. Es gibt kein Zu-spät. 🤍
 - **Lieferung:** Zugangscode per Mail, kein Download
 - **Zugangscode:** eigener Code pro Käuferin. Jeder Code hat 150 Mira-Nachrichten pro Monat, und bei einer Kündigung sperrst du genau diesen einen Code. Darum bekommt jede Käuferin einen eigenen Code.
 - **KAUF-Schlüssel:** `kreis`
-- **Bilder:** `tentary/bilder/kreis-quadrat.jpg`, `tentary/bilder/kreis-breit.jpg`
+- **Bilder:** `tentary/bilder/kreis-*.jpg`
 
 **Kurzbeschreibung:** Die Mitgliedschaft für Frauen in und nach toxischen Beziehungen: jeden Monat ein Thema, Mira mit 150 Nachrichten und alle Werkzeuge an einem Ort.
 

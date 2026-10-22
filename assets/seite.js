@@ -9,18 +9,18 @@
   // Kauf-Links (Tentary). Leer = noch nicht im Verkauf: Statt des Knopfs erscheint
   // „Schreib <WORT> an @_seelenwende“, damit sie trotzdem auf die Liste kommt.
   var KAUF = {
-    "mira":            "",
-    "antwort-helfer":  "",
-    "kompass":         "",
-    "werte":           "",
-    "radar":           "",
-    "sanft":           "",
+    "mira":            "https://seelenwende.mytentary.com/p/NUKqNF",
+    "antwort-helfer":  "https://seelenwende.mytentary.com/p/mp4UNY",
+    "kompass":         "https://seelenwende.mytentary.com/p/51ydkn",
+    "werte":           "https://seelenwende.mytentary.com/p/mcV409",
+    "radar":           "https://seelenwende.mytentary.com/p/diGaAx",
+    "sanft":           "https://seelenwende.mytentary.com/p/GHJAcC",
     "journal":         "https://seelenwende.mytentary.com/p/niaKY4",
-    "tagebuch":        "",
+    "tagebuch":        "https://seelenwende.mytentary.com/p/IeeLYJ",
     "programm":        "",
     "kreis":           "",
     "bundle":          "https://seelenwende.mytentary.com/p/Mi6HH3",
-    "du-bist-genug":   ""
+    "du-bist-genug":   "https://seelenwende.mytentary.com/p/Mi6HH3"
   };
   var INSTAGRAM = "https://www.instagram.com/_seelenwende/";
   // Logo im Kopf. Das echte Logo einfach als assets/logo.svg (oder .png, dann hier anpassen) ablegen.
@@ -233,6 +233,13 @@
       });
     }
   })();
+
+  /* ---------- Angebots-Raster: sichtbare Karten zählen (ausgeblendete Produkte nicht mitrechnen) ---------- */
+  document.querySelectorAll(".angebots-gruppe .angebote").forEach(function(r){
+    var n = 0;
+    for (var i = 0; i < r.children.length; i++) if (getComputedStyle(r.children[i]).display !== "none") n++;
+    r.setAttribute("data-anzahl", String(n));
+  });
 
   /* ---------- Mail-Fenster vor den kostenlosen Werkzeugen ---------- */
   var freiLinks = document.querySelectorAll("a[data-ziel]");

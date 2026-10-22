@@ -1,4 +1,4 @@
-/* Code-Freischaltung für bezahlte Browser-Werkzeuge (Red-Flag-Radar, Werte-Finder, Sei sanft mit dir).
+/* Code-Freischaltung für bezahlte Browser-Werkzeuge (Red-Flag-Radar, Werte-Finder, Sei sanft mit dir, Klarheits-Tagebuch).
    Einbinden am Ende von <body>:
    <script src="assets/werkzeug-zugang.js" data-werkzeug="radar" data-name="Red-Flag-Radar"
            data-preis="9 €" data-angebot="angebot-radar.html"></script>
@@ -12,6 +12,8 @@
   var name = s.getAttribute("data-name") || "Dieses Werkzeug";
   var preis = s.getAttribute("data-preis") || "";
   var angebot = s.getAttribute("data-angebot") || "start.html#angebote";
+  // data-merken="an": Häkchen „freigeschaltet lassen“ ist vorausgewählt (Tagebuch: die Einträge schützt ohnehin die PIN).
+  var merkenVorgabe = s.getAttribute("data-merken") === "an";
   var KEY = "sw_frei_" + werkzeug;
   var EXIT_URL = "https://www.google.com/search?q=wetter";
 
@@ -64,7 +66,7 @@
       '<p>Gib deinen Zugangscode ein. Du findest ihn in deiner Bestätigungs-Mail.</p>' +
       '<label class="f" for="swz-code">Zugangscode</label>' +
       '<input type="text" id="swz-code" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Dein Zugangscode">' +
-      '<label class="merk"><input type="checkbox" id="swz-merk"> Auf diesem Gerät freigeschaltet lassen. Lass das aus, wenn jemand anderes dein Handy benutzt.</label>' +
+      '<label class="merk"><input type="checkbox" id="swz-merk"' + (merkenVorgabe ? ' checked' : '') + '> Auf diesem Gerät freigeschaltet lassen. Lass das aus, wenn jemand anderes dein Handy benutzt.</label>' +
       '<button class="los" type="submit">Freischalten</button>' +
       '<div class="fehler" role="alert"></div>' +
       '<div class="kauf">Noch keinen Code? <a id="swz-kauf"></a><br><span style="color:#8E7079">Kreis- und Programm-Codes gelten hier auch.</span></div>' +

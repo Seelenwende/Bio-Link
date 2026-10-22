@@ -126,8 +126,9 @@ Die drei Seiten laufen weiter komplett im Browser. Beim Öffnen fragt `assets/we
 | `RADAR_CODES` | Codes für den Red-Flag-Radar (9 €), kommagetrennt |
 | `WERTE_CODES` | Codes für den Werte-Finder (9 €). Werte-Finder und Kompass sind getrennte Stufen, ein Kompass-Code öffnet den Werte-Finder nicht. |
 | `SANFT_CODES` | Codes für „Sei sanft mit dir“ (7 €) – auch den Code für Bundle-Käuferinnen hier eintragen |
+| `TAGEBUCH_CODES` | Codes für das Klarheits-Tagebuch (14 €, `notizen.html`) |
 
-Kreis- und Programm-Codes öffnen alle drei. Salespages: `angebot-radar.html`, `angebot-sanft.html`, `angebot-werte.html`.
+Kreis- und Programm-Codes öffnen alle vier. Salespages: `angebot-radar.html`, `angebot-sanft.html`, `angebot-werte.html`, `angebot-tagebuch.html`.
 
 ## Bio-Link: Werkzeuge erst nach Mail-Adresse
 
