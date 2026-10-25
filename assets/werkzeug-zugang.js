@@ -60,7 +60,7 @@
   box.innerHTML =
     '<button class="weg" type="button" title="Verlässt die Seite sofort">Schnell weg</button>' +
     '<form class="swz-karte" novalidate>' +
-      '<img class="swz-logo" src="assets/logo.svg" alt="">' +
+      '<img class="swz-logo" src="assets/logo.svg" width="44" height="44" alt="">' +
       '<span class="swz-label">Mit Zugangscode</span>' +
       '<h1 id="swz-titel"></h1>' +
       '<p>Gib deinen Zugangscode ein. Du findest ihn in deiner Bestätigungs-Mail.</p>' +

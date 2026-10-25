@@ -88,8 +88,9 @@ for (const seite of seiten) {
         if (handy) {
           const klein = [...document.querySelectorAll("a, button, summary, input, select, textarea")].filter((el) => {
             const r = el.getBoundingClientRect(); const s = getComputedStyle(el);
-            if (!r.width || !r.height || s.visibility === "hidden") return false;
+            if (!r.width || !r.height || s.visibility === "hidden" || r.right < 0 || r.left > innerWidth) return false; // versteckte Felder (z. B. Spam-Schutz) auslassen
             if (el.tagName === "A" && s.display === "inline" && el.closest("p, li")) return false; // Links im Fließtext
+            if (el.tagName === "INPUT" && el.closest("label")) return false; // Label ist die Tippfläche
             return r.height < 44 && r.width < 44 ? true : r.height < 32;
           });
           if (klein.length) out.push(`${klein.length} Tippfläche(n) kleiner als empfohlen, z. B. „${(klein[0].textContent || klein[0].getAttribute("aria-label") || klein[0].tagName).trim().slice(0, 40)}“`);
