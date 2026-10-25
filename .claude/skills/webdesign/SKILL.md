@@ -78,3 +78,7 @@ Salespage-Reihenfolge: Held (Versprechen + Kaufknopf) → Erkennen (ihr Schmerz 
 | `small-business:brand-style` | Markenstil festhalten/ändern |
 | `canva:*`, Figma | Grafiken, OG-Bilder, Entwürfe (Connector muss angemeldet sein) |
 | `run` | Seite im Browser starten und ansehen |
+| `ui-ux-pro-max` (im Projekt) | UX-Regeln nachschlagen: `python3 .claude/skills/ui-ux-pro-max/scripts/search.py "<thema>" --domain ux` (auch `landing`, `typography`, `color`, `--stack html-tailwind` nur als Anregung) |
+| `taste` / `design-taste-frontend` (im Projekt) | Gegen „KI-Look“: Lint/Inspektor und Blick-und-Korrektur-Schleife; neue Richtungen nur mit `--keep palette,type` |
+
+**Vorrang:** Diese Datei schlägt `ui-ux-pro-max` und `taste`. Deren Vorschläge zu Farben, Schriften, Stilrichtungen oder Bildern (z. B. Picsum-Platzhalter, GSAP/Lenis aus dem CDN) nur übernehmen, wenn sie zu den Tokens und Regeln oben passen. Kein neues CDN-Skript ohne Eintrag in `datenschutz.html`.
