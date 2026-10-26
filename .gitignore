@@ -1,2 +1,5 @@
 node_modules/
 .netlify/
+.seiten-check/
+.taste-skill/
+__pycache__/

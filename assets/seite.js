@@ -36,7 +36,7 @@
     kopf.className = "kopf";
     kopf.innerHTML =
       '<div class="kopf-innen">' +
-        '<a class="marke" href="start.html"><img src="' + LOGO + '" alt=""><span>Seelenwende</span></a>' +
+        '<a class="marke" href="start.html"><img src="' + LOGO + '" width="28" height="28" alt=""><span>Seelenwende</span></a>' +
         '<nav class="nav" aria-label="Hauptnavigation">' +
           '<a class="nav-optional" href="start.html#werkzeuge">Gratis</a>' +
           '<a href="start.html#angebote">Angebote</a>' +

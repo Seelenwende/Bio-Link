@@ -37,7 +37,7 @@ body{
   font-family:var(--sans); font-weight:300; font-size:17px; line-height:1.7;
   -webkit-font-smoothing:antialiased; overflow-x:hidden;
 }
-img{max-width:100%;}
+img{max-width:100%; height:auto;}
 a{color:var(--beere);}
 a:focus-visible, button:focus-visible, summary:focus-visible, input:focus-visible{outline:2px solid var(--rose); outline-offset:3px;}
 h1,h2,h3{font-family:var(--serif); font-weight:500; margin:0; line-height:1.2; text-wrap:balance;}
@@ -217,8 +217,8 @@ a.karte{text-decoration:none; color:inherit; transition:transform .2s ease, box-
 /* ---------- Fuß ---------- */
 .fuss{padding:40px 16px 24px; border-top:1px solid var(--linie); text-align:center;}
 .fuss .innen{display:grid; gap:14px; justify-items:center;}
-.fuss nav{display:flex; flex-wrap:wrap; gap:6px 18px; justify-content:center; font-size:.9rem;}
-.fuss nav a{color:var(--gedaempft); text-decoration:none;}
+.fuss nav{display:flex; flex-wrap:wrap; gap:0 10px; justify-content:center; font-size:.9rem;}
+.fuss nav a{color:var(--gedaempft); text-decoration:none; display:inline-flex; align-items:center; min-height:44px; padding:0 4px;}
 .fuss .hinweis{font-size:.82rem; color:var(--gedaempft); max-width:52ch;}
 .fuss .handle{font-family:var(--serif); font-size:.62rem; letter-spacing:.42em; text-transform:uppercase; color:var(--mikro);}
 .krise{
@@ -1152,4 +1152,4 @@ h1, h2, h3{letter-spacing:-.015em;}
 .recht p{margin:0 0 12px; line-height:1.7;}
 .recht a{color:var(--beere);}
 .fuss .recht-links{font-size:.85rem; margin:8px 0 0;}
-.fuss .recht-links a{color:inherit;}
+.fuss .recht-links a{color:inherit; display:inline-block; padding:12px 4px;}
