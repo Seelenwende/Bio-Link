@@ -80,5 +80,9 @@ Salespage-Reihenfolge: Held (Versprechen + Kaufknopf) → Erkennen (ihr Schmerz 
 | `run` | Seite im Browser starten und ansehen |
 | `ui-ux-pro-max` (im Projekt) | UX-Regeln nachschlagen: `python3 .claude/skills/ui-ux-pro-max/scripts/search.py "<thema>" --domain ux` (auch `landing`, `typography`, `color`, `--stack html-tailwind` nur als Anregung) |
 | `taste` / `design-taste-frontend` (im Projekt) | Gegen „KI-Look“: Lint/Inspektor und Blick-und-Korrektur-Schleife; neue Richtungen nur mit `--keep palette,type` |
+| `review-animations` | Bewegungen prüfen: ruhig, kurz, kein Ruckeln – passt zur Regel „Klarheit vor Effekt“ |
+| `seo-audit`, `schema`, `ai-seo`, `seo-local` | Auffindbarkeit: Seiten-Check, strukturierte Daten (JSON-LD), Sichtbarkeit in KI-Suchen, lokales SEO. Keine Tracker oder Fremdskripte dafür einbauen |
+| `threejs-*` | nur falls je 3D gewünscht ist; für Seelenwende sonst nicht nötig (Ruhe vor Effekt) |
+| `find-skills` | weitere Skills auf skills.sh suchen – vor der Installation Inhalt und Lizenz prüfen |
 
 **Vorrang:** Diese Datei schlägt `ui-ux-pro-max` und `taste`. Deren Vorschläge zu Farben, Schriften, Stilrichtungen oder Bildern (z. B. Picsum-Platzhalter, GSAP/Lenis aus dem CDN) nur übernehmen, wenn sie zu den Tokens und Regeln oben passen. Kein neues CDN-Skript ohne Eintrag in `datenschutz.html`.
