@@ -168,3 +168,22 @@ Alle Codes aus `BEGLEITERIN_CODES` und `PROGRAMM_CODES` gelten auch hier (mit ei
 ## Bildnachweis
 
 Stimmungsfotos in `assets/bilder/` von [Pexels](https://www.pexels.com) (Pexels-Lizenz: kostenlos, auch kommerziell, ohne Namensnennung). Foto-IDs: `antwort-nachricht` 7341894 · `start-fenster` 11012771 · `kreis-lesen` 5358916 · `bundle-blumen` 545018 · `abschluss-weite` und `band-weite` 11727471 (Hintergrund der Abschluss-Bereiche und des Bild-Bands) · Kartenbilder in `karten/`: Planer 7365452, Journal 6913375, Werte-Finder 36511421, sonst wie oben · `held-freiheit` 847483 (Hintergrund oben auf der Startseite) · `werte-tee` 36511421. Original: `https://www.pexels.com/photo/<ID>/`. Die Bilder liegen auf der eigenen Seite, damit keine Besucherdaten an Dritte gehen.
+
+## Instagram-, LinkedIn- und Facebook-Skills für Claude
+
+Unter `.claude/skills/` liegen eigene Skills, die Claude in diesem Repo als Slash-Befehle nutzt. Alle lesen zuerst `.claude/instagram/MARKE.md` (Zielgruppe, Themen-Säulen, Stichwörter, Sicherheitsregeln) und arbeiten nur mit echten Daten.
+
+| Befehl | Wofür |
+|---|---|
+| `/ig-audit` | Ganzes Konto prüfen (Checkliste wie im Profil-Check), Top 3 Schritte |
+| `/ig-profile` | Namensfeld, Bio, Link-Seite, Highlights, angepinnte Beiträge |
+| `/ig-plan` | Redaktionsplan, optional als Buffer-Entwürfe |
+| `/ig-reel` · `/ig-carousel` · `/ig-story` · `/ig-caption` | Inhalte je Format |
+| `/ig-viral` | Warum Beiträge laufen, daraus neue Ideen |
+| `/ig-human` | Texte menschlich statt nach KI klingen lassen |
+| `/ig-comment` · `/ig-reply` · `/ig-dm` | Kommentieren, Antworten, Direktnachrichten (nur Vorschläge, senden nach Bestätigung) |
+| `/ig-repurpose` | Einen Inhalt für Instagram, LinkedIn und Facebook umbauen |
+| `/social-profile` | LinkedIn-Profil/-Seite und Facebook-Seite optimieren |
+| `/social-report` | Monats-Reporting über alle Kanäle |
+
+Ergebnisse, die aufgehoben werden sollen (Audits, Pläne, Reports), landen unter `instagram/`.
