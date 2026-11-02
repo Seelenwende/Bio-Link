@@ -1,20 +1,20 @@
 ---
 name: ig-profile
-description: Optimiert Namensfeld, Bio, Profilbild, Link-Seite und Story-Highlights eines Instagram-Profils mit fertigen Texten zum Kopieren. Nutzen bei „Bio verbessern“, „Profil optimieren“, „Highlights planen“.
+description: Optimiert Namensfeld, Bio, Profilbild, Link-Seite, Story-Highlights und angepinnte Beiträge eines Instagram-Profils mit fertigen Texten. Nutzen bei „Bio verbessern“, „Profil optimieren“, „Highlights planen“, „neues Profil aufbauen“.
 ---
 
 # /ig-profile – Profil optimieren
 
-Lies zuerst `.claude/instagram/MARKE.md` (Zielgruppe, Säulen, Stichwörter, feste Regeln) und halte dich an alle Regeln dort.
+Lies zuerst `.claude/social/KONTEN.md`. Kläre, für welches Konto du arbeitest (Seelenwende, digitalseed oder ein Kunde von digitalseed), und halte dich an die allgemeinen Regeln und an die Regeln dieses Kontos (Stimme, Anrede, Rechtschreibung, Stichwörter, besondere Regeln).
 
 ## Ablauf
-1. Aktuelles Namensfeld, Bio, Link, Kategorie und Highlights erfragen (oder aus einem Connector lesen).
-2. Kurz die Phase/Zielgruppe bestätigen, die das Profil zuerst ansprechen soll.
+Aktuelle Angaben erfragen oder lesen. Bei Kunden von digitalseed: das Profil-Paket aus der App (Schritt „Kanäle und Social-Media-Vorlagen“) als Ausgangspunkt nehmen und im selben Aufbau liefern.
 
 ## Ausgabe
-- **Namensfeld:** 3 Varianten, ≤ 64 Zeichen, mit Suchbegriff (z. B. „Sarah | Selbstwert nach toxischer Beziehung“).
-- **Bio:** 3 Varianten, ≤ 150 Zeichen, mit Zeilenumbrüchen: Zeile 1 wem/wobei · Zeile 2 Ergebnis · Zeile 3 Persönlichkeit/Beweis · Zeile 4 CTA zum Link. Zeichen zählen und angeben.
-- **Profilbild:** Prüfpunkte (Gesicht, Kontrast, klein erkennbar).
-- **Link-Seite:** Reihenfolge der Links auf der Startseite dieses Repos (max. 5–6, jeder sagt, was sie bekommt; ganz oben der Phasen-Wegweiser). Wenn Änderungen am Bio-Link sinnvoll sind: konkrete Änderung an `index.html` vorschlagen – nur nach Zustimmung umsetzen.
-- **Highlights:** 5 Stück mit Titel (≤ 15 Zeichen), Zweck, 3–5 Story-Ideen je Highlight, z. B. Start hier · Über mich · Gratis · Stimmen · Hilfe (Hilfenummern!).
-- **3 angepinnte Beiträge:** Thema + Hook-Vorschlag (Wer bin ich / Problem der Zielgruppe / Angebot).
+- **Namensfeld:** 3 Varianten, ≤ 64 Zeichen, mit Suchbegriff (Branche/Ort bzw. Thema)
+- **Bio:** 3 Varianten, ≤ 150 Zeichen, Zeilen: wem/wobei · Ergebnis · Persönlichkeit/Beleg · CTA zum Link. Zeichen angeben.
+- **Profilbild:** Prüfpunkte (Gesicht oder Logo, Kontrast, klein erkennbar)
+- **Link-Seite:** Reihenfolge, max. 5–6 Links, wichtigster Schritt oben (Seelenwende: Phasen-Wegweiser; digitalseed: Gratis-Analyse; Kunden: Anfrage, Termin oder Shop). Änderungen an Website-Dateien nur nach Zustimmung.
+- **Highlights:** 5 Stück mit Titel (≤ 15 Zeichen), Zweck, 3–5 Story-Ideen je Highlight
+- **3 angepinnte Beiträge:** Thema + Hook
+- **Einrichtungs-Checkliste** bei neuen Profilen (Business-Konto, Kategorie, Kontakt-Buttons, Buffer verbinden)

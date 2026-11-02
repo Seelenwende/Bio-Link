@@ -1,21 +1,20 @@
 ---
 name: ig-caption
-description: Schreibt oder verbessert Instagram-Captions: starke erste Zeile, gut lesbarer Hauptteil, ein klarer CTA, passende Hashtags. Nutzen bei „Caption schreiben“, „Text zum Post“, „Caption verbessern“.
+description: Schreibt oder verbessert Captions für Instagram, Facebook und LinkedIn: starke erste Zeile, lesbarer Hauptteil, ein CTA, passende Hashtags. Nutzen bei „Caption schreiben“, „Text zum Post“, „Caption verbessern“.
 ---
 
 # /ig-caption – Caption
 
-Lies zuerst `.claude/instagram/MARKE.md` (Zielgruppe, Säulen, Stichwörter, feste Regeln) und halte dich an alle Regeln dort.
+Lies zuerst `.claude/social/KONTEN.md`. Kläre, für welches Konto du arbeitest (Seelenwende, digitalseed oder ein Kunde von digitalseed), und halte dich an die allgemeinen Regeln und an die Regeln dieses Kontos (Stimme, Anrede, Rechtschreibung, Stichwörter, besondere Regeln).
 
 ## Aufbau
-1. **Erste Zeile (Hook):** ≤ 70 Zeichen, muss ohne „mehr“ funktionieren. Keine Begrüßung, keine Ankündigung („Heute möchte ich …“).
-2. **Hauptteil:** kurze Absätze, 1 Gedanke pro Absatz, konkret statt allgemein, eine persönliche Stelle (`[eigenes Erlebnis]`, wenn nicht bekannt).
-3. **Ein CTA:** Stichwort kommentieren → DM, oder speichern/teilen, oder Link in Bio. Nicht mehrere.
-4. **Bei schweren Themen:** Hilfenummern am Ende.
-5. **Hashtags:** 3–5 passende, gemischt (Nische + Thema), am Ende; keine Hashtag-Wand.
+1. **Erste Zeile:** ≤ 70 Zeichen, funktioniert ohne „mehr“; keine Begrüssung, keine Ankündigung
+2. **Hauptteil:** kurze Absätze, ein Gedanke pro Absatz, konkret, eine persönliche oder praktische Stelle (Platzhalter, wenn unbekannt)
+3. **Ein CTA** (Stichwort → DM, speichern, Link in Bio, Termin, Anfrage)
+4. **Hashtags:** Instagram 3–5 passende; LinkedIn 0–3; Facebook 0–2. Bei Kunden die Hashtags aus der Kanal-Vorlage der App.
+5. Konto-Regeln (z. B. Hilfenummern bei Seelenwende, ss statt ß bei digitalseed und Schweizer Kunden)
 
 ## Ausgabe
-- 2 Varianten (kurz ≤ 600 Zeichen / lang ≤ 1.800 Zeichen) mit Zeichenzahl
-- 3 alternative erste Zeilen
-- Beim Verbessern einer vorhandenen Caption: Vorher/Nachher und in 3 Punkten, was geändert wurde und warum.
-- Abschließend Prüfung nach `/ig-human`.
+- 2 Varianten (kurz ≤ 600 / lang ≤ 1'800 Zeichen) mit Zeichenzahl, 3 alternative erste Zeilen
+- Beim Verbessern: Vorher/Nachher + 3 Punkte, was geändert wurde
+- Zum Schluss Prüfung nach `/ig-human`

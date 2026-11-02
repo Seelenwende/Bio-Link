@@ -1,19 +1,19 @@
 ---
 name: ig-reel
-description: Schreibt ein Instagram-Reel-Skript mit Hook in den ersten 2 Sekunden, Szenen, Texteinblendungen, Caption und CTA. Nutzen bei „Reel-Skript“, „Idee für ein Reel“, „Video für Instagram“.
+description: Schreibt ein Reel-Skript mit Hook in den ersten 2 Sekunden, Szenen, Texteinblendungen, Caption, CTA und Stock-Video-Suchbegriffen. Nutzen bei „Reel-Skript“, „Idee für ein Reel“, „Video für Instagram“.
 ---
 
 # /ig-reel – Reel-Skript
 
-Lies zuerst `.claude/instagram/MARKE.md` (Zielgruppe, Säulen, Stichwörter, feste Regeln) und halte dich an alle Regeln dort.
+Lies zuerst `.claude/social/KONTEN.md`. Kläre, für welches Konto du arbeitest (Seelenwende, digitalseed oder ein Kunde von digitalseed), und halte dich an die allgemeinen Regeln und an die Regeln dieses Kontos (Stimme, Anrede, Rechtschreibung, Stichwörter, besondere Regeln).
 
 ## Eingaben
-Thema oder Säule, Phase, Länge (Standard 20–40 s), Stil: Talking Head / Text-auf-Video (B-Roll, kein Gesicht) / Voiceover. Für Frauen, die (noch) anonym bleiben wollen, auch gesichtslose Varianten anbieten.
+Thema, Ziel, Länge (Standard 15–30 s), Stil: Talking Head / Text auf Video (B-Roll) / Voiceover / Bildschirmaufnahme (z. B. App-Demo bei digitalseed). Gesichtslose Varianten anbieten, wenn jemand nicht vor die Kamera will.
 
 ## Ausgabe
-1. **3 Hook-Varianten** (gesprochen + Texteinblendung, ≤ 8 Wörter auf dem Bildschirm), je mit Hebel (Zahl, Gefühl, Neugier, Widerspruch, „Wenn er …“).
-2. **Skript als Tabelle:** Sekunde · Bild/Handlung · Gesprochen · Texteinblendung.
-3. **Schluss:** ein Satz, der hängen bleibt, + CTA (Stichwort kommentieren → DM).
-4. **Caption** (über `/ig-caption`-Regeln) und **Cover-Text** (≤ 6 Wörter).
-5. **Audio-Hinweis:** ruhiger, lizenzfreier Ton; keine Trend-Sounds, die das Thema verharmlosen.
-6. Bei schweren Themen: Triggerhinweis in der ersten Texteinblendung + Hilfenummer in der Caption.
+1. **3 Hook-Varianten** (gesprochen + Texteinblendung ≤ 8 Wörter), je mit Hebel
+2. **Skript-Tabelle:** Sekunde · Bild/Handlung · Gesprochen · Texteinblendung (≤ 12 Wörter)
+3. **Schluss-Szene** mit genau einem CTA
+4. **Englische Stock-Suchbegriffe** je Sequenz (2–4 Wörter, konkret und filmbar, z. B. „carpenter sanding wood“) – so übernimmt die digitalseed-App sie direkt für Pexels oder Pixabay
+5. **Caption** (Regeln von `/ig-caption`) und **Cover-Text** (≤ 6 Wörter)
+6. Audio-Hinweis; bei sensiblen Themen Triggerhinweis und Konto-Regeln beachten

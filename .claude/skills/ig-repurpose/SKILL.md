@@ -1,19 +1,17 @@
 ---
 name: ig-repurpose
-description: Verwandelt einen vorhandenen Inhalt (Post, Reel, Mail, Blog, Produktseite aus diesem Repo) in mehrere neue Formate für Instagram, LinkedIn und Facebook. Nutzen bei „aus diesem Post mehr machen“, „wiederverwerten“, „für LinkedIn/Facebook umschreiben“.
+description: Verwandelt einen vorhandenen Inhalt (Beitrag, Reel, Newsletter, Website-Seite, Fallbeispiel) in neue Formate für Instagram, LinkedIn und Facebook. Nutzen bei „aus diesem Post mehr machen“, „wiederverwerten“, „für LinkedIn/Facebook umschreiben“.
 ---
 
 # /ig-repurpose – Inhalte mehrfach nutzen
 
-Lies zuerst `.claude/instagram/MARKE.md` (Zielgruppe, Säulen, Stichwörter, feste Regeln) und halte dich an alle Regeln dort.
+Lies zuerst `.claude/social/KONTEN.md`. Kläre, für welches Konto du arbeitest (Seelenwende, digitalseed oder ein Kunde von digitalseed), und halte dich an die allgemeinen Regeln und an die Regeln dieses Kontos (Stimme, Anrede, Rechtschreibung, Stichwörter, besondere Regeln).
 
 ## Quellen
-Ein Post/Reel, eine Mail aus `mails/`, eine Seite aus diesem Repo (z. B. `muster-check.html`, Salespages `angebot-*.html`, `PRODUKTLEITER.md`) oder eingefügter Text.
+Beitrag, Reel, Newsletter, Mail, Website-Seite (Seelenwende: `angebot-*.html`, `mails/`; digitalseed: `website/`, Demos in `demos/`, Videoskripte in `videos/skripte.md`) oder eingefügter Text.
 
 ## Ausgabe (aus einer Quelle)
-- Instagram: 1 Reel-Skript (`/ig-reel`), 1 Karussell (`/ig-carousel`), 3 Story-Slides (`/ig-story`), 2 Text-Zitate zum Teilen
-- **LinkedIn:** 1 Beitrag (Fachperspektive, z. B. für Beratende/HR/Arbeitgeber: Warnzeichen bei Mitarbeiterinnen, Betroffene im Job unterstützen) – sachlicher Ton, keine Emojis-Flut, Hook in Zeile 1–2
-- **Facebook:** 1 Beitrag (persönlicher, länger, Community-Frage am Ende); Hinweis zu Gruppen-Regeln, falls in Gruppen geteilt
-- Pro Stück: Kanal · Format · fertiger Text · CTA
-
-Regeln: Inhalte anpassen, nicht 1:1 kopieren; Plattform-Ton beachten; auf allen Kanälen dieselben Sicherheits- und Ehrlichkeitsregeln.
+- **Instagram:** 1 Reel-Skript, 1 Karussell, 3 Story-Slides, 2 Zitat-Grafiken
+- **LinkedIn:** 1 Beitrag mit Fachperspektive, Hook in Zeile 1–2, sachlicher Ton (digitalseed: Learnings aus Projekten, Studio für Teams; Seelenwende: für Beratende und HR)
+- **Facebook:** 1 Beitrag, persönlicher und lokaler, Frage an die Community am Ende
+Je Stück: Kanal · Format · fertiger Text · CTA. Anpassen statt 1:1 kopieren.

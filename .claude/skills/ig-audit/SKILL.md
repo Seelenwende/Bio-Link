@@ -1,26 +1,26 @@
 ---
 name: ig-audit
-description: Prüft ein ganzes Instagram-Konto (Profil, Bio, Link, Highlights, Feed, Hooks, CTAs) Punkt für Punkt und gibt die drei wichtigsten nächsten Schritte. Nutzen bei „prüf mein Instagram“, „Instagram-Audit“, „warum wächst mein Account nicht“.
+description: Prüft ein Instagram-Konto (Profil, Bio, Link, Highlights, Feed, Hooks, CTAs) Punkt für Punkt mit Score und den drei wichtigsten nächsten Schritten – für Seelenwende, digitalseed oder Kunden von digitalseed. Nutzen bei „prüf mein Instagram“, „Instagram-Audit“, „warum wächst der Account nicht“.
 ---
 
 # /ig-audit – Konto-Prüfung
 
-Lies zuerst `.claude/instagram/MARKE.md` (Zielgruppe, Säulen, Stichwörter, feste Regeln) und halte dich an alle Regeln dort.
+Lies zuerst `.claude/social/KONTEN.md`. Kläre, für welches Konto du arbeitest (Seelenwende, digitalseed oder ein Kunde von digitalseed), und halte dich an die allgemeinen Regeln und an die Regeln dieses Kontos (Stimme, Anrede, Rechtschreibung, Stichwörter, besondere Regeln).
 
 ## Ablauf
-1. **Konto klären:** Welcher Handle? Ohne Angabe: @_seelenwende.
-2. **Daten holen – ehrlich:**
-   - Ist ein Instagram-Connector/MCP aktiv, damit Profil + letzte 12 Posts lesen.
-   - Sonst: die Nutzerin bitten, Bio, Namensfeld, Link, Follower/Beiträge, 6–12 Captions (erste Zeilen reichen) und ggf. Screenshots von Highlights/Feed einzufügen.
-   - Was nicht vorliegt, ist „nicht prüfbar“ – nicht raten.
-3. **Prüfen** gegen die Checkliste aus `netlify/lib/profile-check.mts` (Bereiche: Erster Eindruck, Bio, Link in Bio, Story-Highlights, Feed & Inhalte, Vertrauen & Angebot). Jeder Punkt: gut / ausbaufähig / fehlt / nicht prüfbar, mit Befund (Zitat, Post-Nummer) und konkretem Vorschlag.
-4. **Hooks & CTAs** der Posts bewerten (Zahl, Zeitrahmen, echte Erfahrung, konkretes Gefühl, Neugier-Lücke; CTA genau einer, ideal Stichwort → DM).
-5. **Abgleich mit dem Bio-Link:** Passt der Link zur Startseite in diesem Repo (`index.html`)? Führt er zu genau einem nächsten Schritt pro Phase?
+1. **Daten holen – ehrlich:** Ist ein Instagram-, Manifold- oder Windsor-Connector aktiv, damit Profil und letzte 12 Beiträge lesen. Bei Kunden von digitalseed: Erfassung und Analyse aus der App übernehmen, falls vorhanden. Sonst Bio, Namensfeld, Link, Kennzahlen, 6–12 Captions und Screenshots erfragen. Was fehlt, ist „nicht prüfbar“.
+2. **Checkliste** (dieselben Punkte wie der Profil-Check von Seelenwende in `netlify/lib/profile-check.mts`):
+   - Erster Eindruck: Profilbild klein erkennbar · Namensfeld mit Suchbegriff · Username merkbar · Business-/Creator-Konto mit passender Kategorie
+   - Bio: Zeile 1 wem/wobei · Ergebnis klar · Persönlichkeit spürbar · CTA zum Link · gut lesbar
+   - Link in Bio: mobile Linkseite · wichtigster Schritt oben · max. 5–6 Links · jeder Link sagt, was man bekommt
+   - Highlights: klarer Zweck · „Start hier/Über uns“ · einheitliche Cover · aktuell
+   - Feed: 3 angepinnte Beiträge · 3–4 erkennbare Themen · wiedererkennbarer Stil · regelmässig · Mensch sichtbar
+   - Vertrauen & Angebot: Stimmen/Beispiele auffindbar · Angebot regelmässig erwähnt · einfacher erster Schritt · nötige Hinweise sichtbar
+3. **Hooks & CTAs** jedes Beitrags bewerten (Hook-Hebel aus KONTEN.md; CTA gut / schwach / fehlt).
 
 ## Ausgabe
-- Gesamtscore 0–100 und ein Satz als Urteil
-- **Top 3 Prioritäten** (größte Wirkung zuerst)
-- Tabelle pro Bereich: Punkt · Bewertung · Befund · Vorschlag
+- Gesamtscore 0–100, ein Satz Urteil, **Top 3 Prioritäten**
+- Tabelle je Bereich: Punkt · Bewertung · Befund (Zitat, Beitragsnummer) · Vorschlag
 - Neues Namensfeld (≤ 64 Zeichen) und neue Bio (≤ 150 Zeichen) zum Kopieren
-- Hook-Tabelle pro Post mit Umschreibung
-- Auf Wunsch speichern unter `instagram/audit-JJJJ-MM-TT.md`, damit der nächste Audit vergleichen kann (Score-Verlauf).
+- Hook-Tabelle mit Umschreibung je Beitrag
+- Auf Wunsch speichern unter `social/<konto>/audit-JJJJ-MM-TT.md`, damit der nächste Audit vergleichen kann.

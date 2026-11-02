@@ -1,19 +1,19 @@
 ---
 name: ig-human
-description: Überarbeitet Texte (Captions, Skripte, DMs), damit sie menschlich und nach der echten Person klingen statt nach KI. Nutzen bei „klingt zu sehr nach KI“, „natürlicher formulieren“, „menschlicher machen“.
+description: Überarbeitet Texte (Captions, Skripte, DMs, LinkedIn-Beiträge), damit sie menschlich und nach der Marke klingen statt nach KI. Nutzen bei „klingt nach KI“, „natürlicher formulieren“, „menschlicher machen“.
 ---
 
-# /ig-human – Klingt nach dir, nicht nach KI
+# /ig-human – Klingt nach Mensch, nicht nach KI
 
-Lies zuerst `.claude/instagram/MARKE.md` (Zielgruppe, Säulen, Stichwörter, feste Regeln) und halte dich an alle Regeln dort.
+Lies zuerst `.claude/social/KONTEN.md`. Kläre, für welches Konto du arbeitest (Seelenwende, digitalseed oder ein Kunde von digitalseed), und halte dich an die allgemeinen Regeln und an die Regeln dieses Kontos (Stimme, Anrede, Rechtschreibung, Stichwörter, besondere Regeln).
 
 ## Prüfen und ersetzen
-- **KI-Floskeln streichen:** „In der heutigen Zeit“, „Lass uns eintauchen“, „Es ist wichtig zu beachten“, „Gamechanger“, „Reise“ als Dauer-Metapher, „Du bist nicht allein ✨“ als Füllsatz, „Hier sind 5 Tipps:“ ohne Einleitung.
-- **Struktur auflockern:** nicht jeder Absatz gleich lang; nicht immer Dreierlisten; Fragmente erlaubt.
-- **Gedankenstriche und Emojis** sparsam (max. 1–2 Emojis).
-- **Konkret machen:** abstrakte Aussagen durch Situationen ersetzen („Du entschuldigst dich, bevor er überhaupt etwas gesagt hat“).
-- **Eigene Stimme:** Wortwahl aus früheren Captions der Nutzerin übernehmen, wenn welche vorliegen; gesprochene Sprache, Du-Form.
-- **Echte Details** als Platzhalter markieren statt erfinden.
+- **KI-Floskeln streichen:** „In der heutigen schnelllebigen Welt“, „Lass uns eintauchen“, „Es ist wichtig zu beachten“, „Gamechanger“, „auf das nächste Level“, „Reise“ als Dauer-Metapher, „Hier sind 5 Tipps:“ ohne Einleitung, leere Superlative.
+- **Struktur auflockern:** ungleich lange Absätze, nicht immer Dreierlisten, Fragmente erlaubt.
+- **Emojis und Gedankenstriche** sparsam.
+- **Konkret statt abstrakt:** Situationen und Beispiele aus dem Alltag der Zielgruppe.
+- **Stimme des Kontos:** Anrede, Wortwahl und Beispielsätze aus KONTEN.md bzw. dem Stimmprofil in der App.
+- **Rechtschreibung:** Schweiz ss statt ß, wo das Konto es verlangt.
 
 ## Ausgabe
-Überarbeiteter Text + kurze Liste der wichtigsten Änderungen. Optional: Wenn die Nutzerin 3–5 eigene Texte schickt, eine kurze Stimm-Beschreibung erstellen und in `.claude/instagram/MARKE.md` unter „Stimme“ ergänzen (nach Zustimmung).
+Überarbeiteter Text + kurze Liste der Änderungen. Optional: aus 3–5 echten Texten eine Stimm-Beschreibung ableiten und in `KONTEN.md` ergänzen (nach Zustimmung).

@@ -1,24 +1,19 @@
 ---
 name: ig-viral
-description: Analysiert, warum Beiträge (eigene oder fremde) gut laufen, und leitet daraus übertragbare Muster und neue Ideen für das eigene Konto ab. Nutzen bei „warum ging das viral“, „was funktioniert“, „Trend analysieren“.
+description: Analysiert, warum Beiträge (eigene, von Kunden oder aus der Branche) gut laufen, und leitet übertragbare Muster und neue Ideen ab. Nutzen bei „warum ging das viral“, „was funktioniert“, „Trend analysieren“.
 ---
 
 # /ig-viral – Erfolgsmuster finden
 
-Lies zuerst `.claude/instagram/MARKE.md` (Zielgruppe, Säulen, Stichwörter, feste Regeln) und halte dich an alle Regeln dort.
+Lies zuerst `.claude/social/KONTEN.md`. Kläre, für welches Konto du arbeitest (Seelenwende, digitalseed oder ein Kunde von digitalseed), und halte dich an die allgemeinen Regeln und an die Regeln dieses Kontos (Stimme, Anrede, Rechtschreibung, Stichwörter, besondere Regeln).
 
 ## Eingaben
-Ein oder mehrere Posts/Reels (Link, Caption, Kennzahlen, Screenshot) – eigene oder aus der Nische. Ohne Daten: nach Beispielen fragen, keine Zahlen erfinden.
+Beiträge mit Link, Caption, Kennzahlen oder Screenshot – oder für Kunden von digitalseed die Beitragswerte aus dem Monatsbericht der App (Buffer-Kennzahlen). Keine Zahlen erfinden.
 
-## Analyse (pro Beitrag)
-- Hook (wörtlich) und welcher Hebel wirkt
-- Format, Länge, Aufbau, Tempo
-- Emotion/Identifikation („Das bin ich“-Moment)
-- Grund zum Teilen/Speichern
-- CTA und Kommentar-Auslöser
-- Kennzahlen im Verhältnis: Kommentare, Speicherungen, Teilungen pro Follower – nicht nur Likes
+## Analyse je Beitrag
+Hook und Hebel · Format, Länge, Aufbau · Emotion und Identifikation · Grund zum Teilen oder Speichern · CTA · Kennzahlen im Verhältnis (Kommentare, Speicherungen, Teilungen je Reichweite – nicht nur Likes).
 
 ## Ausgabe
-- Muster in 3–5 Sätzen („Was hier wirkt, ist …“)
-- **5 neue Ideen für Seelenwende**, die das Muster übernehmen, aber eigene Inhalte sind (nie Texte kopieren), je mit Hook, Format und CTA
-- Warnung, falls ein Trend für das Thema unpassend oder verharmlosend wäre
+- Muster in 3–5 Sätzen
+- **5 neue Ideen** für das gewählte Konto, die das Muster übernehmen, aber eigene Inhalte sind (nie Texte kopieren), je mit Hook, Format und CTA
+- Hinweis, falls ein Trend zur Marke oder Branche nicht passt

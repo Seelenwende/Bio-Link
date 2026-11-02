@@ -1,26 +1,22 @@
 ---
 name: social-profile
-description: Optimiert LinkedIn-Profile/-Seiten und Facebook-Seiten (Titel, Info-Text, Banner, Buttons, angepinnte Beiträge) passend zur Instagram-Marke. Nutzen bei „LinkedIn-Profil optimieren“, „Facebook-Seite verbessern“.
+description: Optimiert LinkedIn-Profile/-Unternehmensseiten und Facebook-Seiten (Titel, Info-Text, Banner, Buttons, angepinnte Beiträge) passend zur Marke. Nutzen bei „LinkedIn-Profil optimieren“, „Facebook-Seite verbessern“.
 ---
 
 # /social-profile – LinkedIn & Facebook optimieren
 
-Lies zuerst `.claude/instagram/MARKE.md` und halte dich an alle Regeln dort.
+Lies zuerst `.claude/social/KONTEN.md`. Kläre, für welches Konto du arbeitest (Seelenwende, digitalseed oder ein Kunde von digitalseed), und halte dich an die allgemeinen Regeln und an die Regeln dieses Kontos (Stimme, Anrede, Rechtschreibung, Stichwörter, besondere Regeln).
 
-## Daten
-Aktuelle Texte und Screenshots von der Nutzerin erfragen (oder aus einem verbundenen Connector lesen). Nichts erfinden.
+Aktuelle Texte und Screenshots erfragen oder lesen; bei Kunden von digitalseed das Profil-Paket der App als Ausgangspunkt.
 
-## LinkedIn (Profil oder Unternehmensseite)
-- **Headline** (≤ 220 Zeichen): 3 Varianten – wem du hilfst + Ergebnis + Suchbegriffe.
-- **Info/Über** (≤ 2.600 Zeichen): Hook in den ersten 2 Zeilen, Geschichte, für wen, Angebot, CTA, Hinweis „ersetzt keine Therapie“.
-- **Banner:** Botschaft in ≤ 8 Wörtern + Link.
-- **Featured/Im Fokus:** 3 Elemente (Gratis-Einstieg, wichtigster Beitrag, Website).
-- **Zielgruppe hier:** zusätzlich Fachleute (Beratung, HR, Therapie, Coaching) – sachlicherer Ton.
-- **Benutzerdefinierte URL** und Kontaktinfos prüfen.
+## LinkedIn
+- **Headline** (≤ 220 Zeichen): 3 Varianten – wem geholfen wird + Ergebnis + Suchbegriffe
+- **Info** (≤ 2'600 Zeichen): Hook in 2 Zeilen, Geschichte, für wen, Angebot, CTA
+- **Banner:** Botschaft ≤ 8 Wörter + Link · **Im Fokus:** 3 Elemente · eigene URL, Kontaktinfos
+- Unternehmensseite: Slogan (≤ 120 Zeichen), Beschreibung, Branche, Schaltfläche, Mitarbeitende verknüpfen
 
 ## Facebook-Seite
-- Name/Kategorie, Kurzbeschreibung (≤ 255 Zeichen), Titelbild-Botschaft, Aktions-Button (z. B. „Mehr erfahren“ → Bio-Link-Startseite), angepinnter Beitrag.
-- Sicherheit: Hinweis, dass Kommentare auf Facebook für Bekannte sichtbar sind → für Betroffene lieber DM/Link anbieten.
+Name und Kategorie, Kurzbeschreibung (≤ 255 Zeichen), Titelbild-Botschaft, Aktions-Button, angepinnter Beitrag, Öffnungszeiten und Ort (lokale KMU, Vereine). Seelenwende: Kommentare sind für Bekannte sichtbar → für Betroffene DM oder Link anbieten.
 
 ## Ausgabe
-Je Kanal: Vorher/Nachher-Tabelle mit fertigen Texten zum Kopieren und Zeichenzahl, dann Top 3 Schritte.
+Je Kanal eine Vorher/Nachher-Tabelle mit fertigen Texten und Zeichenzahl, danach Top 3 Schritte.

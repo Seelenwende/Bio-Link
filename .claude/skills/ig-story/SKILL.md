@@ -1,22 +1,15 @@
 ---
 name: ig-story
-description: Plant Instagram-Story-Sequenzen (5–8 Slides) mit Interaktions-Stickern (Umfrage, Frage, Quiz, Slider) und weichem Übergang zum Angebot. Nutzen bei „Story-Ideen“, „Stories planen“, „Story-Sequenz“.
+description: Plant Story-Sequenzen (5–8 Slides) mit Interaktions-Stickern und weichem Übergang zum Angebot. Nutzen bei „Story-Ideen“, „Stories planen“, „Story-Sequenz“.
 ---
 
 # /ig-story – Story-Sequenz
 
-Lies zuerst `.claude/instagram/MARKE.md` (Zielgruppe, Säulen, Stichwörter, feste Regeln) und halte dich an alle Regeln dort.
+Lies zuerst `.claude/social/KONTEN.md`. Kläre, für welches Konto du arbeitest (Seelenwende, digitalseed oder ein Kunde von digitalseed), und halte dich an die allgemeinen Regeln und an die Regeln dieses Kontos (Stimme, Anrede, Rechtschreibung, Stichwörter, besondere Regeln).
 
 ## Ausgabe
-Tabelle pro Slide: Nr. · Bild/Hintergrund · Text (≤ 20 Wörter) · Sticker (Umfrage/Frage/Quiz/Slider/Link) · Ziel.
-Bewährter Bogen:
-1. Alltag/Persönliches (Nähe)
-2. Frage oder Umfrage zur Situation der Zielgruppe (Interaktion)
-3. Auflösung/Einordnung
-4. Kleiner Tipp oder Satz zum Mitnehmen
-5. Weicher Hinweis auf den passenden Gratis-Einstieg (Link-Sticker oder Stichwort per DM)
-
-Regeln:
-- Fragen so stellen, dass Antworten sicher sind (keine Details, die er nicht sehen soll; Hinweis, dass Antworten privat bei dir landen).
-- Antworten aus Frage-Stickern niemals mit Namen teilen.
-- Passende Highlights angeben, in die die Sequenz danach gehört.
+Tabelle: Nr. · Bild/Hintergrund · Text (≤ 20 Wörter) · Sticker (Umfrage/Frage/Quiz/Slider/Link) · Ziel.
+Bogen: 1. Alltag oder Einblick · 2. Frage oder Umfrage zur Zielgruppe · 3. Auflösung · 4. Tipp zum Mitnehmen · 5. weicher Hinweis auf den Einstieg (Link-Sticker oder Stichwort).
+- Antworten aus Frage-Stickern nie mit Namen teilen; bei sensiblen Konten sichere Fragen stellen.
+- Highlight angeben, in das die Sequenz gehört.
+- Bei Kunden von digitalseed prüfen, ob Stories im Paket sind (Seed und Studio enthalten keine Stories).

@@ -171,7 +171,7 @@ Stimmungsfotos in `assets/bilder/` von [Pexels](https://www.pexels.com) (Pexels-
 
 ## Instagram-, LinkedIn- und Facebook-Skills für Claude
 
-Unter `.claude/skills/` liegen eigene Skills, die Claude in diesem Repo als Slash-Befehle nutzt. Alle lesen zuerst `.claude/instagram/MARKE.md` (Zielgruppe, Themen-Säulen, Stichwörter, Sicherheitsregeln) und arbeiten nur mit echten Daten.
+Unter `.claude/skills/` liegen eigene Skills, die Claude in diesem Repo als Slash-Befehle nutzt. Alle lesen zuerst `.claude/social/KONTEN.md` (Konten Seelenwende, digitalseed und Kunden von digitalseed: Stimme, Säulen, Stichwörter, Sicherheitsregeln) und arbeiten nur mit echten Daten.
 
 | Befehl | Wofür |
 |---|---|
@@ -186,4 +186,4 @@ Unter `.claude/skills/` liegen eigene Skills, die Claude in diesem Repo als Slas
 | `/social-profile` | LinkedIn-Profil/-Seite und Facebook-Seite optimieren |
 | `/social-report` | Monats-Reporting über alle Kanäle |
 
-Ergebnisse, die aufgehoben werden sollen (Audits, Pläne, Reports), landen unter `instagram/`.
+Ergebnisse, die aufgehoben werden sollen (Audits, Pläne, Reports), landen unter `social/<konto>/`.

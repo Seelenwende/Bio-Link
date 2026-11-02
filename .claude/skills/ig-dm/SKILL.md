@@ -1,22 +1,20 @@
 ---
 name: ig-dm
-description: Schreibt Instagram-Direktnachrichten: Stichwort-Antworten (Kommentar-zu-DM), Begrüßung neuer Followerinnen, Folge-Nachrichten und sensible Antworten. Nutzen bei „DM schreiben“, „Stichwort-Antwort“, „Nachricht an Followerin“.
+description: Schreibt Direktnachrichten: Stichwort-Antworten (Kommentar-zu-DM), Begrüssung, Folge-Nachrichten, Antworten auf Anfragen und sensible Nachrichten. Nutzen bei „DM schreiben“, „Stichwort-Antwort“, „Nachricht beantworten“.
 ---
 
 # /ig-dm – Direktnachrichten
 
-Lies zuerst `.claude/instagram/MARKE.md` (Zielgruppe, Säulen, Stichwörter, feste Regeln) und halte dich an alle Regeln dort.
+Lies zuerst `.claude/social/KONTEN.md`. Kläre, für welches Konto du arbeitest (Seelenwende, digitalseed oder ein Kunde von digitalseed), und halte dich an die allgemeinen Regeln und an die Regeln dieses Kontos (Stimme, Anrede, Rechtschreibung, Stichwörter, besondere Regeln).
 
-## Vorlagen-Typen
-1. **Stichwort-Antwort** (pro Stichwort aus MARKE.md): Dank · was sie bekommt · Link · ein Satz Sicherheit (z. B. „Der Muster-Check speichert nichts, und mit „Schnell weg“ bist du sofort raus.“) · keine Verkaufsfrage in der ersten Nachricht.
-2. **Folge-Nachricht** (nach 2–3 Tagen, nur wenn sie geantwortet hat): Frage nach ihrem Ergebnis, passender nächster Schritt laut Phasen-Wegweiser in `PRODUKTLEITER.md`.
-3. **Begrüßung** neuer Followerinnen (optional, kurz, ohne Link).
-4. **Sensible DM** (sie erzählt von Gewalt/Krise): zuhören, nicht beraten, Hilfenummern, Hinweis auf Ausstiegs-Planer, klar sagen, dass DMs keine Beratung ersetzen.
+## Typen
+1. **Stichwort-Antwort** (je Stichwort des Kontos): Dank · was die Person bekommt · Link · ein Satz Vertrauen · keine Verkaufsfrage in der ersten Nachricht
+2. **Folge-Nachricht** (nach 2–3 Tagen, nur nach Antwort): Frage zum Ergebnis, passender nächster Schritt (Seelenwende: Phasen-Wegweiser in `PRODUKTLEITER.md`; digitalseed: Termin über `/termin.html` der App)
+3. **Anfrage** (digitalseed und Kunden): Fragen mit bekannten Fakten beantworten, auf Gratis-Analyse oder Termin führen
+4. **Sensible DM** (Konto-Regeln, z. B. Hilfenummern bei Seelenwende)
 
 ## Regeln
-- Max. ~400 Zeichen, eine Frage pro Nachricht, kein Druck.
-- Daran denken, dass er ihr Handy sehen könnte: keine auffälligen Begriffe im ersten Satz der Vorschau, wenn sie „noch drin“ ist.
-- Nur Vorschläge; senden nur nach Bestätigung.
+Max. ~400 Zeichen, eine Frage pro Nachricht, kein Druck. Nur Vorschläge; senden nach Bestätigung.
 
 ## Ausgabe
-Fertige Texte je Typ/Stichwort, zum Einfügen in ManyChat, das Instagram-Plugin oder ein Make-Szenario.
+Fertige Texte je Typ und Stichwort – zum Einfügen in ManyChat, das Instagram-Plugin oder ein Make-Szenario (Make-Organisation „digitalseed“ bzw. „Seelenwende“).
