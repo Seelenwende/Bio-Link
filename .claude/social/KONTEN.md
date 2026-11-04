@@ -49,3 +49,13 @@ Für Kundenkonten ist die **App die Quelle der Wahrheit**. Die App (`app/`) erst
 - Ergebnisse so liefern, dass sie in die App passen: Beitrag = Text, Hashtags, Grafik-Titel (≤ 9 Wörter), Unterzeile, Punkte/Folien; Reel = Hook + 3–5 Szenen (≤ 12 Wörter) + CTA-Szene.
 - Branchengrenzen beachten (z. B. Heilmittelwerbung, Standesregeln bei Ärztinnen, Anwälten, Treuhand).
 - Nichts direkt in Buffer des Kunden einplanen: Freigabe läuft über das Kundenportal der App.
+
+## Datenzugang (Stand 4.11.2026)
+
+| | @digitalseed.ch | @_seelenwende |
+|---|---|---|
+| Instagram-Konto-ID | 17841415117551814 | 17841441328668177 |
+| Make-Verbindung (Org. „digitalseed“, Team „My Team“) | Connection 12700950 (Facebook-Login, inkl. instagram_basic, _manage_insights, _manage_comments, _content_publish) | dieselbe |
+| Buffer (Org. „My organization“) | Instagram-Kanal 6acbc4ee778b240e2fd9cd2d, Facebook-Seite 6acb7147778b240e2fd6123a | noch nicht verbunden |
+
+**Profil und Beiträge lesen:** Make-Szenario 8370230 „Instagram: Profil und letzte Beiträge lesen (für Claude-Skills)“ – auf Abruf mit `scenario_run`, Eingaben `username` (ohne @) und `anzahl`; liefert `profil` und `beitraege` (Caption, Typ, Datum, Likes, Kommentare, Aufrufe, Link). Liest auch öffentliche Business-/Creator-Profile von Kunden und Mitbewerbern. Muss aktiv sein (Make-Tarif mit genug aktiven Szenarien).
