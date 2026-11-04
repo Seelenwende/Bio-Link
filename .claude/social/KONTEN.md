@@ -20,7 +20,7 @@ Jeder `/ig-…`- und `/social-…`-Skill liest diese Datei zuerst, klärt **für
 - **Stimme:** eine Frau, die selbst aus einer belastenden Beziehung herausgefunden hat. Per Du, warm, klar. Deutsch mit ß.
 - **Zielgruppe:** Frauen in oder nach einer emotional missbräuchlichen Beziehung, drei Phasen: **noch drin** (zweifelt an sich) · **im Gehen** · **danach** (baut sich wieder auf).
 - **Säulen:** Muster erkennen · Selbstwert & Glaubenssätze · Grenzen & No Contact · Wieder bei dir · Persönliches.
-- **Stichwörter (Kommentar → DM):** `MUSTER` → Muster-Check · `PLAN` → Ausstiegs-Planer · `SATZ` → Glaubenssätze-Test · `MIRA` → Mira-Schnupper-Code.
+- **Stichwörter (Kommentar → DM):** `MUSTER` → Muster-Check · `PLAN` → Ausstiegs-Planer · `GUIDE` → Mini-Guide „Der Weg nach draussen“ · `SATZ` → Glaubenssätze-Test · später `MIRA` → Mira-Schnupper-Code. Nicht mehr verwenden: `PROGRAMM` (Programm ausgeblendet), `CARE` (Self Care Journal kostet jetzt 9 €), `PAKET` (heisst „Du bist genug“ bzw. Bundle).
 - **Bio-Link:** Startseite des Repos, Phasen direkt: `start.html#drin`, `#gehen`, `#draussen`, `#unsicher`.
 - **Besondere Regeln:**
   - Sicherheit vor Reichweite: nichts, was eine Frau gefährdet, wenn er mitliest (keine Konfrontations-Tipps; an Handy-Spuren denken; DM-Vorschau unauffällig).
